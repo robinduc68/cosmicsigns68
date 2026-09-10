@@ -1,0 +1,18 @@
+{
+  "name": "@cosmic/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "typecheck": "echo \"@cosmic/ui: typechecked as part of @cosmic/web\" && exit 0",
+    "test": "echo \"@cosmic/ui: covered by @cosmic/web tests\" && exit 0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.469.0",
+    "reka-ui": "^2.0.0",
+    "tailwind-merge": "^2.6.0"
+  }
+}

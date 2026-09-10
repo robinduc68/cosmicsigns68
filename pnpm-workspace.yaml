@@ -1,0 +1,13 @@
+packages:
+  - apps/web
+  - packages/shared
+  - packages/ui
+
+# Native / postinstall builds we explicitly trust.
+allowBuilds:
+  '@parcel/watcher': true
+  '@tailwindcss/oxide': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  vue-demi: true

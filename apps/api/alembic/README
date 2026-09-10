@@ -1,0 +1,4 @@
+Alembic migrations for the Cosmic Signs API.
+
+    make migrate            # apply everything
+    make migration m="..."  # autogenerate a new revision

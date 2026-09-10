@@ -1,0 +1,33 @@
+[project]
+name = "cosmic-astrology"
+version = "0.1.0"
+description = "Deterministic Vietnamese calendar + Tử Vi chart engine for Cosmic Signs"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3.0", "mypy>=1.14.0", "ruff>=0.9.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cosmic_astrology"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+# Vietnamese copy legitimately uses en dashes and typographic punctuation.
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true

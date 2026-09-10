@@ -1,0 +1,208 @@
+@import 'tailwindcss';
+
+/* color-mode writes `.dark` on <html>; Tailwind v4 needs to be told about it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Scan the design-system sources as well as the consuming app. */
+@source "../../components/**/*.vue";
+@source "../../composables/**/*.ts";
+
+/* ---------------------------------------------------------------------------
+   Brand scale — a restrained cosmic violet. Only 500/600 carry brand weight;
+   the rest exist for states and washes so nothing needs an arbitrary value.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-brand-50: #f2f0ff;
+  --color-brand-100: #e6e2ff;
+  --color-brand-200: #cfc7ff;
+  --color-brand-300: #b0a2ff;
+  --color-brand-400: #8f78ff;
+  --color-brand-500: #7256f5;
+  --color-brand-600: #5b3fe0;
+  --color-brand-700: #4a31b8;
+  --color-brand-800: #3b2891;
+  --color-brand-900: #2c1d6b;
+  --color-brand-950: #1a1140;
+
+  /* Used sparingly — never as a fill, only as a hairline or a small mark. */
+  --color-gold-300: #e8cf9b;
+  --color-gold-400: #d9b26a;
+  --color-gold-500: #c2974c;
+
+  --font-sans:
+    'Be Vietnam Pro', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display:
+    'Manrope', 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: 3.5rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.035em;
+  --text-display--font-weight: 600;
+  --text-h1: 2.5rem;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h1--font-weight: 600;
+  --text-h2: 1.875rem;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.022em;
+  --text-h2--font-weight: 600;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.35;
+  --text-h3--letter-spacing: -0.014em;
+  --text-h3--font-weight: 600;
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.6;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.02em;
+
+  --radius-card: 1rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.5s var(--ease-out-soft) both;
+  --animate-twinkle: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Semantic surfaces. Light is the default declaration so a page always has a
+   full palette even before any theme class is applied.
+--------------------------------------------------------------------------- */
+:root {
+  --bg: #fbfbfd;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f7f7fb;
+  --border: #e5e5ec;
+  --border-strong: #d3d3de;
+  --text: #16161d;
+  --text-muted: #5f5f6d;
+  --text-subtle: #8a8a99;
+  --accent: var(--color-brand-600);
+  --accent-hover: var(--color-brand-700);
+  --accent-contrast: #ffffff;
+  --accent-soft: color-mix(in oklab, var(--color-brand-500) 10%, transparent);
+  --accent-ring: color-mix(in oklab, var(--color-brand-500) 45%, transparent);
+  --danger: #c2313c;
+  --danger-soft: color-mix(in oklab, #c2313c 10%, transparent);
+  --success: #1a7f52;
+  --success-soft: color-mix(in oklab, #1a7f52 12%, transparent);
+  --star-field: color-mix(in oklab, var(--color-brand-700) 22%, transparent);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #09090b;
+  --bg-elevated: #111116;
+  --surface: #111116;
+  --card: #16161d;
+  --card-hover: #1c1c25;
+  --border: #26262f;
+  --border-strong: #33333f;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-subtle: #71717a;
+  --accent: var(--color-brand-400);
+  --accent-hover: var(--color-brand-300);
+  --accent-contrast: #12091f;
+  --accent-soft: color-mix(in oklab, var(--color-brand-400) 14%, transparent);
+  --accent-ring: color-mix(in oklab, var(--color-brand-400) 55%, transparent);
+  --danger: #ff7b7b;
+  --danger-soft: color-mix(in oklab, #ff7b7b 14%, transparent);
+  --success: #5ddba4;
+  --success-soft: color-mix(in oklab, #5ddba4 14%, transparent);
+  --star-field: color-mix(in oklab, #ffffff 45%, transparent);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-border-base: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-base: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* One focus treatment for the whole product. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility text-balance-heading {
+  text-wrap: balance;
+}

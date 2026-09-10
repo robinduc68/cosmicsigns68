@@ -1,0 +1,33 @@
+{
+  "name": "cosmic-signs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cosmic Signs \u2014 n\u1ec1n t\u1ea3ng l\u1eadp v\u00e0 lu\u1eadn gi\u1ea3i l\u00e1 s\u1ed1 T\u1eed Vi",
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @cosmic/web dev",
+    "build": "pnpm --filter @cosmic/web build",
+    "preview": "pnpm --filter @cosmic/web preview",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,vue,json,md,yml,yaml,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,vue,json,md,yml,yaml,css}\"",
+    "typecheck": "pnpm -r --sequential typecheck",
+    "test": "pnpm -r --sequential test",
+    "prepare:web": "pnpm --filter @cosmic/web postinstall"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^22.10.5",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0",
+    "vue-eslint-parser": "^9.4.3"
+  }
+}
