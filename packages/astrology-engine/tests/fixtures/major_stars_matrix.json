@@ -1,0 +1,1252 @@
+{
+  "_README": "MA TRẬN KIỂM ĐỊNH 14 CHÍNH TINH.\n`engine_candidate_stars` là ĐẦU RA HIỆN TẠI của engine, KHÔNG phải giá trị kỳ vọng đã được kiểm chứng. Quy trình: đối chiếu từng ca với nguồn chuẩn đã chốt (mục 0 của docs/astrology-conventions.md), điền `expected_stars`, đặt verified_against_source=true. Test CHỈ được assert trên `expected_stars`; ca nào chưa verified thì skip.",
+  "source_of_truth": "CHƯA CHỐT — chặn bởi câu hỏi mở Q1 trong docs/astrology-conventions.md",
+  "star_codes": [
+    "TU_VI",
+    "THIEN_CO",
+    "THAI_DUONG",
+    "VU_KHUC",
+    "THIEN_DONG",
+    "LIEM_TRINH",
+    "THIEN_PHU",
+    "THAI_AM",
+    "THAM_LANG",
+    "CU_MON",
+    "THIEN_TUONG",
+    "THIEN_LUONG",
+    "THAT_SAT",
+    "PHA_QUAN"
+  ],
+  "coverage": {
+    "cuc_values": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "menh_positions": [
+      "Dần",
+      "Dậu",
+      "Mão",
+      "Mùi",
+      "Sửu",
+      "Thìn",
+      "Tuất",
+      "Tý",
+      "Tỵ"
+    ],
+    "tu_vi_positions": [
+      "Dần",
+      "Dậu",
+      "Hợi",
+      "Mão",
+      "Mùi",
+      "Ngọ",
+      "Sửu",
+      "Thân",
+      "Thìn",
+      "Tỵ"
+    ],
+    "yin_yang_gender": [
+      "Dương Nam",
+      "Dương Nữ",
+      "Âm Nam",
+      "Âm Nữ"
+    ],
+    "cases": 17,
+    "anchored": 5,
+    "blocked": 1
+  },
+  "cases": [
+    {
+      "id": "TV-A1",
+      "purpose": "Neo mùng 1 — Thủy nhị cục",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 1,
+        "month": 1,
+        "year": 1975,
+        "hour": 2,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 11,
+          "month": 2,
+          "year": 1975,
+          "hour": 2,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 1,
+          "month": 1,
+          "year": 1975,
+          "is_leap_month": false,
+          "year_pillar": "Ất Mão"
+        },
+        "year_pillar": "Ất Mão",
+        "day_pillar": "Mậu Tý",
+        "hour_branch": "Sửu",
+        "menh": "Sửu",
+        "than": "Mão",
+        "than_cu": "Phu Thê",
+        "menh_element": "Thủy",
+        "cuc": "Thủy Nhị Cục",
+        "cuc_number": 2,
+        "menh_cuc_relation": "Mệnh và Cục tương hòa",
+        "yin_yang": "Âm Nam",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "TU_VI": "Sửu",
+        "PHA_QUAN": "Sửu",
+        "THIEN_CO": "Tý",
+        "THAI_DUONG": "Tuất",
+        "VU_KHUC": "Dậu",
+        "THAT_SAT": "Dậu",
+        "THIEN_DONG": "Thân",
+        "THIEN_LUONG": "Thân",
+        "THIEN_TUONG": "Mùi",
+        "CU_MON": "Ngọ",
+        "LIEM_TRINH": "Tỵ",
+        "THAM_LANG": "Tỵ",
+        "THAI_AM": "Thìn",
+        "THIEN_PHU": "Mão"
+      },
+      "expected_stars": null,
+      "verified_against_source": false,
+      "anchor_tu_vi": "Sửu",
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "anchor_matches_engine": true
+    },
+    {
+      "id": "TV-A2",
+      "purpose": "Neo mùng 1 — Mộc tam cục",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 1,
+        "month": 1,
+        "year": 1975,
+        "hour": 14,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 11,
+          "month": 2,
+          "year": 1975,
+          "hour": 14,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 1,
+          "month": 1,
+          "year": 1975,
+          "is_leap_month": false,
+          "year_pillar": "Ất Mão"
+        },
+        "year_pillar": "Ất Mão",
+        "day_pillar": "Mậu Tý",
+        "hour_branch": "Mùi",
+        "menh": "Mùi",
+        "than": "Dậu",
+        "than_cu": "Phu Thê",
+        "menh_element": "Thủy",
+        "cuc": "Mộc Tam Cục",
+        "cuc_number": 3,
+        "menh_cuc_relation": "Mệnh sinh Cục",
+        "yin_yang": "Âm Nam",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THAT_SAT": "Ngọ",
+        "THIEN_LUONG": "Tỵ",
+        "TU_VI": "Thìn",
+        "THIEN_TUONG": "Thìn",
+        "THIEN_CO": "Mão",
+        "CU_MON": "Mão",
+        "THAM_LANG": "Dần",
+        "THAI_DUONG": "Sửu",
+        "THAI_AM": "Sửu",
+        "VU_KHUC": "Tý",
+        "THIEN_PHU": "Tý",
+        "THIEN_DONG": "Hợi",
+        "PHA_QUAN": "Tuất",
+        "LIEM_TRINH": "Thân"
+      },
+      "expected_stars": null,
+      "verified_against_source": false,
+      "anchor_tu_vi": "Thìn",
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "anchor_matches_engine": true
+    },
+    {
+      "id": "TV-A3",
+      "purpose": "Neo mùng 1 — Kim tứ cục",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 1,
+        "month": 1,
+        "year": 1975,
+        "hour": 18,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 11,
+          "month": 2,
+          "year": 1975,
+          "hour": 18,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 1,
+          "month": 1,
+          "year": 1975,
+          "is_leap_month": false,
+          "year_pillar": "Ất Mão"
+        },
+        "year_pillar": "Ất Mão",
+        "day_pillar": "Mậu Tý",
+        "hour_branch": "Dậu",
+        "menh": "Tỵ",
+        "than": "Hợi",
+        "than_cu": "Thiên Di",
+        "menh_element": "Thủy",
+        "cuc": "Kim Tứ Cục",
+        "cuc_number": 4,
+        "menh_cuc_relation": "Cục sinh Mệnh",
+        "yin_yang": "Âm Nam",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THIEN_PHU": "Tỵ",
+        "LIEM_TRINH": "Mão",
+        "PHA_QUAN": "Mão",
+        "TU_VI": "Hợi",
+        "THAT_SAT": "Hợi",
+        "THIEN_CO": "Tuất",
+        "THIEN_LUONG": "Tuất",
+        "THIEN_TUONG": "Dậu",
+        "THAI_DUONG": "Thân",
+        "CU_MON": "Thân",
+        "VU_KHUC": "Mùi",
+        "THAM_LANG": "Mùi",
+        "THIEN_DONG": "Ngọ",
+        "THAI_AM": "Ngọ"
+      },
+      "expected_stars": null,
+      "verified_against_source": false,
+      "anchor_tu_vi": "Hợi",
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "anchor_matches_engine": true
+    },
+    {
+      "id": "TV-A4",
+      "purpose": "Neo mùng 1 — Thổ ngũ cục",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 1,
+        "month": 1,
+        "year": 1975,
+        "hour": 0,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 11,
+          "month": 2,
+          "year": 1975,
+          "hour": 0,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 1,
+          "month": 1,
+          "year": 1975,
+          "is_leap_month": false,
+          "year_pillar": "Ất Mão"
+        },
+        "year_pillar": "Ất Mão",
+        "day_pillar": "Mậu Tý",
+        "hour_branch": "Tý",
+        "menh": "Dần",
+        "than": "Dần",
+        "than_cu": "Mệnh",
+        "menh_element": "Thủy",
+        "cuc": "Thổ Ngũ Cục",
+        "cuc_number": 5,
+        "menh_cuc_relation": "Cục khắc Mệnh",
+        "yin_yang": "Âm Nam",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "VU_KHUC": "Dần",
+        "THIEN_TUONG": "Dần",
+        "THIEN_DONG": "Sửu",
+        "CU_MON": "Sửu",
+        "THAM_LANG": "Tý",
+        "THAI_AM": "Hợi",
+        "LIEM_TRINH": "Tuất",
+        "THIEN_PHU": "Tuất",
+        "PHA_QUAN": "Thân",
+        "TU_VI": "Ngọ",
+        "THIEN_CO": "Tỵ",
+        "THAT_SAT": "Thìn",
+        "THAI_DUONG": "Mão",
+        "THIEN_LUONG": "Mão"
+      },
+      "expected_stars": null,
+      "verified_against_source": false,
+      "anchor_tu_vi": "Ngọ",
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "anchor_matches_engine": true
+    },
+    {
+      "id": "TV-A5",
+      "purpose": "Neo mùng 1 — Hỏa lục cục",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 1,
+        "month": 1,
+        "year": 1976,
+        "hour": 2,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 31,
+          "month": 1,
+          "year": 1976,
+          "hour": 2,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 1,
+          "month": 1,
+          "year": 1976,
+          "is_leap_month": false,
+          "year_pillar": "Bính Thìn"
+        },
+        "year_pillar": "Bính Thìn",
+        "day_pillar": "Nhâm Ngọ",
+        "hour_branch": "Sửu",
+        "menh": "Sửu",
+        "than": "Mão",
+        "than_cu": "Phu Thê",
+        "menh_element": "Thổ",
+        "cuc": "Hỏa Lục Cục",
+        "cuc_number": 6,
+        "menh_cuc_relation": "Cục sinh Mệnh",
+        "yin_yang": "Dương Nam",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Thìn",
+          "Tỵ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "LIEM_TRINH": "Sửu",
+        "THAT_SAT": "Sửu",
+        "THIEN_LUONG": "Tý",
+        "THIEN_TUONG": "Hợi",
+        "CU_MON": "Tuất",
+        "TU_VI": "Dậu",
+        "THAM_LANG": "Dậu",
+        "THIEN_CO": "Thân",
+        "THAI_AM": "Thân",
+        "THIEN_PHU": "Mùi",
+        "THAI_DUONG": "Ngọ",
+        "VU_KHUC": "Tỵ",
+        "PHA_QUAN": "Tỵ",
+        "THIEN_DONG": "Thìn"
+      },
+      "expected_stars": null,
+      "verified_against_source": false,
+      "anchor_tu_vi": "Dậu",
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "anchor_matches_engine": true
+    },
+    {
+      "id": "TV-C1",
+      "purpose": "Tử Vi trùng Thiên Phủ tại Dần (Kim tứ)",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 14,
+        "month": 1,
+        "year": 1970,
+        "hour": 1,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 14,
+          "month": 1,
+          "year": 1970,
+          "hour": 1,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 7,
+          "month": 12,
+          "year": 1969,
+          "is_leap_month": false,
+          "year_pillar": "Kỷ Dậu"
+        },
+        "year_pillar": "Kỷ Dậu",
+        "day_pillar": "Giáp Ngọ",
+        "hour_branch": "Sửu",
+        "menh": "Tý",
+        "than": "Dần",
+        "than_cu": "Phu Thê",
+        "menh_element": "Thổ",
+        "cuc": "Kim Tứ Cục",
+        "cuc_number": 4,
+        "menh_cuc_relation": "Mệnh sinh Cục",
+        "yin_yang": "Âm Nam",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Dần",
+          "Mão"
+        ],
+        "triet": [
+          "Dậu",
+          "Thân"
+        ]
+      },
+      "engine_candidate_stars": {
+        "PHA_QUAN": "Tý",
+        "THAI_DUONG": "Hợi",
+        "VU_KHUC": "Tuất",
+        "THIEN_DONG": "Dậu",
+        "THAT_SAT": "Thân",
+        "THIEN_LUONG": "Mùi",
+        "LIEM_TRINH": "Ngọ",
+        "THIEN_TUONG": "Ngọ",
+        "CU_MON": "Tỵ",
+        "THAM_LANG": "Thìn",
+        "THAI_AM": "Mão",
+        "TU_VI": "Dần",
+        "THIEN_PHU": "Dần",
+        "THIEN_CO": "Sửu"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-C2",
+      "purpose": "Tử Vi trùng Thiên Phủ tại Thân (Kim tứ)",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 21,
+        "month": 6,
+        "year": 1970,
+        "hour": 1,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "FEMALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 21,
+          "month": 6,
+          "year": 1970,
+          "hour": 1,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 18,
+          "month": 5,
+          "year": 1970,
+          "is_leap_month": false,
+          "year_pillar": "Canh Tuất"
+        },
+        "year_pillar": "Canh Tuất",
+        "day_pillar": "Nhâm Thân",
+        "hour_branch": "Sửu",
+        "menh": "Tỵ",
+        "than": "Mùi",
+        "than_cu": "Phu Thê",
+        "menh_element": "Kim",
+        "cuc": "Kim Tứ Cục",
+        "cuc_number": 4,
+        "menh_cuc_relation": "Mệnh và Cục tương hòa",
+        "yin_yang": "Dương Nữ",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Dần",
+          "Mão"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THAI_DUONG": "Tỵ",
+        "VU_KHUC": "Thìn",
+        "THIEN_DONG": "Mão",
+        "THAT_SAT": "Dần",
+        "THIEN_LUONG": "Sửu",
+        "LIEM_TRINH": "Tý",
+        "THIEN_TUONG": "Tý",
+        "CU_MON": "Hợi",
+        "THAM_LANG": "Tuất",
+        "THAI_AM": "Dậu",
+        "TU_VI": "Thân",
+        "THIEN_PHU": "Thân",
+        "THIEN_CO": "Mùi",
+        "PHA_QUAN": "Ngọ"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-C3",
+      "purpose": "Tử Vi trùng Thiên Phủ tại Dần (Thổ ngũ)",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 14,
+        "month": 2,
+        "year": 1970,
+        "hour": 7,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 14,
+          "month": 2,
+          "year": 1970,
+          "hour": 7,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 9,
+          "month": 1,
+          "year": 1970,
+          "is_leap_month": false,
+          "year_pillar": "Canh Tuất"
+        },
+        "year_pillar": "Canh Tuất",
+        "day_pillar": "Ất Sửu",
+        "hour_branch": "Thìn",
+        "menh": "Tuất",
+        "than": "Ngọ",
+        "than_cu": "Quan Lộc",
+        "menh_element": "Kim",
+        "cuc": "Thổ Ngũ Cục",
+        "cuc_number": 5,
+        "menh_cuc_relation": "Cục sinh Mệnh",
+        "yin_yang": "Dương Nam",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Dần",
+          "Mão"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "VU_KHUC": "Tuất",
+        "THIEN_DONG": "Dậu",
+        "THAT_SAT": "Thân",
+        "THIEN_LUONG": "Mùi",
+        "LIEM_TRINH": "Ngọ",
+        "THIEN_TUONG": "Ngọ",
+        "CU_MON": "Tỵ",
+        "THAM_LANG": "Thìn",
+        "THAI_AM": "Mão",
+        "TU_VI": "Dần",
+        "THIEN_PHU": "Dần",
+        "THIEN_CO": "Sửu",
+        "PHA_QUAN": "Tý",
+        "THAI_DUONG": "Hợi"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-C4",
+      "purpose": "Tử Vi trùng Thiên Phủ tại Thân (Hỏa lục)",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 21,
+        "month": 1,
+        "year": 1970,
+        "hour": 19,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "FEMALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 21,
+          "month": 1,
+          "year": 1970,
+          "hour": 19,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 14,
+          "month": 12,
+          "year": 1969,
+          "is_leap_month": false,
+          "year_pillar": "Kỷ Dậu"
+        },
+        "year_pillar": "Kỷ Dậu",
+        "day_pillar": "Tân Sửu",
+        "hour_branch": "Tuất",
+        "menh": "Mão",
+        "than": "Hợi",
+        "than_cu": "Quan Lộc",
+        "menh_element": "Thổ",
+        "cuc": "Hỏa Lục Cục",
+        "cuc_number": 6,
+        "menh_cuc_relation": "Cục sinh Mệnh",
+        "yin_yang": "Âm Nữ",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Dần",
+          "Mão"
+        ],
+        "triet": [
+          "Dậu",
+          "Thân"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THIEN_DONG": "Mão",
+        "THAT_SAT": "Dần",
+        "THIEN_LUONG": "Sửu",
+        "LIEM_TRINH": "Tý",
+        "THIEN_TUONG": "Tý",
+        "CU_MON": "Hợi",
+        "THAM_LANG": "Tuất",
+        "THAI_AM": "Dậu",
+        "TU_VI": "Thân",
+        "THIEN_PHU": "Thân",
+        "THIEN_CO": "Mùi",
+        "PHA_QUAN": "Ngọ",
+        "THAI_DUONG": "Tỵ",
+        "VU_KHUC": "Thìn"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-S1",
+      "purpose": "Ca tham chiếu của bộ test hiện có",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 10,
+        "month": 9,
+        "year": 1992,
+        "hour": 14,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 10,
+          "month": 9,
+          "year": 1992,
+          "hour": 14,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 14,
+          "month": 8,
+          "year": 1992,
+          "is_leap_month": false,
+          "year_pillar": "Nhâm Thân"
+        },
+        "year_pillar": "Nhâm Thân",
+        "day_pillar": "Kỷ Sửu",
+        "hour_branch": "Mùi",
+        "menh": "Dần",
+        "than": "Thìn",
+        "than_cu": "Phu Thê",
+        "menh_element": "Kim",
+        "cuc": "Kim Tứ Cục",
+        "cuc_number": 4,
+        "menh_cuc_relation": "Mệnh và Cục tương hòa",
+        "yin_yang": "Dương Nam",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Hợi",
+          "Tuất"
+        ],
+        "triet": [
+          "Dần",
+          "Mão"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THIEN_DONG": "Dần",
+        "THIEN_LUONG": "Dần",
+        "THIEN_TUONG": "Sửu",
+        "CU_MON": "Tý",
+        "LIEM_TRINH": "Hợi",
+        "THAM_LANG": "Hợi",
+        "THAI_AM": "Tuất",
+        "THIEN_PHU": "Dậu",
+        "TU_VI": "Mùi",
+        "PHA_QUAN": "Mùi",
+        "THIEN_CO": "Ngọ",
+        "THAI_DUONG": "Thìn",
+        "VU_KHUC": "Mão",
+        "THAT_SAT": "Mão"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-S2",
+      "purpose": "Âm nam — chiều đại vận nghịch",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 15,
+        "month": 5,
+        "year": 1975,
+        "hour": 9,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 15,
+          "month": 5,
+          "year": 1975,
+          "hour": 9,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 5,
+          "month": 4,
+          "year": 1975,
+          "is_leap_month": false,
+          "year_pillar": "Ất Mão"
+        },
+        "year_pillar": "Ất Mão",
+        "day_pillar": "Tân Dậu",
+        "hour_branch": "Tỵ",
+        "menh": "Tý",
+        "than": "Tuất",
+        "than_cu": "Phúc Đức",
+        "menh_element": "Thủy",
+        "cuc": "Thủy Nhị Cục",
+        "cuc_number": 2,
+        "menh_cuc_relation": "Mệnh và Cục tương hòa",
+        "yin_yang": "Âm Nam",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THAI_DUONG": "Tý",
+        "VU_KHUC": "Hợi",
+        "PHA_QUAN": "Hợi",
+        "THIEN_DONG": "Tuất",
+        "LIEM_TRINH": "Mùi",
+        "THAT_SAT": "Mùi",
+        "THIEN_LUONG": "Ngọ",
+        "THIEN_TUONG": "Tỵ",
+        "CU_MON": "Thìn",
+        "TU_VI": "Mão",
+        "THAM_LANG": "Mão",
+        "THIEN_CO": "Dần",
+        "THAI_AM": "Dần",
+        "THIEN_PHU": "Sửu"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-S3",
+      "purpose": "Dương nữ — chiều đại vận nghịch",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 8,
+        "month": 8,
+        "year": 1980,
+        "hour": 3,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "FEMALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 8,
+          "month": 8,
+          "year": 1980,
+          "hour": 3,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 28,
+          "month": 6,
+          "year": 1980,
+          "is_leap_month": false,
+          "year_pillar": "Canh Thân"
+        },
+        "year_pillar": "Canh Thân",
+        "day_pillar": "Quý Sửu",
+        "hour_branch": "Dần",
+        "menh": "Tỵ",
+        "than": "Dậu",
+        "than_cu": "Tài Bạch",
+        "menh_element": "Mộc",
+        "cuc": "Kim Tứ Cục",
+        "cuc_number": 4,
+        "menh_cuc_relation": "Cục khắc Mệnh",
+        "yin_yang": "Dương Nữ",
+        "is_thuan_ly": false,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THAI_DUONG": "Tỵ",
+        "VU_KHUC": "Thìn",
+        "THIEN_DONG": "Mão",
+        "THAT_SAT": "Dần",
+        "THIEN_LUONG": "Sửu",
+        "LIEM_TRINH": "Tý",
+        "THIEN_TUONG": "Tý",
+        "CU_MON": "Hợi",
+        "THAM_LANG": "Tuất",
+        "THAI_AM": "Dậu",
+        "TU_VI": "Thân",
+        "THIEN_PHU": "Thân",
+        "THIEN_CO": "Mùi",
+        "PHA_QUAN": "Ngọ"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-S4",
+      "purpose": "Âm nữ — chiều đại vận thuận (Mộc tam cục)",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 6,
+        "month": 7,
+        "year": 1979,
+        "hour": 5,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "FEMALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 6,
+          "month": 7,
+          "year": 1979,
+          "hour": 5,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 13,
+          "month": 6,
+          "year": 1979,
+          "is_leap_month": false,
+          "year_pillar": "Kỷ Mùi"
+        },
+        "year_pillar": "Kỷ Mùi",
+        "day_pillar": "Giáp Tuất",
+        "hour_branch": "Mão",
+        "menh": "Thìn",
+        "than": "Tuất",
+        "than_cu": "Thiên Di",
+        "menh_element": "Hỏa",
+        "cuc": "Mộc Tam Cục",
+        "cuc_number": 3,
+        "menh_cuc_relation": "Cục sinh Mệnh",
+        "yin_yang": "Âm Nữ",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Sửu",
+          "Tý"
+        ],
+        "triet": [
+          "Dậu",
+          "Thân"
+        ]
+      },
+      "engine_candidate_stars": {
+        "VU_KHUC": "Thìn",
+        "THIEN_DONG": "Mão",
+        "THAT_SAT": "Dần",
+        "THIEN_LUONG": "Sửu",
+        "LIEM_TRINH": "Tý",
+        "THIEN_TUONG": "Tý",
+        "CU_MON": "Hợi",
+        "THAM_LANG": "Tuất",
+        "THAI_AM": "Dậu",
+        "TU_VI": "Thân",
+        "THIEN_PHU": "Thân",
+        "THIEN_CO": "Mùi",
+        "PHA_QUAN": "Ngọ",
+        "THAI_DUONG": "Tỵ"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-S5",
+      "purpose": "Thân cư Mệnh (Mệnh và Thân cùng cung)",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 5,
+        "month": 5,
+        "year": 1988,
+        "hour": 0,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 5,
+          "month": 5,
+          "year": 1988,
+          "hour": 0,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 20,
+          "month": 3,
+          "year": 1988,
+          "is_leap_month": false,
+          "year_pillar": "Mậu Thìn"
+        },
+        "year_pillar": "Mậu Thìn",
+        "day_pillar": "Canh Thân",
+        "hour_branch": "Tý",
+        "menh": "Thìn",
+        "than": "Thìn",
+        "than_cu": "Mệnh",
+        "menh_element": "Mộc",
+        "cuc": "Thổ Ngũ Cục",
+        "cuc_number": 5,
+        "menh_cuc_relation": "Mệnh khắc Cục",
+        "yin_yang": "Dương Nam",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Hợi",
+          "Tuất"
+        ],
+        "triet": [
+          "Sửu",
+          "Tý"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THIEN_CO": "Thìn",
+        "THIEN_LUONG": "Thìn",
+        "THIEN_TUONG": "Mão",
+        "THAI_DUONG": "Dần",
+        "CU_MON": "Dần",
+        "VU_KHUC": "Sửu",
+        "THAM_LANG": "Sửu",
+        "THIEN_DONG": "Tý",
+        "THAI_AM": "Tý",
+        "THIEN_PHU": "Hợi",
+        "LIEM_TRINH": "Dậu",
+        "PHA_QUAN": "Dậu",
+        "TU_VI": "Tỵ",
+        "THAT_SAT": "Tỵ"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-S6",
+      "purpose": "Ngày 30 âm lịch — biên cuối tháng",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 30,
+        "month": 3,
+        "year": 1990,
+        "hour": 11,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 25,
+          "month": 4,
+          "year": 1990,
+          "hour": 11,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 30,
+          "month": 3,
+          "year": 1990,
+          "is_leap_month": false,
+          "year_pillar": "Canh Ngọ"
+        },
+        "year_pillar": "Canh Ngọ",
+        "day_pillar": "Canh Thân",
+        "hour_branch": "Ngọ",
+        "menh": "Tuất",
+        "than": "Tuất",
+        "than_cu": "Mệnh",
+        "menh_element": "Thổ",
+        "cuc": "Thổ Ngũ Cục",
+        "cuc_number": 5,
+        "menh_cuc_relation": "Mệnh và Cục tương hòa",
+        "yin_yang": "Dương Nam",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Hợi",
+          "Tuất"
+        ],
+        "triet": [
+          "Mùi",
+          "Ngọ"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THAI_AM": "Tuất",
+        "THIEN_PHU": "Dậu",
+        "TU_VI": "Mùi",
+        "PHA_QUAN": "Mùi",
+        "THIEN_CO": "Ngọ",
+        "THAI_DUONG": "Thìn",
+        "VU_KHUC": "Mão",
+        "THAT_SAT": "Mão",
+        "THIEN_DONG": "Dần",
+        "THIEN_LUONG": "Dần",
+        "THIEN_TUONG": "Sửu",
+        "CU_MON": "Tý",
+        "LIEM_TRINH": "Hợi",
+        "THAM_LANG": "Hợi"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-L1",
+      "purpose": "Sinh tháng nhuận (Quý Mão 2023, nhuận tháng 2)",
+      "input": {
+        "calendar": "LUNAR",
+        "day": 15,
+        "month": 2,
+        "year": 2023,
+        "hour": 9,
+        "minute": 0,
+        "is_leap_month": true,
+        "gender": "FEMALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 5,
+          "month": 4,
+          "year": 2023,
+          "hour": 9,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 15,
+          "month": 2,
+          "year": 2023,
+          "is_leap_month": true,
+          "year_pillar": "Quý Mão"
+        },
+        "year_pillar": "Quý Mão",
+        "day_pillar": "Quý Tỵ",
+        "hour_branch": "Tỵ",
+        "menh": "Tuất",
+        "than": "Thân",
+        "than_cu": "Phúc Đức",
+        "menh_element": "Kim",
+        "cuc": "Thủy Nhị Cục",
+        "cuc_number": 2,
+        "menh_cuc_relation": "Mệnh sinh Cục",
+        "yin_yang": "Âm Nữ",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Thìn",
+          "Tỵ"
+        ],
+        "triet": [
+          "Sửu",
+          "Tý"
+        ]
+      },
+      "engine_candidate_stars": {
+        "THAM_LANG": "Tuất",
+        "THAI_AM": "Dậu",
+        "TU_VI": "Thân",
+        "THIEN_PHU": "Thân",
+        "THIEN_CO": "Mùi",
+        "PHA_QUAN": "Ngọ",
+        "THAI_DUONG": "Tỵ",
+        "VU_KHUC": "Thìn",
+        "THIEN_DONG": "Mão",
+        "THAT_SAT": "Dần",
+        "THIEN_LUONG": "Sửu",
+        "LIEM_TRINH": "Tý",
+        "THIEN_TUONG": "Tý",
+        "CU_MON": "Hợi"
+      },
+      "expected_stars": null,
+      "verified_against_source": false
+    },
+    {
+      "id": "TV-B1",
+      "purpose": "Giờ Tý muộn 23:xx",
+      "input": {
+        "calendar": "SOLAR",
+        "day": 10,
+        "month": 9,
+        "year": 1992,
+        "hour": 23,
+        "minute": 0,
+        "is_leap_month": false,
+        "gender": "MALE",
+        "tz_offset": 7.0
+      },
+      "derived_frame": {
+        "solar": {
+          "day": 10,
+          "month": 9,
+          "year": 1992,
+          "hour": 23,
+          "minute": 0
+        },
+        "lunar": {
+          "day": 14,
+          "month": 8,
+          "year": 1992,
+          "is_leap_month": false,
+          "year_pillar": "Nhâm Thân"
+        },
+        "year_pillar": "Nhâm Thân",
+        "day_pillar": "Canh Dần",
+        "hour_branch": "Tý",
+        "menh": "Dậu",
+        "than": "Dậu",
+        "than_cu": "Mệnh",
+        "menh_element": "Kim",
+        "cuc": "Thổ Ngũ Cục",
+        "cuc_number": 5,
+        "menh_cuc_relation": "Cục sinh Mệnh",
+        "yin_yang": "Dương Nam",
+        "is_thuan_ly": true,
+        "tuan": [
+          "Hợi",
+          "Tuất"
+        ],
+        "triet": [
+          "Dần",
+          "Mão"
+        ]
+      },
+      "engine_candidate_stars": {
+        "LIEM_TRINH": "Mùi",
+        "THAT_SAT": "Mùi",
+        "THIEN_LUONG": "Ngọ",
+        "THIEN_TUONG": "Tỵ",
+        "CU_MON": "Thìn",
+        "TU_VI": "Mão",
+        "THAM_LANG": "Mão",
+        "THIEN_CO": "Dần",
+        "THAI_AM": "Dần",
+        "THIEN_PHU": "Sửu",
+        "THAI_DUONG": "Tý",
+        "VU_KHUC": "Hợi",
+        "PHA_QUAN": "Hợi",
+        "THIEN_DONG": "Tuất"
+      },
+      "expected_stars": null,
+      "verified_against_source": false,
+      "blocked": "CHẶN: phụ thuộc quyết định C3 (giờ Tý muộn có chuyển ngày không). Hiện engine chuyển trụ ngày nhưng KHÔNG chuyển ngày âm, nên ca này tự mâu thuẫn."
+    }
+  ]
+}

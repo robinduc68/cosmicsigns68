@@ -1,0 +1,559 @@
+# Quy ước Tử Vi của Cosmic Signs
+
+Cập nhật: **2026-09-11** · Trạng thái: **BẢN THẢO — chưa được người có chuyên môn ký duyệt**
+
+Tài liệu này chốt **đúng một** bộ quy tắc tính lá số. Mục đích duy nhất của nó là
+ngăn việc trộn quy tắc từ nhiều trường phái khác nhau ở các phase sau.
+
+> **Đọc kỹ trước khi dùng.** Tài liệu này do người viết code soạn từ *code hiện có*
+> cộng với các quy tắc kinh điển phổ biến. Nó **chưa được một người hành nghề Tử Vi
+> thẩm định**. Mọi mục gắn 🔴 hoặc 🟡 đều chưa được phép coi là chân lý.
+
+---
+
+## Ký hiệu trạng thái
+
+| | Nghĩa |
+|---|---|
+| ✅ **FROZEN** | Đã cài đặt, có test, coi như chốt. Đổi phải có lý do và sửa test. |
+| 🟡 **PENDING** | Đã cài đặt (hoặc đã đề xuất) và khớp quy tắc kinh điển, nhưng **chưa đối chiếu với nguồn chuẩn đã chốt**. |
+| 🔴 **OPEN** | Chưa quyết. **Chặn** việc viết code cho phần liên quan. |
+| ⛔ **BLOCKED** | Phụ thuộc một mục 🔴 khác. |
+
+Quy tắc phụ thuộc trường phái đều ghi rõ `COSMIC_SIGNS_CHOSEN_RULE`,
+`ALTERNATIVE_RULE` và lý do chọn.
+
+Quy ước chỉ số dùng xuyên suốt: **địa chi 0 = Tý, 1 = Sửu, … 11 = Hợi**;
+**thiên can 0 = Giáp, … 9 = Quý**. Mọi phép cộng đều `mod 12` / `mod 10`.
+
+---
+
+## 0. Nguồn chuẩn 🔴 OPEN — **đây là thứ đang chặn mọi thứ**
+
+**Chưa chốt.** Cosmic Signs hiện **không có** một nguồn chuẩn được chỉ định.
+
+Đây không phải việc viết code mà là một quyết định nghiệp vụ. Cho tới khi có
+câu trả lời, mọi sao đều phải mang cờ `provisional` và UI phải nói rõ.
+
+Cần chốt ba thứ:
+
+| Cần chốt | Vì sao quan trọng |
+| --- | --- |
+| **Q1 — Trường phái** | Nam phái / Bắc phái / biến thể Việt Nam. Quyết định bảng Tứ Hóa, miếu vượng, và vài vị trí phụ tinh. |
+| **Q2 — Sách/nguồn đối chiếu cụ thể** | Cần một ấn bản có tên và năm xuất bản để viết test. "Tra trên mạng" không đủ: các trang web mâu thuẫn nhau. |
+| **Q3 — Người thẩm định** | Một người đọc được lá số, ký duyệt vào 17 ca trong ma trận kiểm định. Không có người này thì không thể nâng engine lên `FULL`. |
+
+> **Khuyến nghị:** chọn **một** nguồn tiếng Việt in giấy làm chuẩn duy nhất, ghi
+> tên ấn bản + năm vào ô "source_of_truth" trong
+> `packages/astrology-engine/tests/fixtures/major_stars_matrix.json`. Khi hai
+> nguồn mâu thuẫn, nguồn đã chốt thắng — và ghi lại mâu thuẫn vào mục 21 dưới đây.
+
+---
+
+## 1. Chuyển đổi Dương ↔ Âm lịch ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Thuật toán thiên văn theo Meeus
+(*Astronomical Algorithms*, 2nd ed., chương 49) cho thời điểm sóc, cộng hiệu chỉnh
+ΔT theo Espenak & Meeus, rồi áp luật lịch Việt Nam:
+
+- Tháng 11 âm lịch **luôn chứa đông chí**.
+- Năm 13 tháng thì nhuận vào **tháng đầu tiên không chứa trung khí**.
+- Ngày âm bắt đầu từ **nửa đêm dân sự địa phương**, không phải UTC.
+
+**ALTERNATIVE_RULE** — Tra bảng lịch vạn niên in sẵn.
+
+**Lý do chọn:** tính được cho mọi năm trong 1900–2100 mà không cần dữ liệu tra
+cứu, và kiểm chứng được bằng test. Bản rút gọn của Meeus từng bị thử và **sai tới
+~43 phút**, đủ để lệch mùng 1 và làm sai toàn bộ lá số — nên bắt buộc dùng bản đầy đủ.
+
+**Đã kiểm chứng:** 48 test, đối chiếu ngày Tết chính thống 2000–2026 và tháng
+nhuận Quý Mão 2023.
+
+**Cài đặt:** `calendar/lunar.py`.
+
+---
+
+## 2. Xử lý múi giờ 🔴 OPEN
+
+**Hiện trạng code:** `tz_offset` là tham số (mặc định `7.0`) và chỉ dùng cho việc
+chuyển đổi lịch. **API và frontend luôn gửi `7.0`**, không có ngoại lệ nào.
+
+Có **hai câu hỏi chưa trả lời**, và cả hai đều làm sai lá số nếu trả lời sai:
+
+### Q4 — Giờ dân sự hay giờ mặt trời thật? 🔴
+
+| | |
+|---|---|
+| **Phương án A (hiện tại)** | Dùng thẳng giờ đồng hồ dân sự. Giờ 14:00 ở Hà Nội và ở Cà Mau đều là giờ Mùi. |
+| **Phương án B** | Hiệu chỉnh về giờ mặt trời địa phương theo kinh độ nơi sinh (±4 phút cho mỗi độ kinh tuyến lệch so với 105°Đ), có thể cộng phương trình thời gian. |
+
+Việt Nam trải từ ~102°Đ đến ~110°Đ, tức lệch tới **±20 phút** so với kinh tuyến
+chuẩn 105°Đ. Với người sinh gần ranh giới canh giờ, chênh 20 phút là **đổi canh
+giờ, đổi cung Mệnh, đổi cả lá số**.
+
+> Chưa chọn. Phương án B đòi phải thu thập kinh độ nơi sinh — hiện `birth_place`
+> mới chỉ lưu dạng chữ, chưa có toạ độ.
+
+### Q5 — Múi giờ lịch sử của Việt Nam? 🔴
+
+Múi giờ hành chính ở Việt Nam **đã thay đổi nhiều lần** trong thế kỷ 20, và miền
+Nam từng dùng offset khác miền Bắc trong một số giai đoạn trước 1975. Người sinh
+trong các giai đoạn đó mà bị tính bằng UTC+7 sẽ **sai ngày âm** nếu sinh gần nửa đêm.
+
+> **Chưa xác định được mốc thời gian chính xác.** Cần tra cứu nguồn có thẩm quyền
+> (ví dụ cơ sở dữ liệu IANA `Asia/Ho_Chi_Minh` / `Asia/Saigon`) rồi lập bảng
+> `(khoảng thời gian, vùng) → offset`. **Không được đoán.**
+
+**Ảnh hưởng hiện tại:** mọi lá số của người sinh trước 1975 đều có nguy cơ sai.
+Phải cảnh báo trên UI hoặc chặn cho tới khi giải quyết.
+
+---
+
+## 3. Giờ Tý và ranh giới ngày 🔴 OPEN — **có mâu thuẫn trong code hiện tại**
+
+Giờ Tý kéo dài **23:00–00:59**, tức vắt qua nửa đêm. Chia làm hai nửa:
+
+- **Tý sớm** (早子時) 23:00–23:59 — thuộc ngày dương *trước*
+- **Tý muộn** (夜子時) 00:00–00:59 — thuộc ngày dương *sau*
+
+### Q6 — Sinh lúc 23:xx thì tính là ngày nào? 🔴
+
+Đây là tranh luận có thật giữa các trường phái, **và Cosmic Signs đang trả lời
+không nhất quán**. Đo được bằng thực nghiệm trên chính engine:
+
+Sinh **10/09/1992 lúc 23:00**:
+
+| Đại lượng | Giá trị engine cho ra | Thuộc ngày nào |
+|---|---|---|
+| Trụ ngày | `Canh Dần` | **11/09** (đã dịch sang ngày sau) |
+| Ngày âm dùng để an Tử Vi | `14` | **10/09** (chưa dịch) |
+
+Hai đại lượng đang theo hai quy ước khác nhau trong cùng một lá số. Vì Tử Vi an
+theo ngày âm, sai lệch này **dịch Tử Vi đi 3 cung** (Kim tứ cục: ngày 14 → Mùi,
+ngày 15 → Thìn).
+
+Nguồn gốc: `pillars_for_birth()` có `day_jd = jd + 1 if hour == 23`, nhưng
+`build_chart()` lấy `lunar.day` từ ngày dương gốc, không dịch.
+
+**Ba phương án, phải chọn đúng một:**
+
+| | Quy tắc | Hệ quả |
+|---|---|---|
+| **A** | 23:xx thuộc **ngày hôm sau** cho *mọi* mục đích (cả trụ ngày lẫn ngày âm) | Nhất quán. Phải dịch cả ngày âm. |
+| **B** | 23:xx thuộc **ngày hiện tại** cho *mọi* mục đích | Nhất quán. Phải bỏ `+1` ở trụ ngày. |
+| **C** | Trụ ngày dịch, ngày âm không dịch (**hiện trạng**) | Có trường phái theo hướng này, nhưng nếu chọn thì phải **ghi rõ là cố ý**, không để như tai nạn. |
+
+> **Chưa chọn.** Đây là mục chặn nặng nhất sau Q1: nó đổi vị trí Tử Vi, tức đổi
+> cả 14 chính tinh. Ca `TV-B1` trong ma trận kiểm định đang bị đánh dấu CHẶN vì lý do này.
+
+**Ranh giới canh giờ** (đã cài, ✅): `hour_branch_index(h) = ((h + 1) // 2) % 12`.
+Tức Tý = 23–00, Sửu = 01–02, Dần = 03–04, … Hợi = 21–22. **Phút bị bỏ qua hoàn
+toàn** — hệ quả trực tiếp là Q4 chưa giải thì phút không có ý nghĩa.
+
+---
+
+## 4. Xác định Âm Dương ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Âm/dương lấy theo **thiên can của năm sinh âm lịch**.
+Can chỉ số chẵn (Giáp, Bính, Mậu, Canh, Nhâm) là **dương**; lẻ là **âm**.
+
+Kết hợp với giới tính cho ra bốn loại: Dương Nam, Âm Nam, Dương Nữ, Âm Nữ.
+
+**ALTERNATIVE_RULE** — Một số tài liệu mô tả qua **địa chi** năm sinh (Tý, Dần,
+Thìn, Ngọ, Thân, Tuất là dương). Trong hệ can chi hợp lệ, hai cách **luôn cho
+cùng kết quả** vì can dương chỉ ghép với chi dương. Không phải mâu thuẫn thật.
+
+**Cài đặt:** `Pillar.is_yang`, `Chart.yin_yang`.
+
+---
+
+## 5. An Mệnh ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Khởi từ **cung Dần**, đếm **thuận** tới số tháng
+sinh âm lịch, rồi từ đó đếm **nghịch** tới canh giờ sinh.
+
+```
+menh_branch = (2 + (tháng_âm − 1) − chi_giờ) mod 12
+```
+
+**Về tháng nhuận** 🟡 PENDING — engine hiện dùng **số tháng như đã ghi** (tháng 2
+nhuận tính là tháng 2).
+
+> `ALTERNATIVE_RULE`: một số trường phái tính nửa đầu tháng nhuận theo tháng trước
+> và nửa sau theo tháng sau; số khác dùng tiết khí thay vì số tháng. **Chưa xác
+> nhận.** Ca `TV-L1` trong ma trận tồn tại để kiểm định điểm này.
+
+**Cài đặt:** `builder.build_chart`.
+
+---
+
+## 6. An Thân ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Cùng điểm khởi (cung Dần), nhưng **cả hai lần đếm
+đều thuận**.
+
+```
+than_branch = (2 + (tháng_âm − 1) + chi_giờ) mod 12
+```
+
+Hệ quả kiểm được: Mệnh và Thân **luôn đối xứng qua trục Dần–Thân**, và trùng nhau
+khi sinh giờ Tý hoặc giờ Ngọ.
+
+---
+
+## 7. Thân cư ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — "Thân cư X" nghĩa là **địa chi của Thân rơi vào
+cung tên X** trong 12 cung đã an. Không tính riêng.
+
+Do Mệnh và Thân đối xứng qua trục Dần–Thân, Thân chỉ có thể cư vào **6 cung**:
+Mệnh, Phúc Đức, Quan Lộc, Thiên Di, Tài Bạch, Phu Thê. Đây là bất biến kiểm được
+bằng test.
+
+---
+
+## 8. Ngũ hành Mệnh (bản mệnh) ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Ngũ hành **nạp âm của trụ năm sinh**.
+Ví dụ Nhâm Thân → Kiếm Phong Kim → hành **Kim**.
+
+**Phân biệt rõ với mục 9:** bản mệnh lấy từ **trụ năm**, còn Cục lấy từ **nạp âm
+của cung Mệnh**. Hai đại lượng khác nhau, dùng cùng bảng nạp âm 60 hoa giáp nhưng
+**đầu vào khác nhau**. Nhầm hai cái này là lỗi kinh điển.
+
+**Cài đặt:** `nap_am_element(trụ_năm)`.
+
+---
+
+## 9. Tính Cục ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Lấy **thiên can + địa chi của cung Mệnh**, tra nạp
+âm, được ngũ hành, rồi ánh xạ:
+
+| Ngũ hành cung Mệnh | Cục | Số |
+|---|---|---|
+| Thủy | Thủy Nhị Cục | 2 |
+| Mộc | Mộc Tam Cục | 3 |
+| Kim | Kim Tứ Cục | 4 |
+| Thổ | Thổ Ngũ Cục | 5 |
+| Hỏa | Hỏa Lục Cục | 6 |
+
+Thiên can cung Mệnh có được nhờ ngũ hổ độn (mục 12).
+
+---
+
+## 10. Quan hệ Mệnh – Cục ✅ FROZEN (chỉ là dữ kiện diễn giải)
+
+**COSMIC_SIGNS_CHOSEN_RULE** — So ngũ hành bản mệnh (mục 8) với ngũ hành Cục
+(mục 9) theo vòng sinh–khắc, cho ra một trong năm mã:
+`TUONG_HOA`, `CUC_SINH_MENH`, `MENH_SINH_CUC`, `CUC_KHAC_MENH`, `MENH_KHAC_CUC`.
+
+Vòng tương sinh: Mộc→Hỏa→Thổ→Kim→Thủy→Mộc.
+Vòng tương khắc: Mộc→Thổ→Thủy→Hỏa→Kim→Mộc.
+
+> Đại lượng này **không ảnh hưởng tới việc an sao**. Nó chỉ là dữ kiện cho tầng
+> luận giải sau này. Ghi ở đây để không ai dùng nhầm nó vào phép tính.
+
+---
+
+## 11. Thứ tự 12 cung ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Từ cung Mệnh đi **nghịch chiều kim đồng hồ**
+(địa chi giảm dần):
+
+| # | Cung | # | Cung |
+|---|---|---|---|
+| 0 | Mệnh | 6 | Thiên Di |
+| 1 | Phụ Mẫu | 7 | Tật Ách |
+| 2 | Phúc Đức | 8 | Tài Bạch |
+| 3 | Điền Trạch | 9 | Tử Tức |
+| 4 | Quan Lộc | 10 | Phu Thê |
+| 5 | Nô Bộc | 11 | Huynh Đệ |
+
+```
+branch_cung_thứ_i = (menh_branch − i) mod 12
+```
+
+**Quan trọng:** thứ tự này **cố định, không đảo theo giới tính**. Chỉ chiều **đại
+vận** (mục 20) mới đổi theo âm dương nam nữ. Đây là chỗ rất dễ nhầm.
+
+---
+
+## 12. Gán thiên can cho cung ✅ FROZEN
+
+**COSMIC_SIGNS_CHOSEN_RULE** — **Ngũ hổ độn**: thiên can của **cung Dần** do
+thiên can năm sinh quyết định, các cung khác suy ra theo địa chi.
+
+| Can năm | Can cung Dần |
+|---|---|
+| Giáp, Kỷ | Bính |
+| Ất, Canh | Mậu |
+| Bính, Tân | Canh |
+| Đinh, Nhâm | Nhâm |
+| Mậu, Quý | Giáp |
+
+```
+can_cung_Dần = (can_năm × 2 + 2) mod 10
+can_cung(chi) = (can_cung_Dần + (chi − 2)) mod 10
+```
+
+---
+
+## 13. An Tử Vi 🟡 PENDING
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Thuật toán cục số kinh điển:
+
+1. Tìm bội số nhỏ nhất của **cục số** lớn hơn hoặc bằng **ngày sinh âm lịch**.
+   Gọi `n` là thương, `padding` = bội số đó − ngày âm.
+2. Khởi từ **cung Dần**, đếm thuận `n − 1` cung.
+3. Nếu `padding` **chẵn** → đi thuận thêm `padding` cung.
+   Nếu `padding` **lẻ** → đi nghịch `padding` cung.
+
+**Đã đối chiếu 5 mốc kinh điển mùng 1** (ca `TV-A1`…`TV-A5`), **tất cả đều khớp**:
+
+| Cục | Tử Vi mùng 1 | Engine |
+|---|---|---|
+| Thủy nhị (2) | Sửu | Sửu ✓ |
+| Mộc tam (3) | Thìn | Thìn ✓ |
+| Kim tứ (4) | Hợi | Hợi ✓ |
+| Thổ ngũ (5) | Ngọ | Ngọ ✓ |
+| Hỏa lục (6) | Dậu | Dậu ✓ |
+
+Bất biến phụ cũng khớp: **ngày âm = đúng cục số → Tử Vi ở Dần**.
+
+> Vẫn để 🟡 vì mới kiểm 5 ngày trên tổng 30 ngày × 5 cục = 150 ô. Cần đối chiếu
+> **toàn bộ bảng 150 ô** với nguồn đã chốt. Bảng engine sinh ra đã có sẵn, chỉ
+> cần người thẩm định soát.
+
+---
+
+## 14. An 14 chính tinh 🟡 PENDING
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Hai chòm, suy từ vị trí Tử Vi.
+
+**Chòm Tử Vi** — đi **nghịch** từ cung Tử Vi:
+
+| Sao | Độ lệch |
+|---|---|
+| Tử Vi | 0 |
+| Thiên Cơ | −1 |
+| Thái Dương | −3 |
+| Vũ Khúc | −4 |
+| Thiên Đồng | −5 |
+| Liêm Trinh | −8 |
+
+**Chòm Thiên Phủ** — Thiên Phủ đối xứng với Tử Vi qua **trục Dần–Thân**:
+
+```
+thien_phu = (4 − tu_vi) mod 12
+```
+
+rồi đi **thuận** từ cung Thiên Phủ:
+
+| Sao | Độ lệch |
+|---|---|
+| Thiên Phủ | 0 |
+| Thái Âm | +1 |
+| Tham Lang | +2 |
+| Cự Môn | +3 |
+| Thiên Tướng | +4 |
+| Thiên Lương | +5 |
+| Thất Sát | +6 |
+| Phá Quân | +10 |
+
+**Bất biến đã kiểm:** Tử Vi và Thiên Phủ **trùng cung khi và chỉ khi** cùng ở Dần
+hoặc cùng ở Thân. Ca `TV-C1`…`TV-C4` phủ cả hai trường hợp.
+
+> 🟡 vì chưa có ca nào được người có chuyên môn ký duyệt. Toàn bộ 14 sao hiện
+> mang cờ `provisional: true` và engine chỉ chạy ở stage `PREVIEW`.
+
+---
+
+## 15. Tứ Hóa 🔴 OPEN — **không được cài cho tới khi chốt nguồn**
+
+**Chưa cài đặt.** Đây là mục **phụ thuộc trường phái nặng nhất** trong toàn bộ danh sách.
+
+Bảng dưới đây là **ĐỀ XUẤT để đối chiếu**, không phải quy tắc đã chốt:
+
+| Can năm | Hóa Lộc | Hóa Quyền | Hóa Khoa | Hóa Kỵ |
+|---|---|---|---|---|
+| Giáp | Liêm Trinh | Phá Quân | Vũ Khúc | Thái Dương |
+| Ất | Thiên Cơ | Thiên Lương | Tử Vi | Thái Âm |
+| Bính | Thiên Đồng | Thiên Cơ | Văn Xương | Liêm Trinh |
+| Đinh | Thái Âm | Thiên Đồng | Thiên Cơ | Cự Môn |
+| **Mậu** | Tham Lang | Thái Âm | **Hữu Bật ⚠️** | Thiên Cơ |
+| Kỷ | Vũ Khúc | Tham Lang | Thiên Lương | Văn Khúc |
+| **Canh** | Thái Dương | Vũ Khúc | **⚠️ TRANH CHẤP** | **⚠️ TRANH CHẤP** |
+| Tân | Cự Môn | Thái Dương | Văn Khúc | Văn Xương |
+| **Nhâm** | Thiên Lương | Tử Vi | **Tả Phù ⚠️** | Vũ Khúc |
+| Quý | Phá Quân | Cự Môn | Thái Âm | Tham Lang |
+
+### Q7 — Hàng Canh theo phương án nào? 🔴
+
+Đây là điểm bất đồng nổi tiếng nhất của Tứ Hóa. Các biến thể **được ghi nhận** gồm:
+
+- Canh: Dương Lộc, Vũ Quyền, **Thái Âm** Khoa, **Thiên Đồng** Kỵ
+- Canh: Dương Lộc, Vũ Quyền, **Thiên Đồng** Khoa, **Thái Âm** Kỵ
+- Canh: Dương Lộc, Vũ Quyền, **Thiên Phủ** Khoa, Thiên Đồng Kỵ
+
+> **Người viết code không đủ thẩm quyền chọn.** Phải do người thẩm định (Q3)
+> quyết theo nguồn đã chốt (Q2).
+
+### Q8 — Hàng Mậu và Nhâm 🔴
+
+Vị trí **Hóa Khoa** của hai hàng này cũng khác nhau giữa các tài liệu (Hữu Bật /
+Thái Âm cho Mậu; Tả Phù / Thiên Phủ cho Nhâm). Cần xác nhận.
+
+### Q9 — Tứ Hóa còn dùng ở đâu nữa? 🔴
+
+Ngoài tứ hóa theo **can năm sinh**, nhiều trường phái còn dùng tứ hóa theo **can
+cung đại vận** và **can cung lưu niên** (phi tinh tứ hóa). Cần chốt Cosmic Signs
+có làm hay không — ảnh hưởng lớn tới thiết kế dữ liệu.
+
+> ⚠️ Bảng trên có nhắc **Văn Xương, Văn Khúc, Tả Phù, Hữu Bật** — đều là phụ tinh
+> **chưa được cài**. Không thể cài Tứ Hóa trước khi cài xong nhóm phụ tinh này.
+
+---
+
+## 16. Lộc Tồn 🟡 PENDING
+
+**Chưa cài đặt.** Bảng đề xuất (ổn định giữa các trường phái hơn hẳn Tứ Hóa):
+
+| Can năm | Lộc Tồn |
+|---|---|
+| Giáp | Dần |
+| Ất | Mão |
+| Bính | Tỵ |
+| Đinh | Ngọ |
+| Mậu | Tỵ |
+| Kỷ | Ngọ |
+| Canh | Thân |
+| Tân | Dậu |
+| Nhâm | Hợi |
+| Quý | Tý |
+
+Bất biến kiểm được: Lộc Tồn **không bao giờ ở Thìn, Tuất, Sửu, Mùi** (tứ mộ).
+
+**Kình Dương / Đà La** đi kèm: Kình Dương cung liền **trước** Lộc Tồn theo chiều
+thuận, Đà La cung liền **sau** theo chiều nghịch.
+
+> 🟡 — cần xác nhận theo nguồn đã chốt trước khi cài.
+
+---
+
+## 17. Tuần (Tuần Trung Không Vong) 🟡 PENDING
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Xác định theo **trụ năm sinh**. Mỗi tuần giáp gồm
+10 trụ, phủ 10 địa chi; **hai địa chi còn lại** là Tuần không.
+
+```
+vị_trí = index của trụ năm trong vòng 60
+chi_đầu_tuần = (chi_năm − vị_trí mod 10) mod 12
+tuần_không = (chi_đầu_tuần + 10, chi_đầu_tuần + 11)
+```
+
+Ví dụ kiểm được: năm Nhâm Thân 1992 → Tuần tại **Tuất, Hợi**.
+
+**Cài đặt:** `_tuan_branches`. Đã có test.
+
+> 🟡 vì chưa đối chiếu nguồn chuẩn, dù quy tắc này ổn định.
+
+---
+
+## 18. Triệt (Triệt Lộ Không Vong) 🟡 PENDING
+
+**COSMIC_SIGNS_CHOSEN_RULE** — Tra theo **thiên can năm sinh**, phủ **hai địa chi
+liền nhau**:
+
+| Can năm | Triệt |
+|---|---|
+| Giáp, Kỷ | Thân – Dậu |
+| Ất, Canh | Ngọ – Mùi |
+| Bính, Tân | Thìn – Tỵ |
+| Đinh, Nhâm | Dần – Mão |
+| Mậu, Quý | Tý – Sửu |
+
+**ALTERNATIVE_RULE** 🔴 **Q10** — Một số tài liệu cho rằng Triệt **không phủ đều
+hai cung**: cung trước "bị triệt nặng", cung sau nhẹ hơn (hoặc ngược lại). Engine
+hiện coi **hai cung như nhau** (`has_triet: bool`).
+
+> Nếu nguồn đã chốt phân biệt mức độ, kiểu dữ liệu phải đổi từ `bool` sang thang
+> độ. Cần xác nhận **trước khi** tầng luận giải đọc trường này.
+
+---
+
+## 19. Bảng Miếu / Vượng / Đắc / Bình / Hãm 🔴 OPEN — **tuyệt đối không bịa**
+
+**Chưa cài đặt. Và sẽ không được cài cho tới khi có nguồn.**
+
+Bảng này gồm **14 sao × 12 địa chi = 168 ô**. Nó **khác nhau đáng kể** giữa các
+trường phái, và không có cách nào suy ra bằng công thức — phải chép từ nguồn.
+
+> **Đây là mục dễ bịa nhất và hại nhất nếu bịa.** Một bảng miếu vượng sai trông
+> vẫn "hợp lý" với người không rành, nhưng người có nền Tử Vi (persona P3 trong
+> `business.md`) sẽ phát hiện ngay và mất hết uy tín.
+>
+> Người viết code **không cung cấp bảng đề xuất** cho mục này. Phải do người thẩm
+> định (Q3) chép từ nguồn đã chốt (Q2).
+
+**Kiểu dữ liệu đã sẵn sàng:** `StarStrength = MIEU | VUONG | DAC | BINH | HAM`,
+trường `Star.strength` đang luôn `null`.
+
+**Bất biến để kiểm khi bảng có:** mỗi sao phải có đủ 12 ô, không ô nào trống.
+
+---
+
+## 20. Đại vận: chiều và tuổi khởi 🟡/🔴
+
+### Chiều đi 🟡 PENDING (đã cài phần xác định)
+
+**COSMIC_SIGNS_CHOSEN_RULE** —
+
+| Loại | Chiều |
+|---|---|
+| Dương Nam | **Thuận** (chiều kim đồng hồ) |
+| Âm Nữ | **Thuận** |
+| Âm Nam | **Nghịch** |
+| Dương Nữ | **Nghịch** |
+
+Engine đã tính sẵn cờ `yin_yang.is_thuan_ly` = `(năm_dương == là_nam)`.
+
+### Tuổi khởi vận 🟡 PENDING
+
+**COSMIC_SIGNS_CHOSEN_RULE (đề xuất)** — Đại vận thứ nhất khởi tại **cung Mệnh**,
+bắt đầu ở tuổi bằng **cục số**, mỗi vận 10 năm.
+Ví dụ Kim tứ cục → vận 1 là 4–13 tuổi, vận 2 là 14–23 tuổi…
+
+### Q11 — Tuổi ta hay tuổi tây? 🔴
+
+Chưa chốt "tuổi" ở đây là **tuổi mụ (tuổi ta)** hay tuổi tròn. Lệch một tuổi là
+lệch ranh giới mọi đại vận.
+
+### Q12 — Tiểu vận và lưu niên 🔴
+
+Chưa chốt quy tắc an tiểu vận, và cách xác định cung lưu niên theo địa chi năm xem.
+
+---
+
+## 21. Sổ mâu thuẫn giữa các nguồn
+
+Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
+
+| # | Mục | Mâu thuẫn | Trạng thái |
+|---|---|---|---|
+| 1 | §15 Tứ Hóa | Hàng **Canh**: Khoa/Kỵ có ít nhất 3 biến thể được ghi nhận | 🔴 chờ Q7 |
+| 2 | §15 Tứ Hóa | Hàng **Mậu** và **Nhâm**: vị trí Hóa Khoa khác nhau giữa các tài liệu | 🔴 chờ Q8 |
+| 3 | §3 Giờ Tý | Sinh 23:xx thuộc ngày nào — **code hiện tại tự mâu thuẫn** | 🔴 chờ Q6 |
+| 4 | §18 Triệt | Hai cung bị triệt đều nhau hay khác mức | 🔴 chờ Q10 |
+| 5 | §5 An Mệnh | Cách xử lý tháng nhuận khi đếm tháng | 🔴 chờ xác nhận |
+| 6 | §2 Múi giờ | Giờ dân sự vs giờ mặt trời thật | 🔴 chờ Q4 |
+
+---
+
+## 22. Nguyên tắc khi gặp điều chưa biết
+
+1. **Không bịa quy tắc để code chạy được.** Thiếu quy tắc thì để trống và gắn cờ.
+2. **Không trộn nguồn.** Một mục lấy từ một nguồn, không ghép nửa nọ nửa kia.
+3. **Mọi thứ chưa kiểm định phải mang `provisional: true`** và UI phải nói rõ.
+4. **Engine chỉ được lên stage `FULL`** khi toàn bộ mục 🔴 đã đóng và ma trận
+   kiểm định đã được ký duyệt.

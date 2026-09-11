@@ -50,6 +50,8 @@ frontend đổi cấu trúc** — web chỉ render chart JSON, thêm sao là th�
 ### Phase 6 — Star Placement Engine ← **việc thật sự còn lại**
 - **Chốt trường phái an sao** (Nam phái / Bắc phái) và nguồn đối chiếu để viết test.
   Đây là câu hỏi mở đang chặn mọi thứ, không phải việc code.
+  → Toàn bộ quy ước và 12 câu hỏi cần chốt nằm ở
+  [`astrology-conventions.md`](astrology-conventions.md).
 - Kiểm định vị trí **14 chính tinh** (hiện ở stage `PREVIEW`, gắn cờ `provisional`,
   UI hiển thị dấu `*` và nói rõ là chưa kiểm định).
 - Phụ tinh: Tứ Hoá, Lộc Tồn, Đào Hoa / Hồng Loan / Thiên Hỷ, Xương Khúc, Tả Hữu,

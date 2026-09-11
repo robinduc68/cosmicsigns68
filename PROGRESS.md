@@ -18,7 +18,7 @@ Xong **J1** — luồng "khách lạ → có lá số" đã chạy thông từ l
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4–6 — Astrology engine | ⏭️ tiếp theo, xem `docs/roadmap.md` |
 
-Quality gate **đều xanh**: 87 test pass (48 engine + 21 api + 18 web),
+Quality gate **đều xanh**: 131 test pass (92 engine + 21 api + 18 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công, backend import sạch.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440:
@@ -93,9 +93,9 @@ không trang nào tràn ngang, không vùng chạm nào dưới 24px.
 5. **Thanh toán** (PayOS/VietQR qua abstraction) + bảng `entitlements` theo
    (user, chart, product). Catalogue đã sẵn sàng, chỉ còn checkout và webhook.
    Cần luôn **admin API** để sửa giá — hiện chỉ sửa được bằng SQL.
-6. **Nợ từ Phase 0** — còn 5 file trong `docs/`: `product-requirements.md`,
-   `architecture.md`, `database-schema.md`, `design-system.md`, `astrology-engine.md`.
-   (`roadmap.md` đã viết.)
+6. **Nợ từ Phase 0** — còn 4 file trong `docs/`: `product-requirements.md`,
+   `architecture.md`, `database-schema.md`, `design-system.md`.
+   (`roadmap.md`, `astrology-engine.md`, `astrology-conventions.md` đã viết.)
 7. **Dockerfile** cho `api` và `web` — compose profile `full` còn fail cho tới khi có.
 
 ---
@@ -176,7 +176,10 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 
 - **Chưa có auth** — ai giữ được UUID thì xem được lá số đó.
 - **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, đại vận, lưu niên chưa làm.
-- Chưa chốt **trường phái an sao** và nguồn đối chiếu để viết test.
+- Chưa chốt **trường phái an sao** và nguồn đối chiếu để viết test. Toàn bộ 12 câu
+  hỏi cần chốt đã được liệt kê ở `docs/astrology-conventions.md` — đây là thứ chặn Phase 6.
+- **Giờ Tý muộn (23:xx) đang xử lý không nhất quán**: trụ ngày dịch sang ngày sau
+  nhưng ngày âm thì không, mà Tử Vi lại an theo ngày âm. Chờ quyết định Q6, đừng sửa vội.
 - Staged loading ở `/lap-la-so` chạy theo nhịp thời gian vì API chỉ trả về một lần ở cuối.
   Phần reveal luôn đợi phản hồi thật, không có chặng nào tự nhận "xong" khi lá số chưa về.
 - `birth_place` mới chỉ lưu lại, **chưa dùng để suy ra múi giờ**.
