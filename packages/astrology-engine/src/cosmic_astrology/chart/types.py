@@ -80,7 +80,8 @@ PALACE_LABELS: dict[PalaceName, str] = {
     PalaceName.HUYNH_DE: "Huynh Đệ",
 }
 
-# Counter-clockwise order of the palaces starting from Mệnh.
+# Palaces from Mệnh in clockwise (thuận) order on the địa bàn: Phụ Mẫu is one step
+# clockwise of Mệnh, Huynh Đệ one step counter-clockwise.
 PALACE_ORDER: tuple[PalaceName, ...] = (
     PalaceName.MENH,
     PalaceName.PHU_MAU,

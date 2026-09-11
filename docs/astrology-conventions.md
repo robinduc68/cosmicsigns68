@@ -267,30 +267,38 @@ Vòng tương khắc: Mộc→Thổ→Thủy→Hỏa→Kim→Mộc.
 
 ---
 
-## 11. Thứ tự 12 cung ✅ FROZEN
+## 11. Thứ tự 12 cung 🟡 PENDING — *đã sửa lỗi 2026-09-11*
 
 **COSMIC_SIGNS_CHOSEN_RULE** — Từ cung Mệnh đi **nghịch chiều kim đồng hồ**
-(địa chi giảm dần):
+(địa chi giảm dần) theo trình tự kinh điển:
 
-| # | Cung | # | Cung |
+| Bước nghịch | Cung | Bước nghịch | Cung |
 |---|---|---|---|
 | 0 | Mệnh | 6 | Thiên Di |
-| 1 | Phụ Mẫu | 7 | Tật Ách |
-| 2 | Phúc Đức | 8 | Tài Bạch |
-| 3 | Điền Trạch | 9 | Tử Tức |
-| 4 | Quan Lộc | 10 | Phu Thê |
-| 5 | Nô Bộc | 11 | Huynh Đệ |
+| 1 | Huynh Đệ | 7 | Nô Bộc |
+| 2 | Phu Thê | 8 | Quan Lộc |
+| 3 | Tử Tức | 9 | Điền Trạch |
+| 4 | Tài Bạch | 10 | Phúc Đức |
+| 5 | Tật Ách | 11 | Phụ Mẫu |
+
+Tương đương: Phụ Mẫu nằm **một cung thuận** từ Mệnh. Engine lưu danh sách theo chiều
+thuận (`Mệnh, Phụ Mẫu, Phúc Đức, …, Huynh Đệ`) nên công thức là:
 
 ```
-branch_cung_thứ_i = (menh_branch − i) mod 12
+branch_cung_thứ_i = (menh_branch + i) mod 12     # i theo PALACE_ORDER (chiều thuận)
 ```
+
+> ⚠️ **Sự cố 2026-09-11.** Bản trước ghi và cài `(menh_branch − i)` với danh sách chiều
+> thuận — tức đặt ngược, sai 10/12 tên cung và sai "Thân cư" trên mọi lá số. Nhãn ✅ FROZEN
+> khi đó chỉ dựa trên test sinh ra từ chính engine. Phát hiện khi đối chiếu chéo một lá
+> số bên thứ ba; sửa ở engine 0.2.0. Hạ xuống 🟡 cho tới khi người thẩm định xác nhận.
 
 **Quan trọng:** thứ tự này **cố định, không đảo theo giới tính**. Chỉ chiều **đại
 vận** (mục 20) mới đổi theo âm dương nam nữ. Đây là chỗ rất dễ nhầm.
 
 ---
 
-## 12. Gán thiên can cho cung ✅ FROZEN
+## 12. Gán thiên can cho cung 🟡 PENDING — *đã sửa lỗi 2026-09-11*
 
 **COSMIC_SIGNS_CHOSEN_RULE** — **Ngũ hổ độn**: thiên can của **cung Dần** do
 thiên can năm sinh quyết định, các cung khác suy ra theo địa chi.
@@ -305,8 +313,16 @@ thiên can năm sinh quyết định, các cung khác suy ra theo địa chi.
 
 ```
 can_cung_Dần = (can_năm × 2 + 2) mod 10
-can_cung(chi) = (can_cung_Dần + (chi − 2)) mod 10
+can_cung(chi) = (can_cung_Dần + ((chi − 2) mod 12)) mod 10
 ```
+
+Can đi **tới** từ Dần suốt năm âm lịch: Tý là tháng 11 (Dần + 10), Sửu là tháng Chạp
+(Dần + 11). Ví dụ năm Nhâm: Nhâm Dần, Quý Mão, … Tân Hợi, **Nhâm Tý, Quý Sửu**.
+
+> ⚠️ **Sự cố 2026-09-11.** Bản trước thiếu `mod 12` bên trong, nên Tý và Sửu bị tính
+> lùi (Dần − 2, Dần − 1) — lệch 2 bậc can. Vì Cục lấy từ nạp âm cung Mệnh, **mọi lá số có
+> Mệnh ở Tý hoặc Sửu (~17%) bị sai Cục, kéo theo sai Tử Vi và cả 14 chính tinh.** Test cũ
+> chỉ kiểm can cung Dần. Sửa ở engine 0.2.0; test mới kiểm đủ 12 cung theo định nghĩa.
 
 ---
 
@@ -558,6 +574,8 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 4 | §18 Triệt | Hai cung bị triệt đều nhau hay khác mức | 🔴 chờ Q10 |
 | 5 | §5 An Mệnh | Cách xử lý tháng nhuận khi đếm tháng | 🔴 chờ xác nhận |
 | 6 | §2 Múi giờ | Giờ dân sự vs giờ mặt trời thật | 🔴 chờ Q4 |
+| 7 | §11 Thứ tự cung | Engine đặt tên cung ngược chiều so với trình tự kinh điển và lá số đối chiếu chéo | ✅ lỗi engine, đã sửa 0.2.0 |
+| 8 | §12 Can cung | Engine tính can Tý/Sửu lùi thay vì tới; lá số đối chiếu chéo cho Canh Tý / Tân Sửu | ✅ lỗi engine, đã sửa 0.2.0 |
 
 ---
 

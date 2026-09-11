@@ -302,6 +302,27 @@ báo là dependency để hai máy không âm thầm bất đồng về năm 196
 được mô hình hóa riêng. `BirthTimeCorrectionPolicy` hiện là `NONE`;
 `TRUE_SOLAR_TIME` chưa cài vì quy ước chưa định nghĩa nó phải tính thế nào (Q4).
 
+### 8.4 Tên 12 cung và can cung Tý/Sửu — ĐÃ SỬA (engine 0.2.0)
+
+Hai lỗi nằm ở đúng những quy tắc từng được đánh dấu VERIFIED:
+
+- **Tên cung đặt ngược chiều** — sai 10/12 tên cung và sai "Thân cư" trên mọi lá số.
+- **Can cung Tý/Sửu lệch 2 bậc** — vì Cục lấy từ nạp âm cung Mệnh, khoảng **17% lá số
+  (Mệnh ở Tý hoặc Sửu) bị sai Cục**, kéo theo sai Tử Vi và cả 14 chính tinh.
+
+Không test nào bắt được vì giá trị kỳ vọng được sinh ra **từ chính engine**, và test can
+cung chỉ kiểm cung Dần. Phát hiện khi đối chiếu chéo một lá số in từ website bên thứ ba:
+14/14 chính tinh khớp, nhưng can và tên cung thì không.
+
+Bài học đã chuyển thành quy tắc: `palace_order`, `palace_stems` và `cuc` bị hạ xuống
+PROVISIONAL, vì test pass không được phép tự nâng nhãn (xem `astrology-verification.md`).
+Test mới suy kỳ vọng từ định nghĩa cho đủ 12 cung, và ca đối chiếu chéo được giữ làm
+test hồi quy — ghi rõ là nguồn bên thứ ba, không phải nguồn chuẩn.
+
+**Lá số lập bằng engine 0.1.0** có thể mang sai các giá trị trên. `needs_recalculation()`
+hiện chỉ so hồ sơ quy ước, **chưa so `engine_version`**, nên chưa tự gắn cờ những lá số
+này — cần bổ sung trước khi có dữ liệu người dùng thật.
+
 ---
 
 ## 9. Nguyên tắc khi viết code cho phase sau

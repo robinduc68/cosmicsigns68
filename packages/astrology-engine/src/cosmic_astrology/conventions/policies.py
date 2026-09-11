@@ -149,6 +149,14 @@ class CucPolicy(StrEnum):
 
 
 class PalaceOrderPolicy(StrEnum):
+    """How the twelve palace names are laid onto the địa chi.
+
+    The value name is kept as stored in existing charts. It describes the classical
+    sequence Mệnh → Huynh Đệ → Phu Thê → Tử Tức → Tài Bạch → Tật Ách → Thiên Di →
+    Nô Bộc → Quan Lộc → Điền Trạch → Phúc Đức → Phụ Mẫu walking counter-clockwise,
+    which puts Phụ Mẫu one step *clockwise* of Mệnh.
+    """
+
     COUNTER_CLOCKWISE_FROM_MENH = "COUNTER_CLOCKWISE_FROM_MENH"
 
 

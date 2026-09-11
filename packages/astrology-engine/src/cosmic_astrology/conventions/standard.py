@@ -160,23 +160,35 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                 RuleId.CUC,
                 CucPolicy.NAP_AM_OF_MENH_PALACE.value,
                 implemented=True,
-                verification=V.VERIFIED,
-                source=_SELF_VERIFIED,
+                verification=V.PROVISIONAL,
+                blocked_by=("Q2", "Q3"),
+                note=(
+                    "Hạ từ VERIFIED (2026-09-11): Cục sai với ~17% lá số (Mệnh ở Tý/Sửu) do "
+                    "can cung sai, mà test cũ không có ca nào như vậy. Đã sửa ở engine 0.2.0."
+                ),
             ),
             _rule(
                 RuleId.PALACE_ORDER,
                 PalaceOrderPolicy.COUNTER_CLOCKWISE_FROM_MENH.value,
                 implemented=True,
-                verification=V.VERIFIED,
-                source=_SELF_VERIFIED,
-                note="Thứ tự cố định, không đảo theo giới tính.",
+                verification=V.PROVISIONAL,
+                blocked_by=("Q2", "Q3"),
+                note=(
+                    "Hạ từ VERIFIED (2026-09-11): engine từng đặt ngược chiều, sai 10/12 tên "
+                    "cung, mà nhãn VERIFIED chỉ dựa trên test tự sinh. Đã sửa ở engine 0.2.0; "
+                    "cố định, không đảo theo giới tính."
+                ),
             ),
             _rule(
                 RuleId.PALACE_STEMS,
                 PalaceStemPolicy.NGU_HO_DON.value,
                 implemented=True,
-                verification=V.VERIFIED,
-                source=_SELF_VERIFIED,
+                verification=V.PROVISIONAL,
+                blocked_by=("Q2", "Q3"),
+                note=(
+                    "Hạ từ VERIFIED (2026-09-11): can cung Tý/Sửu từng lệch 2 bậc, test cũ "
+                    "chỉ kiểm cung Dần. Đã sửa ở engine 0.2.0."
+                ),
             ),
             _rule(
                 RuleId.TU_VI_PLACEMENT,

@@ -45,7 +45,9 @@ from cosmic_astrology.trace import TraceLog
 
 __all__ = ["ENGINE_VERSION", "build_chart", "three_directions_four_positions"]
 
-ENGINE_VERSION = "0.1.0-frame"
+# 0.2.0: fixes mirrored palace names and the Tý/Sửu palace stems. Charts built by
+# 0.1.0 may carry wrong palace names, Thân cư, and — when Mệnh is in Tý or Sửu — Cục.
+ENGINE_VERSION = "0.2.0-frame"
 
 # Cục số per ngũ hành of cung Mệnh.
 _CUC_BY_ELEMENT: dict[Element, tuple[int, str]] = {
@@ -235,8 +237,16 @@ def build_chart(
 
     palaces: list[Palace] = []
     for offset, palace_name in enumerate(PALACE_ORDER):
-        branch = (menh_branch - offset) % 12
-        stem = (dan_stem + (branch - 2)) % 10
+        # PALACE_ORDER lists Mệnh, Phụ Mẫu, Phúc Đức, … Huynh Đệ, which runs clockwise
+        # (thuận). The classical listing Mệnh → Huynh Đệ → Phu Thê … is the same
+        # arrangement read counter-clockwise. Walking this list counter-clockwise, as
+        # the loop once did, mirrored ten of the twelve palace names.
+        branch = (menh_branch + offset) % 12
+        # Ngũ hổ độn runs *forward* from Dần through the lunar year, so Tý and Sửu are
+        # months 11 and 12 (Dần + 10, Dần + 11), not Dần − 2 and Dần − 1. The two only
+        # differ modulo 10, which is how the error hid — and it changed Cục whenever
+        # Mệnh sat in Tý or Sửu.
+        stem = (dan_stem + ((branch - 2) % 12)) % 10
         nap_am_name, element = nap_am_element(stem, branch)
         palaces.append(
             Palace(

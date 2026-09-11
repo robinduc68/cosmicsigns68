@@ -38,16 +38,96 @@ def test_menh_than_and_cuc_for_a_known_birth() -> None:
     chart = build_chart(_birth())
     assert chart.menh["branch"] == "Dần"
     assert chart.than["branch"] == "Thìn"
-    assert chart.than["resides_in"] == PalaceName.PHU_THE.value
+    # Thân = Mệnh + 2 × chi giờ. Giờ Mùi (7) → +14 ≡ +2 → cung thứ hai theo chiều thuận
+    # từ Mệnh, tức Phúc Đức. (Giá trị cũ "Phu Thê" được sinh ra từ chính engine lỗi.)
+    assert chart.than["resides_in"] == PalaceName.PHUC_DUC.value
     assert chart.cuc["number"] == 4
     assert chart.cuc["label"] == "Kim Tứ Cục"
     assert chart.yin_yang["label"] == "Dương Nam"
 
 
-def test_palace_stems_follow_ngu_ho_don() -> None:
+def test_palace_stems_follow_ngu_ho_don_across_all_twelve_palaces() -> None:
+    """Năm Nhâm: tháng Giêng Nhâm Dần, rồi can đi tiếp qua đủ 12 tháng.
+
+    Kỳ vọng suy thẳng từ định nghĩa ngũ hổ độn, không lấy từ engine. Tý và Sửu là
+    tháng 11 và tháng Chạp — chúng tiếp nối sau Hợi chứ không lùi về trước Dần.
+    Test cũ chỉ kiểm cung Dần nên để lọt đúng hai cung này.
+    """
+    expected = {
+        "Dần": "Nhâm", "Mão": "Quý", "Thìn": "Giáp", "Tỵ": "Ất", "Ngọ": "Bính", "Mùi": "Đinh",
+        "Thân": "Mậu", "Dậu": "Kỷ", "Tuất": "Canh", "Hợi": "Tân", "Tý": "Nhâm", "Sửu": "Quý",
+    }  # fmt: skip
     chart = build_chart(_birth())
-    dan = next(p for p in chart.palaces if p.branch == "Dần")
-    assert dan.stem == "Nhâm"  # năm Nhâm → tháng Giêng Nhâm Dần
+    assert {p.branch: p.stem for p in chart.palaces} == expected
+
+
+def test_palace_names_run_counter_clockwise_from_menh_in_classical_order() -> None:
+    """Mệnh → Huynh Đệ → Phu Thê … đi nghịch (địa chi giảm dần).
+
+    Suy từ định nghĩa với Mệnh tại Dần. Trước bản sửa, engine đặt ngược chiều nên 10
+    trong 12 tên cung sai; chỉ Mệnh và Thiên Di (đối xứng qua tâm) trùng khớp.
+    """
+    expected = {
+        "Dần": "Mệnh", "Sửu": "Huynh Đệ", "Tý": "Phu Thê", "Hợi": "Tử Tức",
+        "Tuất": "Tài Bạch", "Dậu": "Tật Ách", "Thân": "Thiên Di", "Mùi": "Nô Bộc",
+        "Ngọ": "Quan Lộc", "Tỵ": "Điền Trạch", "Thìn": "Phúc Đức", "Mão": "Phụ Mẫu",
+    }  # fmt: skip
+    chart = build_chart(_birth())
+    assert chart.menh["branch"] == "Dần"
+    assert {p.branch: p.label for p in chart.palaces} == expected
+
+
+def test_cross_check_against_a_third_party_reference_chart() -> None:
+    """Đối chiếu chéo với một lá số in từ website bên thứ ba (lá số #139602).
+
+    Đây là CROSS_CHECK, không phải nguồn chuẩn: nó không chứng minh engine đúng, nhưng
+    chính ca này đã làm lộ hai lỗi can cung và tên cung. Giữ lại để lỗi không quay lại.
+    Âm nữ, 04/03/2001 dương lịch (10/02 âm) lúc 09:30.
+    """
+    chart = build_chart(
+        BirthInput(
+            name="cross-check",
+            gender=Gender.FEMALE,
+            calendar_type=CalendarType.SOLAR,
+            day=4,
+            month=3,
+            year=2001,
+            hour=9,
+            minute=30,
+        ),
+        stage=EngineStage.PREVIEW,
+    )
+    stems = {p.branch: p.stem for p in chart.palaces}
+    names = {p.branch: p.label for p in chart.palaces}
+    stars = {s.code: p.branch for p in chart.palaces for s in p.major_stars}
+
+    assert stems == {
+        "Tý": "Canh", "Sửu": "Tân", "Dần": "Canh", "Mão": "Tân", "Thìn": "Nhâm", "Tỵ": "Quý",
+        "Ngọ": "Giáp", "Mùi": "Ất", "Thân": "Bính", "Dậu": "Đinh", "Tuất": "Mậu", "Hợi": "Kỷ",
+    }  # fmt: skip
+    assert names == {
+        "Tuất": "Mệnh", "Hợi": "Phụ Mẫu", "Tý": "Phúc Đức", "Sửu": "Điền Trạch",
+        "Dần": "Quan Lộc", "Mão": "Nô Bộc", "Thìn": "Thiên Di", "Tỵ": "Tật Ách",
+        "Ngọ": "Tài Bạch", "Mùi": "Tử Tức", "Thân": "Phu Thê", "Dậu": "Huynh Đệ",
+    }  # fmt: skip
+    assert chart.than["resides_in_label"] == "Phu Thê"
+    assert chart.cuc["label"] == "Mộc Tam Cục"
+    assert stars == {
+        "TU_VI": "Mùi", "THIEN_CO": "Ngọ", "THAI_DUONG": "Thìn", "VU_KHUC": "Mão",
+        "THIEN_DONG": "Dần", "LIEM_TRINH": "Hợi", "THIEN_PHU": "Dậu", "THAI_AM": "Tuất",
+        "THAM_LANG": "Hợi", "CU_MON": "Tý", "THIEN_TUONG": "Sửu", "THIEN_LUONG": "Dần",
+        "THAT_SAT": "Mão", "PHA_QUAN": "Mùi",
+    }  # fmt: skip
+
+
+def test_than_can_only_reside_in_the_six_classical_palaces() -> None:
+    """Thân − Mệnh luôn là số chẵn, nên Thân chỉ cư được đúng sáu cung."""
+    allowed = {"Mệnh", "Phúc Đức", "Quan Lộc", "Thiên Di", "Tài Bạch", "Phu Thê"}
+    seen = set()
+    for hour in range(0, 23, 2):
+        chart = build_chart(_birth(hour=hour))
+        seen.add(chart.than["resides_in_label"])
+    assert seen == allowed
 
 
 def test_tuan_and_triet_are_placed_on_two_palaces_each() -> None:
