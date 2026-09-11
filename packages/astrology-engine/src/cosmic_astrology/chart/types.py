@@ -126,6 +126,10 @@ class BirthInput:
     is_leap_month: bool = False
     tz_offset: float = 7.0
     birth_place: str | None = None
+    #: IANA zone (``"Asia/Ho_Chi_Minh"``). When given, and the profile selects
+    #: ``IANA_HISTORICAL``, the offset is resolved from the tz database at the
+    #: birth instant instead of trusting ``tz_offset``.
+    timezone_id: str | None = None
 
     def __post_init__(self) -> None:
         if not 1 <= self.month <= 12:
@@ -214,6 +218,15 @@ class Chart:
 
     engine_stage: EngineStage
     engine_version: str
+    #: Immutable stamp of the convention profile this chart was built under.
+    #: A later engine release may compute charts differently; without this
+    #: stamp there would be no way to tell an old chart apart from a new one.
+    convention_profile: str
+    convention_version: str
+    convention_rules: list[dict[str, object]]
+    timezone: dict[str, object]
+    date_resolution: dict[str, object]
+    trace: dict[str, object] | None
     birth: dict[str, object]
     lunar_birth: dict[str, object]
     pillars: dict[str, object]
@@ -224,12 +237,21 @@ class Chart:
     palaces: list[Palace]
 
     def to_dict(self) -> dict[str, object]:
-        return {
+        payload: dict[str, object] = {
             "engine": {
                 "stage": self.engine_stage.value,
                 "version": self.engine_version,
                 "is_authoritative": self.engine_stage is EngineStage.FULL,
+                "convention_profile": self.convention_profile,
+                "convention_version": self.convention_version,
             },
+            "convention": {
+                "profile": self.convention_profile,
+                "version": self.convention_version,
+                "rules": self.convention_rules,
+            },
+            "timezone": self.timezone,
+            "date_resolution": self.date_resolution,
             "birth": self.birth,
             "lunar_birth": self.lunar_birth,
             "pillars": self.pillars,
@@ -244,3 +266,6 @@ class Chart:
             "annual_cycles": [],
             "four_transformations": {},
         }
+        if self.trace is not None:
+            payload["trace"] = self.trace
+        return payload

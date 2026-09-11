@@ -122,3 +122,43 @@ async def test_leap_month_flag_requires_lunar_calendar(
 ) -> None:
     response = await client.post("/api/v1/charts", json={**birth_payload, "is_leap_month": True})
     assert response.status_code == 422
+
+
+async def test_chart_records_the_convention_profile_it_was_built_under(
+    client: AsyncClient, birth_payload: dict[str, Any]
+) -> None:
+    data = await _create(client, birth_payload)
+    assert data["convention_profile"] == "COSMIC_SIGNS_STANDARD_V1"
+    assert data["convention_version"]
+    # Also inside the payload, so an exported chart stays self-describing.
+    assert data["chart"]["convention"]["profile"] == data["convention_profile"]
+
+
+async def test_a_late_zi_birth_is_refused_with_its_own_error_code(
+    client: AsyncClient, birth_payload: dict[str, Any]
+) -> None:
+    """23:xx needs a rule Cosmic Signs has not settled — say so, don't guess.
+
+    Deliberately not CHART_CALCULATION_FAILED: nothing the user typed is wrong.
+    """
+    response = await client.post(
+        "/api/v1/charts", json={**birth_payload, "birth_hour": 23, "birth_minute": 0}
+    )
+    assert response.status_code == 422
+    body = response.json()
+    assert body["error"]["code"] == "CONVENTION_UNRESOLVED"
+    assert body["data"] is None
+
+
+async def test_the_timezone_used_is_resolved_from_the_iana_database(
+    client: AsyncClient, birth_payload: dict[str, Any]
+) -> None:
+    """A 1968 Vietnamese birth ran on UTC+8, not the hard-coded +7."""
+    data = await _create(
+        client,
+        {**birth_payload, "birth_day": 15, "birth_month": 6, "birth_year": 1968},
+    )
+    timezone = data["chart"]["timezone"]
+    assert timezone["timezone_id"] == "Asia/Ho_Chi_Minh"
+    assert timezone["resolved_from_database"] is True
+    assert timezone["utc_offset_hours"] == 8.0

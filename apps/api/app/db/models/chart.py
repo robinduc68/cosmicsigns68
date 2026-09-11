@@ -40,6 +40,12 @@ class Chart(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     tz_offset: Mapped[float] = mapped_column(Float, default=7.0, nullable=False)
     note: Mapped[str | None] = mapped_column(String(500))
 
+    # Hồ sơ quy ước tại thời điểm lập. Lưu thành cột riêng (không chỉ nằm trong
+    # chart_json) để truy vấn được "lá số nào lập theo luật cũ" mà không phải
+    # quét JSON toàn bảng.
+    convention_profile: Mapped[str | None] = mapped_column(String(64), index=True)
+    convention_version: Mapped[str | None] = mapped_column(String(32))
+
     engine_stage: Mapped[str] = mapped_column(String(16), nullable=False)
     engine_version: Mapped[str] = mapped_column(String(32), nullable=False)
     chart_json: Mapped[dict[str, Any]] = mapped_column(JSONColumn, nullable=False)

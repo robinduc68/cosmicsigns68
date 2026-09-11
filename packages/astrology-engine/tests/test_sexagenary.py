@@ -45,14 +45,21 @@ def test_sexagenary_index_covers_the_cycle() -> None:
 
 
 def test_pillars_for_a_known_birth() -> None:
-    pillars = pillars_for_birth(10, 9, 1992, 14)
+    pillars = pillars_for_birth(10, 9, 1992, 14, day_pillar_solar=(10, 9, 1992))
     assert pillars.year.name == "Nhâm Thân"
     assert pillars.month.chi == "Dậu"  # lunar month 8 → Dậu
     assert pillars.hour.chi == "Mùi"
 
 
-def test_late_night_birth_rolls_the_day_pillar_forward() -> None:
-    before = pillars_for_birth(10, 9, 1992, 22)
-    after = pillars_for_birth(10, 9, 1992, 23)
-    assert after.day.can_index == (before.day.can_index + 1) % 10
-    assert after.hour.chi == "Tý"
+def test_the_day_pillar_follows_the_date_it_is_given_not_the_hour() -> None:
+    """Deciding whether 23:xx rolls over is a convention choice, not this function's.
+
+    It used to be made here, silently and in the opposite direction from
+    ``build_chart``. Now the caller passes the date and this function obeys.
+    """
+    same_day = pillars_for_birth(10, 9, 1992, 23, day_pillar_solar=(10, 9, 1992))
+    next_day = pillars_for_birth(10, 9, 1992, 23, day_pillar_solar=(11, 9, 1992))
+
+    assert same_day.hour.chi == "Tý"
+    assert next_day.hour.chi == "Tý"
+    assert next_day.day.can_index == (same_day.day.can_index + 1) % 10

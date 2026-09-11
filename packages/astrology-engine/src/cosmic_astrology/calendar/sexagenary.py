@@ -180,15 +180,19 @@ def pillars_for_birth(
     hour: int,
     lunar: LunarDate | None = None,
     tz_offset: float = 7.0,
+    *,
+    day_pillar_solar: tuple[int, int, int],
 ) -> SexagenaryPillars:
     """Four pillars for a birth moment given as a *solar* date plus local hour.
 
-    A birth between 23:00 and 23:59 belongs to giờ Tý of the *following* day for
-    the day pillar, which is why the day pillar is shifted before it is derived.
+    ``day_pillar_solar`` is required rather than derived here. A birth at 23:xx
+    may or may not belong to the following day — that is a school-dependent
+    choice (open question Q6), and this function used to make it silently while
+    ``build_chart`` made the opposite one. The decision now belongs to the
+    convention profile; see ``birth_moment.resolve_birth_dates``.
     """
     lunar_date = lunar or solar_to_lunar(solar_day, solar_month, solar_year, tz_offset)
-    jd = jd_from_solar(solar_day, solar_month, solar_year)
-    day_jd = jd + 1 if hour == 23 else jd
+    day_jd = jd_from_solar(day_pillar_solar[0], day_pillar_solar[1], day_pillar_solar[2])
     day = Pillar(can_index=(day_jd + 9) % 10, chi_index=(day_jd + 1) % 12)
     return SexagenaryPillars(
         year=year_pillar(lunar_date.year),

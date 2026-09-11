@@ -15,7 +15,7 @@ tứ hoá, đại vận and lưu niên. Those arrive with the full engine (see
 
 from __future__ import annotations
 
-from cosmic_astrology.calendar.lunar import LunarDate, lunar_to_solar, solar_to_lunar
+from cosmic_astrology.birth_moment import ResolvedBirthDates, resolve_birth_dates
 from cosmic_astrology.calendar.sexagenary import (
     CAN,
     CHI,
@@ -37,6 +37,11 @@ from cosmic_astrology.chart.types import (
     Star,
     StarKind,
 )
+from cosmic_astrology.conventions.policies import RuleId, TimezonePolicy
+from cosmic_astrology.conventions.profile import ConventionProfile
+from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
+from cosmic_astrology.timezone import resolve_timezone
+from cosmic_astrology.trace import TraceLog
 
 __all__ = ["ENGINE_VERSION", "build_chart", "three_directions_four_positions"]
 
@@ -152,37 +157,68 @@ def three_directions_four_positions(branch_index: int) -> dict[str, int]:
     }
 
 
-def _resolve_dates(birth: BirthInput) -> tuple[tuple[int, int, int], LunarDate]:
-    """Return the solar ``(day, month, year)`` and the lunar date of the birth."""
-    if birth.calendar_type is CalendarType.SOLAR:
-        solar = (birth.day, birth.month, birth.year)
-        lunar = solar_to_lunar(birth.day, birth.month, birth.year, birth.tz_offset)
-    else:
-        solar = lunar_to_solar(
-            birth.day, birth.month, birth.year, birth.is_leap_month, birth.tz_offset
-        )
-        lunar = LunarDate(
-            day=birth.day,
-            month=birth.month,
-            year=birth.year,
-            is_leap_month=birth.is_leap_month,
-        )
-    return solar, lunar
-
-
-def build_chart(birth: BirthInput, stage: EngineStage = EngineStage.FRAME) -> Chart:
-    """Build a chart from a birth moment.
+def build_chart(
+    birth: BirthInput,
+    stage: EngineStage = EngineStage.FRAME,
+    *,
+    profile: ConventionProfile = COSMIC_SIGNS_STANDARD_V1,
+    trace: bool = False,
+) -> Chart:
+    """Build a chart from a birth moment under an explicit convention profile.
 
     ``stage`` controls how much is placed. ``FRAME`` stops after the verified
     frame; ``PREVIEW`` additionally places the 14 chính tinh, which are marked
     ``provisional`` until the reference test suite covers them.
+
+    ``profile`` decides every school-dependent rule. A birth the profile has no
+    rule for — a 23:xx birth while the late-Zi question is open — raises
+    :class:`UnresolvedConventionError` instead of being guessed at.
     """
     if stage is EngineStage.FULL:
         raise NotImplementedError("Engine đầy đủ chưa được triển khai (xem docs/roadmap.md)")
 
-    (solar_day, solar_month, solar_year), lunar = _resolve_dates(birth)
+    log = TraceLog.for_profile(profile) if trace else None
+
+    tz = resolve_timezone(
+        policy=TimezonePolicy(profile.policy(RuleId.TIMEZONE)),
+        year=birth.year,
+        month=birth.month,
+        day=birth.day,
+        hour=birth.hour,
+        minute=birth.minute,
+        timezone_id=birth.timezone_id,
+        fallback_offset=birth.tz_offset,
+    )
+    tz_offset = tz.utc_offset_hours
+
+    dates: ResolvedBirthDates = resolve_birth_dates(
+        profile=profile,
+        calendar_is_lunar=birth.calendar_type is CalendarType.LUNAR,
+        day=birth.day,
+        month=birth.month,
+        year=birth.year,
+        hour=birth.hour,
+        is_leap_month=birth.is_leap_month,
+        tz_offset=tz_offset,
+    )
+    lunar = dates.lunar
+    solar_day, solar_month, solar_year = dates.placement_solar
+
+    if log is not None:
+        log.record(profile, RuleId.TIMEZONE, f"UTC{tz_offset:+g}",
+                   timezone_id=birth.timezone_id, source=tz.source)
+        log.record(profile, RuleId.LATE_ZI,
+                   f"ngày an sao {dates.placement_solar}, trụ ngày {dates.day_pillar_solar}",
+                   hour=birth.hour, late_zi=dates.late_zi)
+
     pillars = pillars_for_birth(
-        solar_day, solar_month, solar_year, birth.hour, lunar, birth.tz_offset
+        solar_day,
+        solar_month,
+        solar_year,
+        birth.hour,
+        lunar,
+        tz_offset,
+        day_pillar_solar=dates.day_pillar_solar,
     )
     hour_chi = hour_branch_index(birth.hour)
 
@@ -227,8 +263,16 @@ def build_chart(birth: BirthInput, stage: EngineStage = EngineStage.FRAME) -> Ch
     menh_element = nap_am_element(pillars.year.can_index, pillars.year.chi_index)[1]
     relation_code, relation_label = _element_relation(menh_element, menh_palace.element)
 
+    if log is not None:
+        log.record(profile, RuleId.MENH_PLACEMENT, CHI[menh_branch],
+                   lunar_month=lunar.month, hour_branch=CHI[hour_chi])
+        log.record(profile, RuleId.THAN_PLACEMENT, CHI[than_branch],
+                   lunar_month=lunar.month, hour_branch=CHI[hour_chi])
+        log.record(profile, RuleId.CUC, cuc_label,
+                   menh_palace=CHI[menh_branch], nap_am=menh_palace.nap_am)
+
     if stage is EngineStage.PREVIEW:
-        _place_major_stars(by_branch, cuc_number, lunar.day)
+        _place_major_stars(by_branch, cuc_number, lunar.day, profile=profile, log=log)
 
     is_yang_year = pillars.year.is_yang
     is_male = birth.gender is Gender.MALE
@@ -237,6 +281,12 @@ def build_chart(birth: BirthInput, stage: EngineStage = EngineStage.FRAME) -> Ch
     return Chart(
         engine_stage=stage,
         engine_version=ENGINE_VERSION,
+        convention_profile=profile.profile_id,
+        convention_version=profile.version,
+        convention_rules=[profile.binding(r).to_dict() for r in RuleId],
+        timezone=tz.to_dict(),
+        date_resolution=dates.to_dict(),
+        trace=log.to_dict() if log is not None else None,
         birth={
             "name": birth.name,
             "gender": birth.gender.value,
@@ -249,7 +299,7 @@ def build_chart(birth: BirthInput, stage: EngineStage = EngineStage.FRAME) -> Ch
                 "minute": birth.minute,
             },
             "birth_place": birth.birth_place,
-            "tz_offset": birth.tz_offset,
+            "tz_offset": tz_offset,
             "hour_branch": CHI[hour_chi],
             "hour_branch_index": hour_chi,
         },
@@ -293,13 +343,33 @@ def build_chart(birth: BirthInput, stage: EngineStage = EngineStage.FRAME) -> Ch
     )
 
 
-def _place_major_stars(by_branch: dict[int, Palace], cuc_number: int, lunar_day: int) -> None:
+def _place_major_stars(
+    by_branch: dict[int, Palace],
+    cuc_number: int,
+    lunar_day: int,
+    *,
+    profile: ConventionProfile,
+    log: TraceLog | None = None,
+) -> None:
     """Place the 14 chính tinh (PREVIEW stage only, not yet reference-tested)."""
     tu_vi = _tu_vi_branch(cuc_number, lunar_day)
     thien_phu = (4 - tu_vi) % 12
+    if log is not None:
+        log.record(profile, RuleId.TU_VI_PLACEMENT, CHI[tu_vi],
+                   cuc=cuc_number, lunar_day=lunar_day)
     for code, label, offset in _TU_VI_CHAIN:
-        palace = by_branch[(tu_vi + offset) % 12]
-        palace.stars.append(Star(code=code, label=label, kind=StarKind.MAJOR, provisional=True))
+        branch = (tu_vi + offset) % 12
+        by_branch[branch].stars.append(
+            Star(code=code, label=label, kind=StarKind.MAJOR, provisional=True)
+        )
+        if log is not None:
+            log.record(profile, RuleId.MAJOR_STARS, f"{label} → {CHI[branch]}",
+                       chain="Tử Vi", anchor=CHI[tu_vi], offset=offset)
     for code, label, offset in _THIEN_PHU_CHAIN:
-        palace = by_branch[(thien_phu + offset) % 12]
-        palace.stars.append(Star(code=code, label=label, kind=StarKind.MAJOR, provisional=True))
+        branch = (thien_phu + offset) % 12
+        by_branch[branch].stars.append(
+            Star(code=code, label=label, kind=StarKind.MAJOR, provisional=True)
+        )
+        if log is not None:
+            log.record(profile, RuleId.MAJOR_STARS, f"{label} → {CHI[branch]}",
+                       chain="Thiên Phủ", anchor=CHI[thien_phu], offset=offset)

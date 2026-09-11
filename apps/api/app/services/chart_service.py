@@ -9,11 +9,11 @@ from __future__ import annotations
 import uuid
 from collections.abc import Sequence
 
-from cosmic_astrology import BirthInput, build_chart
+from cosmic_astrology import BirthInput, UnresolvedConventionError, build_chart
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
 
 from app.core.config import get_settings
-from app.core.errors import ChartCalculationError, NotFoundError
+from app.core.errors import ChartCalculationError, NotFoundError, UnresolvedConventionApiError
 from app.core.logging import get_logger
 from app.db.models.chart import Chart
 from app.repositories.chart_repository import ChartRepository
@@ -50,13 +50,23 @@ class ChartService:
                     is_leap_month=payload.is_leap_month,
                     tz_offset=payload.tz_offset,
                     birth_place=payload.birth_place,
+                    # timezone_name đã là một IANA id, nên để engine tra offset
+                    # lịch sử thay vì tin vào tz_offset do client gửi.
+                    timezone_id=payload.timezone_name,
                 ),
                 stage=stage,
             )
+        except UnresolvedConventionError as exc:
+            # Quy ước chưa chốt (ví dụ giờ Tý sớm). Đây không phải lỗi nhập liệu
+            # của người dùng, nên trả mã riêng thay vì đổ cho họ.
+            logger.warning("chart_blocked_by_convention", reason=str(exc))
+            raise UnresolvedConventionApiError(str(exc)) from exc
         except ValueError as exc:
             raise ChartCalculationError(str(exc)) from exc
 
         chart = Chart(
+            convention_profile=computed.convention_profile,
+            convention_version=computed.convention_version,
             subject_name=payload.subject_name,
             relationship_label=payload.relationship_label,
             gender=payload.gender,
@@ -77,7 +87,13 @@ class ChartService:
             idempotency_key=idempotency_key,
         )
         saved = await self._repository.add(chart)
-        logger.info("chart_created", chart_id=str(saved.id), engine_stage=saved.engine_stage)
+        logger.info(
+            "chart_created",
+            chart_id=str(saved.id),
+            engine_stage=saved.engine_stage,
+            convention_profile=saved.convention_profile,
+            convention_version=saved.convention_version,
+        )
         return saved
 
     async def get(self, chart_id: uuid.UUID) -> Chart:

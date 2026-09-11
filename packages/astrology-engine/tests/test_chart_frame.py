@@ -72,6 +72,8 @@ def test_frame_stage_places_no_stars() -> None:
         "stage": "FRAME",
         "version": chart.engine_version,
         "is_authoritative": False,
+        "convention_profile": chart.convention_profile,
+        "convention_version": chart.convention_version,
     }
 
 

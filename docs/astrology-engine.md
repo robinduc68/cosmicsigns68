@@ -3,8 +3,9 @@
 Cập nhật: **2026-09-11** · Gói: `packages/astrology-engine` · Ngôn ngữ: Python 3.12
 
 Tài liệu này mô tả **kiến trúc và hợp đồng dữ liệu** của engine.
-Quy tắc Tử Vi cụ thể nằm ở [`astrology-conventions.md`](astrology-conventions.md) —
-đọc tài liệu đó trước khi sửa bất kỳ phép tính nào.
+Quy tắc Tử Vi cụ thể nằm ở [`astrology-conventions.md`](astrology-conventions.md);
+quy trình kiểm định nằm ở [`astrology-verification.md`](astrology-verification.md).
+Đọc hai tài liệu đó trước khi sửa bất kỳ phép tính nào.
 
 > **Trạng thái: engine chưa hoàn chỉnh và cố ý như vậy.** Phần khung lá số đã
 > kiểm chứng; phần an sao mới ở mức xem trước và mang cờ `provisional`.
@@ -46,12 +47,41 @@ Reading
 
 ```
 packages/astrology-engine/src/cosmic_astrology/
+├── conventions/
+│   ├── policies.py     Mọi lựa chọn phụ thuộc trường phái, dưới dạng enum
+│   ├── provenance.py   SourceReference — rule này lấy từ đâu, ai ký
+│   ├── profile.py      ConventionProfile, cổng production, needs_recalculation
+│   └── standard.py     COSMIC_SIGNS_STANDARD_V1
 ├── calendar/
 │   ├── lunar.py        Dương ↔ Âm lịch (Meeus ch.49 + ΔT)
 │   └── sexagenary.py   Can chi tứ trụ, nạp âm 60 hoa giáp
+├── timezone.py         Tra offset theo IANA tại thời điểm sinh
+├── birth_moment.py     Giải ngày theo chính sách giờ Tý sớm
+├── trace.py            Nhật ký suy diễn (tùy chọn, mặc định tắt)
+├── verification.py     Báo cáo kiểm định
 └── chart/
     ├── types.py        BirthInput, Chart, Palace, Star (dataclass thuần)
     └── builder.py      build_chart() — điểm vào duy nhất
+```
+
+### Tầng quy ước
+
+Nguyên tắc kiến trúc quan trọng nhất của gói này:
+
+> **Không quy tắc phụ thuộc trường phái nào được nấp trong code tính toán.**
+
+Mỗi lựa chọn như vậy là một giá trị enum trong `policies.py`, được một
+`ConventionProfile` chọn, và profile thì bất biến + có phiên bản. Hệ quả:
+
+- Hai lá số lập theo hai giả định khác nhau **không thể** bị nhầm là một.
+- Quy tắc chưa chốt mang giá trị `UNRESOLVED`. Engine gọi tới nó sẽ **ném
+  `UnresolvedConventionError`** thay vì chọn hộ một trường phái.
+- Mỗi quy tắc mang `implemented`, `verification`, `blocked_by` và `source` riêng.
+
+```python
+from cosmic_astrology import build_chart, COSMIC_SIGNS_STANDARD_V1
+chart = build_chart(birth, stage=EngineStage.PREVIEW,
+                    profile=COSMIC_SIGNS_STANDARD_V1, trace=False)
 ```
 
 Điểm vào công khai duy nhất:
@@ -95,6 +125,14 @@ Tất cả phải đúng, không được bỏ qua mục nào:
 
 ## 4. Hợp đồng dữ liệu
 
+### Phiên bản trên mỗi lá số
+
+Mỗi lá số mang dấu bất biến `engine_version` + `convention_profile` +
+`convention_version`, ở cả `chart_json` lẫn cột riêng trên bảng `charts`.
+Lá số **không bao giờ được tính lại ngầm**; `needs_recalculation()` chỉ cho biết
+lá số nào sẽ ra khác nếu lập lại hôm nay. Chi tiết ở
+[`astrology-verification.md`](astrology-verification.md) mục 6.
+
 ### Đầu vào — `BirthInput`
 
 | Trường | Kiểu | Ghi chú |
@@ -106,8 +144,9 @@ Tất cả phải đúng, không được bỏ qua mục nào:
 | `hour` | `int` 0–23 | Chỉ canh giờ có ý nghĩa |
 | `minute` | `int` 0–59 | **Hiện bị bỏ qua hoàn toàn** — xem Q4 |
 | `is_leap_month` | `bool` | Chỉ hợp lệ với `LUNAR` |
-| `tz_offset` | `float` | Mặc định `7.0`. **API luôn gửi 7.0** — xem Q5 |
-| `birth_place` | `str \| None` | Hiện chỉ lưu, chưa dùng để suy múi giờ |
+| `tz_offset` | `float` | Chỉ dùng khi không có `timezone_id` |
+| `timezone_id` | `str \| None` | IANA zone. Có thì offset tra từ tzdb tại thời điểm sinh |
+| `birth_place` | `str \| None` | Hiện chỉ lưu; chưa có toạ độ nên chưa suy ra kinh độ được |
 
 Dải năm hợp lệ: **1900–2100** (giới hạn của đa thức ΔT đã cài).
 
@@ -151,8 +190,12 @@ kiểm định thì nói thẳng. UI hiện dấu `*` và một dòng giải th�
 | Tam phương tứ chính, vô chính diệu | ✅ | |
 | An Tử Vi | 🟡 khớp 5 mốc kinh điển mùng 1 | ma trận `TV-A1`…`TV-A5` |
 | 14 chính tinh (2 chòm) | 🟡 `provisional` | chưa có ca nào ký duyệt |
+| Tầng quy ước (profile, phiên bản, cổng production) | ✅ | `test_conventions.py` |
+| Chính sách giờ Tý sớm | ✅ kiến trúc | `test_late_zi.py` |
+| Tra múi giờ theo IANA | ✅ | `test_timezone.py` |
+| Báo cáo kiểm định | ✅ | `test_verification_report.py` |
 
-**48 test đang xanh.**
+Chạy `make astrology-verification-report` để xem trạng thái hiện hành.
 
 ---
 
@@ -214,26 +257,50 @@ chính nó — vô nghĩa.
 
 ## 8. Lỗi đã biết trong code hiện tại
 
-### 8.1 Giờ Tý muộn xử lý không nhất quán 🔴
+### 8.1 Giờ Tý muộn — mâu thuẫn ĐÃ ĐƯỢC GỠ, câu hỏi thì chưa
 
-Sinh lúc 23:xx: `pillars_for_birth()` dịch **trụ ngày** sang ngày hôm sau
-(`day_jd = jd + 1 if hour == 23`), nhưng `build_chart()` lấy `lunar.day` từ ngày
-dương gốc, **không dịch**.
+**Trước đây:** `pillars_for_birth()` tự dịch trụ ngày sang ngày sau khi
+`hour == 23`, còn `build_chart()` lấy ngày âm từ ngày dương gốc. Hai module trả
+lời cùng một câu hỏi mở theo hai hướng khác nhau, và không ai chọn điều đó.
 
-Đo được trên ca 10/09/1992 23:00 — trụ ngày `Canh Dần` (của 11/09) đi cùng ngày
-âm `14` (của 10/09). Vì Tử Vi an theo ngày âm, chọn sai quy ước **dịch Tử Vi 3 cung**.
+**Bây giờ:** quyết định thuộc về `LateZiPolicy` trong hồ sơ quy ước.
+`pillars_for_birth` **bắt buộc** nhận `day_pillar_solar` nên không còn tự quyết,
+và `birth_moment.resolve_birth_dates` trả về cả ba ngày kèm cờ
+`internally_consistent`.
 
-**Không sửa vội.** Phải chốt Q6 trước, rồi sửa cho nhất quán ở cả hai chỗ.
+Hồ sơ chuẩn đặt `late_zi = UNRESOLVED`, nên sinh lúc 23:xx **bị từ chối** với
+thông báo nêu tên cả ba phương án. Ngoài khung giờ đó, quy tắc chưa chốt không
+chặn gì cả.
+
+| Chính sách | Ngày âm | Trụ ngày | Tử Vi | Nhất quán nội tại |
+|---|---|---|---|---|
+| `CIVIL_DAY` | 14 | Kỷ Sửu | Mão | có |
+| `LATE_ZI_NEXT_DAY` | 15 | Canh Dần | Thìn | có |
+| `PILLAR_ONLY_NEXT_DAY` | 14 | Canh Dần | Mão | **không** (cố ý) |
+
+(Đo trên ca 10/09/1992 23:00, ghi trong fixture `TV-B1`.)
+
+**Q6 vẫn chưa chốt.** Cái đã sửa là kiến trúc, không phải câu trả lời.
 
 ### 8.2 `minute` bị bỏ qua
 
 Hợp lý khi canh giờ là đơn vị duy nhất có ý nghĩa — nhưng sẽ **không còn hợp lý**
 nếu Q4 chọn giờ mặt trời thật, lúc đó phút trở thành đầu vào thật.
 
-### 8.3 `tz_offset` luôn là 7.0 trên thực tế
+### 8.3 Múi giờ — ĐÃ SỬA
 
-Engine nhận tham số nhưng API và frontend không bao giờ gửi giá trị khác.
-Người sinh trước 1975 có nguy cơ sai ngày âm nếu sinh gần nửa đêm (Q5).
+Trước đây offset cứng `7.0`. Theo IANA tzdb, miền Nam chạy **UTC+8 từ 1960 đến
+giữa 1975**, nên giả định cũ sai nguyên một giờ cho cả một thế hệ người còn sống.
+Đã có test đếm được **251 ngày trong 1960–1975** mà +7 và +8 cho **ngày âm khác
+nhau** — ví dụ 14/05/1961 lệch hẳn sang tháng khác.
+
+Giờ offset tra từ `zoneinfo` tại đúng thời điểm sinh, và gói `tzdata` được khai
+báo là dependency để hai máy không âm thầm bất đồng về năm 1968. Lá số ghi lại
+`timezone_id`, offset, nguồn và cờ `resolved_from_database`.
+
+**Lưu ý:** múi giờ và hiệu chỉnh giờ mặt trời thật là **hai việc khác nhau** và
+được mô hình hóa riêng. `BirthTimeCorrectionPolicy` hiện là `NONE`;
+`TRUE_SOLAR_TIME` chưa cài vì quy ước chưa định nghĩa nó phải tính thế nào (Q4).
 
 ---
 

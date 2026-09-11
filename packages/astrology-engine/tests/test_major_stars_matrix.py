@@ -17,6 +17,7 @@ import pytest
 
 from cosmic_astrology import BirthInput, build_chart
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
+from cosmic_astrology.conventions import COSMIC_SIGNS_STANDARD_V1
 
 FIXTURE = Path(__file__).parent / "fixtures" / "major_stars_matrix.json"
 
@@ -35,6 +36,11 @@ def _cases() -> list[dict[str, Any]]:
     return _matrix()["cases"]
 
 
+def _placeable() -> list[dict[str, Any]]:
+    """Cases the default profile can actually build (TV-B1 is blocked on Q6)."""
+    return [c for c in _cases() if "blocked" not in c]
+
+
 def _build(case: dict[str, Any]) -> dict[str, Any]:
     i = case["input"]
     birth = BirthInput(
@@ -49,6 +55,7 @@ def _build(case: dict[str, Any]) -> dict[str, Any]:
         is_leap_month=i["is_leap_month"],
         tz_offset=i["tz_offset"],
         birth_place=None,
+        timezone_id=i.get("timezone_id"),
     )
     return build_chart(birth, stage=EngineStage.PREVIEW).to_dict()
 
@@ -59,7 +66,7 @@ def test_every_case_has_a_unique_birth_input() -> None:
 
 
 def test_matrix_covers_every_cuc_and_the_four_yin_yang_combinations() -> None:
-    frames = [c["derived_frame"] for c in _cases()]
+    frames = [c["derived_frame"] for c in _placeable()]
     assert {f["cuc_number"] for f in frames} == {2, 3, 4, 5, 6}
     assert {f["yin_yang"] for f in frames} == {"Dương Nam", "Âm Nam", "Dương Nữ", "Âm Nữ"}
     # Đủ rộng để một lỗi an sao không thể lọt qua vì mọi ca đều giống nhau.
@@ -70,13 +77,13 @@ def test_matrix_covers_the_tu_vi_thien_phu_conjunction_at_both_axes() -> None:
     # Tử Vi và Thiên Phủ chỉ trùng cung tại Dần hoặc Thân — cả hai phải có ca.
     conjunctions = {
         c["engine_candidate_stars"]["TU_VI"]
-        for c in _cases()
+        for c in _placeable()
         if c["engine_candidate_stars"]["TU_VI"] == c["engine_candidate_stars"]["THIEN_PHU"]
     }
     assert conjunctions == {"Dần", "Thân"}
 
 
-@pytest.mark.parametrize("case", _cases(), ids=lambda c: c["id"])
+@pytest.mark.parametrize("case", _placeable(), ids=lambda c: c["id"])
 def test_engine_still_produces_the_recorded_candidate(case: dict[str, Any]) -> None:
     """The fixture must not drift from the engine without someone noticing."""
     chart = _build(case)
@@ -111,6 +118,46 @@ def test_a_case_is_only_verified_once_expected_values_exist(case: dict[str, Any]
     if case["verified_against_source"]:
         assert case["expected_stars"], f"{case['id']}: verified nhưng expected_stars trống"
         assert case["expected_stars"].keys() == MAJOR_STAR_CODES
+        assert case["expected_tu_vi"], f"{case['id']}: thiếu expected_tu_vi"
+        assert case["reviewer"], f"{case['id']}: thiếu người thẩm định"
+        assert case["source"], f"{case['id']}: thiếu nguồn đối chiếu"
+    else:
+        assert case["verification_status"] != "VERIFIED"
+
+
+@pytest.mark.parametrize("case", _cases(), ids=lambda c: c["id"])
+def test_expected_values_are_never_copied_from_engine_output(case: dict[str, Any]) -> None:
+    """The whole point of the matrix: truth has to come from outside the engine.
+
+    An ``expected_stars`` block that is byte-identical to the candidate is the
+    signature of somebody pasting the engine's answer in, which would make the
+    fixture prove nothing.
+    """
+    expected = case.get("expected_stars")
+    if expected is None:
+        return
+    candidate = case.get("engine_candidate_stars")
+    if candidate is not None and expected == candidate and not case.get("independently_confirmed"):
+        pytest.fail(
+            f"{case['id']}: expected_stars trùng khít engine_candidate_stars. Nếu nguồn "
+            "thật sự cho kết quả y hệt, đặt independently_confirmed=true kèm reviewer."
+        )
+
+
+@pytest.mark.parametrize("case", _cases(), ids=lambda c: c["id"])
+def test_every_case_records_the_convention_it_belongs_to(case: dict[str, Any]) -> None:
+    """A star position without a convention is not a fact about anything."""
+    assert case["convention_profile"] == COSMIC_SIGNS_STANDARD_V1.profile_id
+    assert case["convention_version"] == COSMIC_SIGNS_STANDARD_V1.version
+
+
+def test_the_blocked_case_demonstrates_all_three_late_zi_policies() -> None:
+    blocked = [c for c in _cases() if "blocked" in c]
+    assert len(blocked) == 1, "TV-B1 là ca chứng minh cho Q6"
+    demo = blocked[0]["late_zi_demonstration"]
+    assert set(demo) == {"CIVIL_DAY", "LATE_ZI_NEXT_DAY", "PILLAR_ONLY_NEXT_DAY"}
+    # Ba chính sách phải cho ba kết quả khác nhau, nếu không thì Q6 đâu có gì để chọn.
+    assert len({(d["lunar_day"], d["day_pillar"], d["tu_vi"]) for d in demo.values()}) == 3
 
 
 def test_source_of_truth_is_still_open_so_stars_stay_provisional() -> None:
@@ -124,7 +171,7 @@ def test_source_of_truth_is_still_open_so_stars_stay_provisional() -> None:
     if not unverified:
         pytest.fail("Mọi ca đã thẩm định — xem lại điều kiện lên stage FULL (docs mục 3)")
 
-    chart = _build(matrix["cases"][0])
+    chart = _build(_placeable()[0])
     stars = [s for p in chart["palaces"] for s in p["major_stars"]]
     assert stars and all(s["provisional"] for s in stars)
 

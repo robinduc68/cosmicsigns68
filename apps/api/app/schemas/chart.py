@@ -64,6 +64,8 @@ class ChartSummary(BaseModel):
     birth_place: str | None
     engine_stage: str
     engine_version: str
+    convention_profile: str | None
+    convention_version: str | None
     created_at: datetime
 
 

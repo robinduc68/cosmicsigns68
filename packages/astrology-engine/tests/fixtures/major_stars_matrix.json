@@ -1,6 +1,9 @@
 {
-  "_README": "MA TRẬN KIỂM ĐỊNH 14 CHÍNH TINH.\n`engine_candidate_stars` là ĐẦU RA HIỆN TẠI của engine, KHÔNG phải giá trị kỳ vọng đã được kiểm chứng. Quy trình: đối chiếu từng ca với nguồn chuẩn đã chốt (mục 0 của docs/astrology-conventions.md), điền `expected_stars`, đặt verified_against_source=true. Test CHỈ được assert trên `expected_stars`; ca nào chưa verified thì skip.",
-  "source_of_truth": "CHƯA CHỐT — chặn bởi câu hỏi mở Q1 trong docs/astrology-conventions.md",
+  "_README": "MA TRẬN KIỂM ĐỊNH 14 CHÍNH TINH.\n`engine_candidate_stars` là ĐẦU RA HIỆN TẠI của engine, KHÔNG phải chân lý. `expected_stars` / `expected_tu_vi` / `expected_tuan` / `expected_triet` phải do người thẩm định điền từ nguồn độc lập — TUYỆT ĐỐI không chép từ engine_candidate_stars. Chừng nào expected_* còn null thì ca đó chưa được kiểm định, và test phải skip chứ không được coi null là đã xác nhận.",
+  "schema_version": 2,
+  "source_of_truth": "CHƯA CHỐT — chặn bởi câu hỏi mở Q1/Q2/Q3 (docs/astrology-conventions.md mục 0)",
+  "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+  "convention_version": "2026.09",
   "star_codes": [
     "TU_VI",
     "THIEN_CO",
@@ -17,51 +20,12 @@
     "THAT_SAT",
     "PHA_QUAN"
   ],
-  "coverage": {
-    "cuc_values": [
-      2,
-      3,
-      4,
-      5,
-      6
-    ],
-    "menh_positions": [
-      "Dần",
-      "Dậu",
-      "Mão",
-      "Mùi",
-      "Sửu",
-      "Thìn",
-      "Tuất",
-      "Tý",
-      "Tỵ"
-    ],
-    "tu_vi_positions": [
-      "Dần",
-      "Dậu",
-      "Hợi",
-      "Mão",
-      "Mùi",
-      "Ngọ",
-      "Sửu",
-      "Thân",
-      "Thìn",
-      "Tỵ"
-    ],
-    "yin_yang_gender": [
-      "Dương Nam",
-      "Dương Nữ",
-      "Âm Nam",
-      "Âm Nữ"
-    ],
-    "cases": 17,
-    "anchored": 5,
-    "blocked": 1
-  },
   "cases": [
     {
       "id": "TV-A1",
       "purpose": "Neo mùng 1 — Thủy nhị cục",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 1,
@@ -71,7 +35,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -125,15 +96,23 @@
         "THAI_AM": "Thìn",
         "THIEN_PHU": "Mão"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
       "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Sửu",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
-      "anchor_matches_engine": true
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
     },
     {
       "id": "TV-A2",
       "purpose": "Neo mùng 1 — Mộc tam cục",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 1,
@@ -143,7 +122,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -197,15 +183,23 @@
         "PHA_QUAN": "Tuất",
         "LIEM_TRINH": "Thân"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
       "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Thìn",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
-      "anchor_matches_engine": true
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
     },
     {
       "id": "TV-A3",
       "purpose": "Neo mùng 1 — Kim tứ cục",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 1,
@@ -215,7 +209,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -269,15 +270,23 @@
         "THIEN_DONG": "Ngọ",
         "THAI_AM": "Ngọ"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
       "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Hợi",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
-      "anchor_matches_engine": true
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
     },
     {
       "id": "TV-A4",
       "purpose": "Neo mùng 1 — Thổ ngũ cục",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 1,
@@ -287,7 +296,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -341,15 +357,23 @@
         "THAI_DUONG": "Mão",
         "THIEN_LUONG": "Mão"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
       "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Ngọ",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
-      "anchor_matches_engine": true
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
     },
     {
       "id": "TV-A5",
       "purpose": "Neo mùng 1 — Hỏa lục cục",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 1,
@@ -359,7 +383,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -413,15 +444,23 @@
         "PHA_QUAN": "Tỵ",
         "THIEN_DONG": "Thìn"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
       "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Dậu",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
-      "anchor_matches_engine": true
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
     },
     {
       "id": "TV-C1",
       "purpose": "Tử Vi trùng Thiên Phủ tại Dần (Kim tứ)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 14,
@@ -431,7 +470,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -485,12 +531,21 @@
         "THIEN_PHU": "Dần",
         "THIEN_CO": "Sửu"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-C2",
       "purpose": "Tử Vi trùng Thiên Phủ tại Thân (Kim tứ)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 21,
@@ -500,7 +555,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "FEMALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -554,12 +616,21 @@
         "THIEN_CO": "Mùi",
         "PHA_QUAN": "Ngọ"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-C3",
       "purpose": "Tử Vi trùng Thiên Phủ tại Dần (Thổ ngũ)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 14,
@@ -569,7 +640,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -623,12 +701,21 @@
         "PHA_QUAN": "Tý",
         "THAI_DUONG": "Hợi"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-C4",
       "purpose": "Tử Vi trùng Thiên Phủ tại Thân (Hỏa lục)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 21,
@@ -638,7 +725,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "FEMALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -692,12 +786,21 @@
         "THAI_DUONG": "Tỵ",
         "VU_KHUC": "Thìn"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-S1",
       "purpose": "Ca tham chiếu của bộ test hiện có",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 10,
@@ -707,7 +810,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -761,12 +871,21 @@
         "VU_KHUC": "Mão",
         "THAT_SAT": "Mão"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-S2",
       "purpose": "Âm nam — chiều đại vận nghịch",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 15,
@@ -776,7 +895,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 8.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -830,12 +956,21 @@
         "THAI_AM": "Dần",
         "THIEN_PHU": "Sửu"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-S3",
       "purpose": "Dương nữ — chiều đại vận nghịch",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 8,
@@ -845,7 +980,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "FEMALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -899,12 +1041,21 @@
         "THIEN_CO": "Mùi",
         "PHA_QUAN": "Ngọ"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-S4",
       "purpose": "Âm nữ — chiều đại vận thuận (Mộc tam cục)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 6,
@@ -914,7 +1065,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "FEMALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -968,12 +1126,21 @@
         "PHA_QUAN": "Ngọ",
         "THAI_DUONG": "Tỵ"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-S5",
       "purpose": "Thân cư Mệnh (Mệnh và Thân cùng cung)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 5,
@@ -983,7 +1150,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -1037,12 +1211,21 @@
         "TU_VI": "Tỵ",
         "THAT_SAT": "Tỵ"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-S6",
       "purpose": "Ngày 30 âm lịch — biên cuối tháng",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 30,
@@ -1052,7 +1235,14 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -1106,12 +1296,21 @@
         "LIEM_TRINH": "Hợi",
         "THAM_LANG": "Hợi"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-L1",
       "purpose": "Sinh tháng nhuận (Quý Mão 2023, nhuận tháng 2)",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "LUNAR",
         "day": 15,
@@ -1121,7 +1320,14 @@
         "minute": 0,
         "is_leap_month": true,
         "gender": "FEMALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
+      },
+      "timezone_context": {
+        "timezone_id": "Asia/Ho_Chi_Minh",
+        "utc_offset_hours": 7.0,
+        "resolved_from_database": true,
+        "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3"
       },
       "derived_frame": {
         "solar": {
@@ -1175,12 +1381,21 @@
         "THIEN_TUONG": "Tý",
         "CU_MON": "Hợi"
       },
+      "expected_tu_vi": null,
       "expected_stars": null,
-      "verified_against_source": false
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
+      "verified_against_source": false,
+      "reviewer": null,
+      "source": null,
+      "notes": ""
     },
     {
       "id": "TV-B1",
       "purpose": "Giờ Tý muộn 23:xx",
+      "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+      "convention_version": "2026.09",
       "input": {
         "calendar": "SOLAR",
         "day": 10,
@@ -1190,63 +1405,86 @@
         "minute": 0,
         "is_leap_month": false,
         "gender": "MALE",
-        "tz_offset": 7.0
+        "tz_offset": 7.0,
+        "timezone_id": "Asia/Ho_Chi_Minh"
       },
-      "derived_frame": {
-        "solar": {
-          "day": 10,
-          "month": 9,
-          "year": 1992,
-          "hour": 23,
-          "minute": 0
-        },
-        "lunar": {
-          "day": 14,
-          "month": 8,
-          "year": 1992,
-          "is_leap_month": false,
-          "year_pillar": "Nhâm Thân"
-        },
-        "year_pillar": "Nhâm Thân",
-        "day_pillar": "Canh Dần",
-        "hour_branch": "Tý",
-        "menh": "Dậu",
-        "than": "Dậu",
-        "than_cu": "Mệnh",
-        "menh_element": "Kim",
-        "cuc": "Thổ Ngũ Cục",
-        "cuc_number": 5,
-        "menh_cuc_relation": "Cục sinh Mệnh",
-        "yin_yang": "Dương Nam",
-        "is_thuan_ly": true,
-        "tuan": [
-          "Hợi",
-          "Tuất"
-        ],
-        "triet": [
-          "Dần",
-          "Mão"
-        ]
-      },
-      "engine_candidate_stars": {
-        "LIEM_TRINH": "Mùi",
-        "THAT_SAT": "Mùi",
-        "THIEN_LUONG": "Ngọ",
-        "THIEN_TUONG": "Tỵ",
-        "CU_MON": "Thìn",
-        "TU_VI": "Mão",
-        "THAM_LANG": "Mão",
-        "THIEN_CO": "Dần",
-        "THAI_AM": "Dần",
-        "THIEN_PHU": "Sửu",
-        "THAI_DUONG": "Tý",
-        "VU_KHUC": "Hợi",
-        "PHA_QUAN": "Hợi",
-        "THIEN_DONG": "Tuất"
-      },
+      "timezone_context": null,
+      "derived_frame": null,
+      "engine_candidate_stars": null,
+      "expected_tu_vi": null,
       "expected_stars": null,
+      "expected_tuan": null,
+      "expected_triet": null,
+      "verification_status": "UNVERIFIED",
       "verified_against_source": false,
-      "blocked": "CHẶN: phụ thuộc quyết định C3 (giờ Tý muộn có chuyển ngày không). Hiện engine chuyển trụ ngày nhưng KHÔNG chuyển ngày âm, nên ca này tự mâu thuẫn."
+      "reviewer": null,
+      "source": null,
+      "notes": "Ca chứng minh cho Q6. Hồ sơ mặc định từ chối lập lá số này; khối late_zi_demonstration cho thấy từng chính sách ra kết quả gì.",
+      "blocked": "CHẶN: phụ thuộc quyết định C3 (giờ Tý muộn có chuyển ngày không). Hiện engine chuyển trụ ngày nhưng KHÔNG chuyển ngày âm, nên ca này tự mâu thuẫn.",
+      "late_zi_demonstration": {
+        "CIVIL_DAY": {
+          "lunar_day": 14,
+          "day_pillar": "Kỷ Sửu",
+          "tu_vi": "Mão",
+          "menh": "Dậu",
+          "internally_consistent": true
+        },
+        "LATE_ZI_NEXT_DAY": {
+          "lunar_day": 15,
+          "day_pillar": "Canh Dần",
+          "tu_vi": "Thìn",
+          "menh": "Dậu",
+          "internally_consistent": true
+        },
+        "PILLAR_ONLY_NEXT_DAY": {
+          "lunar_day": 14,
+          "day_pillar": "Canh Dần",
+          "tu_vi": "Mão",
+          "menh": "Dậu",
+          "internally_consistent": false
+        }
+      }
     }
-  ]
+  ],
+  "coverage": {
+    "cases": 17,
+    "cuc_values": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "menh_positions": [
+      "Dần",
+      "Mão",
+      "Mùi",
+      "Sửu",
+      "Thìn",
+      "Tuất",
+      "Tý",
+      "Tỵ"
+    ],
+    "tu_vi_positions": [
+      "Dần",
+      "Dậu",
+      "Hợi",
+      "Mão",
+      "Mùi",
+      "Ngọ",
+      "Sửu",
+      "Thân",
+      "Thìn",
+      "Tỵ"
+    ],
+    "yin_yang_gender": [
+      "Dương Nam",
+      "Dương Nữ",
+      "Âm Nam",
+      "Âm Nữ"
+    ],
+    "anchored": 5,
+    "blocked": 1,
+    "verified": 0
+  }
 }

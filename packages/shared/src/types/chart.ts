@@ -62,8 +62,48 @@ export interface ChartPillar {
   element: ElementCode
 }
 
+/** Which convention profile produced a chart, and how far each rule is trusted. */
+export interface ConventionRule {
+  rule: string
+  policy: string
+  implemented: boolean
+  verification: 'UNVERIFIED' | 'PROVISIONAL' | 'VERIFIED'
+  /** `BLOCKED` when a rule is unimplemented and waiting on an open question. */
+  status: string
+  blocked_by: string[]
+  note: string
+}
+
 export interface ChartPayload {
-  engine: { stage: EngineStage; version: string; is_authoritative: boolean }
+  engine: {
+    stage: EngineStage
+    version: string
+    is_authoritative: boolean
+    convention_profile: string
+    convention_version: string
+  }
+  convention: {
+    profile: string
+    version: string
+    rules: ConventionRule[]
+  }
+  timezone: {
+    policy: string
+    timezone_id: string | null
+    utc_offset_hours: number
+    source: string
+    /** False when the offset came from the caller rather than the tz database. */
+    resolved_from_database: boolean
+  }
+  date_resolution: {
+    civil_solar: number[]
+    placement_solar: number[]
+    day_pillar_solar: number[]
+    late_zi: boolean
+    late_zi_policy: string
+    /** False only under `PILLAR_ONLY_NEXT_DAY`, which is asymmetric by design. */
+    internally_consistent: boolean
+  }
   birth: {
     name: string
     gender: Gender
@@ -130,6 +170,8 @@ export interface ChartSummary {
   birth_place: string | null
   engine_stage: EngineStage
   engine_version: string
+  convention_profile: string | null
+  convention_version: string | null
   created_at: string
 }
 

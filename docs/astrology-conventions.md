@@ -75,8 +75,15 @@ nhuận Quý Mão 2023.
 
 ## 2. Xử lý múi giờ 🔴 OPEN
 
-**Hiện trạng code:** `tz_offset` là tham số (mặc định `7.0`) và chỉ dùng cho việc
-chuyển đổi lịch. **API và frontend luôn gửi `7.0`**, không có ngoại lệ nào.
+**Hiện trạng code (đã sửa 2026-09-11):** offset tra từ **IANA tzdb** tại đúng
+thời điểm sinh qua `zoneinfo`, gói `tzdata` được ghim làm dependency. Lá số ghi
+lại `timezone_id`, offset, nguồn và cờ `resolved_from_database`.
+
+Con số đáng nhớ: theo tzdb, miền Nam chạy **UTC+8 từ 1960 đến giữa 1975**. Có
+**251 ngày** trong khoảng đó mà +7 và +8 cho ra **ngày âm khác nhau** — giả định
+cũ sai nguyên một giờ cho cả một thế hệ người còn sống.
+
+Hai câu hỏi dưới đây vẫn mở, và chúng **không** phải cùng một việc với múi giờ:
 
 Có **hai câu hỏi chưa trả lời**, và cả hai đều làm sai lá số nếu trả lời sai:
 
@@ -94,22 +101,20 @@ giờ, đổi cung Mệnh, đổi cả lá số**.
 > Chưa chọn. Phương án B đòi phải thu thập kinh độ nơi sinh — hiện `birth_place`
 > mới chỉ lưu dạng chữ, chưa có toạ độ.
 
-### Q5 — Múi giờ lịch sử của Việt Nam? 🔴
+### Q5 — Nguồn múi giờ lịch sử 🟡 (đã có lời giải kỹ thuật)
 
 Múi giờ hành chính ở Việt Nam **đã thay đổi nhiều lần** trong thế kỷ 20, và miền
 Nam từng dùng offset khác miền Bắc trong một số giai đoạn trước 1975. Người sinh
 trong các giai đoạn đó mà bị tính bằng UTC+7 sẽ **sai ngày âm** nếu sinh gần nửa đêm.
 
-> **Chưa xác định được mốc thời gian chính xác.** Cần tra cứu nguồn có thẩm quyền
-> (ví dụ cơ sở dữ liệu IANA `Asia/Ho_Chi_Minh` / `Asia/Saigon`) rồi lập bảng
-> `(khoảng thời gian, vùng) → offset`. **Không được đoán.**
-
-**Ảnh hưởng hiện tại:** mọi lá số của người sinh trước 1975 đều có nguy cơ sai.
-Phải cảnh báo trên UI hoặc chặn cho tới khi giải quyết.
+> **Đã dùng IANA tzdb** làm nguồn, thay vì tự lập bảng. Còn lại là câu hỏi
+> nghiệp vụ: tzdb mô tả **múi giờ hành chính**, mà người sinh ở vùng do bên khác
+> kiểm soát trong thời chiến có thể đã sống theo giờ khác giờ hành chính trên
+> giấy tờ. Cần người am hiểu xác nhận xem có cần xử lý riêng không.
 
 ---
 
-## 3. Giờ Tý và ranh giới ngày 🔴 OPEN — **có mâu thuẫn trong code hiện tại**
+## 3. Giờ Tý và ranh giới ngày 🔴 OPEN — *câu hỏi* chưa chốt, nhưng mâu thuẫn code đã gỡ
 
 Giờ Tý kéo dài **23:00–00:59**, tức vắt qua nửa đêm. Chia làm hai nửa:
 
@@ -118,8 +123,8 @@ Giờ Tý kéo dài **23:00–00:59**, tức vắt qua nửa đêm. Chia làm ha
 
 ### Q6 — Sinh lúc 23:xx thì tính là ngày nào? 🔴
 
-Đây là tranh luận có thật giữa các trường phái, **và Cosmic Signs đang trả lời
-không nhất quán**. Đo được bằng thực nghiệm trên chính engine:
+Đây là tranh luận có thật giữa các trường phái. Trước tháng 9/2026 Cosmic Signs
+trả lời **không nhất quán mà không ai chọn điều đó**; đo được bằng thực nghiệm:
 
 Sinh **10/09/1992 lúc 23:00**:
 
@@ -135,13 +140,19 @@ ngày 15 → Thìn).
 Nguồn gốc: `pillars_for_birth()` có `day_jd = jd + 1 if hour == 23`, nhưng
 `build_chart()` lấy `lunar.day` từ ngày dương gốc, không dịch.
 
+> **Kiến trúc đã sửa (2026-09-11).** Quyết định nay thuộc về `LateZiPolicy` trong
+> hồ sơ quy ước. `pillars_for_birth` không còn tự dịch ngày; hồ sơ chuẩn đặt
+> `UNRESOLVED` nên engine **từ chối lập lá số sinh lúc 23:xx** kèm thông báo nêu
+> tên cả ba phương án. **Câu hỏi Q6 vẫn chưa được trả lời** — cái đã sửa là chỗ
+> để câu trả lời, không phải câu trả lời.
+
 **Ba phương án, phải chọn đúng một:**
 
 | | Quy tắc | Hệ quả |
 |---|---|---|
 | **A** | 23:xx thuộc **ngày hôm sau** cho *mọi* mục đích (cả trụ ngày lẫn ngày âm) | Nhất quán. Phải dịch cả ngày âm. |
 | **B** | 23:xx thuộc **ngày hiện tại** cho *mọi* mục đích | Nhất quán. Phải bỏ `+1` ở trụ ngày. |
-| **C** | Trụ ngày dịch, ngày âm không dịch (**hiện trạng**) | Có trường phái theo hướng này, nhưng nếu chọn thì phải **ghi rõ là cố ý**, không để như tai nạn. |
+| **C** | Trụ ngày dịch, ngày âm không dịch (`PILLAR_ONLY_NEXT_DAY`) | Có trường phái theo hướng này. Engine đánh dấu `internally_consistent: false` để sự bất đối xứng luôn hiện ra chứ không nấp đi. |
 
 > **Chưa chọn.** Đây là mục chặn nặng nhất sau Q1: nó đổi vị trí Tử Vi, tức đổi
 > cả 14 chính tinh. Ca `TV-B1` trong ma trận kiểm định đang bị đánh dấu CHẶN vì lý do này.

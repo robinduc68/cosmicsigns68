@@ -40,6 +40,21 @@ class ValidationError(AppError):
     message = "Thông tin bạn nhập chưa hợp lệ."
 
 
+class UnresolvedConventionApiError(AppError):
+    """The chart needs a Tử Vi rule Cosmic Signs has not settled yet.
+
+    Separate from a calculation failure on purpose: nothing the user typed is
+    wrong, the engine simply refuses to guess between schools.
+    """
+
+    code = "CONVENTION_UNRESOLVED"
+    http_status = status.HTTP_422_UNPROCESSABLE_CONTENT
+    message = (
+        "Giờ sinh này rơi vào một quy ước Tử Vi mà Cosmic Signs chưa chốt, nên mình "
+        "chưa lập lá số được. Mình không đoán bừa để có kết quả."
+    )
+
+
 class ChartCalculationError(AppError):
     code = "CHART_CALCULATION_FAILED"
     http_status = status.HTTP_422_UNPROCESSABLE_CONTENT

@@ -51,7 +51,9 @@ frontend đổi cấu trúc** — web chỉ render chart JSON, thêm sao là th�
 - **Chốt trường phái an sao** (Nam phái / Bắc phái) và nguồn đối chiếu để viết test.
   Đây là câu hỏi mở đang chặn mọi thứ, không phải việc code.
   → Toàn bộ quy ước và 12 câu hỏi cần chốt nằm ở
-  [`astrology-conventions.md`](astrology-conventions.md).
+  [`astrology-conventions.md`](astrology-conventions.md); quy trình kiểm định ở
+  [`astrology-verification.md`](astrology-verification.md).
+  Chạy `make astrology-verification-report` để xem trạng thái hiện hành.
 - Kiểm định vị trí **14 chính tinh** (hiện ở stage `PREVIEW`, gắn cờ `provisional`,
   UI hiển thị dấu `*` và nói rõ là chưa kiểm định).
 - Phụ tinh: Tứ Hoá, Lộc Tồn, Đào Hoa / Hồng Loan / Thiên Hỷ, Xương Khúc, Tả Hữu,

@@ -18,7 +18,7 @@ Xong **J1** — luồng "khách lạ → có lá số" đã chạy thông từ l
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4–6 — Astrology engine | ⏭️ tiếp theo, xem `docs/roadmap.md` |
 
-Quality gate **đều xanh**: 131 test pass (92 engine + 21 api + 18 web),
+Quality gate **đều xanh**: 203 test pass (161 engine + 24 api + 18 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công, backend import sạch.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440:
@@ -95,7 +95,8 @@ không trang nào tràn ngang, không vùng chạm nào dưới 24px.
    Cần luôn **admin API** để sửa giá — hiện chỉ sửa được bằng SQL.
 6. **Nợ từ Phase 0** — còn 4 file trong `docs/`: `product-requirements.md`,
    `architecture.md`, `database-schema.md`, `design-system.md`.
-   (`roadmap.md`, `astrology-engine.md`, `astrology-conventions.md` đã viết.)
+   (`roadmap.md`, `astrology-engine.md`, `astrology-conventions.md`,
+   `astrology-verification.md` đã viết.)
 7. **Dockerfile** cho `api` và `web` — compose profile `full` còn fail cho tới khi có.
 
 ---
@@ -147,6 +148,8 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 | Stage `FRAME` / `PREVIEW` / `FULL` | Không bịa số liệu: chưa kiểm định thì gắn cờ `provisional`, UI phải nói rõ |
 | Picker giờ sinh chọn **canh giờ**, không phải giờ:phút | Bảng canh giờ nằm ở `packages/shared`, không để frontend tự quy đổi (nguyên tắc #3) |
 | Toàn bộ luật wizard nằm trong **Pinia store** | Component chỉ render; "không cho nhảy bước" được test được |
+| Mọi quy tắc phụ thuộc trường phái nằm trong **ConventionProfile**, không nấp trong code | Hai lá số theo hai giả định khác nhau không thể bị nhầm là một; quy tắc chưa chốt thì engine dừng thay vì đoán |
+| Múi giờ tra **IANA tzdb**, `tzdata` ghim thành dependency | Hardcode +7 sai nguyên giờ với người sinh 1960–1975; và hai máy không được bất đồng về năm 1968 |
 
 ---
 
@@ -178,8 +181,12 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 - **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, đại vận, lưu niên chưa làm.
 - Chưa chốt **trường phái an sao** và nguồn đối chiếu để viết test. Toàn bộ 12 câu
   hỏi cần chốt đã được liệt kê ở `docs/astrology-conventions.md` — đây là thứ chặn Phase 6.
-- **Giờ Tý muộn (23:xx) đang xử lý không nhất quán**: trụ ngày dịch sang ngày sau
-  nhưng ngày âm thì không, mà Tử Vi lại an theo ngày âm. Chờ quyết định Q6, đừng sửa vội.
+- **Giờ Tý muộn (23:xx)**: mâu thuẫn code đã gỡ — quyết định nay thuộc `LateZiPolicy`
+  trong hồ sơ quy ước, và engine **từ chối** lập lá số sinh 23:xx thay vì đoán.
+  Nhưng **Q6 vẫn chưa được trả lời**; cái đã sửa là chỗ để câu trả lời.
+- **Múi giờ đã sửa**: offset tra từ IANA tzdb tại thời điểm sinh thay vì cứng +7.
+  Khoảng **5% ngày sinh trong 1960–1975 ra lá số khác trước đây** (miền Nam chạy
+  UTC+8 giai đoạn đó). Lá số sau 1975 không đổi.
 - Staged loading ở `/lap-la-so` chạy theo nhịp thời gian vì API chỉ trả về một lần ở cuối.
   Phần reveal luôn đợi phản hồi thật, không có chặng nào tự nhận "xong" khi lá số chưa về.
 - `birth_place` mới chỉ lưu lại, **chưa dùng để suy ra múi giờ**.

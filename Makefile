@@ -83,6 +83,10 @@ typecheck: ## Typecheck everything
 	cd apps/api && ./.venv/bin/mypy app
 	cd packages/astrology-engine && ../../apps/api/.venv/bin/mypy src
 
+astrology-verification-report: ## Show what the astrology engine is verified to claim
+	cd packages/astrology-engine && PYTHONPATH=src ../../apps/api/.venv/bin/python \
+		-m cosmic_astrology.verification
+
 test: test-engine test-api test-web ## Run every test suite
 
 test-engine: ## Astrology engine tests
