@@ -30,6 +30,9 @@ class TraceEntry:
     verification: str
     blocked_by: tuple[str, ...]
     note: str
+    #: Where the rule comes from. A reviewer asking "says who?" needs this on the
+    #: step itself, not three files away.
+    source: dict[str, object] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -40,6 +43,7 @@ class TraceEntry:
             "verification": self.verification,
             "blocked_by": list(self.blocked_by),
             "note": self.note,
+            "source": self.source,
         }
 
     def format(self) -> str:
@@ -82,6 +86,7 @@ class TraceLog:
                 verification=binding.display_status,
                 blocked_by=binding.blocked_by,
                 note=binding.note,
+                source=binding.source.to_dict(),
             )
         )
 

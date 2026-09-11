@@ -246,6 +246,33 @@
   overflow-wrap: anywhere;
 }
 
+/* Ngũ hành → màu chữ. Đây là ánh xạ duy nhất trong toàn bộ renderer, và đầu vào
+   của nó chỉ là hành do engine khai báo — không có đường nào đi từ tên sao tới màu. */
+.tuvi-star.is-element-kim {
+  color: var(--chart-kim);
+}
+
+.tuvi-star.is-element-moc {
+  color: var(--chart-moc);
+}
+
+.tuvi-star.is-element-thuy {
+  color: var(--chart-thuy);
+}
+
+.tuvi-star.is-element-hoa {
+  color: var(--chart-hoa);
+}
+
+.tuvi-star.is-element-tho {
+  color: var(--chart-tho);
+}
+
+/* Sao chưa có ngũ hành đã kiểm định: mực trung tính, không phải màu đoán. */
+.tuvi-star.is-element-none {
+  color: var(--chart-text);
+}
+
 .tuvi-star--major {
   font-size: var(--chart-major-star-size);
   font-weight: 700;
@@ -372,6 +399,13 @@
   margin: 0;
   font-weight: 600;
   color: var(--chart-ink);
+}
+
+/* Development only — names a gap rather than filling it. Never reaches a customer
+   chart, which omits the line instead. */
+.tuvi-center__pending {
+  color: var(--chart-subtle);
+  font-style: italic;
 }
 
 .tuvi-center__secondary {

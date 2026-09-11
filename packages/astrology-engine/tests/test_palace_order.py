@@ -128,7 +128,7 @@ def test_stars_stay_on_their_branch_regardless_of_palace_names() -> None:
     """
 
     def stars_by_branch(chart: dict[str, Any]) -> dict[str, str]:
-        return {s["code"]: p["branch"] for p in chart["palaces"] for s in p["major_stars"]}
+        return {s["id"]: p["branch"] for p in chart["palaces"] for s in p["major_stars"]}
 
     a, b = _build(6), _build(8)
     assert a["menh"]["branch"] != b["menh"]["branch"]

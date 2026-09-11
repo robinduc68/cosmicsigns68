@@ -9,6 +9,10 @@ import {
   type YinYangPolarity,
 } from '@cosmic/shared'
 import type {
+  StarProvenance,
+  VerificationStatus,
+} from '@cosmic/shared'
+import type {
   CenterFieldViewModel,
   ChartViewModel,
   ConnectionType,
@@ -19,6 +23,17 @@ import type {
   VoidKind,
   VoidMarkerViewModel,
 } from '~/types/chart-view-model'
+import {
+  formatAgeRange,
+  formatBirthTime,
+  formatCalendarType,
+  formatGender,
+  formatLunarDate,
+  formatMenhCucRelation,
+  formatPillar,
+  formatSolarDate,
+  formatThanCu,
+} from '~/utils/tuvi-format'
 import {
   PALACE_METRICS,
   STAR_CATEGORY_PRIORITY,
@@ -63,9 +78,44 @@ function optionalString(source: object, key: string): string | null {
   return typeof value === 'string' && value.trim() ? value : null
 }
 
+/** Schema v1 `kind` values, mapped onto the categories that replaced them. */
+const LEGACY_KIND_TO_CATEGORY: Record<string, StarCategory> = {
+  MAJOR: 'MAJOR',
+  TRANSFORMATION: 'TRANSFORMATION',
+  MINOR: 'OTHER',
+}
+
 function categoryOf(star: ChartStar, fallback: StarCategory): StarCategory {
   const declared = optionalString(star, 'category')
-  return declared && STAR_CATEGORIES.has(declared) ? (declared as StarCategory) : fallback
+  if (declared && STAR_CATEGORIES.has(declared)) return declared as StarCategory
+  const legacy = optionalString(star, 'kind')
+  return (legacy && LEGACY_KIND_TO_CATEGORY[legacy]) || fallback
+}
+
+function verificationOf(value: unknown): VerificationStatus | null {
+  return value === 'UNVERIFIED' || value === 'PROVISIONAL' || value === 'VERIFIED' ? value : null
+}
+
+/**
+ * Provenance as the engine sent it, or `null`.
+ *
+ * Read defensively rather than cast: this is the field a reviewer trusts to tell
+ * a provisional placement from a verified one, so a malformed one must read as
+ * "no provenance" and not as a half-populated object.
+ */
+function provenanceOf(star: ChartStar): StarProvenance | null {
+  const raw = field(star, 'provenance')
+  if (!raw || typeof raw !== 'object') return null
+  const rule = optionalString(raw, 'rule')
+  const verification = verificationOf(field(raw, 'verification'))
+  if (!rule || !verification) return null
+  const blockedBy = field(raw, 'blocked_by')
+  return {
+    rule,
+    verification,
+    blocked_by: Array.isArray(blockedBy) ? blockedBy.filter((x) => typeof x === 'string') : [],
+    note: optionalString(raw, 'note') ?? '',
+  }
 }
 
 const POLARITY_PREFIX: Record<YinYangPolarity, string> = { YANG: '+', YIN: '−' }
@@ -82,15 +132,33 @@ function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
   const polarity = polarityOf(star)
   const elementLabel = element ? ELEMENT_COLOR_MAP[element].label : null
   const strengthLabel = star.strength ? STRENGTH_LABELS[star.strength] : null
+  const provenance = provenanceOf(star)
+  // `id`/`name` are the contract; `code`/`label` are the schema v1 spelling of the
+  // same values. Neither is derived from the other.
+  const id = optionalString(star, 'id') ?? optionalString(star, 'code') ?? ''
+  const name = optionalString(star, 'name') ?? optionalString(star, 'label') ?? ''
   return {
-    code: star.code,
-    name: star.label,
+    code: id,
+    name,
     category,
+    palaceBranch: optionalString(star, 'palace_branch'),
+    displayPriority: optionalNumber(star, 'display_priority') ?? STAR_CATEGORY_PRIORITY[category],
+    // Trust comes from the engine. A chart that sent none is UNVERIFIED, which is
+    // the safe reading — never the flattering one.
+    verificationStatus:
+      verificationOf(field(star, 'verification_status')) ??
+      provenance?.verification ??
+      'UNVERIFIED',
+    provenance,
+    strengthVerification: star.strength
+      ? (verificationOf(field(star, 'strength_verification')) ?? 'UNVERIFIED')
+      : null,
+    isMajor: category === 'MAJOR',
     element,
     elementLabel,
     polarityPrefix: polarity ? POLARITY_PREFIX[polarity] : null,
     // Spelled out because colour alone must not carry the element.
-    ariaLabel: [star.label, elementLabel && `hành ${elementLabel}`, strengthLabel]
+    ariaLabel: [name, elementLabel && `hành ${elementLabel}`, strengthLabel]
       .filter(Boolean)
       .join(', '),
     strength: star.strength,
@@ -122,7 +190,7 @@ function reportMissingElements(palaces: PalaceViewModel[]): void {
   if (missing.size === 0) return
   console.warn(
     `[TuVi Renderer] Thiếu metadata ngũ hành: ${[...missing].sort().join(', ')} — ` +
-      'vẽ bằng mực trung tính. Xem cosmic_astrology/stars/metadata.py.',
+      'vẽ bằng mực trung tính. Xem cosmic_astrology/stars/catalog.py.',
   )
 }
 
@@ -130,11 +198,8 @@ function reportMissingElements(palaces: PalaceViewModel[]): void {
 function byDisplayPriority(stars: StarViewModel[]): StarViewModel[] {
   return stars
     .map((star, index) => ({ star, index }))
-    .sort(
-      (a, b) =>
-        STAR_CATEGORY_PRIORITY[a.star.category] - STAR_CATEGORY_PRIORITY[b.star.category] ||
-        a.index - b.index,
-    )
+    // Engine-supplied priority; ties keep the engine's own order.
+    .sort((a, b) => a.star.displayPriority - b.star.displayPriority || a.index - b.index)
     .map(({ star }) => star)
 }
 
@@ -143,15 +208,29 @@ function mapPalace(palace: ChartPalace, starsPlaced: boolean): PalaceViewModel {
   const majorStars = byDisplayPriority(palace.major_stars.map((s) => mapStar(s, 'MAJOR')))
   const minorStars = byDisplayPriority([
     ...palace.transformations.map((s) => mapStar(s, 'TRANSFORMATION')),
-    ...palace.minor_stars.map((s) => mapStar(s, 'MINOR')),
+    ...palace.minor_stars.map((s) => mapStar(s, 'OTHER')),
+    // Schema v2 only; grouped with the phụ tinh for layout, category preserved.
+    ...(palace.annual_stars ?? []).map((s) => mapStar(s, 'ANNUAL')),
   ])
   // A FRAME-stage chart places no stars, yet the engine still flags every palace
   // as empty. "Vô chính diệu" is a statement about the chart, so it is only shown
   // once the engine has actually placed the major stars.
   const isEmptyMainStar = starsPlaced && palace.is_empty_main_star
-  const lifeStage = optionalString(palace, 'life_stage')
-  const majorCycleRef = optionalString(palace, 'major_cycle_palace')
-  const annualRef = optionalString(palace, 'annual_palace')
+  // Read from `cycles`, which is where schema v2 puts them. The keys these lines
+  // used to read (`life_stage`, `major_cycle_palace`) are emitted by no version of
+  // the engine, so they would have stayed null even once đại vận is implemented.
+  const cycles = palace.cycles ?? null
+  const lifeStage = cycles?.trang_sinh_stage ?? null
+  const majorCycleRef =
+    typeof cycles?.major_cycle_index === 'number' ? `ĐV ${cycles.major_cycle_index}` : null
+  const annualRef =
+    cycles?.annual_target === null || cycles?.annual_target === undefined
+      ? null
+      : `LN ${cycles.annual_target}`
+  const majorCycleAge = formatAgeRange(
+    cycles?.major_cycle_age_start ?? null,
+    cycles?.major_cycle_age_end ?? null,
+  )
 
   return {
     id: palace.name,
@@ -172,7 +251,9 @@ function mapPalace(palace: ChartPalace, starsPlaced: boolean): PalaceViewModel {
     isEmptyMainStar,
     majorStars,
     minorStars,
-    majorCycleAge: optionalNumber(palace, 'major_cycle_age'),
+    palaceIndex: optionalNumber(palace, 'palace_index'),
+    cycles,
+    majorCycleAge,
     monthNumber: optionalNumber(palace, 'month_number'),
     lifeStage,
     majorCycleRef,
@@ -233,48 +314,83 @@ function link(from: number, to: number, type: ConnectionType): ConnectionViewMod
   return { from, to, type, x1: start.x, y1: start.y, x2: end.x, y2: end.y }
 }
 
-const pad = (value: number) => String(value).padStart(2, '0')
-
 /** Narrow an engine element string; anything unexpected loses its colour, not the value. */
 function elementOf(value: unknown): ElementCode | null {
   return isElementCode(value) ? value : null
 }
 
+/**
+ * A number as text, or `null`.
+ *
+ * Covers `undefined` as well as `null`: a chart persisted before a field existed
+ * simply has no key, and stringifying that would print the word "undefined".
+ */
+function asText(value: number | null | undefined): string | null {
+  return typeof value === 'number' ? String(value) : null
+}
+
+/**
+ * The traditional block a printed chart carries in its centre.
+ *
+ * Every value here is either supplied by the engine or formatted from engine
+ * values by `utils/tuvi-format`. Nothing is computed: can chi is joined, not
+ * derived, and a field the engine does not produce is `pending` with a `null`
+ * value so the renderer can leave the line out entirely.
+ */
 function centerFields(chart: ChartPayload): CenterFieldViewModel[] {
   const { birth, lunar_birth: lunar, pillars } = chart
-  const leap = lunar.is_leap_month ? ' nhuận' : ''
-  const year =
-    birth.solar.year === lunar.year
-      ? String(birth.solar.year)
-      : `${birth.solar.year} (âm ${lunar.year})`
+  const traditional = chart.traditional ?? null
 
-  // `element` is set only where the value itself names an element, so the centre
-  // gains two coloured values rather than becoming rainbow text.
   const f = (
     label: string,
-    value: string,
+    value: string | null,
     secondary: string | null = null,
     element: ElementCode | null = null,
-  ): CenterFieldViewModel => ({ label, value, secondary, element })
+  ): CenterFieldViewModel => ({ label, value, secondary, element, pending: false })
 
-  const fields: CenterFieldViewModel[] = [
+  /** A field the chart should carry one day. Never given a stand-in value. */
+  const pending = (label: string, value: string | null = null): CenterFieldViewModel => ({
+    label,
+    value,
+    secondary: null,
+    element: null,
+    pending: value === null,
+  })
+
+  return [
     f('Họ tên', birth.name),
-    f('Năm', year, pillars.year.name),
-    f('Tháng', `${birth.solar.month} (${lunar.month}${leap})`, pillars.month.name),
-    f('Ngày', `${birth.solar.day} (${lunar.day})`, pillars.day.name),
-    f('Giờ', `${birth.solar.hour} giờ ${pad(birth.solar.minute)} phút`, pillars.hour.name),
+    f('Giới tính', formatGender(birth.gender)),
+    f('Ngày dương', formatSolarDate(birth.solar), formatCalendarType(birth.calendar_type)),
+    f('Ngày âm', formatLunarDate(lunar)),
+    f('Giờ sinh', formatBirthTime(birth.solar.hour, birth.solar.minute, birth.hour_branch)),
+    // Can chi comes structured from the engine; the formatter only joins the pair.
+    f('Can Chi năm', formatPillar(pillars.year)),
+    f('Can Chi tháng', formatPillar(pillars.month)),
+    f('Can Chi ngày', formatPillar(pillars.day)),
+    f('Can Chi giờ', formatPillar(pillars.hour)),
+    // The engine already spells this out; the formatter exists for parts-only callers.
     f('Âm dương', chart.yin_yang.label),
     f('Bản mệnh', chart.menh.nap_am, null, elementOf(chart.menh.element)),
     f('Cục', chart.cuc.label, null, elementOf(chart.cuc.element)),
-    f('Mệnh – Cục', chart.cuc.relation_label),
-    f('Mệnh', chart.menh.branch),
     f(
-      'Thân',
-      chart.than.branch,
-      chart.than.resides_in_label ? `cư ${chart.than.resides_in_label}` : null,
+      'Mệnh – Cục',
+      formatMenhCucRelation(
+        optionalString(chart.cuc, 'relation'),
+        elementOf(chart.menh.element),
+        elementOf(chart.cuc.element),
+      ) ?? chart.cuc.relation_label,
     ),
-  ]
-  return fields.filter((entry) => entry.value.trim() !== '')
+    f('Mệnh', chart.menh.branch),
+    f('Thân', chart.than.branch, formatThanCu(chart.than.resides_in_label)),
+    // Not implemented anywhere in the engine — listed so the gap is visible in a
+    // development view, and omitted entirely on a customer chart.
+    pending('Cân lượng', traditional?.can_luong ?? null),
+    pending('Chủ Mệnh', traditional?.chu_menh ?? null),
+    pending('Chủ Thân', traditional?.chu_than ?? null),
+    pending('Lai nhân cung', traditional?.lai_nhan_cung ?? null),
+    pending('Năm xem', asText(traditional?.nam_xem)),
+    pending('Tuổi xem', asText(traditional?.tuoi_xem)),
+  ].map((entry) => (entry.value?.trim() ? entry : { ...entry, value: null }))
 }
 
 export function mapChartDtoToViewModel(chart: ChartPayload): ChartViewModel {
@@ -338,6 +454,11 @@ export function mapChartDtoToViewModel(chart: ChartPayload): ChartViewModel {
       provisional: engine.is_authoritative !== true || anyProvisionalStar,
       utcOffsetHours: utcOffset,
     },
+    identity: chart.identity ?? null,
+    traditional: chart.traditional ?? null,
+    // Absent means the chart predates the data contract, which is version 1 — a
+    // fact about the stored payload, not a default for a field someone forgot.
+    schemaVersion: optionalNumber(chart, 'schema_version') ?? 1,
     warnings,
   }
 }

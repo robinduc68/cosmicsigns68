@@ -10,7 +10,20 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 
 from cosmic_astrology.calendar.sexagenary import Element
-from cosmic_astrology.stars.metadata import Polarity
+from cosmic_astrology.chart.model import (
+    CHART_SCHEMA_VERSION,
+    BirthInformation,
+    ChartIdentity,
+    PalaceCycles,
+    PalaceMetadata,
+    StarCategory,
+    StarProvenance,
+    TraditionalMetadata,
+    VoidMark,
+    display_priority_for,
+)
+from cosmic_astrology.conventions.policies import VerificationStatus
+from cosmic_astrology.stars.catalog import Polarity
 
 __all__ = [
     "BirthInput",
@@ -21,7 +34,6 @@ __all__ = [
     "Palace",
     "PalaceName",
     "Star",
-    "StarKind",
     "StarStrength",
 ]
 
@@ -99,12 +111,6 @@ PALACE_ORDER: tuple[PalaceName, ...] = (
 )
 
 
-class StarKind(StrEnum):
-    MAJOR = "MAJOR"
-    MINOR = "MINOR"
-    TRANSFORMATION = "TRANSFORMATION"
-
-
 class StarStrength(StrEnum):
     MIEU = "MIEU"
     VUONG = "VUONG"
@@ -150,31 +156,96 @@ class BirthInput:
 
 @dataclass(frozen=True, slots=True)
 class Star:
-    code: str
-    label: str
-    kind: StarKind
-    strength: StarStrength | None = None
-    provisional: bool = False
-    #: Ngũ hành of the star itself, from ``stars.metadata``. ``None`` where the
+    """One star, whatever its category.
+
+    There is deliberately a single star model rather than a major/minor/annual
+    trio: those differ only by ``category``, and three near-identical shapes would
+    force the renderer to branch on type instead of iterating.
+
+    Every astrology field is nullable. ``strength`` is ``None`` for every star
+    today — the miếu/vượng/đắc/bình/hãm table is 168 cells that must be copied
+    from a chosen source, and a guessed strength is worse than no strength.
+    """
+
+    id: str
+    name: str
+    category: StarCategory
+    #: Ngũ hành of the star itself, from ``stars.catalog``. ``None`` where the
     #: schools disagree — the renderer then draws neutral ink rather than a guess.
     element: Element | None = None
     #: Âm/dương of the star. Recorded with the element or not at all.
     polarity: Polarity | None = None
+    strength: StarStrength | None = None
+    #: How far the strength value is trusted. ``None`` exactly when there is no
+    #: strength, so a reader can never mistake "unknown" for "verified".
+    strength_verification: VerificationStatus | None = None
+    #: Địa chi the star sits on. Denormalised from the palace so a flat list of
+    #: stars is still self-describing.
+    palace_branch: str | None = None
+    #: Where the placement came from and how far it is trusted.
+    provenance: StarProvenance | None = None
+
+    def __post_init__(self) -> None:
+        if (self.strength is None) != (self.strength_verification is None):
+            raise ValueError(
+                f"{self.name}: độ sáng và trạng thái kiểm định của nó phải cùng có "
+                "hoặc cùng thiếu — nếu không thì 'chưa biết' sẽ bị đọc thành 'đã kiểm'."
+            )
+
+    @property
+    def is_major(self) -> bool:
+        return self.category is StarCategory.MAJOR
+
+    @property
+    def is_annual(self) -> bool:
+        return self.category is StarCategory.ANNUAL
+
+    @property
+    def is_transformation(self) -> bool:
+        return self.category is StarCategory.TRANSFORMATION
+
+    @property
+    def verification_status(self) -> VerificationStatus:
+        """Trust in this star's placement. Unverified until provenance says more."""
+        return self.provenance.verification if self.provenance else VerificationStatus.UNVERIFIED
+
+    @property
+    def provisional(self) -> bool:
+        """Kept as a derived flag: the renderer marks these with a warning badge."""
+        return self.verification_status is not VerificationStatus.VERIFIED
 
     def to_dict(self) -> dict[str, object]:
         return {
-            "code": self.code,
-            "label": self.label,
-            "kind": self.kind.value,
-            "strength": self.strength.value if self.strength else None,
-            "provisional": self.provisional,
+            "id": self.id,
+            "name": self.name,
+            "category": self.category.value,
             "element": self.element.value if self.element else None,
             "polarity": self.polarity.value if self.polarity else None,
+            "strength": self.strength.value if self.strength else None,
+            "strength_verification": (
+                self.strength_verification.value if self.strength_verification else None
+            ),
+            "palace_branch": self.palace_branch,
+            "is_major": self.is_major,
+            "is_annual": self.is_annual,
+            "is_transformation": self.is_transformation,
+            "display_priority": display_priority_for(self.category),
+            "verification_status": self.verification_status.value,
+            "provenance": self.provenance.to_dict() if self.provenance else None,
+            "provisional": self.provisional,
         }
 
 
 @dataclass(slots=True)
 class Palace:
+    """One of the twelve palaces.
+
+    ``branch`` and ``name`` are different concepts and must stay that way:
+    ``branch`` is *where* on the địa bàn this cell is, ``name`` is *which palace*
+    the chart assigns there. Deriving one from the other is what produced the
+    mirrored-palace bug fixed in engine 0.2.0.
+    """
+
     name: PalaceName
     label: str
     branch_index: int
@@ -185,13 +256,56 @@ class Palace:
     nap_am: str
     is_menh: bool = False
     is_than: bool = False
-    has_tuan: bool = False
-    has_triet: bool = False
+    #: Lunar month this palace counts as. Not implemented — depends on đại vận
+    #: numbering, which is blocked on Q11/Q12.
+    month_number: int | None = None
+    tuan: VoidMark = field(default_factory=lambda: VoidMark(present=False))
+    triet: VoidMark = field(default_factory=lambda: VoidMark(present=False))
+    cycles: PalaceCycles = field(default_factory=PalaceCycles)
+    metadata: PalaceMetadata = field(default_factory=PalaceMetadata)
     stars: list[Star] = field(default_factory=list)
 
     @property
+    def palace_index(self) -> int:
+        """Position of this palace name in the classical sequence from Mệnh (0-11).
+
+        Derived from ``PALACE_ORDER``, not from the branch, so it carries the
+        palace assignment rather than the screen position.
+        """
+        return PALACE_ORDER.index(self.name)
+
+    @property
+    def has_tuan(self) -> bool:
+        return self.tuan.present
+
+    @property
+    def has_triet(self) -> bool:
+        return self.triet.present
+
+    def stars_in(self, category: StarCategory) -> list[Star]:
+        return [s for s in self.stars if s.category is category]
+
+    @property
     def major_stars(self) -> list[Star]:
-        return [s for s in self.stars if s.kind is StarKind.MAJOR]
+        return self.stars_in(StarCategory.MAJOR)
+
+    @property
+    def annual_stars(self) -> list[Star]:
+        return self.stars_in(StarCategory.ANNUAL)
+
+    @property
+    def minor_stars(self) -> list[Star]:
+        """Everything that is neither a chính tinh nor a hóa nor a lưu star.
+
+        A display grouping, not a category: the categories themselves stay on each
+        star so nothing is lost by grouping them here.
+        """
+        excluded = {StarCategory.MAJOR, StarCategory.TRANSFORMATION, StarCategory.ANNUAL}
+        return [s for s in self.stars if s.category not in excluded]
+
+    @property
+    def transformations(self) -> list[Star]:
+        return self.stars_in(StarCategory.TRANSFORMATION)
 
     @property
     def is_empty_main_star(self) -> bool:
@@ -213,11 +327,21 @@ class Palace:
             "has_tuan": self.has_tuan,
             "has_triet": self.has_triet,
             "is_empty_main_star": self.is_empty_main_star,
-            "major_stars": [s.to_dict() for s in self.stars if s.kind is StarKind.MAJOR],
-            "minor_stars": [s.to_dict() for s in self.stars if s.kind is StarKind.MINOR],
-            "transformations": [
-                s.to_dict() for s in self.stars if s.kind is StarKind.TRANSFORMATION
-            ],
+            # Grouped for the renderer, which lays out chính tinh and phụ tinh
+            # differently. `stars` below is the same set, flat and ungrouped.
+            "major_stars": [s.to_dict() for s in self.major_stars],
+            "minor_stars": [s.to_dict() for s in self.minor_stars],
+            "transformations": [s.to_dict() for s in self.transformations],
+            # Added in schema version 2.
+            "id": self.name.value,
+            "palace_index": self.palace_index,
+            "month_number": self.month_number,
+            "annual_stars": [s.to_dict() for s in self.annual_stars],
+            "stars": [s.to_dict() for s in self.stars],
+            "tuan": self.tuan.to_dict(),
+            "triet": self.triet.to_dict(),
+            "cycles": self.cycles.to_dict(),
+            "metadata": self.metadata.to_dict(),
         }
 
 
@@ -236,17 +360,43 @@ class Chart:
     timezone: dict[str, object]
     date_resolution: dict[str, object]
     trace: dict[str, object] | None
-    birth: dict[str, object]
+    birth: BirthInformation
     lunar_birth: dict[str, object]
     pillars: dict[str, object]
     yin_yang: dict[str, object]
+    #: Mệnh palace: branch, bản mệnh element and nạp âm, tam phương tứ chính.
     menh: dict[str, object]
+    #: Thân palace: branch and which palace it resides in (thân cư).
     than: dict[str, object]
+    #: Cục number, its element, and the Mệnh–Cục relationship.
     cuc: dict[str, object]
     palaces: list[Palace]
+    #: When the calculation ran. Injected rather than read from the clock here, so
+    #: the same birth plus the same timestamp always serialises identically.
+    generated_at: str
+    production_ready: bool
+    traditional: TraditionalMetadata = field(default_factory=TraditionalMetadata)
+
+    @property
+    def identity(self) -> ChartIdentity:
+        return ChartIdentity(
+            engine_version=self.engine_version,
+            convention_profile=self.convention_profile,
+            convention_version=self.convention_version,
+            production_ready=self.production_ready,
+            generated_at=self.generated_at,
+        )
+
+    @property
+    def stars(self) -> list[Star]:
+        """Every star on the chart, flat. Each one still names its own palace."""
+        return [star for palace in self.palaces for star in palace.stars]
 
     def to_dict(self) -> dict[str, object]:
         payload: dict[str, object] = {
+            "schema_version": CHART_SCHEMA_VERSION,
+            "identity": self.identity.to_dict(),
+            "traditional": self.traditional.to_dict(),
             "engine": {
                 "stage": self.engine_stage.value,
                 "version": self.engine_version,
@@ -261,7 +411,7 @@ class Chart:
             },
             "timezone": self.timezone,
             "date_resolution": self.date_resolution,
-            "birth": self.birth,
+            "birth": self.birth.to_dict(),
             "lunar_birth": self.lunar_birth,
             "pillars": self.pillars,
             "yin_yang": self.yin_yang,

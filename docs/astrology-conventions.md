@@ -608,8 +608,88 @@ nào là `VERIFIED` khi `sources.json` còn chưa chốt nguồn chuẩn.
 từ cùng một câu trong sách); để trống thì **buộc** phải liệt kê ≥ 2 cách đọc đang mâu
 thuẫn — một ô trống lặng lẽ bị `StarMetadata` từ chối ngay lúc khởi tạo.
 
-**Nơi cài:** `packages/astrology-engine/src/cosmic_astrology/stars/metadata.py`.
-Độ phủ xem bằng `python -m cosmic_astrology.verification`.
+**Nơi cài:** `packages/astrology-engine/src/cosmic_astrology/stars/catalog.py` — catalog
+sao tập trung. Luật an sao chỉ mang **id**; tên, hành, âm/dương, category đều tra ở đây.
+
+**Mức kiểm định theo từng sao**, không phải một nhãn chung: sao có giá trị thì
+`PROVISIONAL`, sao để trống thì `UNVERIFIED`. Cả 14 mục đều mang provenance ghi rõ
+*chưa chọn ấn bản chuẩn*, nên `has_citation` = false trên toàn bộ catalog. Code chặn
+việc nâng lên `VERIFIED` nếu provenance chưa có đủ trích dẫn **và** người ký duyệt —
+sửa tay file này không nâng được nhãn.
+
+**Độ phủ:** `make astrology-star-metadata-report`.
+
+---
+
+## 24. Vòng Tràng Sinh 🟡 PENDING
+
+Mười hai chặng, đặt trên **địa chi** (không phải trên tên cung):
+
+Tràng Sinh → Mộc Dục → Quan Đới → Lâm Quan → Đế Vượng → Suy → Bệnh → Tử → Mộ →
+Tuyệt → Thai → Dưỡng.
+
+### 24.1 Địa chi khởi 🟡
+
+**COSMIC_SIGNS_CHOSEN_RULE** — `CUC_ELEMENT_THO_WITH_THUY`:
+
+| Ngũ hành Cục | Tràng Sinh tại |
+| --- | --- |
+| Kim | Tỵ |
+| Mộc | Hợi |
+| Thủy | Thân |
+| Hỏa | Dần |
+| **Thổ** | **Thân** (theo Thủy) |
+
+**ALTERNATIVE_RULE** — `CUC_ELEMENT_THO_WITH_HOA`: Thổ khởi ở **Dần** (theo Hỏa).
+
+Bốn hành đầu đọc giống nhau ở mọi sách. **Thổ thì không.** Hai cách đọc lệch nhau
+6 cung, tức đảo ngược nửa vòng, trên **mọi lá Thổ Ngũ Cục**. Đây không phải chi tiết
+nhỏ, nên cả hai bảng đều nằm trong code (`cycles/trang_sinh.py`) để so được bằng mắt
+chứ không phải một câu trong tài liệu.
+
+**Lý do chọn:** đa số bản tiếng Việt xếp Thổ theo Thủy. Chưa có ấn bản nào được chốt
+(Q1/Q2/Q3), nên đây là cách đọc đa số, **không** phải trích dẫn.
+
+### 24.2 Chiều 🟡
+
+**COSMIC_SIGNS_CHOSEN_RULE** — `YANG_MALE_YIN_FEMALE_FORWARD`: dương nam và âm nữ đi
+**thuận**, âm nam và dương nữ đi **nghịch** — cùng luật với đại vận.
+
+**ALTERNATIVE_RULE** — `CUC_POLARITY`: chiều lấy theo âm dương của **Cục**, không theo
+người xem. Hai cách cho kết quả khác nhau trên **một nửa số lá số**.
+
+---
+
+## 25. Đại vận 🟡 PENDING
+
+### 25.1 Chiều 🟡
+
+`YANG_MALE_YIN_FEMALE_FORWARD` — dương nam / âm nữ thuận, âm nam / dương nữ nghịch.
+
+> **Chỉ đường đi của đại vận đổi chiều. Tên 12 cung thì KHÔNG.**
+>
+> Đây đúng là chỗ đã sinh ra lỗi lật gương tên cung ở engine 0.1.0 (mục 11). Vì vậy
+> `cycles/major_cycle.py` làm việc trên **chỉ số địa chi**, và mọi cung vẫn giữ nguyên
+> tên do `PALACE_ORDER` quyết định, bất kể đại vận đi chiều nào.
+
+### 25.2 Tuổi khởi và dãy đại vận 🟡
+
+`CUC_NUMBER` — đại vận 1 khởi tại **cung Mệnh**, ở tuổi **bằng số Cục**; mỗi cung
+**10 năm**; đi tiếp theo chiều đã chọn.
+
+Ví dụ Mộc Tam Cục, Mệnh tại Tuất, âm nữ (thuận):
+Tuất 3–12 → Hợi 13–22 → Tý 23–32 → … → Dậu 113–122.
+
+**Con số thì các sách thống nhất.** Cái chưa chốt là **"tuổi" nghĩa là gì** — tuổi ta
+hay tuổi tròn, tức câu hỏi mở **Q11**. Điều đó **không đổi một con số nào ở trên**,
+nhưng nó chặn việc quy tuổi ra năm dương lịch — nên **lưu niên vẫn chưa mở**.
+
+### 25.3 Trạng thái
+
+Cả bốn quy tắc (`trang_sinh_start`, `trang_sinh_direction`, `major_cycle_direction`,
+`major_cycle_start_age`) đều `PROVISIONAL`. Fixture kỳ vọng ở
+`packages/astrology-engine/tests/fixtures/cycles.json`, **suy từ bảng quy tắc trên**,
+không chép từ đầu ra engine. Không được tự nâng lên `VERIFIED`.
 
 ---
 
@@ -628,6 +708,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 7 | §11 Thứ tự cung | Engine đặt tên cung ngược chiều so với trình tự kinh điển và lá số đối chiếu chéo | ✅ lỗi engine, đã sửa 0.2.0; có fixture vàng `PALACE_ORDER_MENH_TUAT` + test đủ 12 vị trí Mệnh; lá số lưu bằng 0.1.0 bị gắn cờ cần lập lại |
 | 8 | §12 Can cung | Engine tính can Tý/Sửu lùi thay vì tới; lá số đối chiếu chéo cho Canh Tý / Tân Sửu | ✅ lỗi engine, đã sửa 0.2.0 |
 | 9 | §23 Ngũ hành sao | Tham Lang ghi "âm thủy hóa khí mộc"; Cự Môn ghi Thổ/Thủy/Kim tùy trường phái | 🟡 để trống 2 sao, vẽ mực trung tính; 12/14 sao có giá trị PROVISIONAL |
+| 10 | §24 Tràng Sinh | Thổ cục khởi ở Thân (theo Thủy) hay Dần (theo Hỏa); chiều theo âm dương nam nữ hay theo âm dương Cục | 🟡 chọn cách đọc đa số, ghi cả hai vào policy |
 
 ---
 
@@ -638,3 +719,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 3. **Mọi thứ chưa kiểm định phải mang `provisional: true`** và UI phải nói rõ.
 4. **Engine chỉ được lên stage `FULL`** khi toàn bộ mục 🔴 đã đóng và ma trận
    kiểm định đã được ký duyệt.
+5. **Dữ liệu tử vi chưa biết phải là `null`** — không `"Unknown"`, không `"N/A"`,
+   không sao giữ chỗ, không độ sáng đoán. Renderer quyết định hiển thị gì khi
+   thiếu; domain và API thì không được bù. Chi tiết và danh sách field ở
+   `chart-data-contract.md` mục 0.

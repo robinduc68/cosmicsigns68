@@ -21,8 +21,19 @@ const props = withDefaults(
     exportDate?: Date
     /** Force the starting mode; otherwise narrow screens start in reading mode. */
     initialMode?: ChartViewMode
+    /**
+     * Internal development views only: list centre fields the chart does not carry
+     * yet. Applied to the on-screen canvas alone — the off-screen canvas is what
+     * PNG export and print render, and those must never carry a development note.
+     */
+    showPendingFields?: boolean
   }>(),
-  { fileSlug: 'la-so', exportDate: undefined, initialMode: undefined },
+  {
+    fileSlug: 'la-so',
+    exportDate: undefined,
+    initialMode: undefined,
+    showPendingFields: false,
+  },
 )
 
 const mode = ref<ChartViewMode>(props.initialMode ?? 'overview')
@@ -199,7 +210,7 @@ defineExpose({ mode, exportPng: onExportPng, print: onPrint })
     >
       <p v-if="!ready" class="tuvi-viewport__placeholder" role="status">Đang dựng lá số…</p>
       <div ref="stage" class="tuvi-stage" :class="{ 'is-ready': ready }">
-        <TuViChartCanvas :model="model" />
+        <TuViChartCanvas :model="model" :show-pending-fields="showPendingFields" />
       </div>
     </div>
 

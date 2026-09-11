@@ -26,6 +26,8 @@ from cosmic_astrology.conventions.policies import (
     StarStrengthPolicy,
     ThanPolicy,
     TimezonePolicy,
+    TrangSinhDirectionPolicy,
+    TrangSinhStartPolicy,
     TrietPolicy,
     TuanPolicy,
     TuViPolicy,
@@ -219,7 +221,7 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                 note=(
                     "Ngũ hành riêng của từng sao, dùng để tô màu chữ. 12/14 chính tinh "
                     "có giá trị; Tham Lang và Cự Môn để trống vì các trường phái ghi "
-                    "khác nhau — xem cosmic_astrology/stars/metadata.py."
+                    "khác nhau — xem cosmic_astrology/stars/catalog.py."
                 ),
             ),
             _rule(
@@ -260,20 +262,50 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                 ),
             ),
             _rule(
+                RuleId.TRANG_SINH_START,
+                TrangSinhStartPolicy.CUC_ELEMENT_THO_WITH_THUY.value,
+                implemented=True,
+                verification=V.PROVISIONAL,
+                blocked_by=("Q1", "Q2", "Q3"),
+                note=(
+                    "Kim→Tỵ, Mộc→Hợi, Thủy→Thân, Hỏa→Dần nhất quán giữa các sách. "
+                    "Thổ thì KHÔNG: bản này cho Thổ khởi ở Thân theo Thủy; cách đọc "
+                    "còn lại cho Thổ khởi ở Dần theo Hỏa, lệch cả vòng 6 cung trên "
+                    "mọi lá Thổ Ngũ Cục."
+                ),
+            ),
+            _rule(
+                RuleId.TRANG_SINH_DIRECTION,
+                TrangSinhDirectionPolicy.YANG_MALE_YIN_FEMALE_FORWARD.value,
+                implemented=True,
+                verification=V.PROVISIONAL,
+                blocked_by=("Q1", "Q2", "Q3"),
+                note=(
+                    "Dương nam / âm nữ thuận, âm nam / dương nữ nghịch — cùng luật "
+                    "với đại vận. Cách đọc đối lập lấy chiều theo âm dương của Cục, "
+                    "cho kết quả khác trên một nửa số lá số."
+                ),
+            ),
+            _rule(
                 RuleId.MAJOR_CYCLE_DIRECTION,
                 MajorCycleDirectionPolicy.YANG_MALE_YIN_FEMALE_FORWARD.value,
                 implemented=True,
                 verification=V.PROVISIONAL,
                 blocked_by=("Q2",),
-                note="Cờ is_thuan_ly đã tính; chưa dựng danh sách đại vận.",
+                note="Dương nam / âm nữ đi thuận; tên 12 cung KHÔNG đảo theo.",
             ),
             _rule(
                 RuleId.MAJOR_CYCLE_START_AGE,
-                MajorCycleStartAgePolicy.UNRESOLVED.value,
-                implemented=False,
-                verification=V.UNVERIFIED,
+                MajorCycleStartAgePolicy.CUC_NUMBER.value,
+                implemented=True,
+                verification=V.PROVISIONAL,
                 blocked_by=("Q11", "Q12"),
-                note="Chưa chốt tuổi ta hay tuổi tròn.",
+                note=(
+                    "Đại vận 1 khởi ở cung Mệnh tại tuổi = số Cục, mỗi cung 10 năm. "
+                    "Con số thì các sách thống nhất; Q11 hỏi 'tuổi' là tuổi ta hay "
+                    "tuổi tròn — không đổi con số nào ở đây, nhưng chặn việc quy tuổi "
+                    "ra năm dương lịch, nên lưu niên vẫn chưa mở."
+                ),
             ),
         ]
     ),

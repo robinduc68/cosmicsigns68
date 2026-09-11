@@ -99,7 +99,7 @@ def test_cross_check_against_a_third_party_reference_chart() -> None:
     )
     stems = {p.branch: p.stem for p in chart.palaces}
     names = {p.branch: p.label for p in chart.palaces}
-    stars = {s.code: p.branch for p in chart.palaces for s in p.major_stars}
+    stars = {s.id: p.branch for p in chart.palaces for s in p.major_stars}
 
     assert stems == {
         "Tý": "Canh", "Sửu": "Tân", "Dần": "Canh", "Mão": "Tân", "Thìn": "Nhâm", "Tỵ": "Quý",
@@ -161,7 +161,7 @@ def test_preview_stage_places_all_fourteen_major_stars_and_marks_them_provisiona
     chart = build_chart(_birth(), stage=EngineStage.PREVIEW)
     stars = [s for p in chart.palaces for s in p.stars]
     assert len(stars) == 14
-    assert {s.code for s in stars} == {
+    assert {s.id for s in stars} == {
         "TU_VI", "THIEN_CO", "THAI_DUONG", "VU_KHUC", "THIEN_DONG", "LIEM_TRINH",
         "THIEN_PHU", "THAI_AM", "THAM_LANG", "CU_MON", "THIEN_TUONG", "THIEN_LUONG",
         "THAT_SAT", "PHA_QUAN",

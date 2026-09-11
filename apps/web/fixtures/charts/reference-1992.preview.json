@@ -1,4 +1,21 @@
 {
+  "schema_version": 2,
+  "identity": {
+    "chart_id": null,
+    "engine_version": "0.2.0-frame",
+    "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+    "convention_version": "2026.09",
+    "production_ready": false,
+    "generated_at": "2026-09-11T00:00:00+00:00"
+  },
+  "traditional": {
+    "chu_menh": null,
+    "chu_than": null,
+    "lai_nhan_cung": null,
+    "can_luong": null,
+    "nam_xem": null,
+    "tuoi_xem": null
+  },
   "engine": {
     "stage": "PREVIEW",
     "version": "0.2.0-frame",
@@ -313,7 +330,7 @@
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "Ngũ hành riêng của từng sao, dùng để tô màu chữ. 12/14 chính tinh có giá trị; Tham Lang và Cự Môn để trống vì các trường phái ghi khác nhau — xem cosmic_astrology/stars/metadata.py."
+        "note": "Ngũ hành riêng của từng sao, dùng để tô màu chữ. 12/14 chính tinh có giá trị; Tham Lang và Cự Môn để trống vì các trường phái ghi khác nhau — xem cosmic_astrology/stars/catalog.py."
       },
       {
         "rule": "four_transformations",
@@ -409,6 +426,54 @@
         "note": "Bảng 14 sao × 12 cung = 168 ô, không suy ra được bằng công thức. Cố ý KHÔNG có giá trị mặc định nào."
       },
       {
+        "rule": "trang_sinh_start",
+        "policy": "CUC_ELEMENT_THO_WITH_THUY",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Kim→Tỵ, Mộc→Hợi, Thủy→Thân, Hỏa→Dần nhất quán giữa các sách. Thổ thì KHÔNG: bản này cho Thổ khởi ở Thân theo Thủy; cách đọc còn lại cho Thổ khởi ở Dần theo Hỏa, lệch cả vòng 6 cung trên mọi lá Thổ Ngũ Cục."
+      },
+      {
+        "rule": "trang_sinh_direction",
+        "policy": "YANG_MALE_YIN_FEMALE_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Dương nam / âm nữ thuận, âm nam / dương nữ nghịch — cùng luật với đại vận. Cách đọc đối lập lấy chiều theo âm dương của Cục, cho kết quả khác trên một nửa số lá số."
+      },
+      {
         "rule": "major_cycle_direction",
         "policy": "YANG_MALE_YIN_FEMALE_FORWARD",
         "implemented": true,
@@ -428,14 +493,14 @@
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "Cờ is_thuan_ly đã tính; chưa dựng danh sách đại vận."
+        "note": "Dương nam / âm nữ đi thuận; tên 12 cung KHÔNG đảo theo."
       },
       {
         "rule": "major_cycle_start_age",
-        "policy": "UNRESOLVED",
-        "implemented": false,
-        "verification": "UNVERIFIED",
-        "status": "BLOCKED",
+        "policy": "CUC_NUMBER",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
         "blocked_by": [
           "Q11",
           "Q12"
@@ -451,7 +516,7 @@
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "Chưa chốt tuổi ta hay tuổi tròn."
+        "note": "Đại vận 1 khởi ở cung Mệnh tại tuổi = số Cục, mỗi cung 10 năm. Con số thì các sách thống nhất; Q11 hỏi 'tuổi' là tuổi ta hay tuổi tròn — không đổi con số nào ở đây, nhưng chặn việc quy tuổi ra năm dương lịch, nên lưu niên vẫn chưa mở."
       }
     ]
   },
@@ -496,7 +561,11 @@
     "birth_place": null,
     "tz_offset": 7.0,
     "hour_branch": "Mùi",
-    "hour_branch_index": 7
+    "hour_branch_index": 7,
+    "full_name": "Trần Văn Bảo",
+    "local_birth_time": "14:00",
+    "timezone_id": "Asia/Ho_Chi_Minh",
+    "historical_utc_offset": 7.0
   },
   "lunar_birth": {
     "day": 14,
@@ -597,26 +666,138 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "THIEN_DONG",
-          "label": "Thiên Đồng",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THIEN_DONG",
+          "name": "Thiên Đồng",
+          "category": "MAJOR",
           "element": "THUY",
-          "polarity": "YANG"
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         },
         {
-          "code": "THIEN_LUONG",
-          "label": "Thiên Lương",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THIEN_LUONG",
+          "name": "Thiên Lương",
+          "category": "MAJOR",
           "element": "THO",
-          "polarity": "YANG"
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "MENH",
+      "palace_index": 0,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "THIEN_DONG",
+          "name": "Thiên Đồng",
+          "category": "MAJOR",
+          "element": "THUY",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_LUONG",
+          "name": "Thiên Lương",
+          "category": "MAJOR",
+          "element": "THO",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": true,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 4,
+        "major_cycle_age_end": 13,
+        "major_cycle_index": 1,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Tuyệt"
+      },
+      "metadata": {}
     },
     {
       "name": "PHU_MAU",
@@ -634,26 +815,138 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "VU_KHUC",
-          "label": "Vũ Khúc",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "VU_KHUC",
+          "name": "Vũ Khúc",
+          "category": "MAJOR",
           "element": "KIM",
-          "polarity": "YIN"
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         },
         {
-          "code": "THAT_SAT",
-          "label": "Thất Sát",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THAT_SAT",
+          "name": "Thất Sát",
+          "category": "MAJOR",
           "element": "KIM",
-          "polarity": "YANG"
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "PHU_MAU",
+      "palace_index": 1,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "VU_KHUC",
+          "name": "Vũ Khúc",
+          "category": "MAJOR",
+          "element": "KIM",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THAT_SAT",
+          "name": "Thất Sát",
+          "category": "MAJOR",
+          "element": "KIM",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": true,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 14,
+        "major_cycle_age_end": 23,
+        "major_cycle_index": 2,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Thai"
+      },
+      "metadata": {}
     },
     {
       "name": "PHUC_DUC",
@@ -671,17 +964,86 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "THAI_DUONG",
-          "label": "Thái Dương",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THAI_DUONG",
+          "name": "Thái Dương",
+          "category": "MAJOR",
           "element": "HOA",
-          "polarity": "YANG"
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "PHUC_DUC",
+      "palace_index": 2,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "THAI_DUONG",
+          "name": "Thái Dương",
+          "category": "MAJOR",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 24,
+        "major_cycle_age_end": 33,
+        "major_cycle_index": 3,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Dưỡng"
+      },
+      "metadata": {}
     },
     {
       "name": "DIEN_TRACH",
@@ -699,7 +1061,32 @@
       "is_empty_main_star": true,
       "major_stars": [],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "DIEN_TRACH",
+      "palace_index": 3,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 34,
+        "major_cycle_age_end": 43,
+        "major_cycle_index": 4,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Tràng Sinh"
+      },
+      "metadata": {}
     },
     {
       "name": "QUAN_LOC",
@@ -717,17 +1104,86 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "THIEN_CO",
-          "label": "Thiên Cơ",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THIEN_CO",
+          "name": "Thiên Cơ",
+          "category": "MAJOR",
           "element": "MOC",
-          "polarity": "YIN"
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "QUAN_LOC",
+      "palace_index": 4,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "THIEN_CO",
+          "name": "Thiên Cơ",
+          "category": "MAJOR",
+          "element": "MOC",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 44,
+        "major_cycle_age_end": 53,
+        "major_cycle_index": 5,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Mộc Dục"
+      },
+      "metadata": {}
     },
     {
       "name": "NO_BOC",
@@ -745,26 +1201,138 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "TU_VI",
-          "label": "Tử Vi",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "TU_VI",
+          "name": "Tử Vi",
+          "category": "MAJOR",
           "element": "THO",
-          "polarity": "YIN"
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mùi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         },
         {
-          "code": "PHA_QUAN",
-          "label": "Phá Quân",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "PHA_QUAN",
+          "name": "Phá Quân",
+          "category": "MAJOR",
           "element": "THUY",
-          "polarity": "YIN"
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mùi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "NO_BOC",
+      "palace_index": 5,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "TU_VI",
+          "name": "Tử Vi",
+          "category": "MAJOR",
+          "element": "THO",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mùi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "PHA_QUAN",
+          "name": "Phá Quân",
+          "category": "MAJOR",
+          "element": "THUY",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mùi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 54,
+        "major_cycle_age_end": 63,
+        "major_cycle_index": 6,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Quan Đới"
+      },
+      "metadata": {}
     },
     {
       "name": "THIEN_DI",
@@ -782,7 +1350,32 @@
       "is_empty_main_star": true,
       "major_stars": [],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "THIEN_DI",
+      "palace_index": 6,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 64,
+        "major_cycle_age_end": 73,
+        "major_cycle_index": 7,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Lâm Quan"
+      },
+      "metadata": {}
     },
     {
       "name": "TAT_ACH",
@@ -800,17 +1393,86 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "THIEN_PHU",
-          "label": "Thiên Phủ",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THIEN_PHU",
+          "name": "Thiên Phủ",
+          "category": "MAJOR",
           "element": "THO",
-          "polarity": "YANG"
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "TAT_ACH",
+      "palace_index": 7,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "THIEN_PHU",
+          "name": "Thiên Phủ",
+          "category": "MAJOR",
+          "element": "THO",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 74,
+        "major_cycle_age_end": 83,
+        "major_cycle_index": 8,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Đế Vượng"
+      },
+      "metadata": {}
     },
     {
       "name": "TAI_BACH",
@@ -828,17 +1490,86 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "THAI_AM",
-          "label": "Thái Âm",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THAI_AM",
+          "name": "Thái Âm",
+          "category": "MAJOR",
           "element": "THUY",
-          "polarity": "YIN"
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "TAI_BACH",
+      "palace_index": 8,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "THAI_AM",
+          "name": "Thái Âm",
+          "category": "MAJOR",
+          "element": "THUY",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": true,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 84,
+        "major_cycle_age_end": 93,
+        "major_cycle_index": 9,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Suy"
+      },
+      "metadata": {}
     },
     {
       "name": "TU_TUC",
@@ -856,26 +1587,138 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "LIEM_TRINH",
-          "label": "Liêm Trinh",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "LIEM_TRINH",
+          "name": "Liêm Trinh",
+          "category": "MAJOR",
           "element": "KIM",
-          "polarity": "YIN"
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         },
         {
-          "code": "THAM_LANG",
-          "label": "Tham Lang",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THAM_LANG",
+          "name": "Tham Lang",
+          "category": "MAJOR",
           "element": null,
-          "polarity": null
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "TU_TUC",
+      "palace_index": 9,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "LIEM_TRINH",
+          "name": "Liêm Trinh",
+          "category": "MAJOR",
+          "element": "KIM",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THAM_LANG",
+          "name": "Tham Lang",
+          "category": "MAJOR",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": true,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 94,
+        "major_cycle_age_end": 103,
+        "major_cycle_index": 10,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Bệnh"
+      },
+      "metadata": {}
     },
     {
       "name": "PHU_THE",
@@ -893,17 +1736,86 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "CU_MON",
-          "label": "Cự Môn",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "CU_MON",
+          "name": "Cự Môn",
+          "category": "MAJOR",
           "element": null,
-          "polarity": null
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tý",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "PHU_THE",
+      "palace_index": 10,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "CU_MON",
+          "name": "Cự Môn",
+          "category": "MAJOR",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tý",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 104,
+        "major_cycle_age_end": 113,
+        "major_cycle_index": 11,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Tử"
+      },
+      "metadata": {}
     },
     {
       "name": "HUYNH_DE",
@@ -921,17 +1833,86 @@
       "is_empty_main_star": false,
       "major_stars": [
         {
-          "code": "THIEN_TUONG",
-          "label": "Thiên Tướng",
-          "kind": "MAJOR",
-          "strength": null,
-          "provisional": true,
+          "id": "THIEN_TUONG",
+          "name": "Thiên Tướng",
+          "category": "MAJOR",
           "element": "THUY",
-          "polarity": "YANG"
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Sửu",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
         }
       ],
       "minor_stars": [],
-      "transformations": []
+      "transformations": [],
+      "id": "HUYNH_DE",
+      "palace_index": 11,
+      "month_number": null,
+      "annual_stars": [],
+      "stars": [
+        {
+          "id": "THIEN_TUONG",
+          "name": "Thiên Tướng",
+          "category": "MAJOR",
+          "element": "THUY",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Sửu",
+          "is_major": true,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 0,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "major_stars/TWO_CHAINS_CLASSICAL",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q1",
+              "Q2",
+              "Q3"
+            ],
+            "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        }
+      ],
+      "tuan": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "tuan/YEAR_PILLAR_DECADE"
+      },
+      "triet": {
+        "present": false,
+        "verification": "PROVISIONAL",
+        "source_rule": "triet/YEAR_STEM_TABLE_EQUAL_WEIGHT"
+      },
+      "cycles": {
+        "major_cycle_age_start": 114,
+        "major_cycle_age_end": 123,
+        "major_cycle_index": 12,
+        "major_cycle_direction": "FORWARD",
+        "major_cycle_target": null,
+        "annual_target": null,
+        "trang_sinh_stage": "Mộ"
+      },
+      "metadata": {}
     }
   ],
   "major_cycles": [],

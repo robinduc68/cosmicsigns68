@@ -28,6 +28,14 @@ export function elementColor(element: ElementCode | null): string {
   return element ? ELEMENT_COLOR_MAP[element].color : 'var(--chart-text)'
 }
 
+/**
+ * Semantic class for a ngũ hành. The only input is the element the engine
+ * declared — there is no path from a star's name to a colour, by construction.
+ */
+export function elementClass(element: ElementCode | null): string {
+  return `is-element-${(element ?? 'none').toLowerCase()}`
+}
+
 export const STRENGTH_LEGEND: { key: StarStrength; abbr: string; label: string }[] = [
   { key: 'MIEU', abbr: 'M', label: 'Miếu' },
   { key: 'VUONG', abbr: 'V', label: 'Vượng' },
@@ -45,17 +53,21 @@ export const STRENGTH_LABELS = Object.fromEntries(
 ) as Record<StarStrength, string>
 
 /**
- * Rendering order inside a palace. It moves text on the page and nothing else —
+ * Fallback rendering order, used only for schema v1 charts that carry no
+ * engine-supplied `display_priority`. It moves text on the page and nothing else —
  * no astrological weight is implied, and the engine's own order is kept within
- * each category. Replace with engine-supplied priority once it exists.
+ * each category. Must mirror `_CATEGORY_PRIORITY` in the engine's `chart/model.py`.
  */
 export const STAR_CATEGORY_PRIORITY: Record<StarCategory, number> = {
   MAJOR: 0,
   TRANSFORMATION: 1,
   SUPPORTING: 2,
   MALEFIC: 3,
-  MINOR: 4,
-  ANNUAL: 5,
+  LITERARY: 4,
+  ROMANCE: 5,
+  WEALTH: 6,
+  OTHER: 7,
+  ANNUAL: 8,
 }
 
 /**

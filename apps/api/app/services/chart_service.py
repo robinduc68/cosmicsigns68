@@ -29,6 +29,10 @@ from app.schemas.chart import ChartCreateRequest
 
 logger = get_logger(__name__)
 
+#: Charts persisted before ``schema_version`` was emitted. Not a fallback for a
+#: missing field — it is the actual shape those rows have.
+LEGACY_CHART_SCHEMA_VERSION = 1
+
 
 class ChartService:
     def __init__(self, repository: ChartRepository) -> None:
@@ -118,6 +122,21 @@ class ChartService:
             stored_engine_version=chart.engine_version,
             current_engine_version=ENGINE_VERSION,
         )
+
+    def schema_version(self, chart: Chart) -> int:
+        """Payload shape of a stored chart.
+
+        Charts written before the data contract existed carry no marker; they are
+        version 1 by definition rather than by guesswork, and are left untouched
+        on disk. Reporting the version is what lets a reader handle both shapes
+        without probing for individual fields.
+        """
+        stored = chart.chart_json
+        if isinstance(stored, dict):
+            version = stored.get("schema_version")
+            if isinstance(version, int):
+                return version
+        return LEGACY_CHART_SCHEMA_VERSION
 
     async def get(self, chart_id: uuid.UUID) -> Chart:
         chart = await self._repository.get(chart_id)

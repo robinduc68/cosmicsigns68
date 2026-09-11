@@ -2,13 +2,16 @@
 
 Cập nhật: **2026-09-11** · Checkpoint để tiếp tục làm sau.
 
+> Đọc `docs/chart-data-contract.md` trước khi đụng vào hình dạng dữ liệu lá số.
+
 > Trạng thái từng phase và thứ tự làm tiếp: xem [`docs/roadmap.md`](docs/roadmap.md).
 
 ---
 
 ## Đang ở đâu
 
-Xong **J1** — luồng "khách lạ → có lá số" đã chạy thông từ landing đến trang lá số.
+Luồng "khách lạ → có lá số" chạy thông, **lá số vẽ được đầy đủ theo lối truyền thống**,
+và engine đã có vòng Tràng Sinh + đại vận.
 
 | Phase | Trạng thái |
 | --- | --- |
@@ -16,13 +19,20 @@ Xong **J1** — luồng "khách lạ → có lá số" đã chạy thông từ l
 | Phase 1 — Design System | ✅ xong |
 | Phase 2 — Homepage | ✅ xong |
 | Phase 3 — Create Chart UX | ✅ xong |
-| Phase 4–6 — Astrology engine | ⏭️ tiếp theo, xem `docs/roadmap.md` |
+| Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
+| Phase 5 — Renderer lá số | ✅ xong |
+| Phase 6 — An sao | 🟡 mới có 14 chính tinh; phụ tinh & Tứ Hóa chưa làm |
 
-Quality gate **đều xanh**: 203 test pass (161 engine + 24 api + 18 web),
+Quality gate **đều xanh**: **546 test pass** (355 engine + 41 api + 150 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
-`nuxt build` production thành công, backend import sạch.
-Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440:
-không trang nào tràn ngang, không vùng chạm nào dưới 24px.
+`nuxt build` production thành công.
+Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440.
+
+> **Điều quan trọng nhất cần nhớ khi mở lại:** engine **chưa có nguồn chuẩn nào được
+> chốt** (`sources.json` rỗng, `primary_selected_reference: null`). Vì vậy **không quy
+> tắc an sao nào là `VERIFIED`**, banner `ENGINE PROVISIONAL — NOT FOR CUSTOMER USE`
+> vẫn phải hiện, và không được bán lá số. Đây là quyết định, không phải việc chưa làm.
+> Xem `docs/astrology-conventions.md` mục 0.
 
 ---
 
@@ -40,7 +50,23 @@ không trang nào tràn ngang, không vùng chạm nào dưới 24px.
 - 12 cung, an Mệnh, an Thân, Cục, quan hệ Mệnh–Cục, Tuần, Triệt,
   tam phương tứ chính, vô chính diệu
 - 14 chính tinh ở stage `PREVIEW`, đánh dấu `provisional`
-- 48 test, đối chiếu ngày Tết chính thống 2000–2026 và tháng nhuận Quý Mão 2023
+- **Hệ quy ước (`conventions/`)**: 23 `RuleId`, mỗi luật gắn policy + `VerificationStatus`
+  + provenance + câu hỏi mở đang chặn. Luật chưa chốt thì engine **dừng**, không đoán.
+  `needs_recalculation()` so cả hồ sơ quy ước lẫn `engine_version`.
+- **Catalog sao (`stars/catalog.py`)**: định danh, ngũ hành, âm dương, category,
+  display priority. Luật an sao chỉ mang **id**, không mang tên — một nguồn sự thật.
+- **Vòng Tràng Sinh + đại vận (`cycles/`)**: 12 chặng, chiều, tuổi khởi, dãy 12 đại vận.
+  Làm trên **chỉ số địa chi**, tên 12 cung không đảo theo.
+- **Bàn kiểm định (`review/`)** + trace giải thích được từng bước (inputs, policy,
+  rule id, convention, source, verification).
+- 355 test, đối chiếu ngày Tết chính thống 2000–2026 và tháng nhuận Quý Mão 2023
+
+### Renderer lá số (`apps/web/components/astrology/chart/`)
+- Canvas cố định 1400×1750, lưới 4×4 theo địa bàn; zoom/pan, chế độ đọc từng cung
+- Xuất PNG 2800×3500 và In/PDF qua canvas ngoài màn hình (ghi chú dev không lọt vào)
+- Màu chữ sao theo **ngũ hành**, bằng class ngữ nghĩa; không có ánh xạ nào từ tên sao
+- Trung tâm đủ 15 mục truyền thống; dòng chưa có dữ liệu thì **bỏ hẳn**, không lấp
+- Toàn bộ diễn đạt tiếng Việt nằm ở `utils/tuvi-format.ts`
 
 ### `apps/api` (FastAPI)
 - Envelope `{data, meta, error}`, structlog + request id, async SQLAlchemy 2.0, Alembic
@@ -82,11 +108,18 @@ không trang nào tràn ngang, không vùng chạm nào dưới 24px.
 
 ## Việc tiếp theo — làm đúng thứ tự này
 
-1. **Kiểm định 14 chính tinh** ← *bắt đầu từ đây*
-   Đây là thứ chặn mọi thứ phía sau: chưa chốt trường phái an sao (Nam/Bắc phái) và
-   chưa có nguồn đối chiếu để viết test. Cho tới lúc đó sao vẫn mang cờ `provisional`
-   và UI vẫn phải nói rõ điều đó.
-2. **Phụ tinh, tứ hoá, miếu vượng, đại vận, lưu niên** — phần còn thiếu của engine.
+0. **Chốt ấn bản chuẩn (Q1/Q2/Q3)** ← *đây là việc của con người, không phải việc code*
+   Đây là thứ chặn mọi thứ phía sau. Cần một cuốn sách cụ thể và một người thẩm định
+   ký duyệt. Chừng nào chưa có, mọi quy tắc an sao ở lại `PROVISIONAL` và không lá số
+   nào được bán. Danh sách đầy đủ ở `docs/astrology-conventions.md` mục 0.
+   Việc code duy nhất liên quan: điền `tests/fixtures/sources.json` khi đã chốt.
+1. **Kiểm định 14 chính tinh** — dùng bàn kiểm định nội bộ ở `/_internal/astrology-verification`.
+   Quy trình chống tự xác nhận đã dựng sẵn: không được tự nâng nhãn chỉ vì test xanh.
+2. **Phụ tinh** (Lộc Tồn, Xương Khúc, Tả Hữu, Khôi Việt, Kình Đà, Không Kiếp, Hỏa Linh,
+   Đào Hồng Hỷ, Đại/Tiểu Hao) → **Tứ Hóa** (Q7/Q8/Q9) → **Miếu/Vượng/Đắc/Hãm** (bảng
+   168 ô, phải chép từ nguồn, tuyệt đối không bịa) → **lưu niên** (chặn bởi Q11/Q12).
+   Hợp đồng dữ liệu đã sẵn sàng đón hết: thêm sao là điền catalog + luật an sao, không
+   phải đổi DTO.
 3. **Rule / Analysis engine** — sinh *facts + score + evidence* từ chart JSON.
    Không có nó thì không thể mở bất kỳ section luận giải nào mà không bịa.
 4. **Auth** (email/password + Google). Phải xong trước khi mở public.
@@ -190,7 +223,13 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 ## Hạn chế đã biết
 
 - **Chưa có auth** — ai giữ được UUID thì xem được lá số đó.
-- **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, đại vận, lưu niên chưa làm.
+- **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, lưu niên chưa làm.
+  Vòng Tràng Sinh và đại vận **đã làm** nhưng ở mức `PROVISIONAL`.
+- **Ngũ hành của sao: 12/14**. Tham Lang và Cự Môn để trống vì các trường phái ghi
+  khác nhau — vẽ bằng mực trung tính, không đoán. `make astrology-star-metadata-report`.
+- **Hai phân kỳ trường phái đang chọn theo cách đọc đa số**, cả hai cách đều ghi trong
+  policy: Thổ cục khởi Tràng Sinh ở Thân hay Dần; chiều vòng Tràng Sinh theo âm dương
+  nam nữ hay theo âm dương Cục. Xem `docs/astrology-conventions.md` mục 24.
 - Chưa chốt **trường phái an sao** và nguồn đối chiếu để viết test. Toàn bộ 12 câu
   hỏi cần chốt đã được liệt kê ở `docs/astrology-conventions.md` — đây là thứ chặn Phase 6.
 - **Giờ Tý muộn (23:xx)**: mâu thuẫn code đã gỡ — quyết định nay thuộc `LateZiPolicy`

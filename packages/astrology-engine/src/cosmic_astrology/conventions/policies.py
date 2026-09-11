@@ -62,6 +62,8 @@ class RuleId(StrEnum):
     TUAN = "tuan"
     TRIET = "triet"
     STAR_STRENGTH = "star_strength"
+    TRANG_SINH_START = "trang_sinh_start"
+    TRANG_SINH_DIRECTION = "trang_sinh_direction"
     MAJOR_CYCLE_DIRECTION = "major_cycle_direction"
     MAJOR_CYCLE_START_AGE = "major_cycle_start_age"
 
@@ -214,11 +216,45 @@ class StarStrengthPolicy(StrEnum):
     UNRESOLVED = UNRESOLVED
 
 
+class TrangSinhStartPolicy(StrEnum):
+    """Which branch vòng Tràng Sinh begins on, given the ngũ hành of the Cục.
+
+    Kim → Tỵ, Mộc → Hợi, Thủy → Thân, Hỏa → Dần are read the same way everywhere.
+    **Thổ is not**, and the two readings move the whole cycle by six branches for
+    every Thổ Ngũ Cục chart, so the choice cannot be left implicit.
+    """
+
+    #: Thổ starts where Thủy does (Thân). The majority reading in Vietnamese texts.
+    CUC_ELEMENT_THO_WITH_THUY = "CUC_ELEMENT_THO_WITH_THUY"
+    #: Thổ starts where Hỏa does (Dần).
+    CUC_ELEMENT_THO_WITH_HOA = "CUC_ELEMENT_THO_WITH_HOA"
+
+
+class TrangSinhDirectionPolicy(StrEnum):
+    """Which way vòng Tràng Sinh runs around the địa bàn.
+
+    The two readings disagree on half of all charts, so this is not a detail.
+    """
+
+    #: Dương nam and âm nữ thuận; âm nam and dương nữ nghịch — the same rule as
+    #: đại vận. The majority reading.
+    YANG_MALE_YIN_FEMALE_FORWARD = "YANG_MALE_YIN_FEMALE_FORWARD"
+    #: Direction taken from the âm dương of the Cục instead of the subject.
+    CUC_POLARITY = "CUC_POLARITY"
+
+
 class MajorCycleDirectionPolicy(StrEnum):
     YANG_MALE_YIN_FEMALE_FORWARD = "YANG_MALE_YIN_FEMALE_FORWARD"
 
 
 class MajorCycleStartAgePolicy(StrEnum):
-    """**Open question Q11** — whether "age" means tuổi ta or completed years."""
+    """Which age the first đại vận starts at.
 
+    The sources agree it is the Cục number. What they do not settle is **what an
+    age counts** — tuổi ta or completed years — which is open question **Q11**.
+    That distinction does not change any number below; it changes how an age maps
+    to a calendar year, which is why lưu niên stays blocked.
+    """
+
+    CUC_NUMBER = "CUC_NUMBER"
     UNRESOLVED = UNRESOLVED

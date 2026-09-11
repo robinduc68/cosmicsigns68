@@ -102,7 +102,7 @@ def test_the_three_policies_do_not_agree_with_each_other() -> None:
             p["branch"]
             for p in chart["palaces"]
             for s in p["major_stars"]
-            if s["code"] == "TU_VI"
+            if s["id"] == "TU_VI"
         )
         results[policy.value] = (
             chart["lunar_birth"]["day"],

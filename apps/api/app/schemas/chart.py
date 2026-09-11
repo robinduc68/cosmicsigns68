@@ -80,6 +80,10 @@ class ChartDetail(ChartSummary):
     note: str | None
     #: Filled in by the router; the ORM row does not carry it.
     recalculation: RecalculationStatus | None = None
+    #: Which payload shape ``chart`` uses. Charts written before the data contract
+    #: was made explicit report 1 and keep their original fields; nothing rewrites
+    #: them in place. A reader must branch on this rather than assume v2 fields.
+    chart_schema_version: int | None = None
     timezone_name: str
     tz_offset: float
     chart: dict[str, Any] = Field(alias="chart_json")

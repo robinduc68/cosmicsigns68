@@ -31,6 +31,16 @@ Trang lá số hiển thị đủ 12 cung từ chart JSON, `noindex` vì là d�
 
 ---
 
+### Phase 4–5 — Engine nền + Renderer
+Lịch âm/dương, tứ trụ, 12 cung, Mệnh/Thân/Cục, Tuần/Triệt, 14 chính tinh, vòng Tràng
+Sinh, đại vận. Hợp đồng dữ liệu lá số đóng băng ở schema v2
+([`chart-data-contract.md`](chart-data-contract.md)). Renderer vẽ đủ lá số truyền
+thống, xuất PNG/PDF ([`chart-renderer.md`](chart-renderer.md)).
+
+**Tất cả ở mức `PROVISIONAL`** — chưa chốt ấn bản chuẩn nên chưa có gì `VERIFIED`.
+
+---
+
 ## ⏭️ Làm tiếp
 
 Ba phase dưới đây đều nằm trong `packages/astrology-engine`. **Không phase nào cần
@@ -53,11 +63,16 @@ frontend đổi cấu trúc** — web chỉ render chart JSON, thêm sao là th�
   → Toàn bộ quy ước và 12 câu hỏi cần chốt nằm ở
   [`astrology-conventions.md`](astrology-conventions.md); quy trình kiểm định ở
   [`astrology-verification.md`](astrology-verification.md).
-  Chạy `make astrology-verification-report` để xem trạng thái hiện hành.
+  Chạy `make astrology-verification-report` để xem trạng thái hiện hành, và
+  `make astrology-star-metadata-report` để xem độ phủ ngũ hành / âm dương của catalog sao.
 - Kiểm định vị trí **14 chính tinh** (hiện ở stage `PREVIEW`, gắn cờ `provisional`,
   UI hiển thị dấu `*` và nói rõ là chưa kiểm định).
 - Phụ tinh: Tứ Hoá, Lộc Tồn, Đào Hoa / Hồng Loan / Thiên Hỷ, Xương Khúc, Tả Hữu,
   Khôi Việt, Kình Đà, Không Kiếp, Hoả Linh, Đại/Tiểu Hao.
+  → **Hợp đồng dữ liệu đã sẵn sàng đón chúng**: model sao đã chuẩn hóa một kiểu duy
+  nhất với `category`, `strength` + `strength_verification`, `provenance`; cung đã có
+  `annual_stars`, `cycles`, `month_number`. Thêm phụ tinh là điền giá trị, không phải
+  đổi hợp đồng. Xem [`chart-data-contract.md`](chart-data-contract.md).
 - Miếu vượng đắc hãm, đại vận, lưu niên.
 - Khi đủ bộ thì nâng stage lên `FULL`, cờ `provisional` tắt, banner trên trang lá số
   tự biến mất.

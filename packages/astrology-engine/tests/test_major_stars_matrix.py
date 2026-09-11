@@ -106,7 +106,7 @@ def test_matrix_covers_the_tu_vi_thien_phu_conjunction_at_both_axes() -> None:
 def test_engine_still_produces_the_recorded_candidate(case: dict[str, Any]) -> None:
     """The fixture must not drift from the engine without someone noticing."""
     chart = _build(case)
-    actual = {s["code"]: p["branch"] for p in chart["palaces"] for s in p["major_stars"]}
+    actual = {s["id"]: p["branch"] for p in chart["palaces"] for s in p["major_stars"]}
     assert actual.keys() == MAJOR_STAR_CODES
     assert actual == case["engine_candidate_stars"], (
         f"{case['id']}: engine đã đổi kết quả. Nếu là sửa có chủ đích thì cập nhật "
@@ -125,7 +125,7 @@ def test_day_one_anchors_match_the_classical_table(case: dict[str, Any]) -> None
     """
     chart = _build(case)
     tu_vi = next(
-        p["branch"] for p in chart["palaces"] for s in p["major_stars"] if s["code"] == "TU_VI"
+        p["branch"] for p in chart["palaces"] for s in p["major_stars"] if s["id"] == "TU_VI"
     )
     assert chart["lunar_birth"]["day"] == 1
     assert tu_vi == case["anchor_tu_vi"]

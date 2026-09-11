@@ -190,7 +190,7 @@ async def fixture_detail(fixture_id: str) -> dict[str, Any]:
         trace = chart["trace"]["steps"]
         expected = record.review.expected_stars or {}
         for palace in chart["palaces"]:
-            engine_stars = [s["code"] for s in palace["major_stars"]]
+            engine_stars = [s["id"] for s in palace["major_stars"]]
             expected_stars = [c for c, branch in expected.items() if branch == palace["branch"]]
             palaces.append(
                 {

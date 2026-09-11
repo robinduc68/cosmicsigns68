@@ -7,6 +7,9 @@ Renderer vẽ lá số **tất định từ chart JSON** của engine. Không d�
 
 ---
 
+> Hình dạng dữ liệu từng tầng — field nào nullable, đã cài, đã kiểm định — nằm ở
+> [`chart-data-contract.md`](chart-data-contract.md). Tài liệu này chỉ nói cách vẽ.
+
 ## 1. Luồng dữ liệu
 
 ```
@@ -70,9 +73,14 @@ Toàn bộ màu khai báo **một chỗ** trong `tuvi-chart.css` (token `--chart
 tên trong `ELEMENT_COLOR_MAP`. Màu ngũ hành đã chỉnh để đạt tối thiểu 4,5 : 1 trên nền giấy.
 
 Ngũ hành **của sao** do engine khai báo (`star.element`, xem
-`cosmic_astrology/stars/metadata.py`). Renderer chỉ đổi `element → màu` và **không bao
-giờ** suy hành từ tên sao. Màu tô cả nhãn — dấu âm/dương, tên, độ sáng — vì hành thuộc
-về cả ngôi sao, không thuộc một chữ nào.
+`cosmic_astrology/stars/catalog.py`). Renderer chỉ đổi `element → class ngữ nghĩa`
+(`is-element-kim`, `is-element-moc`, …, `is-element-none`) và **không bao giờ** suy
+hành từ tên sao. Class phủ cả nhãn — dấu âm/dương, tên, độ sáng — vì hành thuộc về cả
+ngôi sao, không thuộc một chữ nào.
+
+Ánh xạ `element → màu` tồn tại **đúng một chỗ**: sáu quy tắc `.tuvi-star.is-element-*`
+trong `tuvi-chart.css`. `tests/no-star-name-styling.spec.ts` quét mã nguồn renderer và
+sẽ đỏ nếu bất kỳ tên sao hay id sao nào xuất hiện trong đó.
 
 | Nguồn màu | Dùng ở đâu |
 | --- | --- |
@@ -89,6 +97,29 @@ về cả ngôi sao, không thuộc một chữ nào.
 
 Ở môi trường dev, sao thiếu hành được cảnh báo ra console (`[TuVi Renderer] Thiếu
 metadata ngũ hành: …`). Cảnh báo **không** đi vào DOM, nên không lọt vào PNG hay bản in.
+
+---
+
+## 4b. Diễn đạt tiếng Việt
+
+`utils/tuvi-format.ts` là nơi duy nhất quyết định một giá trị được viết ra sao.
+
+| Hàm | Ví dụ |
+| --- | --- |
+| `formatGender` | `FEMALE` → `Nữ` |
+| `formatYinYang` | `(false, FEMALE)` → `Âm Nữ` |
+| `formatPillar` | `{can:'Tân', chi:'Tỵ'}` → `Tân Tỵ` |
+| `formatSolarDate` | → `04/03/2001` |
+| `formatLunarDate` | → `10/02 Tân Tỵ` (có `nhuận` khi cần) |
+| `formatBirthTime` | → `09:30 (giờ Tỵ)` |
+| `formatCuc` | `(MOC, 3)` → `Mộc Tam Cục` |
+| `formatMenhCucRelation` | `(MENH_KHAC_CUC, KIM, MOC)` → `Mệnh Kim khắc Cục Mộc` |
+| `formatAgeRange` | `(6, 15)` → `6 – 15` |
+
+Thứ tự câu trong `formatMenhCucRelation` theo chủ thể: `CUC_SINH_MENH` cho ra
+`Cục Mộc sinh Mệnh Hỏa`, không phải một câu đảo ngược đọc gượng.
+
+Không hàm nào tính tử vi. Trả `null` thì **bỏ dòng**, không thay bằng ký tự giữ chỗ.
 
 ---
 

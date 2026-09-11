@@ -93,13 +93,15 @@ describe('TuViReadingMode', () => {
 describe('TuViStar', () => {
   const base: StarViewModel = {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
-    polarityPrefix: null, ariaLabel: 'Sao thử', strength: null,
-    strengthAbbr: null, provisional: false, isTransformation: false, isAnnual: false,
+    polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
+    strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
+    isAnnual: false, palaceBranch: null, displayPriority: 0,
+    verificationStatus: 'PROVISIONAL', provenance: null,
   }
 
   it('uses neutral ink when the engine declared no element', async () => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: base, major: true } })
-    expect(wrapper.attributes('style')).toContain('var(--chart-text)')
+    expect(wrapper.classes()).toContain('is-element-none')
   })
 
   it('shows a strength abbreviation with its full name when one exists', async () => {
@@ -109,7 +111,7 @@ describe('TuViStar', () => {
     const abbr = wrapper.get('abbr')
     expect(abbr.text()).toBe('(V)')
     expect(abbr.attributes('title')).toBe('Vượng')
-    expect(wrapper.attributes('style')).toContain('var(--chart-hoa)')
+    expect(wrapper.classes()).toContain('is-element-hoa')
   })
 })
 
@@ -152,44 +154,46 @@ describe('12-palace orientation on the grid (golden case Mệnh = Tuất)', () =
 describe('ngũ hành colouring of stars', () => {
   const base: StarViewModel = {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
-    polarityPrefix: null, ariaLabel: 'Sao thử', strength: null,
-    strengthAbbr: null, provisional: false, isTransformation: false, isAnnual: false,
+    polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
+    strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
+    isAnnual: false, palaceBranch: null, displayPriority: 0,
+    verificationStatus: 'PROVISIONAL', provenance: null,
   }
 
   const CASES = [
-    { element: 'KIM', token: 'var(--chart-kim)' },
-    { element: 'MOC', token: 'var(--chart-moc)' },
-    { element: 'THUY', token: 'var(--chart-thuy)' },
-    { element: 'HOA', token: 'var(--chart-hoa)' },
-    { element: 'THO', token: 'var(--chart-tho)' },
+    { element: 'KIM', cssClass: 'is-element-kim' },
+    { element: 'MOC', cssClass: 'is-element-moc' },
+    { element: 'THUY', cssClass: 'is-element-thuy' },
+    { element: 'HOA', cssClass: 'is-element-hoa' },
+    { element: 'THO', cssClass: 'is-element-tho' },
   ] as const
 
-  it.each(CASES)('maps a $element star to its own token', async ({ element, token }) => {
+  it.each(CASES)('maps a $element star to its semantic class', async ({ element, cssClass }) => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: { ...base, element } } })
-    expect(wrapper.attributes('style')).toContain(token)
+    expect(wrapper.classes()).toContain(cssClass)
     // The element also survives as data, so export and tests never depend on colour alone.
     expect(wrapper.attributes('data-element')).toBe(element)
   })
 
-  it('falls back to neutral ink, not to a guessed element', async () => {
+  it('falls back to the neutral class, not to a guessed element', async () => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: base } })
-    expect(wrapper.attributes('style')).toContain('var(--chart-text)')
+    expect(wrapper.classes()).toContain('is-element-none')
     expect(wrapper.attributes('data-element')).toBe('NONE')
-    for (const { token } of CASES) expect(wrapper.attributes('style')).not.toContain(token)
+    for (const { cssClass } of CASES) expect(wrapper.classes()).not.toContain(cssClass)
   })
 
-  it('colours the whole label, not just the strength letter', async () => {
+  it('classes the whole label, not just the strength letter', async () => {
     const star = { ...base, element: 'HOA' as const, strength: 'HAM' as const, strengthAbbr: 'H' }
     const wrapper = await mountSuspended(TuViStar, { props: { star, major: true } })
     // A Hỏa star that is Hãm still reads as Hỏa: strength never overrides the element.
-    expect(wrapper.attributes('style')).toContain('var(--chart-hoa)')
-    expect(wrapper.get('abbr').attributes('style')).toBeUndefined()
+    expect(wrapper.classes()).toContain('is-element-hoa')
+    expect(wrapper.get('abbr').classes()).not.toContain('is-element-hoa')
   })
 
-  it('keeps the element colour on an annual star and differentiates by typography', async () => {
+  it('keeps the element class on an annual star and differentiates by typography', async () => {
     const star = { ...base, element: 'MOC' as const, category: 'ANNUAL' as const, isAnnual: true }
     const wrapper = await mountSuspended(TuViStar, { props: { star } })
-    expect(wrapper.attributes('style')).toContain('var(--chart-moc)')
+    expect(wrapper.classes()).toContain('is-element-moc')
     expect(wrapper.classes()).toContain('is-annual')
   })
 
@@ -202,8 +206,8 @@ describe('ngũ hành colouring of stars', () => {
     })
     expect(yang.text()).toBe('+Sao thử')
     expect(yin.text()).toBe('−Sao thử')
-    // Same element, opposite polarity, identical colour.
-    expect(yang.attributes('style')).toBe(yin.attributes('style'))
+    // Same element, opposite polarity, identical colour class.
+    expect(yang.classes()).toEqual(yin.classes())
   })
 
   it('separates typography from colour across categories', async () => {
@@ -215,7 +219,9 @@ describe('ngũ hành colouring of stars', () => {
     })
     expect(major.classes()).toContain('tuvi-star--major')
     expect(minor.classes()).toContain('tuvi-star--minor')
-    expect(major.attributes('style')).toBe(minor.attributes('style'))
+    // Typography differs, colour does not.
+    expect(major.classes()).toContain('is-element-kim')
+    expect(minor.classes()).toContain('is-element-kim')
   })
 
   it('exposes the element to screen readers so colour is not the only carrier', async () => {

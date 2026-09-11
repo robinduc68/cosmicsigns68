@@ -22,6 +22,11 @@ from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender  # no
 
 OUT = ROOT / "apps/web/fixtures/charts"
 
+#: Pinned so regenerating produces byte-identical files. A wall-clock timestamp
+#: would make every run dirty the working tree and hide real contract changes in
+#: the diff.
+GENERATED_AT = "2026-09-11T00:00:00+00:00"
+
 #: ``(filename, birth, stage)``. Keep the birth data identical when regenerating —
 #: the scenario descriptions and tests refer to these exact charts.
 CASES: tuple[tuple[str, BirthInput, EngineStage], ...] = (
@@ -90,14 +95,17 @@ CASES: tuple[tuple[str, BirthInput, EngineStage], ...] = (
 
 def main() -> int:
     for filename, birth, stage in CASES:
-        payload = build_chart(birth, stage=stage).to_dict()
+        payload = build_chart(birth, stage=stage, generated_at=GENERATED_AT).to_dict()
         target = OUT / filename
         target.write_text(
             json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
         stars = [s for p in payload["palaces"] for s in p["major_stars"]]  # type: ignore[index]
         coloured = sum(1 for s in stars if s["element"])
-        print(f"{filename}: {len(stars)} chính tinh, {coloured} có ngũ hành")
+        print(
+            f"{filename}: schema v{payload['schema_version']}, "
+            f"{len(stars)} chính tinh, {coloured} có ngũ hành"
+        )
     return 0
 
 

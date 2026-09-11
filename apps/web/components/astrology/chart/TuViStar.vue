@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import type { StarViewModel } from '~/types/chart-view-model'
-import { STRENGTH_LABELS, elementColor } from '~/utils/tuvi-chart'
+import { STRENGTH_LABELS, elementClass } from '~/utils/tuvi-chart'
 
 const props = withDefaults(defineProps<{ star: StarViewModel; major?: boolean }>(), {
   major: false,
 })
 
 /**
- * Colour comes only from the element the engine declared; no element, neutral ink.
- * It is applied to the whole label — name, polarity and strength together — because
- * the element belongs to the star, not to one glyph of its name.
+ * Colour is chosen by a semantic class keyed on the element the engine declared;
+ * no element means the neutral class. The class covers the whole label — polarity,
+ * name and strength together — because the element belongs to the star, not to one
+ * glyph of its name. The star's name is never an input to this.
  */
-const color = computed(() => elementColor(props.star.element))
+const elementSelector = computed(() => elementClass(props.star.element))
 const strengthTitle = computed(() =>
   props.star.strength ? STRENGTH_LABELS[props.star.strength] : undefined,
 )
@@ -22,15 +23,16 @@ const strengthTitle = computed(() =>
     class="tuvi-star"
     :class="[
       major ? 'tuvi-star--major' : 'tuvi-star--minor',
+      elementSelector,
       {
         'is-provisional': star.provisional,
         'is-transformation': star.isTransformation,
         'is-annual': star.isAnnual,
       },
     ]"
-    :style="{ color }"
     :data-star="star.code"
     :data-element="star.element ?? 'NONE'"
+    :data-category="star.category"
     :aria-label="star.ariaLabel"
     :title="star.ariaLabel"
     ><span v-if="star.polarityPrefix" class="tuvi-star__polarity" aria-hidden="true">{{

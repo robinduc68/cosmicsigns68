@@ -15,6 +15,9 @@ tứ hoá, đại vận and lưu niên. Those arrive with the full engine (see
 
 from __future__ import annotations
 
+import logging
+from datetime import UTC, datetime
+
 from cosmic_astrology.birth_moment import ResolvedBirthDates, resolve_birth_dates
 from cosmic_astrology.calendar.sexagenary import (
     CAN,
@@ -24,6 +27,13 @@ from cosmic_astrology.calendar.sexagenary import (
     nap_am_element,
     pillars_for_birth,
     sexagenary_index,
+)
+from cosmic_astrology.chart.model import (
+    BirthInformation,
+    PalaceCycles,
+    StarCategory,
+    StarProvenance,
+    VoidMark,
 )
 from cosmic_astrology.chart.types import (
     PALACE_LABELS,
@@ -35,16 +45,28 @@ from cosmic_astrology.chart.types import (
     Gender,
     Palace,
     Star,
-    StarKind,
 )
-from cosmic_astrology.conventions.policies import RuleId, TimezonePolicy
-from cosmic_astrology.conventions.profile import ConventionProfile
+from cosmic_astrology.conventions.policies import (
+    MajorCycleStartAgePolicy,
+    RuleId,
+    TimezonePolicy,
+)
+from cosmic_astrology.conventions.profile import (
+    ConventionProfile,
+    UnresolvedConventionError,
+    validate_convention_profile,
+)
 from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
-from cosmic_astrology.stars.metadata import metadata_for
+from cosmic_astrology.cycles import major_cycle, trang_sinh
+from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
 
 __all__ = ["ENGINE_VERSION", "build_chart", "three_directions_four_positions"]
+
+#: Library-style logger: the engine reports, the host application decides what to
+#: do about it. A missing catalogue entry must never take a chart down.
+_logger = logging.getLogger(__name__)
 
 # 0.2.0: fixes mirrored palace names and the Tý/Sửu palace stems. Charts built by
 # 0.1.0 may carry wrong palace names, Thân cư, and — when Mệnh is in Tý or Sửu — Cục.
@@ -98,24 +120,28 @@ _TRIET_BY_YEAR_CAN: dict[int, tuple[int, int]] = {
 }
 
 # Offsets from cung Tử Vi (counter-clockwise) and cung Thiên Phủ (clockwise).
-_TU_VI_CHAIN: tuple[tuple[str, str, int], ...] = (
-    ("TU_VI", "Tử Vi", 0),
-    ("THIEN_CO", "Thiên Cơ", -1),
-    ("THAI_DUONG", "Thái Dương", -3),
-    ("VU_KHUC", "Vũ Khúc", -4),
-    ("THIEN_DONG", "Thiên Đồng", -5),
-    ("LIEM_TRINH", "Liêm Trinh", -8),
+#
+# Star **ids** only: the name, ngũ hành, âm/dương and category of each star live in
+# ``stars.catalog`` and are looked up from there. A placement rule that also carried
+# display names would be two sources of truth for the same star.
+_TU_VI_CHAIN: tuple[tuple[str, int], ...] = (
+    ("TU_VI", 0),
+    ("THIEN_CO", -1),
+    ("THAI_DUONG", -3),
+    ("VU_KHUC", -4),
+    ("THIEN_DONG", -5),
+    ("LIEM_TRINH", -8),
 )
 
-_THIEN_PHU_CHAIN: tuple[tuple[str, str, int], ...] = (
-    ("THIEN_PHU", "Thiên Phủ", 0),
-    ("THAI_AM", "Thái Âm", 1),
-    ("THAM_LANG", "Tham Lang", 2),
-    ("CU_MON", "Cự Môn", 3),
-    ("THIEN_TUONG", "Thiên Tướng", 4),
-    ("THIEN_LUONG", "Thiên Lương", 5),
-    ("THAT_SAT", "Thất Sát", 6),
-    ("PHA_QUAN", "Phá Quân", 10),
+_THIEN_PHU_CHAIN: tuple[tuple[str, int], ...] = (
+    ("THIEN_PHU", 0),
+    ("THAI_AM", 1),
+    ("THAM_LANG", 2),
+    ("CU_MON", 3),
+    ("THIEN_TUONG", 4),
+    ("THIEN_LUONG", 5),
+    ("THAT_SAT", 6),
+    ("PHA_QUAN", 10),
 )
 
 
@@ -166,6 +192,7 @@ def build_chart(
     *,
     profile: ConventionProfile = COSMIC_SIGNS_STANDARD_V1,
     trace: bool = False,
+    generated_at: str | None = None,
 ) -> Chart:
     """Build a chart from a birth moment under an explicit convention profile.
 
@@ -182,6 +209,9 @@ def build_chart(
 
     log = TraceLog.for_profile(profile) if trace else None
 
+    # Injectable so a fixture can pin it; a chart that restamped itself on every
+    # run would make byte-for-byte fixture comparison impossible.
+    generated_at = generated_at or datetime.now(UTC).isoformat(timespec="seconds")
     tz = resolve_timezone(
         policy=TimezonePolicy(profile.policy(RuleId.TIMEZONE)),
         year=birth.year,
@@ -261,8 +291,18 @@ def build_chart(
                 nap_am=nap_am_name,
                 is_menh=branch == menh_branch,
                 is_than=branch == than_branch,
-                has_tuan=branch in tuan,
-                has_triet=branch in triet,
+                # Same predicate as before; the mark now carries which rule put it
+                # there so a reviewer does not have to read the code to find out.
+                tuan=VoidMark(
+                    present=branch in tuan,
+                    verification=profile.binding(RuleId.TUAN).verification,
+                    source_rule=f"tuan/{profile.binding(RuleId.TUAN).policy}",
+                ),
+                triet=VoidMark(
+                    present=branch in triet,
+                    verification=profile.binding(RuleId.TRIET).verification,
+                    source_rule=f"triet/{profile.binding(RuleId.TRIET).policy}",
+                ),
             )
         )
 
@@ -283,7 +323,18 @@ def build_chart(
                    menh_palace=CHI[menh_branch], nap_am=menh_palace.nap_am)
 
     if stage is EngineStage.PREVIEW:
-        _place_major_stars(by_branch, cuc_number, lunar.day, profile=profile, log=log)
+        _place_major_stars(by_branch, cuc_number, lunar.day, profile=profile, trace_log=log)
+
+    _attach_cycles(
+        by_branch,
+        menh_branch=menh_branch,
+        cuc_number=cuc_number,
+        cuc_element=menh_palace.element,
+        year_is_yang=pillars.year.is_yang,
+        is_male=birth.gender is Gender.MALE,
+        profile=profile,
+        trace_log=log,
+    )
 
     is_yang_year = pillars.year.is_yang
     is_male = birth.gender is Gender.MALE
@@ -298,22 +349,23 @@ def build_chart(
         timezone=tz.to_dict(),
         date_resolution=dates.to_dict(),
         trace=log.to_dict() if log is not None else None,
-        birth={
-            "name": birth.name,
-            "gender": birth.gender.value,
-            "calendar_type": birth.calendar_type.value,
-            "solar": {
-                "day": solar_day,
-                "month": solar_month,
-                "year": solar_year,
-                "hour": birth.hour,
-                "minute": birth.minute,
-            },
-            "birth_place": birth.birth_place,
-            "tz_offset": tz_offset,
-            "hour_branch": CHI[hour_chi],
-            "hour_branch_index": hour_chi,
-        },
+        generated_at=generated_at,
+        production_ready=validate_convention_profile(profile).production_ready,
+        birth=BirthInformation(
+            full_name=birth.name,
+            gender=birth.gender.value,
+            calendar_type=birth.calendar_type.value,
+            solar_day=solar_day,
+            solar_month=solar_month,
+            solar_year=solar_year,
+            hour=birth.hour,
+            minute=birth.minute,
+            hour_branch=CHI[hour_chi],
+            hour_branch_index=hour_chi,
+            historical_utc_offset=tz_offset,
+            timezone_id=birth.timezone_id,
+            birth_place=birth.birth_place,
+        ),
         lunar_birth={
             "day": lunar.day,
             "month": lunar.month,
@@ -354,20 +406,138 @@ def build_chart(
     )
 
 
-def _major_star(code: str, label: str) -> Star:
-    """A chính tinh with its catalogued ngũ hành attached.
+def _placed_star(star_id: str, branch: str, *, profile: ConventionProfile) -> Star:
+    """A placed star, with its catalogue entry attached.
 
-    Metadata is looked up, never derived: a star whose element the schools dispute
-    comes back with ``element=None`` and is drawn in neutral ink downstream.
+    Everything about *what* the star is comes from the catalogue; this function
+    only knows *where* it landed. A star the catalogue has never heard of still
+    gets placed — losing a placement over missing display metadata would be worse
+    than rendering it plainly — but it is logged, and it carries no invented
+    element. ``strength`` stays ``None``: the miếu/vượng table is not implemented.
     """
-    meta = metadata_for(code)
+    definition = definition_for(star_id)
+    if definition is None:
+        # A programming error, not a user's problem: a placement rule has named a
+        # star nobody catalogued. Tests fail on it; production carries on.
+        _logger.warning(
+            "Sao %r được an nhưng chưa có trong catalog — vẽ bằng tên id và không có "
+            "ngũ hành. Thêm mục vào cosmic_astrology/stars/catalog.py.",
+            star_id,
+        )
+    binding = profile.binding(RuleId.MAJOR_STARS)
     return Star(
-        code=code,
-        label=label,
-        kind=StarKind.MAJOR,
-        provisional=True,
-        element=meta.element if meta else None,
-        polarity=meta.polarity if meta else None,
+        id=star_id,
+        name=definition.vietnamese_name if definition else star_id,
+        category=definition.category if definition else StarCategory.OTHER,
+        element=definition.element if definition else None,
+        polarity=definition.polarity if definition else None,
+        palace_branch=branch,
+        provenance=StarProvenance(
+            rule=f"{RuleId.MAJOR_STARS.value}/{binding.policy}",
+            verification=binding.verification,
+            blocked_by=binding.blocked_by,
+            note=binding.note,
+        ),
+    )
+
+
+def _attach_cycles(
+    by_branch: dict[int, Palace],
+    *,
+    menh_branch: int,
+    cuc_number: int,
+    cuc_element: Element,
+    year_is_yang: bool,
+    is_male: bool,
+    profile: ConventionProfile,
+    trace_log: TraceLog | None = None,
+) -> None:
+    """Lay vòng Tràng Sinh and đại vận onto the twelve palaces.
+
+    Both are laid on **branches**, not on palace names. The twelve palace names are
+    fixed by ``PALACE_ORDER`` and never reverse; only the đại vận walk has a
+    direction. Keeping the two apart is what this function is careful about.
+    """
+    trang_sinh_start = profile.binding(RuleId.TRANG_SINH_START)
+    trang_sinh_dir = profile.binding(RuleId.TRANG_SINH_DIRECTION)
+    cycle_dir = profile.binding(RuleId.MAJOR_CYCLE_DIRECTION)
+    start_age = profile.binding(RuleId.MAJOR_CYCLE_START_AGE)
+
+    # Cục số is odd for Thủy/Mộc/Hỏa cục (2, 3, 6 → …) — the polarity used by the
+    # alternative direction policy. Computed here so the policy module stays free
+    # of chart concepts.
+    cuc_is_yang = cuc_number % 2 == 0
+
+    start = trang_sinh.start_branch(cuc_element, policy=trang_sinh_start.policy)
+    forward_ts = trang_sinh.runs_forward(
+        year_is_yang=year_is_yang,
+        is_male=is_male,
+        cuc_is_yang=cuc_is_yang,
+        policy=trang_sinh_dir.policy,
+    )
+    stages = trang_sinh.stage_by_branch(start, forward=forward_ts)
+
+    forward_dv = major_cycle.runs_forward(
+        year_is_yang=year_is_yang, is_male=is_male, policy=cycle_dir.policy
+    )
+    if start_age.policy != MajorCycleStartAgePolicy.CUC_NUMBER.value:
+        raise UnresolvedConventionError(
+            "Chưa chốt tuổi khởi đại vận, nên không dựng được dãy đại vận."
+        )
+    cycles = major_cycle.major_cycles(
+        menh_branch=menh_branch, cuc_number=cuc_number, forward=forward_dv
+    )
+    direction_label = "FORWARD" if forward_dv else "BACKWARD"
+
+    for cycle in cycles:
+        palace = by_branch[cycle.branch_index]
+        palace.cycles = PalaceCycles(
+            major_cycle_age_start=cycle.age_start,
+            major_cycle_age_end=cycle.age_end,
+            major_cycle_index=cycle.index,
+            major_cycle_direction=direction_label,
+            trang_sinh_stage=stages[cycle.branch_index],
+        )
+
+    if trace_log is None:
+        return
+    polarity = "dương" if year_is_yang else "âm"
+    gender = "nam" if is_male else "nữ"
+    trace_log.record(
+        profile,
+        RuleId.TRANG_SINH_START,
+        f"Tràng Sinh tại {CHI[start]}",
+        cuc=f"{cuc_element.value} {cuc_number}",
+        bang="ngũ hành cục → địa chi khởi",
+    )
+    trace_log.record(
+        profile,
+        RuleId.TRANG_SINH_DIRECTION,
+        "thuận" if forward_ts else "nghịch",
+        nam_sinh=polarity,
+        gioi_tinh=gender,
+        cuc_am_duong="dương" if cuc_is_yang else "âm",
+        # Spelled out so "why is this palace Đế Vượng?" is answered by reading the
+        # trace, rather than by re-deriving the walk from the start and direction.
+        chuoi=" → ".join(
+            f"{CHI[(start + (1 if forward_ts else -1) * i) % 12]}:{stage}"
+            for i, stage in enumerate(trang_sinh.TRANG_SINH_STAGES)
+        ),
+    )
+    trace_log.record(
+        profile,
+        RuleId.MAJOR_CYCLE_DIRECTION,
+        "thuận" if forward_dv else "nghịch",
+        nam_sinh=polarity,
+        gioi_tinh=gender,
+        luu_y="tên 12 cung không đảo theo chiều này",
+    )
+    trace_log.record(
+        profile,
+        RuleId.MAJOR_CYCLE_START_AGE,
+        f"đại vận 1: {cycles[0].age_start}–{cycles[0].age_end} tuổi tại {CHI[menh_branch]}",
+        cuc_so=cuc_number,
+        moi_cung=f"{major_cycle.PALACE_SPAN_YEARS} năm",
     )
 
 
@@ -377,23 +547,25 @@ def _place_major_stars(
     lunar_day: int,
     *,
     profile: ConventionProfile,
-    log: TraceLog | None = None,
+    trace_log: TraceLog | None = None,
 ) -> None:
     """Place the 14 chính tinh (PREVIEW stage only, not yet reference-tested)."""
     tu_vi = _tu_vi_branch(cuc_number, lunar_day)
     thien_phu = (4 - tu_vi) % 12
-    if log is not None:
-        log.record(profile, RuleId.TU_VI_PLACEMENT, CHI[tu_vi],
-                   cuc=cuc_number, lunar_day=lunar_day)
-    for code, label, offset in _TU_VI_CHAIN:
+    if trace_log is not None:
+        trace_log.record(profile, RuleId.TU_VI_PLACEMENT, CHI[tu_vi],
+                         cuc=cuc_number, lunar_day=lunar_day)
+    for star_id, offset in _TU_VI_CHAIN:
         branch = (tu_vi + offset) % 12
-        by_branch[branch].stars.append(_major_star(code, label))
-        if log is not None:
-            log.record(profile, RuleId.MAJOR_STARS, f"{label} → {CHI[branch]}",
-                       chain="Tử Vi", anchor=CHI[tu_vi], offset=offset)
-    for code, label, offset in _THIEN_PHU_CHAIN:
+        star = _placed_star(star_id, CHI[branch], profile=profile)
+        by_branch[branch].stars.append(star)
+        if trace_log is not None:
+            trace_log.record(profile, RuleId.MAJOR_STARS, f"{star.name} → {CHI[branch]}",
+                             chain="Tử Vi", anchor=CHI[tu_vi], offset=offset)
+    for star_id, offset in _THIEN_PHU_CHAIN:
         branch = (thien_phu + offset) % 12
-        by_branch[branch].stars.append(_major_star(code, label))
-        if log is not None:
-            log.record(profile, RuleId.MAJOR_STARS, f"{label} → {CHI[branch]}",
-                       chain="Thiên Phủ", anchor=CHI[thien_phu], offset=offset)
+        star = _placed_star(star_id, CHI[branch], profile=profile)
+        by_branch[branch].stars.append(star)
+        if trace_log is not None:
+            trace_log.record(profile, RuleId.MAJOR_STARS, f"{star.name} → {CHI[branch]}",
+                             chain="Thiên Phủ", anchor=CHI[thien_phu], offset=offset)

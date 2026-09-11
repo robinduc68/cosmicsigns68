@@ -1,4 +1,15 @@
-import type { ElementCode, StarStrength } from '@cosmic/shared'
+import type {
+  ChartIdentity,
+  ChartPalaceCycles,
+  ChartTraditionalMetadata,
+  ElementCode,
+  StarCategory,
+  StarProvenance,
+  StarStrength,
+  VerificationStatus,
+} from '@cosmic/shared'
+
+export type { StarCategory }
 
 /**
  * Visual model of a Tử Vi chart.
@@ -9,13 +20,6 @@ import type { ElementCode, StarStrength } from '@cosmic/shared'
  * produce yet is `null`, and the renderer leaves it out.
  */
 
-export type StarCategory =
-  | 'MAJOR'
-  | 'TRANSFORMATION'
-  | 'SUPPORTING'
-  | 'MALEFIC'
-  | 'MINOR'
-  | 'ANNUAL'
 
 export interface StarViewModel {
   code: string
@@ -32,9 +36,18 @@ export interface StarViewModel {
   /** `null` when the engine sent no strength; the abbreviation is then omitted. */
   strength: StarStrength | null
   strengthAbbr: string | null
+  /** Set exactly when `strength` is; unknown is never presented as verified. */
+  strengthVerification: VerificationStatus | null
   provisional: boolean
+  isMajor: boolean
   isTransformation: boolean
   isAnnual: boolean
+  /** Địa chi the engine placed this star on. `null` on schema v1 payloads. */
+  palaceBranch: string | null
+  /** Engine-supplied ordering; falls back to a local table for schema v1. */
+  displayPriority: number
+  verificationStatus: VerificationStatus
+  provenance: StarProvenance | null
 }
 
 export interface PalaceViewModel {
@@ -57,8 +70,12 @@ export interface PalaceViewModel {
   isEmptyMainStar: boolean
   majorStars: StarViewModel[]
   minorStars: StarViewModel[]
-  /** Not produced by the engine yet — rendered only once present. */
-  majorCycleAge: number | null
+  /** Position of this palace name in the classical sequence from Mệnh (0-11). */
+  palaceIndex: number | null
+  /** Đại vận / lưu niên / Tràng Sinh. Every field is `null` today. */
+  cycles: ChartPalaceCycles | null
+  /** Đại vận age span, e.g. `"6 – 15"`. `null` until đại vận is implemented. */
+  majorCycleAge: string | null
   monthNumber: number | null
   lifeStage: string | null
   majorCycleRef: string | null
@@ -96,10 +113,19 @@ export interface ConnectionViewModel {
 
 export interface CenterFieldViewModel {
   label: string
-  value: string
+  /**
+   * `null` when the engine does not supply this field. The renderer omits the line;
+   * it is never shown as `"—"`, `"Không rõ"` or a zero, which would read as data.
+   */
+  value: string | null
   secondary: string | null
   /** Set only on fields whose value *is* an element name (bản mệnh, cục). */
   element: ElementCode | null
+  /**
+   * True for a field the chart is expected to carry one day but does not yet.
+   * Lets a development view list what is missing without inventing content for it.
+   */
+  pending: boolean
 }
 
 export interface ChartMetaViewModel {
@@ -121,6 +147,12 @@ export interface ChartViewModel {
   voidMarkers: VoidMarkerViewModel[]
   connections: ConnectionViewModel[]
   meta: ChartMetaViewModel
+  /** Which engine and rulebook produced this chart. `null` on schema v1. */
+  identity: ChartIdentity | null
+  /** Traditional fields the engine does not compute. All `null` today. */
+  traditional: ChartTraditionalMetadata | null
+  /** 1 for charts persisted before the data contract, 2 afterwards. */
+  schemaVersion: number
   warnings: string[]
 }
 

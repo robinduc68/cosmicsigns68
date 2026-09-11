@@ -10,7 +10,10 @@ import TuViVoidMarker from './TuViVoidMarker.vue'
  * by the địa bàn, and every size is in canvas pixels. Screen, print and PNG
  * export all render this same element and scale it from outside.
  */
-const props = defineProps<{ model: ChartViewModel }>()
+const props = withDefaults(
+  defineProps<{ model: ChartViewModel; showPendingFields?: boolean }>(),
+  { showPendingFields: false },
+)
 
 const root = ref<HTMLElement | null>(null)
 defineExpose({ root })
@@ -36,7 +39,11 @@ const subjectName = computed(
           :style="{ gridRow: String(cell.row), gridColumn: String(cell.col) }"
         />
       </template>
-      <TuViCenter :center="model.center" :connections="model.connections" />
+      <TuViCenter
+        :center="model.center"
+        :connections="model.connections"
+        :show-pending-fields="showPendingFields"
+      />
       <TuViVoidMarker v-for="marker in model.voidMarkers" :key="marker.kind" :marker="marker" />
     </div>
     <TuViChartLegend :meta="model.meta" />

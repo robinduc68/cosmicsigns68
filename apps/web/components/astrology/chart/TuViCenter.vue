@@ -3,7 +3,23 @@ import { elementColor } from '~/utils/tuvi-chart'
 import type { ChartViewModel, ConnectionViewModel } from '~/types/chart-view-model'
 import TuViChartConnections from './TuViChartConnections.vue'
 
-defineProps<{ center: ChartViewModel['center']; connections: ConnectionViewModel[] }>()
+const props = withDefaults(
+  defineProps<{
+    center: ChartViewModel['center']
+    connections: ConnectionViewModel[]
+    /**
+     * Internal development views only. Lists the fields the chart does not carry
+     * yet, so a gap is visible while building. A customer chart omits those lines
+     * entirely rather than showing a dash or a zero in their place.
+     */
+    showPendingFields?: boolean
+  }>(),
+  { showPendingFields: false },
+)
+
+const fields = computed(() =>
+  props.center.fields.filter((entry) => entry.value !== null || props.showPendingFields),
+)
 
 // Twelve ticks for the twelve palaces — geometry for the watermark, nothing more.
 // Rounded: Math.sin/cos can differ in the last digit between the server (Node) and
@@ -52,13 +68,17 @@ const TICKS = Array.from({ length: 12 }, (_, i) => {
       <h2 class="tuvi-center__title">{{ center.title }}</h2>
       <div class="tuvi-center__rule" aria-hidden="true" />
       <dl class="tuvi-center__fields">
-        <template v-for="entry in center.fields" :key="entry.label">
+        <template v-for="entry in fields" :key="entry.label">
           <dt>{{ entry.label }}</dt>
           <dd>
             <!-- Only a value that *is* an element name takes its colour. -->
-            <span :style="entry.element ? { color: elementColor(entry.element) } : undefined">{{
-              entry.value
-            }}</span>
+            <span
+              v-if="entry.value !== null"
+              :style="entry.element ? { color: elementColor(entry.element) } : undefined"
+              >{{ entry.value }}</span
+            >
+            <!-- Development only: names the gap instead of filling it. -->
+            <span v-else class="tuvi-center__pending" data-pending>chưa có dữ liệu</span>
             <span v-if="entry.secondary" class="tuvi-center__secondary">{{ entry.secondary }}</span>
           </dd>
         </template>

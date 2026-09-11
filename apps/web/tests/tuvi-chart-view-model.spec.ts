@@ -31,7 +31,7 @@ describe('mapChartDtoToViewModel', () => {
     const chart = real()
     const vm = mapChartDtoToViewModel(chart)
     const mapped = vm.palaces.flatMap((p) => p.majorStars.map((s) => `${s.code}@${p.branch}`))
-    const engine = chart.palaces.flatMap((p) => p.major_stars.map((s) => `${s.code}@${p.branch}`))
+    const engine = chart.palaces.flatMap((p) => p.major_stars.map((s) => `${s.id}@${p.branch}`))
     expect(mapped.sort()).toEqual(engine.sort())
   })
 
@@ -106,15 +106,22 @@ describe('mapChartDtoToViewModel', () => {
     expect(opposite).toEqual([expect.objectContaining({ from: d.self, to: d.opposite })])
   })
 
-  it('lists only centre fields that exist and invents none', () => {
+  it('reports a missing centre field as null rather than inventing one', () => {
     const chart = real()
     chart.birth.name = ''
-    const labels = mapChartDtoToViewModel(chart).center.fields.map((f) => f.label)
-    expect(labels).not.toContain('Họ tên')
-    for (const notProduced of ['Chủ mệnh', 'Chủ thân', 'Năm xem', 'Cân lượng']) {
-      expect(labels).not.toContain(notProduced)
+    const fields = mapChartDtoToViewModel(chart).center.fields
+    const byLabel = new Map(fields.map((f) => [f.label, f]))
+
+    // The row survives with no value; the renderer is what omits the line.
+    expect(byLabel.get('Họ tên')?.value).toBeNull()
+    // Nothing the engine does not compute is given a stand-in value.
+    for (const notProduced of ['Chủ Mệnh', 'Chủ Thân', 'Năm xem', 'Cân lượng', 'Tuổi xem']) {
+      const field = byLabel.get(notProduced)
+      expect(field, notProduced).toBeDefined()
+      expect(field!.value, notProduced).toBeNull()
+      expect(field!.pending, notProduced).toBe(true)
     }
-    expect(labels).toContain('Cục')
+    expect(byLabel.get('Cục')?.value).toBeTruthy()
   })
 
   it('does not print "Vô chính diệu" on a chart whose stars were never placed', () => {

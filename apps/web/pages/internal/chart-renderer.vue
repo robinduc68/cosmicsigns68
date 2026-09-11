@@ -33,6 +33,7 @@ const current = computed(
   () => CHART_RENDERER_SCENARIOS.find((entry) => entry.id === scenarioId.value) ?? first,
 )
 const model = useTuViChartViewModel(() => current.value.chart)
+const showPendingFields = ref(false)
 const initialMode = computed<ChartViewMode | undefined>(() => {
   const requested = route.query.mode
   return requested === 'overview' || requested === 'reading' ? requested : undefined
@@ -82,6 +83,11 @@ onMounted(() => {
       cho khách.
     </div>
 
+    <label class="mt-6 flex items-center gap-2 text-small text-[var(--text-muted)]">
+      <input v-model="showPendingFields" type="checkbox" class="size-4" >
+      Hiện các trường trung tâm chưa có dữ liệu (chỉ nội bộ — lá số của khách bỏ hẳn dòng)
+    </label>
+
     <div class="mt-6">
       <TuViChart
         v-if="model"
@@ -90,6 +96,7 @@ onMounted(() => {
         file-slug="demo"
         :export-date="EXPORT_DATE"
         :initial-mode="initialMode"
+        :show-pending-fields="showPendingFields"
       />
     </div>
   </CsContainer>

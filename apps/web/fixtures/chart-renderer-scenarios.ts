@@ -2,9 +2,11 @@ import type {
   ChartPayload,
   ChartStar,
   ElementCode,
+  StarCategory,
   StarStrength,
   YinYangPolarity,
 } from '@cosmic/shared'
+import { STAR_CATEGORY_PRIORITY } from '~/utils/tuvi-chart'
 import atSuu1985 from './charts/at-suu-1985.preview.json'
 import crossCheckFrame from './charts/cross-check-2001.frame.json'
 import crossCheckPreview from './charts/cross-check-2001.preview.json'
@@ -32,12 +34,57 @@ const asChart = (json: unknown) => json as ChartPayload
 const clone = (chart: ChartPayload): ChartPayload => structuredClone(chart)
 
 function demoStar(
-  code: string,
-  label: string,
+  id: string,
+  name: string,
   element: ElementCode | null = null,
   polarity: YinYangPolarity | null = null,
+  category: StarCategory = 'OTHER',
 ): ChartStar {
-  return { code, label, kind: 'MINOR', strength: null, provisional: true, element, polarity }
+  return {
+    id,
+    name,
+    category,
+    element,
+    polarity,
+    strength: null,
+    strength_verification: null,
+    palace_branch: null,
+    is_major: category === 'MAJOR',
+    is_annual: category === 'ANNUAL',
+    is_transformation: category === 'TRANSFORMATION',
+    display_priority: STAR_CATEGORY_PRIORITY[category],
+    verification_status: 'UNVERIFIED',
+    provenance: null,
+    provisional: true,
+  }
+}
+
+/**
+ * One openly fake star per category, so the normalized star model can be seen
+ * iterating and ordering consistently.
+ *
+ * Categories are assigned by this fixture, never by the engine — the engine places
+ * only chính tinh today. `strength` stays `null` everywhere: the miếu/vượng table
+ * is not implemented, and a fixture is not a licence to invent one.
+ */
+function withEveryStarCategory(base: ChartPayload): ChartPayload {
+  const chart = clone(base)
+  const menh = chart.palaces.find((palace) => palace.is_menh) ?? chart.palaces[0]
+  if (!menh) throw new Error('Lá số nền không có cung nào')
+  const categories: StarCategory[] = [
+    'SUPPORTING',
+    'MALEFIC',
+    'LITERARY',
+    'ROMANCE',
+    'WEALTH',
+    'OTHER',
+  ]
+  menh.minor_stars = categories.map((category) =>
+    demoStar(`CAT_${category}`, `${category} mẫu`, null, null, category),
+  )
+  menh.transformations = [demoStar('CAT_HOA', 'Hóa mẫu', null, null, 'TRANSFORMATION')]
+  menh.annual_stars = [demoStar('CAT_LUU', 'L.Lưu mẫu', null, null, 'ANNUAL')]
+  return chart
 }
 
 /**
@@ -60,18 +107,24 @@ function withFiveElementPalette(base: ChartPayload): ChartPayload {
   ]
   const menh = chart.palaces.find((palace) => palace.is_menh) ?? chart.palaces[0]
   if (!menh) throw new Error('Lá số nền không có cung nào')
-  menh.minor_stars = palette.map(([label, element, polarity, strength], i) => ({
-    ...demoStar(`PALETTE_${i}`, label, element, polarity),
+  // The strengths below are the fixture's own invention, which is why each one
+  // carries UNVERIFIED: the miếu/vượng table is not implemented, and the shape
+  // "value + verification" is what stops a demo value being read as a real one.
+  const withStrength = (star: ChartStar, strength: StarStrength | null): ChartStar => ({
+    ...star,
     strength,
-  }))
+    strength_verification: strength ? 'UNVERIFIED' : null,
+  })
+
+  menh.minor_stars = palette.map(([label, element, polarity, strength], i) =>
+    withStrength(demoStar(`PALETTE_${i}`, label, element, polarity), strength),
+  )
   // A second copy as major stars, to show the typography split at the same colours.
   menh.major_stars = [
     ...menh.major_stars,
-    ...palette.map(([label, element, polarity, strength], i) => ({
-      ...demoStar(`PALETTE_MAJOR_${i}`, label, element, polarity),
-      kind: 'MAJOR' as const,
-      strength,
-    })),
+    ...palette.map(([label, element, polarity, strength], i) =>
+      withStrength(demoStar(`PALETTE_MAJOR_${i}`, label, element, polarity, 'MAJOR'), strength),
+    ),
   ]
   return chart
 }
@@ -135,9 +188,11 @@ export const CHART_RENDERER_SCENARIOS: ChartRendererScenario[] = [
   {
     id: 'dense-demo',
     label: 'GIẢ — nhiều sao',
-    description: 'Thêm 20 "Sao mẫu" mỗi cung, gần sức chứa. Không phải tử vi.',
+    // 18, not 20: every palace now carries a đại vận / Tràng Sinh footer, which
+    // costs 30px of star space. "Gần sức chứa" has to track that.
+    description: 'Thêm 18 "Sao mẫu" mỗi cung, gần sức chứa. Không phải tử vi.',
     synthetic: true,
-    chart: withDemoMinorStars(crossCheck, 20, (i) => `Sao mẫu ${i + 1}`),
+    chart: withDemoMinorStars(crossCheck, 18, (i) => `Sao mẫu ${i + 1}`),
   },
   {
     id: 'overflow-demo',
@@ -161,6 +216,15 @@ export const CHART_RENDERER_SCENARIOS: ChartRendererScenario[] = [
       'Dùng để đối chiếu màu; hành do fixture gán, không phải engine. Không phải tử vi.',
     synthetic: true,
     chart: withFiveElementPalette(crossCheck),
+  },
+  {
+    id: 'star-categories-demo',
+    label: 'GIẢ — đủ 9 loại sao',
+    description:
+      'Mỗi loại sao một ngôi mẫu trong cung Mệnh, để thấy model sao chuẩn hóa được ' +
+      'duyệt và sắp thứ tự thống nhất. Loại do fixture gán, không phải engine. Không phải tử vi.',
+    synthetic: true,
+    chart: withEveryStarCategory(crossCheck),
   },
   {
     id: 'authoritative-demo',

@@ -21,9 +21,14 @@ router = APIRouter(prefix="/charts", tags=["charts"])
 
 
 def _detail(chart: Chart, service: ChartService) -> dict[str, Any]:
-    """Chart detail plus whether it would be computed differently today."""
+    """Chart detail, plus how to read it: schema shape and staleness.
+
+    Both extras are computed, never stored, so a persisted row is served exactly
+    as it was written.
+    """
     payload = ChartDetail.model_validate(chart, from_attributes=True).model_dump(mode="json")
     payload["recalculation"] = service.recalculation_status(chart).to_dict()
+    payload["chart_schema_version"] = service.schema_version(chart)
     return payload
 
 
