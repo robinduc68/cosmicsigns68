@@ -120,6 +120,23 @@ async function remove() {
       </div>
     </header>
 
+    <!-- Lá số cũ vẫn hiện đúng như lúc lập. Không tự tính lại: người xem quyết. -->
+    <CsCard
+      v-if="chart.recalculation?.needed"
+      class="mt-6 border-[var(--color-gold-400)]/50"
+    >
+      <p class="text-small font-medium text-[var(--text)]">
+        Lá số này lập bằng phiên bản engine cũ
+      </p>
+      <p class="mt-1.5 text-caption text-[var(--text-muted)]">
+        {{ chart.recalculation.reason }} Cụ thể, engine 0.1.0 gắn <strong>tên 12 cung</strong>
+        theo chiều ngược, nên các cặp như Phu Thê ↔ Phúc Đức, Tài Bạch ↔ Quan Lộc bị đổi
+        chỗ cho nhau (Mệnh và Thiên Di vẫn đúng). Vị trí sao theo địa chi thì không sai.
+        Mình không tự sửa lá số đã lưu — bạn lập lại để có bản đúng nhé.
+      </p>
+      <CsButton to="/lap-la-so" size="sm" class="mt-4">Lập lại lá số</CsButton>
+    </CsCard>
+
     <CsCard v-if="payload.engine.stage !== 'FULL'" class="mt-6">
       <p class="text-small font-medium text-[var(--text)]">Lá số này chưa đầy đủ</p>
       <p class="mt-1.5 text-caption text-[var(--text-muted)]">

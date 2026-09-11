@@ -1,0 +1,52 @@
+{
+  "_README": "Bất biến NỀN TẢNG cho thứ tự 12 cung. Kỳ vọng dưới đây suy từ định nghĩa (Mệnh → Huynh Đệ → Phu Thê → … đi nghịch chiều địa chi), KHÔNG sinh ra từ engine. Fixture này độc lập với ma trận kiểm định 14 chính tinh và không chờ Q1/Q2/Q3: trình tự 12 cung không phải điểm tranh chấp giữa các trường phái.",
+  "id": "PALACE_ORDER_MENH_TUAT",
+  "rule": "palace_order",
+  "authoritative": true,
+  "sequence": [
+    "MENH", "HUYNH_DE", "PHU_THE", "TU_TUC", "TAI_BACH", "TAT_ACH",
+    "THIEN_DI", "NO_BOC", "QUAN_LOC", "DIEN_TRACH", "PHUC_DUC", "PHU_MAU"
+  ],
+  "branches": ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"],
+  "menh_branch": "Tuất",
+  "birth": {
+    "comment": "Âm nữ, 04/03/2001 dương lịch 09:30 — Mệnh an tại Tuất.",
+    "calendar": "SOLAR",
+    "day": 4,
+    "month": 3,
+    "year": 2001,
+    "hour": 9,
+    "minute": 30,
+    "gender": "FEMALE",
+    "timezone_id": "Asia/Ho_Chi_Minh"
+  },
+  "expected": {
+    "Tuất": "MENH",
+    "Dậu": "HUYNH_DE",
+    "Thân": "PHU_THE",
+    "Mùi": "TU_TUC",
+    "Ngọ": "TAI_BACH",
+    "Tỵ": "TAT_ACH",
+    "Thìn": "THIEN_DI",
+    "Mão": "NO_BOC",
+    "Dần": "QUAN_LOC",
+    "Sửu": "DIEN_TRACH",
+    "Tý": "PHUC_DUC",
+    "Hợi": "PHU_MAU"
+  },
+  "wrong_mirrored_pattern": {
+    "_README": "Kết quả nếu đi TỚI thay vì đi LÙI — lỗi đã xảy ra thật ở engine 0.1.0. Giữ lại để test chặn nó quay lại.",
+    "Tuất": "MENH",
+    "Hợi": "HUYNH_DE",
+    "Tý": "PHU_THE",
+    "Sửu": "TU_TUC",
+    "Dần": "TAI_BACH",
+    "Mão": "TAT_ACH",
+    "Thìn": "THIEN_DI",
+    "Tỵ": "NO_BOC",
+    "Ngọ": "QUAN_LOC",
+    "Mùi": "DIEN_TRACH",
+    "Thân": "PHUC_DUC",
+    "Dậu": "PHU_MAU"
+  }
+}

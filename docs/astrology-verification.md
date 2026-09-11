@@ -43,6 +43,15 @@ khi thứ đang thiếu là một quyết định chứ không phải công sứ
 
 File: `packages/astrology-engine/tests/fixtures/major_stars_matrix.json`
 
+> **Bất biến nền tảng nằm riêng.** `fixtures/palace_order.json`
+> (`PALACE_ORDER_MENH_TUAT`) giữ thứ tự 12 cung và **không** đi qua quy trình duyệt của
+> ma trận 14 chính tinh: trình tự Mệnh → Huynh Đệ → Phu Thê → … không phải điểm tranh
+> chấp giữa các trường phái, nên nó là bất biến kiểm được bằng định nghĩa, không phải
+> giá trị chờ người duyệt. Kỳ vọng trong file suy từ định nghĩa và được test đối chiếu
+> lại với chính định nghĩa đó, nên không thể vô tình sinh ra từ engine. File còn lưu
+> `wrong_mirrored_pattern` — đúng kết quả sai của engine 0.1.0 — để chặn lỗi quay lại,
+> vì lật gương giữ Mệnh và Thiên Di đúng chỗ và rất dễ lọt qua mắt.
+
 ### Ba khối, đừng nhầm
 
 | Khối | Ai điền | Ý nghĩa |

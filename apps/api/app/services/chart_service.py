@@ -9,8 +9,16 @@ from __future__ import annotations
 import uuid
 from collections.abc import Sequence
 
-from cosmic_astrology import BirthInput, UnresolvedConventionError, build_chart
+from cosmic_astrology import (
+    COSMIC_SIGNS_STANDARD_V1,
+    ENGINE_VERSION,
+    BirthInput,
+    UnresolvedConventionError,
+    build_chart,
+    needs_recalculation,
+)
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
+from cosmic_astrology.conventions.profile import RecalculationCheck
 
 from app.core.config import get_settings
 from app.core.errors import ChartCalculationError, NotFoundError, UnresolvedConventionApiError
@@ -95,6 +103,21 @@ class ChartService:
             convention_version=saved.convention_version,
         )
         return saved
+
+    def recalculation_status(self, chart: Chart) -> RecalculationCheck:
+        """Whether a stored chart would come out differently if built today.
+
+        Read-only on purpose. A chart someone has already been shown — and may have
+        paid for — is never rewritten underneath them; the answer is surfaced so the
+        decision to rebuild stays with a person.
+        """
+        return needs_recalculation(
+            chart.convention_profile,
+            chart.convention_version,
+            COSMIC_SIGNS_STANDARD_V1,
+            stored_engine_version=chart.engine_version,
+            current_engine_version=ENGINE_VERSION,
+        )
 
     async def get(self, chart_id: uuid.UUID) -> Chart:
         chart = await self._repository.get(chart_id)

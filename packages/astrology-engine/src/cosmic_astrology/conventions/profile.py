@@ -91,7 +91,8 @@ class ConventionProfile:
         missing = [r.value for r in RuleId if r not in self.rules]
         if missing:
             raise ValueError(
-                "Hồ sơ quy ước thiếu quy tắc: " + ", ".join(sorted(missing))
+                "Hồ sơ quy ước thiếu quy tắc: "
+                + ", ".join(sorted(missing))
                 + ". Mọi quy tắc phụ thuộc trường phái đều phải được nêu tên."
             )
         for rule_id, binding in self.rules.items():
@@ -221,8 +222,16 @@ def needs_recalculation(
     stored_profile: str | None,
     stored_version: str | None,
     current: ConventionProfile,
+    *,
+    stored_engine_version: str | None = None,
+    current_engine_version: str | None = None,
 ) -> RecalculationCheck:
-    """Whether a stored chart predates the conventions now in force.
+    """Whether a stored chart predates the conventions or the engine now in force.
+
+    The engine version matters as much as the profile: a calculation bug fix keeps
+    the same rules but changes the answer, and the charts already on disk keep the
+    old one. Both versions are passed in rather than imported, so this module stays
+    free of any dependency on the calculation layer.
 
     Charts are not recomputed on read: a reading a customer has already paid for
     must not change under them. This answers the migration question instead —
@@ -239,7 +248,19 @@ def needs_recalculation(
         )
     if stored_version != current.version:
         return RecalculationCheck(
-            True, f"Hồ sơ '{stored_profile}' đã lên phiên bản {current.version} "
-                  f"(lá số ở {stored_version})."
+            True,
+            f"Hồ sơ '{stored_profile}' đã lên phiên bản {current.version} "
+            f"(lá số ở {stored_version}).",
         )
-    return RecalculationCheck(False, "Khớp hồ sơ quy ước hiện hành.")
+    if (
+        stored_engine_version is not None
+        and current_engine_version is not None
+        and stored_engine_version != current_engine_version
+    ):
+        return RecalculationCheck(
+            True,
+            f"Lá số lập bằng engine {stored_engine_version}, hiện dùng "
+            f"{current_engine_version}. Cùng bộ quy ước nhưng engine đã sửa lỗi "
+            "tính toán, nên kết quả có thể khác.",
+        )
+    return RecalculationCheck(False, "Khớp hồ sơ quy ước và engine hiện hành.")

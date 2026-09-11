@@ -12,10 +12,19 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Header, Query, status
 
 from app.api.deps import ChartServiceDep
+from app.db.models.chart import Chart
 from app.schemas.chart import ChartCreateRequest, ChartDetail, ChartSummary
 from app.schemas.common import success
+from app.services.chart_service import ChartService
 
 router = APIRouter(prefix="/charts", tags=["charts"])
+
+
+def _detail(chart: Chart, service: ChartService) -> dict[str, Any]:
+    """Chart detail plus whether it would be computed differently today."""
+    payload = ChartDetail.model_validate(chart, from_attributes=True).model_dump(mode="json")
+    payload["recalculation"] = service.recalculation_status(chart).to_dict()
+    return payload
 
 
 @router.post("", status_code=status.HTTP_201_CREATED, summary="Lập lá số")
@@ -25,7 +34,7 @@ async def create_chart(
     idempotency_key: Annotated[str | None, Header(alias="Idempotency-Key")] = None,
 ) -> dict[str, Any]:
     chart = await service.create(payload, idempotency_key)
-    return success(ChartDetail.model_validate(chart, from_attributes=True).model_dump(mode="json"))
+    return success(_detail(chart, service))
 
 
 @router.get("", summary="Lấy nhiều lá số theo id")
@@ -55,7 +64,7 @@ async def list_charts(
 @router.get("/{chart_id}", summary="Xem một lá số")
 async def get_chart(chart_id: uuid.UUID, service: ChartServiceDep) -> dict[str, Any]:
     chart = await service.get(chart_id)
-    return success(ChartDetail.model_validate(chart, from_attributes=True).model_dump(mode="json"))
+    return success(_detail(chart, service))
 
 
 @router.delete("/{chart_id}", status_code=status.HTTP_200_OK, summary="Xóa lá số")

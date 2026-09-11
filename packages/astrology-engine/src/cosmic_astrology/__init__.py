@@ -16,7 +16,7 @@ from cosmic_astrology.calendar.sexagenary import (
     hour_branch_index,
     pillars_for_birth,
 )
-from cosmic_astrology.chart.builder import build_chart
+from cosmic_astrology.chart.builder import ENGINE_VERSION, build_chart
 from cosmic_astrology.chart.types import BirthInput, Chart, EngineStage
 from cosmic_astrology.conventions import (
     COSMIC_SIGNS_STANDARD_V1,
@@ -27,6 +27,7 @@ from cosmic_astrology.conventions import (
     UnresolvedConventionError,
     VerificationStatus,
     is_production_ready,
+    needs_recalculation,
     validate_convention_profile,
 )
 from cosmic_astrology.timezone import TimezoneResolution, resolve_timezone
@@ -34,6 +35,7 @@ from cosmic_astrology.trace import TraceLog
 
 __all__ = [
     "COSMIC_SIGNS_STANDARD_V1",
+    "ENGINE_VERSION",
     "BirthInput",
     "Chart",
     "ConventionProfile",
@@ -52,6 +54,7 @@ __all__ = [
     "hour_branch_index",
     "is_production_ready",
     "lunar_to_solar",
+    "needs_recalculation",
     "pillars_for_birth",
     "resolve_birth_dates",
     "resolve_timezone",

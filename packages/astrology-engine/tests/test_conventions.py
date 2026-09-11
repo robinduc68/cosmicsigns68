@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from cosmic_astrology import BirthInput, build_chart
+from cosmic_astrology import ENGINE_VERSION, BirthInput, build_chart
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
 from cosmic_astrology.conventions import (
     COSMIC_SIGNS_STANDARD_V1,
@@ -13,6 +13,7 @@ from cosmic_astrology.conventions import (
     UnresolvedConventionError,
     VerificationStatus,
     is_production_ready,
+    needs_recalculation,
     validate_convention_profile,
 )
 from cosmic_astrology.conventions.profile import CRITICAL_RULES, RuleBinding
@@ -158,3 +159,50 @@ def test_tracing_does_not_change_the_chart() -> None:
     with_trace = build_chart(_birth(), stage=EngineStage.PREVIEW, trace=True).to_dict()
     del with_trace["trace"]
     assert without == with_trace
+
+
+def test_a_chart_from_an_older_engine_is_flagged_for_recalculation() -> None:
+    """A bug fix keeps the same rules but changes the answer.
+
+    Charts already on disk keep the old answer, so the engine version has to be
+    part of the check — the palace-name inversion fixed in engine 0.2.0 is exactly
+    this case.
+    """
+    check = needs_recalculation(
+        PROFILE.profile_id,
+        PROFILE.version,
+        PROFILE,
+        stored_engine_version="0.1.0-frame",
+        current_engine_version="0.2.0-frame",
+    )
+    assert check.needed is True
+    assert "0.1.0-frame" in check.reason
+
+
+def test_a_chart_from_the_current_engine_and_profile_is_left_alone() -> None:
+    check = needs_recalculation(
+        PROFILE.profile_id,
+        PROFILE.version,
+        PROFILE,
+        stored_engine_version=ENGINE_VERSION,
+        current_engine_version=ENGINE_VERSION,
+    )
+    assert check.needed is False
+
+
+def test_the_profile_check_still_wins_over_the_engine_check() -> None:
+    """An unknown profile is the more serious finding, and is reported first."""
+    check = needs_recalculation(
+        None,
+        None,
+        PROFILE,
+        stored_engine_version=ENGINE_VERSION,
+        current_engine_version=ENGINE_VERSION,
+    )
+    assert check.needed is True
+    assert "hồ sơ quy ước" in check.reason
+
+
+def test_an_unknown_engine_version_does_not_raise_a_false_alarm() -> None:
+    """Nothing is claimed when the caller cannot supply the versions."""
+    assert needs_recalculation(PROFILE.profile_id, PROFILE.version, PROFILE).needed is False

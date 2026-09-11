@@ -48,6 +48,13 @@ class ChartCreateRequest(BaseModel):
         return self
 
 
+class RecalculationStatus(BaseModel):
+    """Whether this stored chart predates the conventions or engine in force."""
+
+    needed: bool
+    reason: str
+
+
 class ChartSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -71,6 +78,8 @@ class ChartSummary(BaseModel):
 
 class ChartDetail(ChartSummary):
     note: str | None
+    #: Filled in by the router; the ORM row does not carry it.
+    recalculation: RecalculationStatus | None = None
     timezone_name: str
     tz_offset: float
     chart: dict[str, Any] = Field(alias="chart_json")

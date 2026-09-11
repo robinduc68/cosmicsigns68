@@ -4,6 +4,10 @@ import uuid
 from typing import Any
 
 from httpx import AsyncClient
+from sqlalchemy import update
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
+from app.db.models.chart import Chart
 
 
 async def _create(client: AsyncClient, payload: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
@@ -162,3 +166,37 @@ async def test_the_timezone_used_is_resolved_from_the_iana_database(
     assert timezone["timezone_id"] == "Asia/Ho_Chi_Minh"
     assert timezone["resolved_from_database"] is True
     assert timezone["utc_offset_hours"] == 8.0
+
+
+async def test_a_fresh_chart_does_not_ask_to_be_recalculated(
+    client: AsyncClient, birth_payload: dict[str, Any]
+) -> None:
+    data = await _create(client, birth_payload)
+    assert data["recalculation"]["needed"] is False
+
+
+async def test_a_chart_stored_by_an_older_engine_is_flagged(
+    client: AsyncClient,
+    session_factory: async_sessionmaker[AsyncSession],
+    birth_payload: dict[str, Any],
+) -> None:
+    """Old rows keep their old answer, and reading one must not look current.
+
+    Engine 0.1.0 attached the twelve palace names in the wrong direction. Those
+    charts are not rewritten — that call belongs to a person — so the API has to
+    say the stored result is stale.
+    """
+    created = await _create(client, birth_payload)
+
+    async with session_factory() as session:  # a row written before the fix
+        await session.execute(
+            update(Chart)
+            .where(Chart.id == uuid.UUID(created["id"]))
+            .values(engine_version="0.1.0-frame")
+        )
+        await session.commit()
+
+    response = await client.get(f"/api/v1/charts/{created['id']}")
+    status = response.json()["data"]["recalculation"]
+    assert status["needed"] is True
+    assert "0.1.0-frame" in status["reason"]
