@@ -1,4 +1,10 @@
-import type { ChartPayload, ChartStar } from '@cosmic/shared'
+import type {
+  ChartPayload,
+  ChartStar,
+  ElementCode,
+  StarStrength,
+  YinYangPolarity,
+} from '@cosmic/shared'
 import atSuu1985 from './charts/at-suu-1985.preview.json'
 import crossCheckFrame from './charts/cross-check-2001.frame.json'
 import crossCheckPreview from './charts/cross-check-2001.preview.json'
@@ -25,8 +31,49 @@ export interface ChartRendererScenario {
 const asChart = (json: unknown) => json as ChartPayload
 const clone = (chart: ChartPayload): ChartPayload => structuredClone(chart)
 
-function demoStar(code: string, label: string): ChartStar {
-  return { code, label, kind: 'MINOR', strength: null, provisional: true }
+function demoStar(
+  code: string,
+  label: string,
+  element: ElementCode | null = null,
+  polarity: YinYangPolarity | null = null,
+): ChartStar {
+  return { code, label, kind: 'MINOR', strength: null, provisional: true, element, polarity }
+}
+
+/**
+ * One star per ngũ hành in a single palace, so all five colours can be compared
+ * side by side without hunting across the địa bàn.
+ *
+ * The names are openly fake ("mẫu"). The point is the colour system, not astrology:
+ * these elements are assigned by this fixture, never by the engine, and a sixth
+ * entry with `element: null` shows what an unverified star looks like.
+ */
+function withFiveElementPalette(base: ChartPayload): ChartPayload {
+  const chart = clone(base)
+  const palette: [string, ElementCode | null, YinYangPolarity | null, StarStrength | null][] = [
+    ['Kim mẫu', 'KIM', 'YANG', 'MIEU'],
+    ['Mộc mẫu', 'MOC', 'YIN', 'VUONG'],
+    ['Thủy mẫu', 'THUY', 'YANG', 'DAC'],
+    ['Hỏa mẫu', 'HOA', 'YIN', 'BINH'],
+    ['Thổ mẫu', 'THO', 'YANG', 'HAM'],
+    ['Chưa rõ hành (mẫu)', null, null, null],
+  ]
+  const menh = chart.palaces.find((palace) => palace.is_menh) ?? chart.palaces[0]
+  if (!menh) throw new Error('Lá số nền không có cung nào')
+  menh.minor_stars = palette.map(([label, element, polarity, strength], i) => ({
+    ...demoStar(`PALETTE_${i}`, label, element, polarity),
+    strength,
+  }))
+  // A second copy as major stars, to show the typography split at the same colours.
+  menh.major_stars = [
+    ...menh.major_stars,
+    ...palette.map(([label, element, polarity, strength], i) => ({
+      ...demoStar(`PALETTE_MAJOR_${i}`, label, element, polarity),
+      kind: 'MAJOR' as const,
+      strength,
+    })),
+  ]
+  return chart
 }
 
 function withDemoMinorStars(
@@ -105,6 +152,15 @@ export const CHART_RENDERER_SCENARIOS: ChartRendererScenario[] = [
     description: 'Tên sao tiếng Việt dài để thử xuống dòng. Không phải tử vi.',
     synthetic: true,
     chart: withDemoMinorStars(crossCheck, 6, (i) => `Thiên Đức Quý Nhân Phúc Tinh (mẫu ${i + 1})`),
+  },
+  {
+    id: 'five-element-palette',
+    label: 'GIẢ — bảng màu 5 hành',
+    description:
+      'Sáu sao mẫu trong cung Mệnh: Kim, Mộc, Thủy, Hỏa, Thổ và một sao chưa rõ hành. ' +
+      'Dùng để đối chiếu màu; hành do fixture gán, không phải engine. Không phải tử vi.',
+    synthetic: true,
+    chart: withFiveElementPalette(crossCheck),
   },
   {
     id: 'authoritative-demo',

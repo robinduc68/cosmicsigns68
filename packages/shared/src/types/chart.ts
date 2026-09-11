@@ -9,6 +9,8 @@ export type EngineStage = 'FRAME' | 'PREVIEW' | 'FULL'
 export type ElementCode = 'KIM' | 'MOC' | 'THUY' | 'HOA' | 'THO'
 export type StarKind = 'MAJOR' | 'MINOR' | 'TRANSFORMATION'
 export type StarStrength = 'MIEU' | 'VUONG' | 'DAC' | 'BINH' | 'HAM'
+/** Âm/dương of a star. Drives a `+`/`−` prefix only — never a colour. */
+export type YinYangPolarity = 'YANG' | 'YIN'
 
 export type PalaceCode =
   | 'MENH'
@@ -30,6 +32,12 @@ export interface ChartStar {
   kind: StarKind
   strength: StarStrength | null
   provisional: boolean
+  /**
+   * Ngũ hành of the star itself, declared by the engine. `null` where the schools
+   * disagree; the renderer draws neutral ink and never infers one from the name.
+   */
+  element: ElementCode | null
+  polarity: YinYangPolarity | null
 }
 
 export interface ChartPalace {
@@ -175,8 +183,16 @@ export interface ChartSummary {
   created_at: string
 }
 
+/** Whether a stored chart predates the conventions or engine now in force. */
+export interface RecalculationStatus {
+  needed: boolean
+  reason: string
+}
+
 export interface ChartDetail extends ChartSummary {
   note: string | null
+  /** Never acted on automatically — a stored chart is not rewritten under its reader. */
+  recalculation: RecalculationStatus | null
   timezone_name: string
   tz_offset: number
   chart: ChartPayload

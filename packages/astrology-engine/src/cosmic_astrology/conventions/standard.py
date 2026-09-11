@@ -22,6 +22,7 @@ from cosmic_astrology.conventions.policies import (
     PalaceOrderPolicy,
     PalaceStemPolicy,
     RuleId,
+    StarElementPolicy,
     StarStrengthPolicy,
     ThanPolicy,
     TimezonePolicy,
@@ -208,6 +209,18 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                 verification=V.PROVISIONAL,
                 blocked_by=("Q1", "Q2", "Q3"),
                 note="14 chính tinh đã an nhưng chưa có ca nào được ký duyệt.",
+            ),
+            _rule(
+                RuleId.STAR_ELEMENTS,
+                StarElementPolicy.CLASSICAL_CONSENSUS_PARTIAL.value,
+                implemented=True,
+                verification=V.PROVISIONAL,
+                blocked_by=("Q1", "Q2", "Q3"),
+                note=(
+                    "Ngũ hành riêng của từng sao, dùng để tô màu chữ. 12/14 chính tinh "
+                    "có giá trị; Tham Lang và Cự Môn để trống vì các trường phái ghi "
+                    "khác nhau — xem cosmic_astrology/stars/metadata.py."
+                ),
             ),
             _rule(
                 RuleId.TUAN,

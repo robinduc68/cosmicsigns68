@@ -14,6 +14,7 @@ from pathlib import Path
 from cosmic_astrology.conventions.policies import RuleId
 from cosmic_astrology.conventions.profile import ConventionProfile, validate_convention_profile
 from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
+from cosmic_astrology.stars.metadata import ElementCoverage, element_coverage
 
 __all__ = ["FixtureStats", "VerificationReport", "build_report", "render_report"]
 
@@ -35,6 +36,7 @@ _RULE_LABELS: dict[RuleId, str] = {
     RuleId.PALACE_STEMS: "Ngũ Hổ Độn",
     RuleId.TU_VI_PLACEMENT: "Tử Vi placement",
     RuleId.MAJOR_STARS: "14 major stars",
+    RuleId.STAR_ELEMENTS: "Ngũ hành của sao",
     RuleId.TUAN: "Tuần",
     RuleId.TRIET: "Triệt",
     RuleId.FOUR_TRANSFORMATIONS: "Four Transformations",
@@ -72,6 +74,7 @@ class VerificationReport:
     profile_version: str
     rules: tuple[tuple[str, str, tuple[str, ...]], ...]
     fixtures: FixtureStats
+    elements: ElementCoverage
     production_ready: bool
     failures: tuple[str, ...]
 
@@ -84,6 +87,7 @@ class VerificationReport:
                 for label, status, blockers in self.rules
             ],
             "fixtures": self.fixtures.to_dict(),
+            "star_elements": self.elements.to_dict(),
             "production_ready": self.production_ready,
             "failures": list(self.failures),
         }
@@ -123,6 +127,7 @@ def build_report(
         profile_version=profile.version,
         rules=rules,
         fixtures=_fixture_stats(fixture_path),
+        elements=element_coverage(),
         production_ready=validation.production_ready,
         failures=validation.failures,
     )
@@ -150,6 +155,23 @@ def render_report(report: VerificationReport) -> str:
         f"  Disagreement: {f.disagreement}",
         f"  Blocked:      {f.blocked}",
         f"  Tổng:         {f.total}",
+        "",
+    ]
+
+    e = report.elements
+    lines += [
+        "Ngũ hành riêng của sao (dùng để tô màu chữ):",
+        f"  Chính tinh:   {e.with_element}/{e.total}  ({e.percentage}%)",
+        # Only the 14 chính tinh are placed today, so there is nothing else to count.
+        # An honest zero beats a denominator invented to look complete.
+        "  Phụ tinh:     0/0  (engine chưa an phụ tinh)",
+        "  Tứ Hóa:       0/0  (chặn bởi Q7/Q8)",
+        "  Lưu tinh:     0/0  (engine chưa an lưu tinh)",
+    ]
+    if e.missing:
+        lines.append(f"  Chưa có hành: {', '.join(e.missing)}")
+        lines.append("                (các trường phái ghi khác nhau — vẽ bằng mực trung tính)")
+    lines += [
         "",
         f"Sẵn sàng cho production: {'CÓ' if report.production_ready else 'KHÔNG'}",
     ]

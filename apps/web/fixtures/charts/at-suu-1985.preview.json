@@ -292,6 +292,30 @@
         "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
       },
       {
+        "rule": "star_elements",
+        "policy": "CLASSICAL_CONSENSUS_PARTIAL",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Ngũ hành riêng của từng sao, dùng để tô màu chữ. 12/14 chính tinh có giá trị; Tham Lang và Cự Môn để trống vì các trường phái ghi khác nhau — xem cosmic_astrology/stars/metadata.py."
+      },
+      {
         "rule": "four_transformations",
         "policy": "UNRESOLVED",
         "implemented": false,
@@ -577,7 +601,9 @@
           "label": "Thiên Phủ",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THO",
+          "polarity": "YANG"
         }
       ],
       "minor_stars": [],
@@ -603,14 +629,18 @@
           "label": "Thiên Cơ",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "MOC",
+          "polarity": "YIN"
         },
         {
           "code": "THAI_AM",
           "label": "Thái Âm",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THUY",
+          "polarity": "YIN"
         }
       ],
       "minor_stars": [],
@@ -636,14 +666,18 @@
           "label": "Tử Vi",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THO",
+          "polarity": "YIN"
         },
         {
           "code": "THAM_LANG",
           "label": "Tham Lang",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": null,
+          "polarity": null
         }
       ],
       "minor_stars": [],
@@ -669,7 +703,9 @@
           "label": "Cự Môn",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": null,
+          "polarity": null
         }
       ],
       "minor_stars": [],
@@ -695,7 +731,9 @@
           "label": "Thiên Tướng",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THUY",
+          "polarity": "YANG"
         }
       ],
       "minor_stars": [],
@@ -721,7 +759,9 @@
           "label": "Thiên Lương",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THO",
+          "polarity": "YANG"
         }
       ],
       "minor_stars": [],
@@ -747,14 +787,18 @@
           "label": "Liêm Trinh",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "KIM",
+          "polarity": "YIN"
         },
         {
           "code": "THAT_SAT",
           "label": "Thất Sát",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "KIM",
+          "polarity": "YANG"
         }
       ],
       "minor_stars": [],
@@ -816,7 +860,9 @@
           "label": "Thiên Đồng",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THUY",
+          "polarity": "YANG"
         }
       ],
       "minor_stars": [],
@@ -842,14 +888,18 @@
           "label": "Vũ Khúc",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "KIM",
+          "polarity": "YIN"
         },
         {
           "code": "PHA_QUAN",
           "label": "Phá Quân",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "THUY",
+          "polarity": "YIN"
         }
       ],
       "minor_stars": [],
@@ -875,7 +925,9 @@
           "label": "Thái Dương",
           "kind": "MAJOR",
           "strength": null,
-          "provisional": true
+          "provisional": true,
+          "element": "HOA",
+          "polarity": "YANG"
         }
       ],
       "minor_stars": [],

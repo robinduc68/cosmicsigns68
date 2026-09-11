@@ -6,7 +6,11 @@ const props = withDefaults(defineProps<{ star: StarViewModel; major?: boolean }>
   major: false,
 })
 
-// Colour comes only from the element the engine declared; no element, neutral ink.
+/**
+ * Colour comes only from the element the engine declared; no element, neutral ink.
+ * It is applied to the whole label — name, polarity and strength together — because
+ * the element belongs to the star, not to one glyph of its name.
+ */
 const color = computed(() => elementColor(props.star.element))
 const strengthTitle = computed(() =>
   props.star.strength ? STRENGTH_LABELS[props.star.strength] : undefined,
@@ -26,8 +30,13 @@ const strengthTitle = computed(() =>
     ]"
     :style="{ color }"
     :data-star="star.code"
-  >
-    {{ star.name
+    :data-element="star.element ?? 'NONE'"
+    :aria-label="star.ariaLabel"
+    :title="star.ariaLabel"
+    ><span v-if="star.polarityPrefix" class="tuvi-star__polarity" aria-hidden="true">{{
+      star.polarityPrefix
+    }}</span
+    >{{ star.name
     }}<template v-if="star.strengthAbbr">
       <abbr class="tuvi-star__strength" :title="strengthTitle">({{ star.strengthAbbr }})</abbr>
     </template><span v-if="star.provisional" class="tuvi-star__mark" aria-hidden="true">*</span

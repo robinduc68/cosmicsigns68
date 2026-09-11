@@ -562,6 +562,57 @@ Chưa chốt quy tắc an tiểu vận, và cách xác định cung lưu niên t
 
 ---
 
+## 23. Ngũ hành riêng của từng sao 🟡 PENDING
+
+Dùng để **tô màu chữ** trong lá số, không tham gia một phép tính nào. Đây vẫn là dữ
+liệu tử vi, nên chịu đúng kỷ luật như mọi mục khác: không có nguồn thì không có giá trị.
+
+**COSMIC_SIGNS_CHOSEN_RULE:** ghi nhận ngũ hành + âm/dương cho **12/14 chính tinh**,
+ở những chỗ các bản đọc trùng nhau. Hai sao còn lại để **trống**.
+
+| Sao | Hành | Âm/Dương |
+| --- | --- | --- |
+| Tử Vi | Thổ | Âm |
+| Thiên Cơ | Mộc | Âm |
+| Thái Dương | Hỏa | Dương |
+| Vũ Khúc | Kim | Âm |
+| Thiên Đồng | Thủy | Dương |
+| Liêm Trinh | Kim | Âm |
+| Thiên Phủ | Thổ | Dương |
+| Thái Âm | Thủy | Âm |
+| **Tham Lang** | *(trống)* | *(trống)* |
+| **Cự Môn** | *(trống)* | *(trống)* |
+| Thiên Tướng | Thủy | Dương |
+| Thiên Lương | Thổ | Dương |
+| Thất Sát | Kim | Dương |
+| Phá Quân | Thủy | Âm |
+
+**ALTERNATIVE_RULE — đúng hai chỗ đang mâu thuẫn:**
+
+- **Tham Lang**: sách cổ ghi *"âm thủy, hóa khí là mộc"* — **hai hành trong cùng một
+  câu**. Không có đáp án đơn trị để tô một màu, nên để trống.
+- **Cự Môn**: Thổ (đa số bản Hoa) / Thủy (một số bản Việt) / Kim (thiểu số).
+
+Hai sao nhỏ hơn cũng có biến thể, đã ghi lại nhưng vẫn chọn giá trị đa số:
+**Liêm Trinh** (một số bản Việt ghi Hỏa) và **Thiên Lương** (một số bản suy từ chữ 梁
+là rường gỗ mà ghi Mộc).
+
+**Lý do chọn:** để trống cả 14 sao thì lá số không còn thông tin ngũ hành nào, còn bịa
+2 sao để đủ màu thì đặt một khẳng định không nguồn lên lá số của khách. Cách thứ ba —
+ghi phần đồng thuận, để trống phần mâu thuẫn, và **nói rõ chỗ trống** — giữ được cả hai.
+
+**Trạng thái:** `PROVISIONAL`, chặn bởi Q1/Q2/Q3 — giống hệt `major_stars`. Không sao
+nào là `VERIFIED` khi `sources.json` còn chưa chốt nguồn chuẩn.
+
+**Bất biến đã cài:** ngũ hành và âm/dương phải **cùng có hoặc cùng thiếu** (chúng đến
+từ cùng một câu trong sách); để trống thì **buộc** phải liệt kê ≥ 2 cách đọc đang mâu
+thuẫn — một ô trống lặng lẽ bị `StarMetadata` từ chối ngay lúc khởi tạo.
+
+**Nơi cài:** `packages/astrology-engine/src/cosmic_astrology/stars/metadata.py`.
+Độ phủ xem bằng `python -m cosmic_astrology.verification`.
+
+---
+
 ## 21. Sổ mâu thuẫn giữa các nguồn
 
 Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
@@ -574,8 +625,9 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 4 | §18 Triệt | Hai cung bị triệt đều nhau hay khác mức | 🔴 chờ Q10 |
 | 5 | §5 An Mệnh | Cách xử lý tháng nhuận khi đếm tháng | 🔴 chờ xác nhận |
 | 6 | §2 Múi giờ | Giờ dân sự vs giờ mặt trời thật | 🔴 chờ Q4 |
-| 7 | §11 Thứ tự cung | Engine đặt tên cung ngược chiều so với trình tự kinh điển và lá số đối chiếu chéo | ✅ lỗi engine, đã sửa 0.2.0 |
+| 7 | §11 Thứ tự cung | Engine đặt tên cung ngược chiều so với trình tự kinh điển và lá số đối chiếu chéo | ✅ lỗi engine, đã sửa 0.2.0; có fixture vàng `PALACE_ORDER_MENH_TUAT` + test đủ 12 vị trí Mệnh; lá số lưu bằng 0.1.0 bị gắn cờ cần lập lại |
 | 8 | §12 Can cung | Engine tính can Tý/Sửu lùi thay vì tới; lá số đối chiếu chéo cho Canh Tý / Tân Sửu | ✅ lỗi engine, đã sửa 0.2.0 |
+| 9 | §23 Ngũ hành sao | Tham Lang ghi "âm thủy hóa khí mộc"; Cự Môn ghi Thổ/Thủy/Kim tùy trường phái | 🟡 để trống 2 sao, vẽ mực trung tính; 12/14 sao có giá trị PROVISIONAL |
 
 ---
 

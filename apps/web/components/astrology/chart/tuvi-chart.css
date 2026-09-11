@@ -258,7 +258,17 @@
   font-weight: 500;
 }
 
+/* Âm/dương sits tight against the name and inherits the element colour, so the
+   whole label reads as one coloured unit. */
+.tuvi-star__polarity {
+  margin-right: 0.5px;
+  font-weight: inherit;
+}
+
 .tuvi-star__strength {
+  /* A hair of space, the way a printed chart sets it. A margin rather than a text
+     space so the nowrap rules used during PNG export are unaffected. */
+  margin-left: 2px;
   font-weight: 600;
   text-decoration: none;
 }

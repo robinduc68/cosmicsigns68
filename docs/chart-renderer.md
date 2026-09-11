@@ -69,9 +69,26 @@ giữ nguyên thứ tự engine gửi. Thay bằng độ ưu tiên do engine c�
 Toàn bộ màu khai báo **một chỗ** trong `tuvi-chart.css` (token `--chart-*`) và được đặt
 tên trong `ELEMENT_COLOR_MAP`. Màu ngũ hành đã chỉnh để đạt tối thiểu 4,5 : 1 trên nền giấy.
 
-> Hiện engine **chưa khai báo ngũ hành cho sao**, nên mọi sao hiện màu mực trung tính.
-> Đây là đúng thiết kế, không phải lỗi: renderer không được suy ngũ hành từ tên sao
-> (Tham Lang, Thất Sát có biến thể giữa các trường phái).
+Ngũ hành **của sao** do engine khai báo (`star.element`, xem
+`cosmic_astrology/stars/metadata.py`). Renderer chỉ đổi `element → màu` và **không bao
+giờ** suy hành từ tên sao. Màu tô cả nhãn — dấu âm/dương, tên, độ sáng — vì hành thuộc
+về cả ngôi sao, không thuộc một chữ nào.
+
+| Nguồn màu | Dùng ở đâu |
+| --- | --- |
+| `star.element` | Toàn bộ nhãn sao |
+| `palace.element` | Chỉ chữ nạp âm trong cung |
+| `menh.element`, `cuc.element` | Chỉ hai giá trị "Bản mệnh" và "Cục" ở trung tâm |
+
+> **Sao chưa có hành thì vẽ mực trung tính**, không đoán để cho đủ màu. Hôm nay là
+> **Tham Lang** và **Cự Môn** — các trường phái ghi khác nhau. Bảng độ phủ nằm trong
+> `python -m cosmic_astrology.verification`.
+
+Độ sáng (M/V/Đ/B/H) **không** đổi màu: một sao Hỏa bị Hãm vẫn là màu Hỏa. Cấp sao
+(chính/phụ) chỉ đổi **typography**, không đổi màu.
+
+Ở môi trường dev, sao thiếu hành được cảnh báo ra console (`[TuVi Renderer] Thiếu
+metadata ngũ hành: …`). Cảnh báo **không** đi vào DOM, nên không lọt vào PNG hay bản in.
 
 ---
 

@@ -57,6 +57,7 @@ class RuleId(StrEnum):
     PALACE_STEMS = "palace_stems"
     TU_VI_PLACEMENT = "tu_vi_placement"
     MAJOR_STARS = "major_stars"
+    STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
     TRIET = "triet"
@@ -188,6 +189,18 @@ class TrietPolicy(StrEnum):
     #: Table by year stem, both branches weighted equally. **Q10** asks whether
     #: the two branches should carry different weight.
     YEAR_STEM_TABLE_EQUAL_WEIGHT = "YEAR_STEM_TABLE_EQUAL_WEIGHT"
+
+
+class StarElementPolicy(StrEnum):
+    """Where a star's own ngũ hành comes from.
+
+    Separate from ``STAR_STRENGTH``: strength is a 14 × 12 table that depends on
+    the palace, while a star's element is a property of the star alone. Recorded
+    only where the classical readings agree — the rest stay empty on purpose, so
+    this policy is *partial* by name and cannot be mistaken for complete.
+    """
+
+    CLASSICAL_CONSENSUS_PARTIAL = "CLASSICAL_CONSENSUS_PARTIAL"
 
 
 class StarStrengthPolicy(StrEnum):

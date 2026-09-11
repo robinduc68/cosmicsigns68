@@ -47,7 +47,14 @@ describe('mapChartDtoToViewModel', () => {
   })
 
   it('never guesses a star element from its name, but uses one the engine declares', () => {
-    const plain = mapChartDtoToViewModel(real()).palaces.flatMap((p) => p.majorStars)
+    // Stripping the field must yield neutral ink, not a name-based lookup — this is
+    // what keeps the element a piece of engine data rather than a renderer opinion.
+    const stripped = real()
+    for (const palace of stripped.palaces) {
+      for (const star of palace.major_stars) Object.assign(star, { element: undefined })
+    }
+    const plain = mapChartDtoToViewModel(stripped).palaces.flatMap((p) => p.majorStars)
+    expect(plain).not.toHaveLength(0)
     expect(plain.every((s) => s.element === null)).toBe(true)
 
     const chart = real()
@@ -151,13 +158,12 @@ describe('mapChartDtoToViewModel', () => {
   it('orders by display category but keeps the engine order inside a category', () => {
     const chart = real()
     const palace = chart.palaces[0]!
+    const stub = { strength: null, provisional: true, element: null, polarity: null } as const
     palace.minor_stars = [
-      { code: 'B', label: 'Sao mẫu B', kind: 'MINOR', strength: null, provisional: true },
-      { code: 'A', label: 'Sao mẫu A', kind: 'MINOR', strength: null, provisional: true },
+      { code: 'B', label: 'Sao mẫu B', kind: 'MINOR', ...stub },
+      { code: 'A', label: 'Sao mẫu A', kind: 'MINOR', ...stub },
     ]
-    palace.transformations = [
-      { code: 'T', label: 'Hóa mẫu', kind: 'TRANSFORMATION', strength: null, provisional: true },
-    ]
+    palace.transformations = [{ code: 'T', label: 'Hóa mẫu', kind: 'TRANSFORMATION', ...stub }]
     const codes = mapChartDtoToViewModel(chart).palaces[0]!.minorStars.map((s) => s.code)
     expect(codes).toEqual(['T', 'B', 'A'])
   })

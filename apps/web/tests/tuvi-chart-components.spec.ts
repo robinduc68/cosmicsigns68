@@ -92,7 +92,8 @@ describe('TuViReadingMode', () => {
 
 describe('TuViStar', () => {
   const base: StarViewModel = {
-    code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, strength: null,
+    code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
+    polarityPrefix: null, ariaLabel: 'Sao thử', strength: null,
     strengthAbbr: null, provisional: false, isTransformation: false, isAnnual: false,
   }
 
@@ -109,5 +110,162 @@ describe('TuViStar', () => {
     expect(abbr.text()).toBe('(V)')
     expect(abbr.attributes('title')).toBe('Vượng')
     expect(wrapper.attributes('style')).toContain('var(--chart-hoa)')
+  })
+})
+
+describe('12-palace orientation on the grid (golden case Mệnh = Tuất)', () => {
+  /**
+   * Guards two things at once: the engine's Earthly Branch → palace assignment, and
+   * the renderer's Earthly Branch → grid coordinate mapping. A mirrored chart passes
+   * a naive check because Mệnh and Thiên Di stay put, so named cells are asserted.
+   */
+  const CELLS = [
+    { branch: 'Thân', row: 1, col: 4, palace: 'Phu Thê' },
+    { branch: 'Tý', row: 4, col: 3, palace: 'Phúc Đức' },
+    { branch: 'Tuất', row: 3, col: 4, palace: 'Mệnh' },
+    { branch: 'Thìn', row: 2, col: 1, palace: 'Thiên Di' },
+    { branch: 'Dậu', row: 2, col: 4, palace: 'Huynh Đệ' },
+    { branch: 'Ngọ', row: 1, col: 2, palace: 'Tài Bạch' },
+  ]
+
+  it.each(CELLS)('renders $palace at branch $branch in row $row column $col', async (cell) => {
+    const model = modelFor('cross-check-2001')
+    expect(model.palaces.find((p) => p.isMenh)?.branch).toBe('Tuất')
+
+    const wrapper = await mountSuspended(TuViChartCanvas, { props: { model } })
+    const palace = wrapper.get(`[data-branch="${cell.branch}"]`)
+    expect(palace.get('.tuvi-palace__name').text()).toContain(cell.palace)
+    expect(palace.attributes('style')).toContain(`grid-row: ${cell.row}`)
+    expect(palace.attributes('style')).toContain(`grid-column: ${cell.col}`)
+  })
+
+  it('never puts a palace name at the mirrored branch', async () => {
+    const wrapper = await mountSuspended(TuViChartCanvas, {
+      props: { model: modelFor('cross-check-2001') },
+    })
+    // The exact failure of engine 0.1.0: Phúc Đức on Thân, Phu Thê on Tý.
+    expect(wrapper.get('[data-branch="Thân"]').text()).not.toContain('Phúc Đức')
+    expect(wrapper.get('[data-branch="Tý"]').text()).not.toContain('Phu Thê')
+  })
+})
+
+describe('ngũ hành colouring of stars', () => {
+  const base: StarViewModel = {
+    code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
+    polarityPrefix: null, ariaLabel: 'Sao thử', strength: null,
+    strengthAbbr: null, provisional: false, isTransformation: false, isAnnual: false,
+  }
+
+  const CASES = [
+    { element: 'KIM', token: 'var(--chart-kim)' },
+    { element: 'MOC', token: 'var(--chart-moc)' },
+    { element: 'THUY', token: 'var(--chart-thuy)' },
+    { element: 'HOA', token: 'var(--chart-hoa)' },
+    { element: 'THO', token: 'var(--chart-tho)' },
+  ] as const
+
+  it.each(CASES)('maps a $element star to its own token', async ({ element, token }) => {
+    const wrapper = await mountSuspended(TuViStar, { props: { star: { ...base, element } } })
+    expect(wrapper.attributes('style')).toContain(token)
+    // The element also survives as data, so export and tests never depend on colour alone.
+    expect(wrapper.attributes('data-element')).toBe(element)
+  })
+
+  it('falls back to neutral ink, not to a guessed element', async () => {
+    const wrapper = await mountSuspended(TuViStar, { props: { star: base } })
+    expect(wrapper.attributes('style')).toContain('var(--chart-text)')
+    expect(wrapper.attributes('data-element')).toBe('NONE')
+    for (const { token } of CASES) expect(wrapper.attributes('style')).not.toContain(token)
+  })
+
+  it('colours the whole label, not just the strength letter', async () => {
+    const star = { ...base, element: 'HOA' as const, strength: 'HAM' as const, strengthAbbr: 'H' }
+    const wrapper = await mountSuspended(TuViStar, { props: { star, major: true } })
+    // A Hỏa star that is Hãm still reads as Hỏa: strength never overrides the element.
+    expect(wrapper.attributes('style')).toContain('var(--chart-hoa)')
+    expect(wrapper.get('abbr').attributes('style')).toBeUndefined()
+  })
+
+  it('keeps the element colour on an annual star and differentiates by typography', async () => {
+    const star = { ...base, element: 'MOC' as const, category: 'ANNUAL' as const, isAnnual: true }
+    const wrapper = await mountSuspended(TuViStar, { props: { star } })
+    expect(wrapper.attributes('style')).toContain('var(--chart-moc)')
+    expect(wrapper.classes()).toContain('is-annual')
+  })
+
+  it('renders the polarity prefix without letting it pick the colour', async () => {
+    const yang = await mountSuspended(TuViStar, {
+      props: { star: { ...base, element: 'THUY', polarityPrefix: '+' } },
+    })
+    const yin = await mountSuspended(TuViStar, {
+      props: { star: { ...base, element: 'THUY', polarityPrefix: '−' } },
+    })
+    expect(yang.text()).toBe('+Sao thử')
+    expect(yin.text()).toBe('−Sao thử')
+    // Same element, opposite polarity, identical colour.
+    expect(yang.attributes('style')).toBe(yin.attributes('style'))
+  })
+
+  it('separates typography from colour across categories', async () => {
+    const major = await mountSuspended(TuViStar, {
+      props: { star: { ...base, element: 'KIM' }, major: true },
+    })
+    const minor = await mountSuspended(TuViStar, {
+      props: { star: { ...base, element: 'KIM' }, major: false },
+    })
+    expect(major.classes()).toContain('tuvi-star--major')
+    expect(minor.classes()).toContain('tuvi-star--minor')
+    expect(major.attributes('style')).toBe(minor.attributes('style'))
+  })
+
+  it('exposes the element to screen readers so colour is not the only carrier', async () => {
+    const star = {
+      ...base, element: 'THUY' as const, elementLabel: 'Thủy',
+      strength: 'MIEU' as const, strengthAbbr: 'M', name: 'Thái Âm',
+      ariaLabel: 'Thái Âm, hành Thủy, Miếu',
+    }
+    const wrapper = await mountSuspended(TuViStar, { props: { star } })
+    expect(wrapper.attributes('aria-label')).toBe('Thái Âm, hành Thủy, Miếu')
+    expect(wrapper.attributes('title')).toBe('Thái Âm, hành Thủy, Miếu')
+  })
+})
+
+describe('element metadata through the real engine payload', () => {
+  it('carries the engine-declared element and never invents one', () => {
+    const model = modelFor('cross-check-2001')
+    const stars = model.palaces.flatMap((p) => p.majorStars)
+    expect(stars).toHaveLength(14)
+    // 12 of 14 today; Tham Lang and Cự Môn are disputed and stay neutral.
+    expect(stars.filter((s) => s.element !== null)).toHaveLength(12)
+    expect(stars.filter((s) => s.element === null).map((s) => s.name).sort()).toEqual([
+      'Cự Môn',
+      'Tham Lang',
+    ])
+  })
+
+  it('builds an accessible label from engine data alone', () => {
+    const model = modelFor('cross-check-2001')
+    const star = model.palaces.flatMap((p) => p.majorStars).find((s) => s.name === 'Thái Âm')
+    expect(star?.ariaLabel).toBe('Thái Âm, hành Thủy')
+    expect(star?.polarityPrefix).toBe('−')
+  })
+
+  it('shows all five colours on the palette fixture', async () => {
+    const wrapper = await mountSuspended(TuViChartCanvas, {
+      props: { model: modelFor('five-element-palette') },
+    })
+    const rendered = new Set(
+      wrapper.findAll('[data-element]').map((el) => el.attributes('data-element')),
+    )
+    for (const element of ['KIM', 'MOC', 'THUY', 'HOA', 'THO']) {
+      expect(rendered).toContain(element)
+    }
+    expect(rendered).toContain('NONE')
+  })
+
+  it('colours bản mệnh and cục in the centre, and nothing else', () => {
+    const model = modelFor('cross-check-2001')
+    const coloured = model.center.fields.filter((f) => f.element !== null)
+    expect(coloured.map((f) => f.label)).toEqual(['Bản mệnh', 'Cục'])
   })
 })

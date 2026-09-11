@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 
 from cosmic_astrology.calendar.sexagenary import Element
+from cosmic_astrology.stars.metadata import Polarity
 
 __all__ = [
     "BirthInput",
@@ -154,6 +155,11 @@ class Star:
     kind: StarKind
     strength: StarStrength | None = None
     provisional: bool = False
+    #: Ngũ hành of the star itself, from ``stars.metadata``. ``None`` where the
+    #: schools disagree — the renderer then draws neutral ink rather than a guess.
+    element: Element | None = None
+    #: Âm/dương of the star. Recorded with the element or not at all.
+    polarity: Polarity | None = None
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -162,6 +168,8 @@ class Star:
             "kind": self.kind.value,
             "strength": self.strength.value if self.strength else None,
             "provisional": self.provisional,
+            "element": self.element.value if self.element else None,
+            "polarity": self.polarity.value if self.polarity else None,
         }
 
 

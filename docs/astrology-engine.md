@@ -319,9 +319,15 @@ PROVISIONAL, vì test pass không được phép tự nâng nhãn (xem `astrolog
 Test mới suy kỳ vọng từ định nghĩa cho đủ 12 cung, và ca đối chiếu chéo được giữ làm
 test hồi quy — ghi rõ là nguồn bên thứ ba, không phải nguồn chuẩn.
 
-**Lá số lập bằng engine 0.1.0** có thể mang sai các giá trị trên. `needs_recalculation()`
-hiện chỉ so hồ sơ quy ước, **chưa so `engine_version`**, nên chưa tự gắn cờ những lá số
-này — cần bổ sung trước khi có dữ liệu người dùng thật.
+**Lá số lập bằng engine 0.1.0** mang sai các giá trị trên, và chúng nằm sẵn trong
+`chart_json` nên đọc lại vẫn thấy tên cung lật gương. `needs_recalculation()` giờ nhận
+thêm `stored_engine_version` / `current_engine_version`: cùng một bộ quy ước nhưng khác
+phiên bản engine vẫn bị gắn cờ, vì sửa lỗi tính toán không đổi quy tắc mà đổi kết quả.
+
+API trả trạng thái này ở `data.recalculation` của một lá số, và trang lá số hiện banner
+giải thích cặp cung nào bị đổi chỗ. **Không lá số đã lưu nào bị ghi đè** — phiên bản cũ
+là thứ người dùng đã được xem, nên việc lập lại là quyết định của con người, không phải
+của một lần migration âm thầm.
 
 ### 8.5 Stage FRAME đánh dấu mọi cung là "vô chính diệu" — CHƯA SỬA
 

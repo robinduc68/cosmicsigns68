@@ -292,6 +292,30 @@
         "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
       },
       {
+        "rule": "star_elements",
+        "policy": "CLASSICAL_CONSENSUS_PARTIAL",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Ngũ hành riêng của từng sao, dùng để tô màu chữ. 12/14 chính tinh có giá trị; Tham Lang và Cự Môn để trống vì các trường phái ghi khác nhau — xem cosmic_astrology/stars/metadata.py."
+      },
+      {
         "rule": "four_transformations",
         "policy": "UNRESOLVED",
         "implemented": false,

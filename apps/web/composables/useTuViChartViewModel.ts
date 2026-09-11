@@ -6,6 +6,7 @@ import {
   type ChartPayload,
   type ChartStar,
   type ElementCode,
+  type YinYangPolarity,
 } from '@cosmic/shared'
 import type {
   CenterFieldViewModel,
@@ -21,7 +22,9 @@ import type {
 import {
   PALACE_METRICS,
   STAR_CATEGORY_PRIORITY,
+  ELEMENT_COLOR_MAP,
   STRENGTH_ABBREVIATIONS,
+  STRENGTH_LABELS,
   centerAnchor,
   estimatePalaceHeight,
   gridPosition,
@@ -65,20 +68,62 @@ function categoryOf(star: ChartStar, fallback: StarCategory): StarCategory {
   return declared && STAR_CATEGORIES.has(declared) ? (declared as StarCategory) : fallback
 }
 
+const POLARITY_PREFIX: Record<YinYangPolarity, string> = { YANG: '+', YIN: '−' }
+
+function polarityOf(star: ChartStar): YinYangPolarity | null {
+  const declared = optionalString(star, 'polarity')
+  return declared === 'YANG' || declared === 'YIN' ? declared : null
+}
+
 function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
   const category = categoryOf(star, fallback)
-  const element = field(star, 'element')
+  const raw = field(star, 'element')
+  const element = isElementCode(raw) ? raw : null
+  const polarity = polarityOf(star)
+  const elementLabel = element ? ELEMENT_COLOR_MAP[element].label : null
+  const strengthLabel = star.strength ? STRENGTH_LABELS[star.strength] : null
   return {
     code: star.code,
     name: star.label,
     category,
-    element: isElementCode(element) ? element : null,
+    element,
+    elementLabel,
+    polarityPrefix: polarity ? POLARITY_PREFIX[polarity] : null,
+    // Spelled out because colour alone must not carry the element.
+    ariaLabel: [star.label, elementLabel && `hành ${elementLabel}`, strengthLabel]
+      .filter(Boolean)
+      .join(', '),
     strength: star.strength,
     strengthAbbr: star.strength ? STRENGTH_ABBREVIATIONS[star.strength] : null,
     provisional: star.provisional,
     isTransformation: category === 'TRANSFORMATION',
     isAnnual: category === 'ANNUAL',
   }
+}
+
+/**
+ * Stars the engine sent without a ngũ hành, for the dev console only.
+ *
+ * A missing element is real astrology data that nobody has verified, not a bug to
+ * paper over. Reporting it keeps the gap visible without putting a guess on the
+ * chart — and it never reaches a customer-facing or exported chart, because it
+ * goes to the console under `import.meta.dev` and not into the DOM.
+ */
+function reportMissingElements(palaces: PalaceViewModel[]): void {
+  if (!import.meta.dev) return
+  // Keyed by name, which is what the message prints: one line per star, however
+  // many palaces or categories it turns up in.
+  const missing = new Set<string>()
+  for (const palace of palaces) {
+    for (const star of [...palace.majorStars, ...palace.minorStars]) {
+      if (!star.element) missing.add(star.name)
+    }
+  }
+  if (missing.size === 0) return
+  console.warn(
+    `[TuVi Renderer] Thiếu metadata ngũ hành: ${[...missing].sort().join(', ')} — ` +
+      'vẽ bằng mực trung tính. Xem cosmic_astrology/stars/metadata.py.',
+  )
 }
 
 /** Stable by category priority; the engine's own order survives within a category. */
@@ -190,6 +235,11 @@ function link(from: number, to: number, type: ConnectionType): ConnectionViewMod
 
 const pad = (value: number) => String(value).padStart(2, '0')
 
+/** Narrow an engine element string; anything unexpected loses its colour, not the value. */
+function elementOf(value: unknown): ElementCode | null {
+  return isElementCode(value) ? value : null
+}
+
 function centerFields(chart: ChartPayload): CenterFieldViewModel[] {
   const { birth, lunar_birth: lunar, pillars } = chart
   const leap = lunar.is_leap_month ? ' nhuận' : ''
@@ -198,26 +248,31 @@ function centerFields(chart: ChartPayload): CenterFieldViewModel[] {
       ? String(birth.solar.year)
       : `${birth.solar.year} (âm ${lunar.year})`
 
+  // `element` is set only where the value itself names an element, so the centre
+  // gains two coloured values rather than becoming rainbow text.
+  const f = (
+    label: string,
+    value: string,
+    secondary: string | null = null,
+    element: ElementCode | null = null,
+  ): CenterFieldViewModel => ({ label, value, secondary, element })
+
   const fields: CenterFieldViewModel[] = [
-    { label: 'Họ tên', value: birth.name, secondary: null },
-    { label: 'Năm', value: year, secondary: pillars.year.name },
-    { label: 'Tháng', value: `${birth.solar.month} (${lunar.month}${leap})`, secondary: pillars.month.name },
-    { label: 'Ngày', value: `${birth.solar.day} (${lunar.day})`, secondary: pillars.day.name },
-    {
-      label: 'Giờ',
-      value: `${birth.solar.hour} giờ ${pad(birth.solar.minute)} phút`,
-      secondary: pillars.hour.name,
-    },
-    { label: 'Âm dương', value: chart.yin_yang.label, secondary: null },
-    { label: 'Bản mệnh', value: chart.menh.nap_am, secondary: null },
-    { label: 'Cục', value: chart.cuc.label, secondary: null },
-    { label: 'Mệnh – Cục', value: chart.cuc.relation_label, secondary: null },
-    { label: 'Mệnh', value: chart.menh.branch, secondary: null },
-    {
-      label: 'Thân',
-      value: chart.than.branch,
-      secondary: chart.than.resides_in_label ? `cư ${chart.than.resides_in_label}` : null,
-    },
+    f('Họ tên', birth.name),
+    f('Năm', year, pillars.year.name),
+    f('Tháng', `${birth.solar.month} (${lunar.month}${leap})`, pillars.month.name),
+    f('Ngày', `${birth.solar.day} (${lunar.day})`, pillars.day.name),
+    f('Giờ', `${birth.solar.hour} giờ ${pad(birth.solar.minute)} phút`, pillars.hour.name),
+    f('Âm dương', chart.yin_yang.label),
+    f('Bản mệnh', chart.menh.nap_am, null, elementOf(chart.menh.element)),
+    f('Cục', chart.cuc.label, null, elementOf(chart.cuc.element)),
+    f('Mệnh – Cục', chart.cuc.relation_label),
+    f('Mệnh', chart.menh.branch),
+    f(
+      'Thân',
+      chart.than.branch,
+      chart.than.resides_in_label ? `cư ${chart.than.resides_in_label}` : null,
+    ),
   ]
   return fields.filter((entry) => entry.value.trim() !== '')
 }
@@ -227,6 +282,7 @@ export function mapChartDtoToViewModel(chart: ChartPayload): ChartViewModel {
   const starsPlaced = chart.palaces.some((palace) => palace.major_stars.length > 0)
   const palaces = chart.palaces.map((palace) => mapPalace(palace, starsPlaced))
   const byBranch = new Map(palaces.map((p) => [p.branchIndex, p]))
+  reportMissingElements(palaces)
 
   if (palaces.length !== 12 || byBranch.size !== 12) {
     warnings.push(`Engine gửi ${palaces.length} cung, cần đủ 12 cung khác địa chi.`)

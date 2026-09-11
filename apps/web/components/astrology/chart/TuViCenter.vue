@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { elementColor } from '~/utils/tuvi-chart'
 import type { ChartViewModel, ConnectionViewModel } from '~/types/chart-view-model'
 import TuViChartConnections from './TuViChartConnections.vue'
 
@@ -54,7 +55,10 @@ const TICKS = Array.from({ length: 12 }, (_, i) => {
         <template v-for="entry in center.fields" :key="entry.label">
           <dt>{{ entry.label }}</dt>
           <dd>
-            <span>{{ entry.value }}</span>
+            <!-- Only a value that *is* an element name takes its colour. -->
+            <span :style="entry.element ? { color: elementColor(entry.element) } : undefined">{{
+              entry.value
+            }}</span>
             <span v-if="entry.secondary" class="tuvi-center__secondary">{{ entry.secondary }}</span>
           </dd>
         </template>

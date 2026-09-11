@@ -23,6 +23,12 @@ export interface StarViewModel {
   category: StarCategory
   /** Declared by the engine. `null` renders as neutral text — never guessed from the name. */
   element: ElementCode | null
+  /** `'Kim'`, `'Mộc'`… for tooltips and screen readers. `null` alongside `element`. */
+  elementLabel: string | null
+  /** `'+'` for dương, `'−'` for âm, `null` when the engine declared no polarity. */
+  polarityPrefix: string | null
+  /** "Thái Âm, hành Thủy, Miếu" — colour is never the only carrier of meaning. */
+  ariaLabel: string
   /** `null` when the engine sent no strength; the abbreviation is then omitted. */
   strength: StarStrength | null
   strengthAbbr: string | null
@@ -92,6 +98,8 @@ export interface CenterFieldViewModel {
   label: string
   value: string
   secondary: string | null
+  /** Set only on fields whose value *is* an element name (bản mệnh, cục). */
+  element: ElementCode | null
 }
 
 export interface ChartMetaViewModel {

@@ -40,6 +40,7 @@ from cosmic_astrology.chart.types import (
 from cosmic_astrology.conventions.policies import RuleId, TimezonePolicy
 from cosmic_astrology.conventions.profile import ConventionProfile
 from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
+from cosmic_astrology.stars.metadata import metadata_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
 
@@ -353,6 +354,23 @@ def build_chart(
     )
 
 
+def _major_star(code: str, label: str) -> Star:
+    """A chính tinh with its catalogued ngũ hành attached.
+
+    Metadata is looked up, never derived: a star whose element the schools dispute
+    comes back with ``element=None`` and is drawn in neutral ink downstream.
+    """
+    meta = metadata_for(code)
+    return Star(
+        code=code,
+        label=label,
+        kind=StarKind.MAJOR,
+        provisional=True,
+        element=meta.element if meta else None,
+        polarity=meta.polarity if meta else None,
+    )
+
+
 def _place_major_stars(
     by_branch: dict[int, Palace],
     cuc_number: int,
@@ -369,17 +387,13 @@ def _place_major_stars(
                    cuc=cuc_number, lunar_day=lunar_day)
     for code, label, offset in _TU_VI_CHAIN:
         branch = (tu_vi + offset) % 12
-        by_branch[branch].stars.append(
-            Star(code=code, label=label, kind=StarKind.MAJOR, provisional=True)
-        )
+        by_branch[branch].stars.append(_major_star(code, label))
         if log is not None:
             log.record(profile, RuleId.MAJOR_STARS, f"{label} → {CHI[branch]}",
                        chain="Tử Vi", anchor=CHI[tu_vi], offset=offset)
     for code, label, offset in _THIEN_PHU_CHAIN:
         branch = (thien_phu + offset) % 12
-        by_branch[branch].stars.append(
-            Star(code=code, label=label, kind=StarKind.MAJOR, provisional=True)
-        )
+        by_branch[branch].stars.append(_major_star(code, label))
         if log is not None:
             log.record(profile, RuleId.MAJOR_STARS, f"{label} → {CHI[branch]}",
                        chain="Thiên Phủ", anchor=CHI[thien_phu], offset=offset)
