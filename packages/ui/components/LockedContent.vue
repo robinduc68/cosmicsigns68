@@ -13,8 +13,10 @@ withDefaults(
     basis?: string
     ctaLabel?: string
     ctaTo?: string
+    /** For a gate whose purchase flow does not exist yet: no dead buttons. */
+    ctaDisabled?: boolean
   }>(),
-  { ctaLabel: 'Mở luận giải' },
+  { ctaLabel: 'Mở luận giải', ctaDisabled: false },
 )
 </script>
 
@@ -41,8 +43,12 @@ withDefaults(
         <p class="font-display text-h3 text-[var(--text)]">{{ title }}</p>
       </div>
       <p v-if="basis" class="mt-2.5 text-small text-[var(--text-muted)]">{{ basis }}</p>
-      <CsButton v-if="ctaTo" :to="ctaTo" class="mt-4" size="sm">{{ ctaLabel }}</CsButton>
-      <CsButton v-else class="mt-4" size="sm"><slot name="cta">{{ ctaLabel }}</slot></CsButton>
+      <CsButton v-if="ctaTo && !ctaDisabled" :to="ctaTo" class="mt-4" size="sm">
+        {{ ctaLabel }}
+      </CsButton>
+      <CsButton v-else class="mt-4" size="sm" :disabled="ctaDisabled">
+        <slot name="cta">{{ ctaLabel }}</slot>
+      </CsButton>
     </div>
   </div>
 </template>

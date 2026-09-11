@@ -3,15 +3,10 @@ from __future__ import annotations
 import uuid
 from typing import Any
 
-from sqlalchemy import JSON, Boolean, Float, ForeignKey, Index, Integer, String, Uuid
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import Boolean, Float, ForeignKey, Index, Integer, String, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.db.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-
-# JSONB on Postgres (indexable, binary) and plain JSON everywhere else so the
-# test suite can run on SQLite without a container.
-JSONColumn = JSON().with_variant(JSONB(), "postgresql")
+from app.db.base import Base, JSONColumn, TimestampMixin, UUIDPrimaryKeyMixin
 
 
 class Chart(UUIDPrimaryKeyMixin, TimestampMixin, Base):

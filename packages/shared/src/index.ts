@@ -1,5 +1,6 @@
 export * from './types/api'
 export * from './types/chart'
+export * from './types/product'
 export * from './schemas/birth'
 export * from './constants/astrology'
 export * from './constants/content'

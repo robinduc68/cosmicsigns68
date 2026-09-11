@@ -5,8 +5,13 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Uuid, func
+from sqlalchemy import JSON, DateTime, Uuid, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+# JSONB on Postgres (indexable, binary) and plain JSON everywhere else so the
+# test suite can run on SQLite without a container.
+JSONColumn = JSON().with_variant(JSONB(), "postgresql")
 
 
 class Base(DeclarativeBase):

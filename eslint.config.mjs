@@ -34,6 +34,10 @@ export default ts.config(
   },
   {
     rules: {
+      // TypeScript resolves identifiers far better than this rule can, and it
+      // understands Nuxt's auto-imports. Keeping it on only produces noise —
+      // `pnpm typecheck` is what catches a genuinely undefined name.
+      'no-undef': 'off',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       '@typescript-eslint/no-unused-vars': [

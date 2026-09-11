@@ -79,7 +79,7 @@ format: ## Format everything
 	$(API)/ruff format packages/astrology-engine/src packages/astrology-engine/tests
 
 typecheck: ## Typecheck everything
-	$(PNPM) typecheck
+	$(PNPM) -r --workspace-concurrency=1 typecheck
 	cd apps/api && ./.venv/bin/mypy app
 	cd packages/astrology-engine && ../../apps/api/.venv/bin/mypy src
 

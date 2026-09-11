@@ -1,6 +1,6 @@
 import type { ElementCode, PalaceCode, StarStrength } from '../types/chart'
 
-/** Display order used by the chart grid, starting at Mệnh. */
+/** Reading order of the palaces, starting at Mệnh. Not the grid layout. */
 export const PALACE_ORDER: PalaceCode[] = [
   'MENH',
   'PHU_MAU',
@@ -62,6 +62,28 @@ export const EARTHLY_BRANCHES = [
   'Tuất',
   'Hợi',
 ] as const
+
+/**
+ * Địa bàn layout: which địa chi owns each cell of the 4×4 chart grid, read left
+ * to right, top to bottom. `null` marks the four centre cells, which carry the
+ * chart summary rather than a palace.
+ *
+ *   Tỵ   Ngọ  Mùi  Thân
+ *   Thìn  ·    ·   Dậu
+ *   Mão   ·    ·   Tuất
+ *   Dần  Sửu  Tý   Hợi
+ *
+ * Fixed for every chart: a palace's cell is decided by its địa chi, never by its
+ * position in the palace array. Lives here, not in the web app, so the layout is
+ * stated once and the frontend keeps rendering chart JSON rather than encoding
+ * Tử Vi rules of its own.
+ */
+export const CHART_GRID_BRANCH_INDEXES: readonly (number | null)[] = [
+  5, 6, 7, 8,
+  4, null, null, 9,
+  3, null, null, 10,
+  2, 1, 0, 11,
+]
 
 /** The twelve two-hour periods, for the birth-hour picker. */
 export const BIRTH_HOUR_OPTIONS = EARTHLY_BRANCHES.map((branch, index) => ({
