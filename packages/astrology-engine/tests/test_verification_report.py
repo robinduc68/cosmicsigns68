@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from cosmic_astrology.conventions import COSMIC_SIGNS_STANDARD_V1, RuleId, VerificationStatus
+from cosmic_astrology.review import load_store
 from cosmic_astrology.verification import DEFAULT_FIXTURE, build_report, render_report
 
 PROFILE = COSMIC_SIGNS_STANDARD_V1
@@ -15,16 +16,22 @@ def test_the_report_covers_every_rule_in_the_profile() -> None:
     assert len(build_report().rules) == len(RuleId)
 
 
-def test_fixture_counts_come_from_the_fixture_file_not_from_a_constant() -> None:
+def test_fixture_counts_come_from_the_review_store_not_from_a_constant() -> None:
     data = json.loads(Path(DEFAULT_FIXTURE).read_text(encoding="utf-8"))
-    cases = data["cases"]
+    summary = load_store().summary()
     stats = build_report().fixtures
 
-    assert stats.total == len(cases)
-    assert stats.verified == sum(1 for c in cases if c["verified_against_source"])
-    assert stats.blocked == sum(1 for c in cases if "blocked" in c)
-    # Pending is the leftover, so the three buckets always account for everything.
-    assert stats.verified + stats.pending + stats.blocked == stats.total
+    assert stats.total == summary["TOTAL"] == len(data["cases"])
+    assert stats.verified == summary["VERIFIED"]
+    assert stats.in_review == summary["IN_REVIEW"]
+    assert stats.pending == summary["PENDING"]
+    assert stats.disagreement == summary["DISAGREEMENT"]
+    assert stats.blocked == summary["BLOCKED"]
+    # The buckets are exhaustive: every case is counted exactly once.
+    counted = (
+        stats.verified + stats.in_review + stats.pending + stats.disagreement + stats.blocked
+    )
+    assert counted == stats.total
 
 
 def test_the_report_reflects_rule_status_changes() -> None:

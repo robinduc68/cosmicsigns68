@@ -4,7 +4,7 @@ These tests deliberately do **not** assert star positions. The matrix exists to
 be checked against an outside authority; asserting the engine against its own
 output would only prove it is self-consistent. What is guarded here is the
 *process*: the fixture stays well-formed, coverage does not silently shrink, and
-nobody can promote a case to "verified" without supplying expected values.
+nobody can promote a case to "verified" without the evidence to back it.
 """
 
 from __future__ import annotations
@@ -18,6 +18,7 @@ import pytest
 from cosmic_astrology import BirthInput, build_chart
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
 from cosmic_astrology.conventions import COSMIC_SIGNS_STANDARD_V1
+from cosmic_astrology.review import ReviewState, ReviewStore, load_store
 
 FIXTURE = Path(__file__).parent / "fixtures" / "major_stars_matrix.json"
 
@@ -25,6 +26,11 @@ MAJOR_STAR_CODES = {
     "TU_VI", "THIEN_CO", "THAI_DUONG", "VU_KHUC", "THIEN_DONG", "LIEM_TRINH",
     "THIEN_PHU", "THAI_AM", "THAM_LANG", "CU_MON", "THIEN_TUONG", "THIEN_LUONG",
     "THAT_SAT", "PHA_QUAN",
+}  # fmt: skip
+
+REVIEW_KEYS = {
+    "state", "expected_tu_vi", "expected_stars", "expected_tuan", "expected_triet",
+    "independently_confirmed", "reviewer", "reviewed_at", "source_id", "page", "notes",
 }  # fmt: skip
 
 
@@ -39,6 +45,11 @@ def _cases() -> list[dict[str, Any]]:
 def _placeable() -> list[dict[str, Any]]:
     """Cases the default profile can actually build (TV-B1 is blocked on Q6)."""
     return [c for c in _cases() if "blocked" not in c]
+
+
+@pytest.fixture(scope="module")
+def store() -> ReviewStore:
+    return load_store()
 
 
 def _build(case: dict[str, Any]) -> dict[str, Any]:
@@ -63,6 +74,14 @@ def _build(case: dict[str, Any]) -> dict[str, Any]:
 def test_every_case_has_a_unique_birth_input() -> None:
     seen = {json.dumps(c["input"], sort_keys=True) for c in _cases()}
     assert len(seen) == len(_cases()), "có ca trùng input — không thêm được độ phủ nào"
+
+
+@pytest.mark.parametrize("case", _cases(), ids=lambda c: c["id"])
+def test_every_case_keeps_reviewer_findings_in_their_own_block(case: dict[str, Any]) -> None:
+    """Engine output and reviewer findings live apart; the old flat fields are gone."""
+    assert set(case["review"]) == REVIEW_KEYS
+    for legacy in ("expected_stars", "expected_tu_vi", "verified_against_source", "reviewer"):
+        assert legacy not in case, f"{case['id']}: còn trường cũ '{legacy}' ngoài khối review"
 
 
 def test_matrix_covers_every_cuc_and_the_four_yin_yang_combinations() -> None:
@@ -113,34 +132,42 @@ def test_day_one_anchors_match_the_classical_table(case: dict[str, Any]) -> None
 
 
 @pytest.mark.parametrize("case", _cases(), ids=lambda c: c["id"])
-def test_a_case_is_only_verified_once_expected_values_exist(case: dict[str, Any]) -> None:
-    """Không ai được đánh dấu 'đã thẩm định' mà bỏ trống giá trị kỳ vọng."""
-    if case["verified_against_source"]:
-        assert case["expected_stars"], f"{case['id']}: verified nhưng expected_stars trống"
-        assert case["expected_stars"].keys() == MAJOR_STAR_CODES
-        assert case["expected_tu_vi"], f"{case['id']}: thiếu expected_tu_vi"
-        assert case["reviewer"], f"{case['id']}: thiếu người thẩm định"
-        assert case["source"], f"{case['id']}: thiếu nguồn đối chiếu"
-    else:
-        assert case["verification_status"] != "VERIFIED"
+def test_a_verified_state_is_always_backed_by_evidence(
+    case: dict[str, Any], store: ReviewStore
+) -> None:
+    """A stored label can never claim more than the evidence in the file supports."""
+    record = store.record(case["id"])
+    evaluation = record.evaluate(store.registry)
+
+    if case["review"]["state"] == ReviewState.VERIFIED.value:
+        assert evaluation.state is ReviewState.VERIFIED, (
+            f"{case['id']}: ghi VERIFIED nhưng bằng chứng không đủ: {evaluation.blockers}"
+        )
+    if evaluation.state is ReviewState.VERIFIED:
+        review = record.review
+        assert review.has_expected_values
+        assert review.reviewer and review.reviewed_at and review.source_id
+        assert review.independently_confirmed
 
 
 @pytest.mark.parametrize("case", _cases(), ids=lambda c: c["id"])
 def test_expected_values_are_never_copied_from_engine_output(case: dict[str, Any]) -> None:
     """The whole point of the matrix: truth has to come from outside the engine.
 
-    An ``expected_stars`` block that is byte-identical to the candidate is the
-    signature of somebody pasting the engine's answer in, which would make the
-    fixture prove nothing.
+    An ``expected_stars`` block byte-identical to the candidate, without an explicit
+    independent confirmation, is the signature of somebody pasting the engine's
+    answer in — which would make the fixture prove nothing.
     """
-    expected = case.get("expected_stars")
+    review = case["review"]
+    expected = review.get("expected_stars")
     if expected is None:
         return
     candidate = case.get("engine_candidate_stars")
-    if candidate is not None and expected == candidate and not case.get("independently_confirmed"):
+    copied = candidate is not None and expected == candidate
+    if copied and not review.get("independently_confirmed"):
         pytest.fail(
             f"{case['id']}: expected_stars trùng khít engine_candidate_stars. Nếu nguồn "
-            "thật sự cho kết quả y hệt, đặt independently_confirmed=true kèm reviewer."
+            "thật sự cho kết quả y hệt, tích independently_confirmed kèm reviewer."
         )
 
 
@@ -160,15 +187,14 @@ def test_the_blocked_case_demonstrates_all_three_late_zi_policies() -> None:
     assert len({(d["lunar_day"], d["day_pillar"], d["tu_vi"]) for d in demo.values()}) == 3
 
 
-def test_source_of_truth_is_still_open_so_stars_stay_provisional() -> None:
-    """Chưa chốt nguồn thì mọi sao phải còn mang cờ provisional.
+def test_source_of_truth_is_still_open_so_stars_stay_provisional(store: ReviewStore) -> None:
+    """Chưa thẩm định xong thì mọi sao phải còn mang cờ provisional.
 
-    Ngày nào chốt được nguồn và thẩm định xong, test này sẽ đỏ — đó là tín hiệu
-    đúng lúc để gỡ cờ, chứ không phải lỗi.
+    Ngày nào mọi ca đều VERIFIED, test này sẽ đỏ — đó là tín hiệu đúng lúc để xem
+    lại điều kiện gỡ cờ, chứ không phải lỗi.
     """
-    matrix = _matrix()
-    unverified = [c["id"] for c in matrix["cases"] if not c["verified_against_source"]]
-    if not unverified:
+    verified = [fid for fid, ev in store.states().items() if ev.state is ReviewState.VERIFIED]
+    if len(verified) == len(_placeable()):
         pytest.fail("Mọi ca đã thẩm định — xem lại điều kiện lên stage FULL (docs mục 3)")
 
     chart = _build(_placeable()[0])

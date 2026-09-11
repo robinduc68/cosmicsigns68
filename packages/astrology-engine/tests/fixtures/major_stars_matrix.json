@@ -1,6 +1,6 @@
 {
-  "_README": "MA TRẬN KIỂM ĐỊNH 14 CHÍNH TINH.\n`engine_candidate_stars` là ĐẦU RA HIỆN TẠI của engine, KHÔNG phải chân lý. `expected_stars` / `expected_tu_vi` / `expected_tuan` / `expected_triet` phải do người thẩm định điền từ nguồn độc lập — TUYỆT ĐỐI không chép từ engine_candidate_stars. Chừng nào expected_* còn null thì ca đó chưa được kiểm định, và test phải skip chứ không được coi null là đã xác nhận.",
-  "schema_version": 2,
+  "_README": "MA TRẬN KIỂM ĐỊNH 14 CHÍNH TINH.\nHai khối phải luôn tách nhau:\n  engine_candidate_stars — ĐẦU RA CỦA ENGINE. Không phải chân lý.\n  review.expected_*      — do NGƯỜI THẨM ĐỊNH tra nguồn rồi điền.\nTuyệt đối không chép khối trên sang khối dưới. Nếu nguồn thật sự trùng khít engine thì phải tích review.independently_confirmed kèm tên người, thời điểm và source_id — xem docs/astrology-verification.md.\nreview.state là bản cache đọc lại từ bằng chứng; hàm evaluate_state() luôn tính lại chứ không tin vào trường đã lưu.",
+  "schema_version": 3,
   "source_of_truth": "CHƯA CHỐT — chặn bởi câu hỏi mở Q1/Q2/Q3 (docs/astrology-conventions.md mục 0)",
   "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
   "convention_version": "2026.09",
@@ -96,17 +96,22 @@
         "THAI_AM": "Thìn",
         "THIEN_PHU": "Mão"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
       "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Sửu",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-A2",
@@ -183,17 +188,22 @@
         "PHA_QUAN": "Tuất",
         "LIEM_TRINH": "Thân"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
       "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Thìn",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-A3",
@@ -270,17 +280,22 @@
         "THIEN_DONG": "Ngọ",
         "THAI_AM": "Ngọ"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
       "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Hợi",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-A4",
@@ -357,17 +372,22 @@
         "THAI_DUONG": "Mão",
         "THIEN_LUONG": "Mão"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
       "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Ngọ",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-A5",
@@ -444,17 +464,22 @@
         "PHA_QUAN": "Tỵ",
         "THIEN_DONG": "Thìn"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
       "notes": "Ca neo theo bảng kinh điển mùng 1; vẫn cần xác nhận theo nguồn đã chốt.",
       "anchor_tu_vi": "Dậu",
-      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt."
+      "anchor_basis": "Bảng an Tử Vi kinh điển cho mùng 1: Thủy nhị→Sửu, Mộc tam→Thìn, Kim tứ→Hợi, Thổ ngũ→Ngọ, Hỏa lục→Dậu. Engine khớp. Vẫn cần xác nhận lại theo nguồn đã chốt.",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-C1",
@@ -531,15 +556,20 @@
         "THIEN_PHU": "Dần",
         "THIEN_CO": "Sửu"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-C2",
@@ -616,15 +646,20 @@
         "THIEN_CO": "Mùi",
         "PHA_QUAN": "Ngọ"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-C3",
@@ -701,15 +736,20 @@
         "PHA_QUAN": "Tý",
         "THAI_DUONG": "Hợi"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-C4",
@@ -786,15 +826,20 @@
         "THAI_DUONG": "Tỵ",
         "VU_KHUC": "Thìn"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-S1",
@@ -871,15 +916,20 @@
         "VU_KHUC": "Mão",
         "THAT_SAT": "Mão"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-S2",
@@ -956,15 +1006,20 @@
         "THAI_AM": "Dần",
         "THIEN_PHU": "Sửu"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-S3",
@@ -1041,15 +1096,20 @@
         "THIEN_CO": "Mùi",
         "PHA_QUAN": "Ngọ"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-S4",
@@ -1126,15 +1186,20 @@
         "PHA_QUAN": "Ngọ",
         "THAI_DUONG": "Tỵ"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-S5",
@@ -1211,15 +1276,20 @@
         "TU_VI": "Tỵ",
         "THAT_SAT": "Tỵ"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-S6",
@@ -1296,15 +1366,20 @@
         "LIEM_TRINH": "Hợi",
         "THAM_LANG": "Hợi"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-L1",
@@ -1381,15 +1456,20 @@
         "THIEN_TUONG": "Tý",
         "CU_MON": "Hợi"
       },
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
-      "notes": ""
+      "notes": "",
+      "review": {
+        "state": "PENDING",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
+      }
     },
     {
       "id": "TV-B1",
@@ -1411,14 +1491,6 @@
       "timezone_context": null,
       "derived_frame": null,
       "engine_candidate_stars": null,
-      "expected_tu_vi": null,
-      "expected_stars": null,
-      "expected_tuan": null,
-      "expected_triet": null,
-      "verification_status": "UNVERIFIED",
-      "verified_against_source": false,
-      "reviewer": null,
-      "source": null,
       "notes": "Ca chứng minh cho Q6. Hồ sơ mặc định từ chối lập lá số này; khối late_zi_demonstration cho thấy từng chính sách ra kết quả gì.",
       "blocked": "CHẶN: phụ thuộc quyết định C3 (giờ Tý muộn có chuyển ngày không). Hiện engine chuyển trụ ngày nhưng KHÔNG chuyển ngày âm, nên ca này tự mâu thuẫn.",
       "late_zi_demonstration": {
@@ -1443,6 +1515,19 @@
           "menh": "Dậu",
           "internally_consistent": false
         }
+      },
+      "review": {
+        "state": "BLOCKED",
+        "expected_tu_vi": null,
+        "expected_stars": null,
+        "expected_tuan": null,
+        "expected_triet": null,
+        "independently_confirmed": false,
+        "reviewer": null,
+        "reviewed_at": null,
+        "source_id": null,
+        "page": null,
+        "notes": ""
       }
     }
   ],
@@ -1486,5 +1571,6 @@
     "anchored": 5,
     "blocked": 1,
     "verified": 0
-  }
+  },
+  "discrepancies": []
 }

@@ -1,30 +1,50 @@
 <script setup lang="ts">
-import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-vue-next'
+import { Sparkles } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { WIZARD_STEPS } from '~/stores/chart'
 
 useHead({ title: 'Lập lá số' })
 useSeoMeta({
   description:
-    'Nhập ngày giờ sinh theo dương lịch hoặc âm lịch, Cosmic Signs lập lá số Tử Vi đầy đủ ' +
-    '12 cung trong vài giây. Miễn phí, không cần tài khoản.',
+    'Nhập họ tên, ngày giờ sinh và giới tính — Cosmic Signs lập lá số Tử Vi đầy đủ 12 cung ' +
+    'ngay lập tức. Miễn phí, không cần tài khoản.',
 })
 
 const store = useChartStore()
-const { form, step, isLastStep, errors, submitting, submitError } = storeToRefs(store)
+const { form, errors, submitting, submitError } = storeToRefs(store)
 const { error: toastError } = useToast()
 
-// Hiển thị chặng loading tách khỏi `submitting`: nó phải sống thêm một nhịp sau
-// khi lá số về, để người dùng kịp thấy chặng cuối tick xanh trước khi chuyển trang.
+const range = (from: number, to: number) =>
+  Array.from({ length: to - from + 1 }, (_, i) => from + i)
+
+const isLunar = computed(() => form.value.calendar_type === 'LUNAR')
+const dayOptions = computed(() =>
+  range(1, isLunar.value ? 30 : 31).map((d) => ({ value: d, label: String(d) })),
+)
+const monthOptions = range(1, 12).map((m) => ({ value: m, label: `Tháng ${m}` }))
+const hourOptions = range(0, 23).map((h) => ({ value: h, label: `${h} giờ` }))
+const minuteOptions = range(0, 59).map((m) => ({ value: m, label: `${m} phút` }))
+
+// Gõ năm nhanh hơn kéo danh sách 120 năm; ô nhập trả về chuỗi nên đổi sang số ở đây.
+const yearText = computed({
+  get: () => (form.value.birth_year ? String(form.value.birth_year) : ''),
+  set: (value: string | number | null) => {
+    const parsed = Number.parseInt(String(value ?? ''), 10)
+    form.value.birth_year = Number.isNaN(parsed) ? 0 : parsed
+  },
+})
+
+// Rời âm lịch thì tháng nhuận không còn nghĩa; ngày 31 không có trên lịch âm.
+watch(isLunar, (lunar) => {
+  if (!lunar) form.value.is_leap_month = false
+  else if (form.value.birth_day > 30) form.value.birth_day = 30
+})
+
+// Màn chờ tách khỏi `submitting` để chặng cuối kịp tick xanh trước khi chuyển trang.
 const creating = ref(false)
 const created = ref(false)
 
-function onFormSubmit() {
-  if (isLastStep.value) return onSubmit()
-  store.next()
-}
-
 async function onSubmit() {
+  if (!store.validate()) return
   creating.value = true
   created.value = false
 
@@ -59,40 +79,133 @@ async function onSubmit() {
 
     <template v-else>
       <h1 class="font-display text-h2 text-[var(--text)] sm:text-h1">Lập lá số</h1>
-      <p class="mt-3 text-body text-[var(--text-muted)]">
-        Ba bước, khoảng hai phút. Bạn xem được lá số đầy đủ mà không cần tài khoản.
+      <p class="mt-2 text-body text-[var(--text-muted)]">
+        Nhập ngày giờ sinh, lá số hiện ra ngay. Không cần tài khoản.
       </p>
 
-      <div class="mt-8">
-        <WizardStepIndicator :steps="[...WIZARD_STEPS]" :current="step" @go-to="store.goTo" />
-      </div>
+      <CsCard class="mt-8">
+        <form class="space-y-5" novalidate @submit.prevent="onSubmit">
+          <CsInput
+            v-model="form.subject_name"
+            label="Họ tên"
+            placeholder="Nhập họ tên…"
+            autocomplete="name"
+            :maxlength="120"
+            :error="errors.subject_name"
+          />
 
-      <form class="mt-10" novalidate @submit.prevent="onFormSubmit">
-        <WizardStepIdentity v-if="step === 0" v-model="form" :errors="errors" />
-        <WizardStepBirth v-else-if="step === 1" v-model="form" :errors="errors" />
-        <WizardStepConfirm v-else v-model="form" :errors="errors" @edit="store.goTo" />
+          <div>
+            <div class="grid grid-cols-[1fr_1.4fr_1.1fr] gap-2">
+              <CsSelect
+                v-model="form.birth_day"
+                label="Ngày"
+                :options="dayOptions"
+                :error="errors.birth_day"
+              />
+              <CsSelect
+                v-model="form.birth_month"
+                label="Tháng"
+                :options="monthOptions"
+                :error="errors.birth_month"
+              />
+              <CsInput
+                v-model="yearText"
+                label="Năm"
+                inputmode="numeric"
+                placeholder="1995"
+                :maxlength="4"
+                :error="errors.birth_year"
+              />
+            </div>
 
-        <CsErrorState
-          v-if="submitError"
-          class="mt-6"
-          title="Chưa lập được lá số"
-          :description="submitError"
-        />
+            <fieldset class="mt-2.5">
+              <legend class="sr-only">Loại lịch của ngày sinh</legend>
+              <div class="flex flex-wrap gap-x-6">
+                <label
+                  v-for="option in [
+                    { value: 'SOLAR', label: 'Lịch dương' },
+                    { value: 'LUNAR', label: 'Lịch âm' },
+                  ]"
+                  :key="option.value"
+                  class="inline-flex cursor-pointer items-center gap-2 py-1 text-small text-[var(--text)]"
+                >
+                  <input
+                    v-model="form.calendar_type"
+                    type="radio"
+                    name="calendar_type"
+                    :value="option.value"
+                    class="size-4 accent-[var(--accent)]"
+                  />
+                  {{ option.label }}
+                </label>
+              </div>
+            </fieldset>
 
-        <div class="mt-10 flex items-center gap-3">
-          <CsButton v-if="step > 0" variant="secondary" :disabled="submitting" @click="store.back">
-            <template #leading><ArrowLeft class="size-4" aria-hidden="true" /></template>
-            Quay lại
-          </CsButton>
+            <CsCheckbox
+              v-if="isLunar"
+              v-model="form.is_leap_month"
+              class="mt-2"
+              label="Sinh vào tháng nhuận"
+            />
+            <p v-if="errors.is_leap_month" class="mt-1.5 text-caption text-[var(--danger)]">
+              {{ errors.is_leap_month }}
+            </p>
+          </div>
 
-          <CsButton type="submit" class="ml-auto" size="lg" :loading="submitting">
-            {{ isLastStep ? 'Lập lá số' : 'Tiếp tục' }}
-            <template v-if="!isLastStep" #trailing>
-              <ArrowRight class="size-4" aria-hidden="true" />
-            </template>
-          </CsButton>
-        </div>
-      </form>
+          <div>
+            <div class="grid grid-cols-2 gap-2">
+              <CsSelect
+                v-model="form.birth_hour"
+                label="Giờ sinh"
+                :options="hourOptions"
+                :error="errors.birth_hour"
+              />
+              <CsSelect
+                v-model="form.birth_minute"
+                label="Phút"
+                :options="minuteOptions"
+                :error="errors.birth_minute"
+              />
+            </div>
+            <!-- 23:xx là giờ Tý sớm: engine chưa chốt quy ước nên sẽ từ chối. Nói trước
+                 để người dùng không bấm xong mới gặp lỗi. -->
+            <p
+              v-if="form.birth_hour === 23"
+              class="mt-2 text-caption text-[var(--color-gold-400)]"
+            >
+              Từ 23:00 là giờ Tý sớm — các trường phái tính ngày sinh khác nhau ở giờ này, và
+              Cosmic Signs chưa chốt quy ước nên chưa lập được lá số cho giờ này.
+            </p>
+          </div>
+
+          <fieldset>
+            <legend class="mb-1.5 text-small font-medium text-[var(--text)]">Giới tính</legend>
+            <div class="flex flex-wrap gap-x-6">
+              <label
+                v-for="option in [
+                  { value: 'MALE', label: 'Nam' },
+                  { value: 'FEMALE', label: 'Nữ' },
+                ]"
+                :key="option.value"
+                class="inline-flex cursor-pointer items-center gap-2 py-1 text-small text-[var(--text)]"
+              >
+                <input
+                  v-model="form.gender"
+                  type="radio"
+                  name="gender"
+                  :value="option.value"
+                  class="size-4 accent-[var(--accent)]"
+                />
+                {{ option.label }}
+              </label>
+            </div>
+          </fieldset>
+
+          <CsErrorState v-if="submitError" title="Chưa lập được lá số" :description="submitError" />
+
+          <CsButton type="submit" size="lg" block :loading="submitting">Lập lá số</CsButton>
+        </form>
+      </CsCard>
     </template>
   </CsContainer>
 </template>

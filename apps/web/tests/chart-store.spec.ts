@@ -2,83 +2,61 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useChartStore } from '../stores/chart'
 
-/**
- * The wizard's rules live in the store, not the step components — this is where
- * "you cannot skip ahead past an invalid step" is actually enforced.
- */
+/** The one-page form's rules live in the store, so they are tested here. */
 describe('useChartStore', () => {
   beforeEach(() => setActivePinia(createPinia()))
 
-  it('blocks the first step until the name is valid', () => {
+  it('requires a name before anything else', () => {
     const store = useChartStore()
-    expect(store.next()).toBe(false)
-    expect(store.step).toBe(0)
+    expect(store.validate()).toBe(false)
     expect(store.errors.subject_name).toBeTruthy()
-
-    store.form.subject_name = 'Nguyễn Văn A'
-    expect(store.next()).toBe(true)
-    expect(store.step).toBe(1)
-    expect(store.errors.subject_name).toBeUndefined()
   })
 
-  it('only reports errors belonging to the current step', () => {
+  it('accepts a complete birth and clears errors', () => {
     const store = useChartStore()
+    store.validate()
     store.form.subject_name = 'Nguyễn Văn A'
-    store.next()
-
-    // A future birth year is a step-1 problem and must surface there.
-    store.form.birth_year = new Date().getFullYear()
-    store.form.birth_month = 12
-    store.form.birth_day = 31
-    expect(store.next()).toBe(false)
-    expect(store.step).toBe(1)
-    expect(store.errors.birth_year).toBeTruthy()
-    expect(store.errors.subject_name).toBeUndefined()
+    expect(store.validate()).toBe(true)
+    expect(store.errors).toEqual({})
   })
 
   it('rejects a day the chosen month does not have', () => {
     const store = useChartStore()
     store.form.subject_name = 'Nguyễn Văn A'
-    store.next()
     store.form.birth_month = 2
     store.form.birth_day = 31
-    expect(store.next()).toBe(false)
+    expect(store.validate()).toBe(false)
     expect(store.errors.birth_day).toContain('không có trong tháng')
   })
 
-  it('lets the user jump back but never forward', () => {
+  it('rejects a birth in the future', () => {
     const store = useChartStore()
     store.form.subject_name = 'Nguyễn Văn A'
-    store.next()
-    expect(store.step).toBe(1)
-
-    store.goTo(0)
-    expect(store.step).toBe(0)
-
-    // Skipping ahead without validating would let an invalid chart be submitted.
-    store.goTo(2)
-    expect(store.step).toBe(0)
+    store.form.birth_year = new Date().getFullYear() + 1
+    expect(store.validate()).toBe(false)
   })
 
-  it('sends the user back to the step that owns a stale error on submit', async () => {
+  it('rejects a leap month on the solar calendar', () => {
     const store = useChartStore()
     store.form.subject_name = 'Nguyễn Văn A'
-    store.next()
-    store.next()
-    expect(store.step).toBe(2)
+    store.form.is_leap_month = true
+    expect(store.validate()).toBe(false)
+    expect(store.errors.is_leap_month).toBeTruthy()
+  })
 
-    store.form.subject_name = 'A'
+  it('does not reach the API when the form is invalid', async () => {
+    const store = useChartStore()
     expect(await store.submit()).toBeNull()
-    expect(store.step).toBe(0)
-    expect(store.errors.subject_name).toBeTruthy()
+    expect(store.submitting).toBe(false)
+    expect(store.submitError).toBeNull()
   })
 
   it('resets back to a blank form', () => {
     const store = useChartStore()
     store.form.subject_name = 'Nguyễn Văn A'
-    store.next()
+    store.validate()
     store.reset()
-    expect(store.step).toBe(0)
     expect(store.form.subject_name).toBe('')
+    expect(store.errors).toEqual({})
   })
 })

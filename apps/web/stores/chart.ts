@@ -7,31 +7,12 @@ import {
   type ChartDetail,
 } from '@cosmic/shared'
 
-/** Labels of the wizard steps, in order. The store owns the step count so the
- *  page never has to repeat it. */
-export const WIZARD_STEPS = ['Thông tin', 'Ngày giờ sinh', 'Xác nhận'] as const
-
-const LAST_STEP = WIZARD_STEPS.length - 1
-
-/** Fields collected by each wizard step, used to scope validation. */
-const STEP_FIELDS: Record<number, (keyof BirthFormValues)[]> = {
-  0: ['subject_name', 'gender', 'relationship_label'],
-  1: [
-    'calendar_type',
-    'birth_day',
-    'birth_month',
-    'birth_year',
-    'birth_hour',
-    'birth_minute',
-    'is_leap_month',
-    'birth_place',
-  ],
-  2: ['note'],
-}
-
+/**
+ * State of the one-page "Lập lá số" form. Validation lives here rather than in
+ * the page so it can be tested without rendering anything.
+ */
 export const useChartStore = defineStore('chart', () => {
   const form = ref<BirthFormValues>(emptyBirthForm())
-  const step = ref(0)
   const errors = ref<Partial<Record<keyof BirthFormValues, string>>>({})
   const submitting = ref(false)
   const submitError = ref<string | null>(null)
@@ -47,71 +28,36 @@ export const useChartStore = defineStore('chart', () => {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
   }
 
-  watch(form, () => {
-    idempotencyKey.value = newKey()
-  }, { deep: true })
+  watch(
+    form,
+    () => {
+      idempotencyKey.value = newKey()
+    },
+    { deep: true },
+  )
 
-  /** Validates the whole form, then keeps only the messages for `fields`. */
-  function validateFields(fields: (keyof BirthFormValues)[]): boolean {
+  /** Validates the whole form and keeps the first message for each field. */
+  function validate(): boolean {
     const result = birthFormSchema.safeParse(form.value)
-    const scoped: Partial<Record<keyof BirthFormValues, string>> = {}
-
+    const next: Partial<Record<keyof BirthFormValues, string>> = {}
     if (!result.success) {
       for (const issue of result.error.issues) {
         const field = issue.path[0] as keyof BirthFormValues | undefined
-        if (field && fields.includes(field) && !scoped[field]) {
-          scoped[field] = issue.message
-        }
+        if (field && !next[field]) next[field] = issue.message
       }
     }
-    errors.value = scoped
-    return Object.keys(scoped).length === 0
-  }
-
-  function validateStep(index: number): boolean {
-    return validateFields(STEP_FIELDS[index] ?? [])
-  }
-
-  function next(): boolean {
-    if (!validateStep(step.value)) return false
-    step.value = Math.min(step.value + 1, LAST_STEP)
-    return true
-  }
-
-  const isLastStep = computed(() => step.value === LAST_STEP)
-
-  function back(): void {
-    errors.value = {}
-    step.value = Math.max(step.value - 1, 0)
-  }
-
-  function goTo(index: number): void {
-    // Jumping ahead is only allowed through `next`, which validates.
-    if (index < step.value) {
-      errors.value = {}
-      step.value = index
-    }
+    errors.value = next
+    return result.success
   }
 
   function reset(): void {
     form.value = emptyBirthForm()
-    step.value = 0
     errors.value = {}
     submitError.value = null
   }
 
   async function submit(): Promise<ChartDetail | null> {
-    const parsed = birthFormSchema.safeParse(form.value)
-    if (!parsed.success) {
-      // Something an earlier step should have caught — send the user back to it.
-      const field = parsed.error.issues[0]?.path[0] as keyof BirthFormValues | undefined
-      const owningStep = Object.entries(STEP_FIELDS).find(
-        ([, fields]) => field && fields.includes(field),
-      )
-      step.value = owningStep ? Number(owningStep[0]) : 0
-      validateStep(step.value)
-      return null
-    }
+    if (!validate()) return null
 
     submitting.value = true
     submitError.value = null
@@ -119,7 +65,7 @@ export const useChartStore = defineStore('chart', () => {
       const { request } = useApi()
       return await request<ChartDetail>('/api/v1/charts', {
         method: 'POST',
-        body: parsed.data,
+        body: birthFormSchema.parse(form.value),
         headers: { 'Idempotency-Key': idempotencyKey.value },
       })
     } catch (caught: unknown) {
@@ -138,18 +84,5 @@ export const useChartStore = defineStore('chart', () => {
     }
   }
 
-  return {
-    form,
-    step,
-    isLastStep,
-    errors,
-    submitting,
-    submitError,
-    validateStep,
-    next,
-    back,
-    goTo,
-    reset,
-    submit,
-  }
+  return { form, errors, submitting, submitError, validate, reset, submit }
 })

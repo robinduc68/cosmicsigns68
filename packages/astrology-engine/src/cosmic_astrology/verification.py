@@ -8,7 +8,6 @@ update a document.
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -50,6 +49,8 @@ class FixtureStats:
     total: int
     verified: int
     pending: int
+    in_review: int
+    disagreement: int
     blocked: int
     source_of_truth: str
 
@@ -58,6 +59,8 @@ class FixtureStats:
             "total": self.total,
             "verified": self.verified,
             "pending": self.pending,
+            "in_review": self.in_review,
+            "disagreement": self.disagreement,
             "blocked": self.blocked,
             "source_of_truth": self.source_of_truth,
         }
@@ -87,20 +90,22 @@ class VerificationReport:
 
 
 def _fixture_stats(path: Path) -> FixtureStats:
+    """Counts derived from the review store, so they cannot drift from evidence."""
     if not path.exists():
-        return FixtureStats(0, 0, 0, 0, "KHÔNG TÌM THẤY FILE FIXTURE")
-    data = json.loads(path.read_text(encoding="utf-8"))
-    cases = data.get("cases", [])
-    verified = sum(1 for c in cases if c.get("verified_against_source"))
-    blocked = sum(1 for c in cases if c.get("blocked"))
+        return FixtureStats(0, 0, 0, 0, 0, 0, "KHÔNG TÌM THẤY FILE FIXTURE")
+
+    from cosmic_astrology.review.store import SOURCES_PATH, load_store
+
+    store = load_store(path, SOURCES_PATH)
+    counts = store.summary()
     return FixtureStats(
-        total=len(cases),
-        verified=verified,
-        # "Pending" is everything neither signed off nor blocked — the real
-        # backlog, not a number anybody chose.
-        pending=len(cases) - verified - blocked,
-        blocked=blocked,
-        source_of_truth=str(data.get("source_of_truth", "CHƯA CHỐT")),
+        total=counts["TOTAL"],
+        verified=counts["VERIFIED"],
+        pending=counts["PENDING"],
+        in_review=counts["IN_REVIEW"],
+        disagreement=counts["DISAGREEMENT"],
+        blocked=counts["BLOCKED"],
+        source_of_truth=str(store.data.get("source_of_truth", "CHƯA CHỐT")),
     )
 
 
@@ -139,10 +144,12 @@ def render_report(report: VerificationReport) -> str:
         "",
         "Ma trận kiểm định 14 chính tinh:",
         f"  Nguồn chuẩn: {f.source_of_truth}",
-        f"  Verified: {f.verified}",
-        f"  Pending:  {f.pending}",
-        f"  Blocked:  {f.blocked}",
-        f"  Tổng:     {f.total}",
+        f"  Verified:     {f.verified}",
+        f"  In review:    {f.in_review}",
+        f"  Pending:      {f.pending}",
+        f"  Disagreement: {f.disagreement}",
+        f"  Blocked:      {f.blocked}",
+        f"  Tổng:         {f.total}",
         "",
         f"Sẵn sàng cho production: {'CÓ' if report.production_ready else 'KHÔNG'}",
     ]

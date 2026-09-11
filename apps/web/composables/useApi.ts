@@ -16,7 +16,7 @@ export function useApi() {
   async function request<T>(
     path: string,
     options: {
-      method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+      method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
       body?: unknown
       headers?: Record<string, string>
     } = {},
