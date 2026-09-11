@@ -1,0 +1,780 @@
+{
+  "engine": {
+    "stage": "FRAME",
+    "version": "0.2.0-frame",
+    "is_authoritative": false,
+    "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+    "convention_version": "2026.09"
+  },
+  "convention": {
+    "profile": "COSMIC_SIGNS_STANDARD_V1",
+    "version": "2026.09",
+    "rules": [
+      {
+        "rule": "calendar",
+        "policy": "MEEUS_CH49_VIETNAM",
+        "implemented": true,
+        "verification": "VERIFIED",
+        "status": "VERIFIED",
+        "blocked_by": [],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Kiểm chứng bằng bộ test của engine, đối chiếu mốc công khai (ngày Tết chính thống 2000–2026, tháng nhuận Quý Mão 2023).",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Meeus ch.49 đầy đủ + hiệu chỉnh ΔT. Bản rút gọn sai tới ~43 phút."
+      },
+      {
+        "rule": "timezone",
+        "policy": "IANA_HISTORICAL",
+        "implemented": true,
+        "verification": "VERIFIED",
+        "status": "VERIFIED",
+        "blocked_by": [],
+        "source": {
+          "title": "IANA Time Zone Database",
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Qua zoneinfo + gói tzdata",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Offset lấy theo thời điểm sinh, không cố định +7. Miền Nam dùng UTC+8 giai đoạn 1960–1975 theo tzdb."
+      },
+      {
+        "rule": "birth_time_correction",
+        "policy": "NONE",
+        "implemented": true,
+        "verification": "UNVERIFIED",
+        "status": "UNVERIFIED",
+        "blocked_by": [
+          "Q4"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Hiện dùng giờ đồng hồ dân sự. Q4 hỏi có nên hiệu chỉnh về giờ mặt trời thật không — chưa cài TRUE_SOLAR_TIME vì quy ước chưa định nghĩa."
+      },
+      {
+        "rule": "day_boundary",
+        "policy": "LOCAL_MIDNIGHT",
+        "implemented": true,
+        "verification": "VERIFIED",
+        "status": "VERIFIED",
+        "blocked_by": [],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Kiểm chứng bằng bộ test của engine, đối chiếu mốc công khai (ngày Tết chính thống 2000–2026, tháng nhuận Quý Mão 2023).",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Ngày âm bắt đầu từ nửa đêm dân sự địa phương."
+      },
+      {
+        "rule": "late_zi",
+        "policy": "UNRESOLVED",
+        "implemented": true,
+        "verification": "UNVERIFIED",
+        "status": "UNVERIFIED",
+        "blocked_by": [
+          "Q6"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Ba phương án CIVIL_DAY / LATE_ZI_NEXT_DAY / PILLAR_ONLY_NEXT_DAY đều có trường phái theo. Engine từ chối lập lá số sinh lúc 23:xx cho tới khi chốt, thay vì âm thầm chọn hộ."
+      },
+      {
+        "rule": "yin_yang",
+        "policy": "YEAR_STEM_PARITY",
+        "implemented": true,
+        "verification": "VERIFIED",
+        "status": "VERIFIED",
+        "blocked_by": [],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Kiểm chứng bằng bộ test của engine, đối chiếu mốc công khai (ngày Tết chính thống 2000–2026, tháng nhuận Quý Mão 2023).",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": ""
+      },
+      {
+        "rule": "menh_placement",
+        "policy": "DAN_FORWARD_MONTH_BACKWARD_HOUR",
+        "implemented": true,
+        "verification": "VERIFIED",
+        "status": "VERIFIED",
+        "blocked_by": [],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Kiểm chứng bằng bộ test của engine, đối chiếu mốc công khai (ngày Tết chính thống 2000–2026, tháng nhuận Quý Mão 2023).",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cách xử lý tháng nhuận khi đếm vẫn còn là câu hỏi mở."
+      },
+      {
+        "rule": "than_placement",
+        "policy": "DAN_FORWARD_MONTH_FORWARD_HOUR",
+        "implemented": true,
+        "verification": "VERIFIED",
+        "status": "VERIFIED",
+        "blocked_by": [],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Kiểm chứng bằng bộ test của engine, đối chiếu mốc công khai (ngày Tết chính thống 2000–2026, tháng nhuận Quý Mão 2023).",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": ""
+      },
+      {
+        "rule": "cuc",
+        "policy": "NAP_AM_OF_MENH_PALACE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Hạ từ VERIFIED (2026-09-11): Cục sai với ~17% lá số (Mệnh ở Tý/Sửu) do can cung sai, mà test cũ không có ca nào như vậy. Đã sửa ở engine 0.2.0."
+      },
+      {
+        "rule": "palace_order",
+        "policy": "COUNTER_CLOCKWISE_FROM_MENH",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Hạ từ VERIFIED (2026-09-11): engine từng đặt ngược chiều, sai 10/12 tên cung, mà nhãn VERIFIED chỉ dựa trên test tự sinh. Đã sửa ở engine 0.2.0; cố định, không đảo theo giới tính."
+      },
+      {
+        "rule": "palace_stems",
+        "policy": "NGU_HO_DON",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Hạ từ VERIFIED (2026-09-11): can cung Tý/Sửu từng lệch 2 bậc, test cũ chỉ kiểm cung Dần. Đã sửa ở engine 0.2.0."
+      },
+      {
+        "rule": "tu_vi_placement",
+        "policy": "CUC_REMAINDER_CLASSICAL",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Khớp 5 mốc mùng 1 kinh điển, nhưng mới phủ 5/150 ô của bảng cục × ngày. Chờ nguồn chuẩn và người thẩm định."
+      },
+      {
+        "rule": "major_stars",
+        "policy": "TWO_CHAINS_CLASSICAL",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+      },
+      {
+        "rule": "four_transformations",
+        "policy": "UNRESOLVED",
+        "implemented": false,
+        "verification": "UNVERIFIED",
+        "status": "BLOCKED",
+        "blocked_by": [
+          "Q7",
+          "Q8",
+          "Q9"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Hàng Canh có ít nhất 3 biến thể; hàng Mậu và Nhâm khác nhau ở Hóa Khoa. Ngoài ra còn phụ thuộc Văn Xương, Văn Khúc, Tả Phù, Hữu Bật — đều chưa cài."
+      },
+      {
+        "rule": "tuan",
+        "policy": "YEAR_PILLAR_DECADE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": ""
+      },
+      {
+        "rule": "triet",
+        "policy": "YEAR_STEM_TABLE_EQUAL_WEIGHT",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q10"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Q10: hai cung bị triệt có cùng mức độ hay không."
+      },
+      {
+        "rule": "star_strength",
+        "policy": "UNRESOLVED",
+        "implemented": false,
+        "verification": "UNVERIFIED",
+        "status": "BLOCKED",
+        "blocked_by": [
+          "Q1",
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Bảng 14 sao × 12 cung = 168 ô, không suy ra được bằng công thức. Cố ý KHÔNG có giá trị mặc định nào."
+      },
+      {
+        "rule": "major_cycle_direction",
+        "policy": "YANG_MALE_YIN_FEMALE_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cờ is_thuan_ly đã tính; chưa dựng danh sách đại vận."
+      },
+      {
+        "rule": "major_cycle_start_age",
+        "policy": "UNRESOLVED",
+        "implemented": false,
+        "verification": "UNVERIFIED",
+        "status": "BLOCKED",
+        "blocked_by": [
+          "Q11",
+          "Q12"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Chưa chốt tuổi ta hay tuổi tròn."
+      }
+    ]
+  },
+  "timezone": {
+    "policy": "IANA_HISTORICAL",
+    "timezone_id": "Asia/Ho_Chi_Minh",
+    "utc_offset_hours": 7.0,
+    "source": "IANA Asia/Ho_Chi_Minh · tzdata 2026.3",
+    "resolved_from_database": true
+  },
+  "date_resolution": {
+    "civil_solar": [
+      4,
+      3,
+      2001
+    ],
+    "placement_solar": [
+      4,
+      3,
+      2001
+    ],
+    "day_pillar_solar": [
+      4,
+      3,
+      2001
+    ],
+    "late_zi": false,
+    "late_zi_policy": "UNRESOLVED",
+    "internally_consistent": true
+  },
+  "birth": {
+    "name": "Nguyễn Thị Minh Anh",
+    "gender": "FEMALE",
+    "calendar_type": "SOLAR",
+    "solar": {
+      "day": 4,
+      "month": 3,
+      "year": 2001,
+      "hour": 9,
+      "minute": 30
+    },
+    "birth_place": null,
+    "tz_offset": 7.0,
+    "hour_branch": "Tỵ",
+    "hour_branch_index": 5
+  },
+  "lunar_birth": {
+    "day": 10,
+    "month": 2,
+    "year": 2001,
+    "is_leap_month": false,
+    "year_pillar": "Tân Tỵ"
+  },
+  "pillars": {
+    "year": {
+      "can": "Tân",
+      "chi": "Tỵ",
+      "can_index": 7,
+      "chi_index": 5,
+      "name": "Tân Tỵ",
+      "is_yang": false,
+      "nap_am": "Bạch Lạp Kim",
+      "element": "KIM"
+    },
+    "month": {
+      "can": "Tân",
+      "chi": "Mão",
+      "can_index": 7,
+      "chi_index": 3,
+      "name": "Tân Mão",
+      "is_yang": false,
+      "nap_am": "Tùng Bách Mộc",
+      "element": "MOC"
+    },
+    "day": {
+      "can": "Bính",
+      "chi": "Dần",
+      "can_index": 2,
+      "chi_index": 2,
+      "name": "Bính Dần",
+      "is_yang": true,
+      "nap_am": "Lư Trung Hỏa",
+      "element": "HOA"
+    },
+    "hour": {
+      "can": "Quý",
+      "chi": "Tỵ",
+      "can_index": 9,
+      "chi_index": 5,
+      "name": "Quý Tỵ",
+      "is_yang": false,
+      "nap_am": "Trường Lưu Thủy",
+      "element": "THUY"
+    }
+  },
+  "yin_yang": {
+    "year_is_yang": false,
+    "gender_is_male": false,
+    "label": "Âm Nữ",
+    "is_thuan_ly": true
+  },
+  "menh": {
+    "branch": "Tuất",
+    "branch_index": 10,
+    "element": "KIM",
+    "element_label": "Kim",
+    "nap_am": "Bạch Lạp Kim",
+    "three_directions_four_positions": {
+      "self": 10,
+      "trine_left": 2,
+      "trine_right": 6,
+      "opposite": 4
+    }
+  },
+  "than": {
+    "branch": "Thân",
+    "branch_index": 8,
+    "resides_in": "PHU_THE",
+    "resides_in_label": "Phu Thê"
+  },
+  "cuc": {
+    "number": 3,
+    "element": "MOC",
+    "element_label": "Mộc",
+    "label": "Mộc Tam Cục",
+    "relation": "MENH_KHAC_CUC",
+    "relation_label": "Mệnh khắc Cục"
+  },
+  "palaces": [
+    {
+      "name": "MENH",
+      "label": "Mệnh",
+      "branch": "Tuất",
+      "branch_index": 10,
+      "stem": "Mậu",
+      "stem_index": 4,
+      "element": "MOC",
+      "nap_am": "Bình Địa Mộc",
+      "is_menh": true,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "PHU_MAU",
+      "label": "Phụ Mẫu",
+      "branch": "Hợi",
+      "branch_index": 11,
+      "stem": "Kỷ",
+      "stem_index": 5,
+      "element": "MOC",
+      "nap_am": "Bình Địa Mộc",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "PHUC_DUC",
+      "label": "Phúc Đức",
+      "branch": "Tý",
+      "branch_index": 0,
+      "stem": "Canh",
+      "stem_index": 6,
+      "element": "THO",
+      "nap_am": "Bích Thượng Thổ",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "DIEN_TRACH",
+      "label": "Điền Trạch",
+      "branch": "Sửu",
+      "branch_index": 1,
+      "stem": "Tân",
+      "stem_index": 7,
+      "element": "THO",
+      "nap_am": "Bích Thượng Thổ",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "QUAN_LOC",
+      "label": "Quan Lộc",
+      "branch": "Dần",
+      "branch_index": 2,
+      "stem": "Canh",
+      "stem_index": 6,
+      "element": "MOC",
+      "nap_am": "Tùng Bách Mộc",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "NO_BOC",
+      "label": "Nô Bộc",
+      "branch": "Mão",
+      "branch_index": 3,
+      "stem": "Tân",
+      "stem_index": 7,
+      "element": "MOC",
+      "nap_am": "Tùng Bách Mộc",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "THIEN_DI",
+      "label": "Thiên Di",
+      "branch": "Thìn",
+      "branch_index": 4,
+      "stem": "Nhâm",
+      "stem_index": 8,
+      "element": "THUY",
+      "nap_am": "Trường Lưu Thủy",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": true,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "TAT_ACH",
+      "label": "Tật Ách",
+      "branch": "Tỵ",
+      "branch_index": 5,
+      "stem": "Quý",
+      "stem_index": 9,
+      "element": "THUY",
+      "nap_am": "Trường Lưu Thủy",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": true,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "TAI_BACH",
+      "label": "Tài Bạch",
+      "branch": "Ngọ",
+      "branch_index": 6,
+      "stem": "Giáp",
+      "stem_index": 0,
+      "element": "KIM",
+      "nap_am": "Sa Trung Kim",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "TU_TUC",
+      "label": "Tử Tức",
+      "branch": "Mùi",
+      "branch_index": 7,
+      "stem": "Ất",
+      "stem_index": 1,
+      "element": "KIM",
+      "nap_am": "Sa Trung Kim",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": false,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "PHU_THE",
+      "label": "Phu Thê",
+      "branch": "Thân",
+      "branch_index": 8,
+      "stem": "Bính",
+      "stem_index": 2,
+      "element": "HOA",
+      "nap_am": "Sơn Hạ Hỏa",
+      "is_menh": false,
+      "is_than": true,
+      "has_tuan": true,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    },
+    {
+      "name": "HUYNH_DE",
+      "label": "Huynh Đệ",
+      "branch": "Dậu",
+      "branch_index": 9,
+      "stem": "Đinh",
+      "stem_index": 3,
+      "element": "HOA",
+      "nap_am": "Sơn Hạ Hỏa",
+      "is_menh": false,
+      "is_than": false,
+      "has_tuan": true,
+      "has_triet": false,
+      "is_empty_main_star": true,
+      "major_stars": [],
+      "minor_stars": [],
+      "transformations": []
+    }
+  ],
+  "major_cycles": [],
+  "annual_cycles": [],
+  "four_transformations": {}
+}

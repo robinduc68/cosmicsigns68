@@ -175,6 +175,18 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 
 ---
 
+- **Ảnh PNG xuất ra vỡ dòng dù màn hình vẫn đẹp**: `modern-screenshot` chép nguyên kích
+  thước đo được của từng phần tử; chữ rộng hơn chút trong SVG là gãy dòng, đè hàng dưới.
+  Nhãn ngắn trên canvas phải `white-space: nowrap`. Xem `docs/chart-renderer.md`.
+- **Cỡ chữ phải đặt trên `li`, không chỉ trên `span` bên trong**: `li` giữ line-height 1.5
+  kế thừa từ trang, mỗi hàng sao cao ~27 px thay vì ~21 px và cung đầy bị cắt mất hàng cuối.
+- **`Math.sin/cos` lệch ở chữ số cuối giữa Node và Chrome** → lỗi hydration trên thuộc
+  tính SVG. Làm tròn tọa độ trước khi render.
+- **Đừng ẩn canvas cho tới khi chunk lazy tải xong**: route vào lần đầu chỉ thấy ô trống.
+  Scale ngay khi mount, thư viện tương tác tới sau.
+- **Tiến trình API không tự nạp lại code engine**: sau khi sửa engine phải khởi động lại
+  uvicorn, nếu không lá số mới vẫn mang `engine_version` cũ.
+
 ## Hạn chế đã biết
 
 - **Chưa có auth** — ai giữ được UUID thì xem được lá số đó.

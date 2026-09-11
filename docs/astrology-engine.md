@@ -323,6 +323,14 @@ test hồi quy — ghi rõ là nguồn bên thứ ba, không phải nguồn chu�
 hiện chỉ so hồ sơ quy ước, **chưa so `engine_version`**, nên chưa tự gắn cờ những lá số
 này — cần bổ sung trước khi có dữ liệu người dùng thật.
 
+### 8.5 Stage FRAME đánh dấu mọi cung là "vô chính diệu" — CHƯA SỬA
+
+Ở stage `FRAME` engine không an sao nào, nhưng `Palace.is_empty_main_star` vẫn tính từ
+danh sách sao rỗng nên trả `true` cho **cả 12 cung**. "Vô chính diệu" là một khẳng định về
+lá số, nên renderer chỉ hiển thị khi lá số thực sự đã an chính tinh. Sửa đúng chỗ là để
+engine trả `null` (chưa tính) thay vì `true` ở stage `FRAME` — thay đổi hợp đồng dữ liệu,
+chưa làm trong đợt renderer.
+
 ---
 
 ## 9. Nguyên tắc khi viết code cho phase sau

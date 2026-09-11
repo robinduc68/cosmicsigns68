@@ -1,0 +1,607 @@
+/*
+ * Cosmic Signs — Tử Vi chart visual system.
+ *
+ * Kept apart from the application tokens on purpose: the chart is a printable
+ * artefact on light paper, whatever theme the surrounding site is in. Every
+ * colour the chart uses is declared here and nowhere else.
+ */
+
+.tuvi-theme {
+  --chart-bg: #fbf7ee;
+  --chart-cell: #fffdf7;
+  --chart-cell-menh: #fff6e6;
+  --chart-center: #f5eedf;
+  --chart-ink: #221c16;
+  --chart-text: #221c16;
+  --chart-muted: #5d554b;
+  --chart-subtle: #8a8175;
+  --chart-border: #3a3129;
+  --chart-border-soft: #dbd0bc;
+  --chart-accent: #8c2a1b;
+
+  /* Ngũ hành — tuned for at least 4.5:1 on the paper background. */
+  --chart-kim: #5b5f66;
+  --chart-moc: #2a6c43;
+  --chart-thuy: #1a2531;
+  --chart-hoa: #a62219;
+  --chart-tho: #8f5208;
+
+  --chart-void-bg: #221c16;
+  --chart-void-text: #fbf7ee;
+  --chart-line-trine: rgb(88 70 138 / 0.34);
+  --chart-line-opposite: rgb(166 34 25 / 0.32);
+
+  --chart-palace-title-size: 19px;
+  --chart-major-star-size: 21px;
+  --chart-minor-star-size: 15px;
+  --chart-meta-size: 13.5px;
+  --chart-center-title-size: 44px;
+  --chart-center-field-size: 17px;
+
+  color: var(--chart-text);
+  color-scheme: light;
+  font-family: 'Be Vietnam Pro', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-feature-settings: 'kern', 'liga';
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.tuvi-theme *,
+.tuvi-theme *::before,
+.tuvi-theme *::after {
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------------- canvas */
+
+.tuvi-chart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 1400px;
+  height: 1750px;
+  padding: 28px 28px 0;
+  background: var(--chart-bg);
+}
+
+.tuvi-grid {
+  position: relative;
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border: 2px solid var(--chart-border);
+  background: var(--chart-border);
+}
+
+/* ---------------------------------------------------------------- palace */
+
+.tuvi-palace {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  /* Nothing may spill across a border; the mapper warns in development when a
+     palace is estimated to exceed its capacity, so clipping is never silent. */
+  overflow: hidden;
+  /* Top and bottom padding leave room for Tuần/Triệt labels straddling a border. */
+  padding: 22px 14px 16px;
+  line-height: 1.3;
+  background: var(--chart-cell);
+}
+
+.tuvi-palace.is-menh {
+  background: var(--chart-cell-menh);
+  box-shadow: inset 0 0 0 2px var(--chart-accent);
+}
+
+.tuvi-palace__header {
+  display: grid;
+  grid-template-columns: minmax(3.2em, auto) 1fr minmax(2em, auto);
+  column-gap: 8px;
+  align-items: baseline;
+}
+
+/*
+ * Short labels never wrap. The PNG exporter copies each element's measured size,
+ * so text that renders a hair wider inside the export would otherwise break onto
+ * a second line and spill over its neighbour — invisible on screen, broken in the
+ * downloaded image.
+ */
+.tuvi-palace__stembranch,
+.tuvi-palace__age,
+.tuvi-palace__sub > span,
+.tuvi-center__fields dt,
+.tuvi-center__fields dd > span,
+.tuvi-legend__group > span,
+.tuvi-legend__meta > span {
+  white-space: nowrap;
+}
+
+.tuvi-palace__stembranch,
+.tuvi-palace__age {
+  font-size: var(--chart-meta-size);
+  font-weight: 600;
+  color: var(--chart-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tuvi-palace__age {
+  text-align: right;
+}
+
+.tuvi-palace__name {
+  font-size: var(--chart-palace-title-size);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--chart-ink);
+}
+
+.tuvi-palace.is-menh .tuvi-palace__name {
+  color: var(--chart-accent);
+}
+
+.tuvi-palace__than {
+  margin-left: 5px;
+  font-size: 0.7em;
+  letter-spacing: 0.03em;
+  color: var(--chart-accent);
+}
+
+.tuvi-palace__sub {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 3px;
+  font-size: var(--chart-meta-size);
+  color: var(--chart-subtle);
+}
+
+.tuvi-palace__element {
+  font-weight: 600;
+}
+
+.tuvi-palace__voids {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.tuvi-palace__voids .tuvi-void {
+  position: static;
+  transform: none;
+}
+
+.tuvi-palace__majors {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.tuvi-palace__majors > li + li {
+  margin-top: 2px;
+}
+
+/*
+ * Size the list items, not only the star spans inside them. Otherwise each li keeps
+ * the page's inherited line-height, rows come out ~27 px instead of ~21 px, and a
+ * full palace silently loses its last rows.
+ */
+.tuvi-palace__majors > li {
+  font-size: var(--chart-major-star-size);
+  line-height: 1.32;
+}
+
+.tuvi-palace__minors > li {
+  font-size: var(--chart-minor-star-size);
+  line-height: 1.32;
+}
+
+.tuvi-palace__empty {
+  margin: 14px 0 0;
+  font-size: var(--chart-minor-star-size);
+  font-style: italic;
+  text-align: center;
+  color: var(--chart-subtle);
+}
+
+.tuvi-palace__minors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 10px;
+  row-gap: 1px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tuvi-palace__footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px solid var(--chart-border-soft);
+  font-size: var(--chart-meta-size);
+  color: var(--chart-muted);
+}
+
+.tuvi-palace__footer > :last-child {
+  text-align: right;
+}
+
+/* ------------------------------------------------------------------ star */
+
+.tuvi-star {
+  line-height: 1.32;
+  overflow-wrap: anywhere;
+}
+
+.tuvi-star--major {
+  font-size: var(--chart-major-star-size);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.tuvi-star--minor {
+  font-size: var(--chart-minor-star-size);
+  font-weight: 500;
+}
+
+.tuvi-star__strength {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tuvi-star__mark {
+  margin-left: 1px;
+  font-weight: 500;
+  color: var(--chart-subtle);
+}
+
+.tuvi-star.is-transformation {
+  font-weight: 600;
+}
+
+.tuvi-star.is-annual {
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------- centre */
+
+.tuvi-center {
+  position: relative;
+  display: flex;
+  grid-row: 2 / span 2;
+  grid-column: 2 / span 2;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--chart-center);
+}
+
+.tuvi-center__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tuvi-center__seal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--chart-ink);
+  opacity: 0.055;
+  pointer-events: none;
+}
+
+.tuvi-center__content {
+  position: relative;
+  z-index: 1;
+  width: 84%;
+}
+
+.tuvi-center__brand {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--chart-accent);
+}
+
+.tuvi-center__title {
+  margin: 8px 0 26px;
+  font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  font-size: var(--chart-center-title-size);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--chart-ink);
+}
+
+.tuvi-center__rule {
+  width: 64px;
+  height: 2px;
+  margin: -14px auto 22px;
+  background: var(--chart-accent);
+}
+
+.tuvi-center__fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 20px;
+  row-gap: 8px;
+  margin: 0;
+  font-size: var(--chart-center-field-size);
+}
+
+.tuvi-center__fields dt {
+  font-weight: 500;
+  color: var(--chart-muted);
+}
+
+.tuvi-center__fields dd {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  font-weight: 600;
+  color: var(--chart-ink);
+}
+
+.tuvi-center__secondary {
+  font-weight: 500;
+  color: var(--chart-muted);
+  text-align: right;
+}
+
+/* --------------------------------------------------------------- Tuần / Triệt */
+
+.tuvi-void {
+  position: absolute;
+  z-index: 3;
+  padding: 3px 14px;
+  transform: translate(-50%, -50%);
+  background: var(--chart-void-bg);
+  color: var(--chart-void-text);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------- legend */
+
+.tuvi-legend {
+  display: flex;
+  flex: 0 0 132px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 2px;
+  font-size: 14px;
+  color: var(--chart-muted);
+}
+
+.tuvi-legend__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 28px;
+}
+
+.tuvi-legend__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+
+.tuvi-legend__abbr {
+  font-weight: 700;
+  color: var(--chart-ink);
+}
+
+.tuvi-legend__swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+
+.tuvi-legend__meta {
+  font-size: 13px;
+  color: var(--chart-subtle);
+}
+
+.tuvi-legend--compact {
+  flex-basis: auto;
+  padding: 14px 16px;
+}
+
+/* Reading mode has no paper canvas behind it, so the legend brings its own —
+   on a dark site theme the muted legend text was otherwise unreadable. */
+.tuvi-reading .tuvi-legend--compact {
+  border: 1px solid var(--chart-border);
+  background: var(--chart-bg);
+}
+
+.tuvi-reading .tuvi-legend__row {
+  justify-content: flex-start;
+}
+
+/* --------------------------------------------------------------- reading mode */
+
+.tuvi-reading {
+  --chart-palace-title-size: 17px;
+  --chart-major-star-size: 18px;
+  --chart-minor-star-size: 14.5px;
+  --chart-meta-size: 13px;
+  --chart-center-field-size: 15px;
+
+  display: grid;
+  gap: 12px;
+}
+
+.tuvi-reading__summary,
+.tuvi-reading__card {
+  border: 1px solid var(--chart-border);
+  background: var(--chart-cell);
+}
+
+.tuvi-reading__summary {
+  padding: 20px 18px;
+  background: var(--chart-center);
+}
+
+.tuvi-reading__summary .tuvi-center__title {
+  margin-bottom: 18px;
+  font-size: 30px;
+}
+
+.tuvi-reading__summary .tuvi-center__fields {
+  column-gap: 14px;
+}
+
+.tuvi-reading__palaces {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tuvi-reading__card .tuvi-palace {
+  min-height: 0;
+  overflow: visible;
+}
+
+/* Reading mode is never exported, so the no-wrap rule above does not apply —
+   and on a phone it must not: one long line widened the whole column. */
+.tuvi-reading {
+  min-width: 0;
+}
+
+.tuvi-reading .tuvi-palace__sub > span,
+.tuvi-reading .tuvi-center__fields dt,
+.tuvi-reading .tuvi-center__fields dd > span,
+.tuvi-reading .tuvi-legend__group > span,
+.tuvi-reading .tuvi-legend__meta > span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.tuvi-reading .tuvi-center__fields dd {
+  flex-wrap: wrap;
+}
+
+.tuvi-viewport__placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  margin: 0;
+  place-items: center;
+  font-size: 14px;
+  color: #6b6257;
+}
+
+/* --------------------------------------------------------------- viewer (screen only) */
+
+.tuvi-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  /* 4:5 like the canvas, so the height is right before any script runs. */
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 10px;
+  background: #e8e1d3;
+}
+
+.tuvi-viewport:fullscreen {
+  max-width: none;
+  aspect-ratio: auto;
+  height: 100vh;
+  border: 0;
+  border-radius: 0;
+  background: #2b251f;
+}
+
+.tuvi-stage {
+  width: 1400px;
+  height: 1750px;
+  transform-origin: 0 0;
+}
+
+/* Hidden until pan/zoom has scaled it; otherwise the first paint shows a cropped
+   1400 px chart. */
+.tuvi-stage:not(.is-ready) {
+  visibility: hidden;
+}
+
+/* --------------------------------------------------------------- off-screen host */
+
+@media screen {
+  #tuvi-offscreen-host {
+    position: fixed;
+    top: 0;
+    left: -100000px;
+    pointer-events: none;
+  }
+}
+
+/* --------------------------------------------------------------- print (A4 portrait) */
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  /* Scoped with :has() — this stylesheet stays loaded after client-side navigation,
+     and an unscoped rule would print every other page as a blank sheet. */
+  body:has(> #tuvi-offscreen-host) > :not(#tuvi-offscreen-host) {
+    display: none !important;
+  }
+
+  /* 194 mm printable width = 733 px at 96 dpi; 733 / 1400 = 0.5237. The host
+     is sized to the scaled chart so the page break never falls inside it. */
+  #tuvi-offscreen-host {
+    position: static !important;
+    width: 194mm !important;
+    height: 242.5mm !important;
+    overflow: hidden !important;
+  }
+
+  #tuvi-offscreen-host .tuvi-chart {
+    transform: scale(0.5237);
+    transform-origin: top left;
+  }
+}

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Check, Link2, Trash2 } from 'lucide-vue-next'
 import { ApiError, INSIGHT_CATEGORIES, type ChartDetail } from '@cosmic/shared'
+import TuViChart from '~/components/astrology/chart/TuViChart.vue'
+import { useTuViChartViewModel } from '~/composables/useTuViChartViewModel'
 
 const route = useRoute()
 const { request } = useApi()
@@ -27,6 +29,8 @@ if (error.value) {
 }
 
 const payload = computed(() => chart.value?.chart)
+// Engine output → view model. The renderer never decides astrology.
+const chartModel = useTuViChartViewModel(() => payload.value)
 
 useHead({ title: () => (chart.value ? `Lá số của ${chart.value.subject_name}` : 'Lá số') })
 // Lá số là dữ liệu cá nhân và địa chỉ của nó là lớp bảo vệ duy nhất lúc này —
@@ -127,40 +131,7 @@ async function remove() {
     </CsCard>
 
     <div class="mt-8">
-      <ChartGrid :chart="payload">
-        <template #center>
-          <dl class="grid h-full grid-cols-2 gap-x-4 gap-y-3 text-caption">
-            <div>
-              <dt class="text-[var(--text-subtle)]">Mệnh</dt>
-              <dd class="mt-0.5 text-small text-[var(--text)]">
-                {{ payload.menh.branch }} · {{ payload.menh.element_label }}
-              </dd>
-            </div>
-            <div>
-              <dt class="text-[var(--text-subtle)]">Cục</dt>
-              <dd class="mt-0.5 text-small text-[var(--text)]">{{ payload.cuc.label }}</dd>
-            </div>
-            <div>
-              <dt class="text-[var(--text-subtle)]">Thân cư</dt>
-              <dd class="mt-0.5 text-small text-[var(--text)]">
-                {{ payload.than.resides_in_label }}
-              </dd>
-            </div>
-            <div>
-              <dt class="text-[var(--text-subtle)]">Mệnh – Cục</dt>
-              <dd class="mt-0.5 text-small text-[var(--text)]">{{ payload.cuc.relation_label }}</dd>
-            </div>
-            <div class="col-span-2">
-              <dt class="text-[var(--text-subtle)]">Tứ trụ</dt>
-              <dd class="mt-0.5 flex flex-wrap gap-x-3 text-small text-[var(--text)]">
-                <span v-for="item in pillars" :key="item.label">
-                  {{ item.label }}: {{ item.pillar.name }}
-                </span>
-              </dd>
-            </div>
-          </dl>
-        </template>
-      </ChartGrid>
+      <TuViChart v-if="chartModel" :model="chartModel" :file-slug="chart.subject_name" />
     </div>
 
     <section class="mt-14">
