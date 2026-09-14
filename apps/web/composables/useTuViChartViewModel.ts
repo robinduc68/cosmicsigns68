@@ -25,6 +25,7 @@ import type {
 } from '~/types/chart-view-model'
 import {
   formatAgeRange,
+  formatCycleDirection,
   formatBirthTime,
   formatCalendarType,
   formatGender,
@@ -258,7 +259,15 @@ function mapPalace(palace: ChartPalace, starsPlaced: boolean): PalaceViewModel {
     lifeStage,
     majorCycleRef,
     annualRef,
-    ariaLabel: `Cung ${palace.label}, ${palace.stem} ${palace.branch}`,
+    // Spelled out because the footer reads as two bare fragments otherwise.
+    ariaLabel: [
+      `Cung ${palace.label}`,
+      `${palace.stem} ${palace.branch}`,
+      majorCycleAge && `đại vận ${majorCycleAge} tuổi`,
+      lifeStage && `Tràng Sinh: ${lifeStage}`,
+    ]
+      .filter(Boolean)
+      .join(', '),
     estimatedHeight: estimatePalaceHeight({
       majors: majorStars.length,
       emptyLine: isEmptyMainStar && majorStars.length === 0,
@@ -317,6 +326,21 @@ function link(from: number, to: number, type: ConnectionType): ConnectionViewMod
 /** Narrow an engine element string; anything unexpected loses its colour, not the value. */
 function elementOf(value: unknown): ElementCode | null {
   return isElementCode(value) ? value : null
+}
+
+/**
+ * Direction of the đại vận walk, read off any palace that carries it.
+ *
+ * The engine stamps the same value on all twelve, so the first one that has it is
+ * the answer; a chart that carries none (schema v1, or đại vận not computed) gives
+ * `null` and the line is dropped.
+ */
+function majorCycleDirection(chart: ChartPayload): 'FORWARD' | 'BACKWARD' | null {
+  for (const palace of chart.palaces) {
+    const value = palace.cycles?.major_cycle_direction
+    if (value === 'FORWARD' || value === 'BACKWARD') return value
+  }
+  return null
 }
 
 /**
@@ -382,6 +406,9 @@ function centerFields(chart: ChartPayload): CenterFieldViewModel[] {
     ),
     f('Mệnh', chart.menh.branch),
     f('Thân', chart.than.branch, formatThanCu(chart.than.resides_in_label)),
+    // Engine-calculated and, until now, visible nowhere: the đại vận walk runs one
+    // way or the other and a reader cannot tell which from the palace footers alone.
+    f('Chiều đại vận', formatCycleDirection(majorCycleDirection(chart))),
     // Not implemented anywhere in the engine — listed so the gap is visible in a
     // development view, and omitted entirely on a customer chart.
     pending('Cân lượng', traditional?.can_luong ?? null),

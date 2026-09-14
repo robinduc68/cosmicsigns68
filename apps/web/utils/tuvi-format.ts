@@ -158,6 +158,20 @@ export function formatThanCu(palaceLabel: string | null | undefined): string | n
   return palaceLabel ? `cư ${palaceLabel}` : null
 }
 
+/**
+ * "Thuận" / "Nghịch" — which way the đại vận walk runs.
+ *
+ * Describes the **walk only**. The twelve palace names never reverse with it, and
+ * nothing in the renderer may reorder them on the strength of this value.
+ */
+export function formatCycleDirection(
+  direction: 'FORWARD' | 'BACKWARD' | null | undefined,
+): string | null {
+  if (direction === 'FORWARD') return 'Thuận'
+  if (direction === 'BACKWARD') return 'Nghịch'
+  return null
+}
+
 /** "6 – 15" for a đại vận age span, or "6 –" when only the start is known. */
 export function formatAgeRange(
   start: number | null | undefined,

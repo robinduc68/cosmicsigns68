@@ -19,6 +19,9 @@ const hasFooter = computed(
   () => !!(props.palace.majorCycleRef || props.palace.lifeStage || props.palace.annualRef),
 )
 
+/** The đại vận number behind the "ĐV n" label, for the tooltip wording. */
+const cycleNumber = computed(() => props.palace.cycles?.major_cycle_index ?? null)
+
 const root = ref<HTMLElement | null>(null)
 const overflowing = ref(false)
 
@@ -57,7 +60,10 @@ onMounted(async () => {
           {{ palace.name
           }}<span v-if="palace.isThan" class="tuvi-palace__than">&lt;Thân&gt;</span>
         </h3>
-        <span class="tuvi-palace__age">
+        <span
+          class="tuvi-palace__age"
+          :title="palace.majorCycleAge ? `Đại vận ${palace.majorCycleAge} tuổi` : undefined"
+        >
           <template v-if="palace.majorCycleAge !== null">{{ palace.majorCycleAge }}</template>
         </span>
       </div>
@@ -91,10 +97,19 @@ onMounted(async () => {
       </li>
     </ul>
 
+    <!-- Three fixed grid slots so the middle label stays centred; an empty slot is a
+         spacer, not a missing value. Each carries its own title because "ĐV 1" and
+         "Dưỡng" are meaningless read out on their own. -->
     <footer v-if="hasFooter" class="tuvi-palace__footer">
-      <span>{{ palace.majorCycleRef ?? '' }}</span>
-      <span>{{ palace.lifeStage ?? '' }}</span>
-      <span>{{ palace.annualRef ?? '' }}</span>
+      <span :title="palace.majorCycleRef ? `Đại vận thứ ${cycleNumber}` : undefined">{{
+        palace.majorCycleRef ?? ''
+      }}</span>
+      <span :title="palace.lifeStage ? `Vòng Tràng Sinh: ${palace.lifeStage}` : undefined">{{
+        palace.lifeStage ?? ''
+      }}</span>
+      <span :title="palace.annualRef ? `Lưu niên: ${palace.annualRef}` : undefined">{{
+        palace.annualRef ?? ''
+      }}</span>
     </footer>
   </section>
 </template>

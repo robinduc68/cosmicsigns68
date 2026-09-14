@@ -14,7 +14,11 @@ describe('TuViChartCanvas', () => {
     const wrapper = await mountSuspended(TuViChartCanvas, { props: { model: modelFor('cross-check-2001') } })
     expect(wrapper.findAll('[data-palace]')).toHaveLength(12)
     const menh = wrapper.get('[data-palace="MENH"]')
-    expect(menh.attributes('aria-label')).toBe('Cung Mệnh, Mậu Tuất')
+    // The footer reads as two bare fragments ("ĐV 1", "Dưỡng") on its own, so the
+    // palace label spells out what they are.
+    expect(menh.attributes('aria-label')).toBe(
+      'Cung Mệnh, Mậu Tuất, đại vận 3 – 12 tuổi, Tràng Sinh: Dưỡng',
+    )
     // Tuất is row 3, column 4 of the địa bàn.
     expect(menh.attributes('style')).toContain('grid-row: 3')
     expect(menh.attributes('style')).toContain('grid-column: 4')
