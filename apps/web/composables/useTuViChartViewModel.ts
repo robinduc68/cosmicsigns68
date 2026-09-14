@@ -6,6 +6,7 @@ import {
   type ChartPayload,
   type ChartStar,
   type ElementCode,
+  type Transformation,
   type YinYangPolarity,
 } from '@cosmic/shared'
 import type {
@@ -19,6 +20,7 @@ import type {
   ConnectionViewModel,
   PalaceViewModel,
   StarCategory,
+  StarTransformationViewModel,
   StarViewModel,
   VoidKind,
   VoidMarkerViewModel,
@@ -41,6 +43,8 @@ import {
   ELEMENT_COLOR_MAP,
   STRENGTH_ABBREVIATIONS,
   STRENGTH_LABELS,
+  TRANSFORMATION_FULL_LABELS,
+  TRANSFORMATION_LABELS,
   centerAnchor,
   estimatePalaceHeight,
   gridPosition,
@@ -126,6 +130,21 @@ function polarityOf(star: ChartStar): YinYangPolarity | null {
   return declared === 'YANG' || declared === 'YIN' ? declared : null
 }
 
+const TRANSFORMATION_CODES: ReadonlySet<string> = new Set(Object.keys(TRANSFORMATION_LABELS))
+
+/** Tứ Hóa as the engine sent it. Anything unrecognised is dropped, never guessed. */
+function transformationsOf(star: ChartStar): StarTransformationViewModel[] {
+  const raw = field(star, 'transformations')
+  if (!Array.isArray(raw)) return []
+  return raw
+    .filter((code): code is Transformation => typeof code === 'string' && TRANSFORMATION_CODES.has(code))
+    .map((code) => ({
+      code,
+      label: TRANSFORMATION_LABELS[code],
+      fullLabel: TRANSFORMATION_FULL_LABELS[code],
+    }))
+}
+
 function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
   const category = categoryOf(star, fallback)
   const raw = field(star, 'element')
@@ -134,6 +153,7 @@ function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
   const elementLabel = element ? ELEMENT_COLOR_MAP[element].label : null
   const strengthLabel = star.strength ? STRENGTH_LABELS[star.strength] : null
   const provenance = provenanceOf(star)
+  const transformations = transformationsOf(star)
   // `id`/`name` are the contract; `code`/`label` are the schema v1 spelling of the
   // same values. Neither is derived from the other.
   const id = optionalString(star, 'id') ?? optionalString(star, 'code') ?? ''
@@ -159,13 +179,19 @@ function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
     elementLabel,
     polarityPrefix: polarity ? POLARITY_PREFIX[polarity] : null,
     // Spelled out because colour alone must not carry the element.
-    ariaLabel: [name, elementLabel && `hành ${elementLabel}`, strengthLabel]
+    ariaLabel: [
+      name,
+      ...transformations.map((t) => t.fullLabel),
+      elementLabel && `hành ${elementLabel}`,
+      strengthLabel,
+    ]
       .filter(Boolean)
       .join(', '),
     strength: star.strength,
     strengthAbbr: star.strength ? STRENGTH_ABBREVIATIONS[star.strength] : null,
     provisional: star.provisional,
     isTransformation: category === 'TRANSFORMATION',
+    transformations,
     isAnnual: category === 'ANNUAL',
   }
 }

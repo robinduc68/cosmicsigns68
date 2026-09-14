@@ -6,6 +6,7 @@ import type {
   StarCategory,
   StarProvenance,
   StarStrength,
+  Transformation,
   VerificationStatus,
 } from '@cosmic/shared'
 
@@ -48,6 +49,19 @@ export interface StarViewModel {
   displayPriority: number
   verificationStatus: VerificationStatus
   provenance: StarProvenance | null
+  /**
+   * Tứ Hóa this star carries, ready to render. Empty for most stars; a list so a
+   * star can hold more than one once đại vận and lưu niên hóa arrive.
+   */
+  transformations: StarTransformationViewModel[]
+}
+
+export interface StarTransformationViewModel {
+  code: Transformation
+  /** `"Lộc"` — what the marker shows. */
+  label: string
+  /** `"Hóa Lộc"` — what a screen reader and the tooltip say. */
+  fullLabel: string
 }
 
 export interface PalaceViewModel {

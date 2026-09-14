@@ -22,6 +22,12 @@ export type StarCategory =
   | 'ANNUAL'
   | 'OTHER'
 
+/**
+ * Tứ Hóa — four *states* a placed star can carry, set by the birth year's stem.
+ * Not four extra stars: they attach to a star that is already on the chart.
+ */
+export type Transformation = 'HOA_LOC' | 'HOA_QUYEN' | 'HOA_KHOA' | 'HOA_KY'
+
 /** How far a school-dependent value is trusted. Never inferred on the client. */
 export type VerificationStatus = 'UNVERIFIED' | 'PROVISIONAL' | 'VERIFIED'
 export type StarStrength = 'MIEU' | 'VUONG' | 'DAC' | 'BINH' | 'HAM'
@@ -79,7 +85,12 @@ export interface ChartStar {
   palace_branch?: string | null
   is_major?: boolean
   is_annual?: boolean
+  /** Whether the star's own *category* is TRANSFORMATION — not the same as
+   *  carrying a Tứ Hóa. Nothing is placed with that category today. */
   is_transformation?: boolean
+  /** Tứ Hóa this star carries. A list so a star can hold more than one later. */
+  transformations?: Transformation[]
+  has_transformation?: boolean
   /** Engine-supplied display order. The renderer sorts by this, never by name. */
   display_priority?: number
   verification_status?: VerificationStatus

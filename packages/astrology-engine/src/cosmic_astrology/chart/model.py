@@ -24,6 +24,7 @@ __all__ = [
     "PalaceCycles",
     "StarCategory",
     "TraditionalMetadata",
+    "Transformation",
     "VoidMark",
 ]
 
@@ -32,6 +33,30 @@ __all__ = [
 #: assume the newest fields exist. Version 1 is every chart written before the
 #: data contract was made explicit.
 CHART_SCHEMA_VERSION = 2
+
+
+class Transformation(StrEnum):
+    """Tứ Hóa — bốn *trạng thái* một ngôi sao có thể mang, không phải bốn ngôi sao.
+
+    Quyết định bởi thiên can năm sinh, nên chúng gắn vào ngôi sao đã an sẵn thay vì
+    sinh ra sao mới. Nhân bản một ngôi sao chỉ để hiển thị trạng thái của nó sẽ làm
+    mọi phép đếm sao sai.
+    """
+
+    HOA_LOC = "HOA_LOC"
+    HOA_QUYEN = "HOA_QUYEN"
+    HOA_KHOA = "HOA_KHOA"
+    HOA_KY = "HOA_KY"
+
+    @property
+    def short_label(self) -> str:
+        """Nhãn một chữ như lá số in vẫn ghi: Lộc, Quyền, Khoa, Kỵ."""
+        return {
+            Transformation.HOA_LOC: "Lộc",
+            Transformation.HOA_QUYEN: "Quyền",
+            Transformation.HOA_KHOA: "Khoa",
+            Transformation.HOA_KY: "Kỵ",
+        }[self]
 
 
 class StarCategory(StrEnum):

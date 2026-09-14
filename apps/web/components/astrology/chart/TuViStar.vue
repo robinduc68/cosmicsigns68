@@ -41,7 +41,17 @@ const strengthTitle = computed(() =>
     >{{ star.name
     }}<template v-if="star.strengthAbbr">
       <abbr class="tuvi-star__strength" :title="strengthTitle">({{ star.strengthAbbr }})</abbr>
-    </template><span v-if="star.provisional" class="tuvi-star__mark" aria-hidden="true">*</span
+    </template
+    ><!-- Tứ Hóa: dấu vuông, cố ý khác ngoặc tròn của độ sáng. Nó KHÔNG đổi màu sao —
+         màu thuộc về ngũ hành, hóa là một thông tin khác.
+    --><span
+      v-for="hoa in star.transformations"
+      :key="hoa.code"
+      class="tuvi-star__hoa"
+      :data-transformation="hoa.code"
+      :title="hoa.fullLabel"
+      >[{{ hoa.label }}]</span
+    ><span v-if="star.provisional" class="tuvi-star__mark" aria-hidden="true">*</span
     ><span v-if="star.provisional" class="sr-only"> — vị trí chưa được kiểm định</span>
   </span>
 </template>

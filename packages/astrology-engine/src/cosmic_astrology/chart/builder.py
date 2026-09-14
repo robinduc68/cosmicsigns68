@@ -59,7 +59,7 @@ from cosmic_astrology.conventions.profile import (
     validate_convention_profile,
 )
 from cosmic_astrology.cycles import major_cycle, trang_sinh
-from cosmic_astrology.stars import placement
+from cosmic_astrology.stars import four_transformations, placement
 from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
@@ -335,6 +335,10 @@ def build_chart(
             profile=profile,
             trace_log=log,
         )
+        # Sau cùng: Tứ Hóa gắn vào sao đã an, nên phải chạy sau cả chính tinh lẫn phụ tinh.
+        _apply_four_transformations(
+            by_branch, year_stem=pillars.year.can_index, profile=profile, trace_log=log
+        )
 
     _attach_cycles(
         by_branch,
@@ -520,6 +524,71 @@ def _place_supporting_stars(
         by_branch[branch].stars.append(star)
         if trace_log is not None:
             trace_log.record(profile, rule, f"{star.name} → {CHI[branch]}", **inputs)
+
+
+def _apply_four_transformations(
+    by_branch: dict[int, Palace],
+    *,
+    year_stem: int,
+    profile: ConventionProfile,
+    trace_log: TraceLog | None = None,
+) -> None:
+    """Attach Tứ Hóa to stars that are already placed.
+
+    No star is created here. Tứ Hóa is a *state* a placed star carries, so adding a
+    fifth star per chart would make every star count depend on the birth year.
+
+    A target the engine does not place yet is reported rather than dropped: the
+    chart stays usable, but the gap is visible instead of looking like the birth
+    year simply has no hóa there.
+    """
+    binding = profile.binding(RuleId.FOUR_TRANSFORMATIONS)
+    if binding.is_unresolved:
+        return
+
+    table = four_transformations.transformations_for_stem(year_stem)
+    placed: dict[str, tuple[int, int]] = {
+        star.id: (branch, index)
+        for branch, palace in by_branch.items()
+        for index, star in enumerate(palace.stars)
+    }
+
+    for transformation, star_id in table.items():
+        target = placed.get(star_id)
+        if target is None:
+            definition = definition_for(star_id)
+            name = definition.vietnamese_name if definition else star_id
+            _logger.warning(
+                "Thiếu sao đích của Tứ Hóa: %s (%s) — engine chưa an sao này, nên "
+                "%s của can %s không gắn được vào đâu.",
+                name,
+                star_id,
+                transformation.value,
+                CAN[year_stem],
+            )
+            if trace_log is not None:
+                trace_log.record(
+                    profile,
+                    RuleId.FOUR_TRANSFORMATIONS,
+                    f"{transformation.short_label}: CHƯA GIẢI ĐƯỢC — thiếu sao {name}",
+                    can_nam=CAN[year_stem],
+                    sao_dich=star_id,
+                )
+            continue
+
+        branch, index = target
+        palace = by_branch[branch]
+        star = palace.stars[index].with_transformation(transformation)
+        palace.stars[index] = star
+        if trace_log is not None:
+            trace_log.record(
+                profile,
+                RuleId.FOUR_TRANSFORMATIONS,
+                f"{star.name} hóa {transformation.short_label} tại {CHI[branch]}",
+                can_nam=CAN[year_stem],
+                bang=four_transformations.TABLE_VERSION,
+                sao_dich=star_id,
+            )
 
 
 def _attach_cycles(

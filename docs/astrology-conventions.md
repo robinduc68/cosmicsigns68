@@ -396,11 +396,25 @@ hoặc cùng ở Thân. Ca `TV-C1`…`TV-C4` phủ cả hai trường hợp.
 
 ---
 
-## 15. Tứ Hóa 🔴 OPEN — **không được cài cho tới khi chốt nguồn**
+## 15. Tứ Hóa 🟡 PENDING — **đã cài, Q7 vẫn mở**
 
-**Chưa cài đặt.** Đây là mục **phụ thuộc trường phái nặng nhất** trong toàn bộ danh sách.
+> **Thay đổi trạng thái, 2026-09-14.** Mục này từng ghi 🔴 *"không được cài cho tới
+> khi chốt nguồn"*, với ghi chú *"người viết code không đủ thẩm quyền chọn"* cho hàng
+> Canh. **Chủ dự án đã yêu cầu cài ở mức `PROVISIONAL`** và chọn một phương án. Bảng
+> dưới đây nay là **luật đang chạy**, không còn là đề xuất.
+>
+> Chọn một phương án **không phải là trả lời được Q7**. Câu hỏi vẫn mở, `blocked_by`
+> vẫn chứa `Q7`, và không hàng nào được `VERIFIED`.
 
-Bảng dưới đây là **ĐỀ XUẤT để đối chiếu**, không phải quy tắc đã chốt:
+Đây vẫn là mục **phụ thuộc trường phái nặng nhất** trong toàn bộ danh sách.
+
+Cài đặt: `stars/four_transformations.py` · Policy `NAM_PHAI_TABLE_V1` ·
+Hồ sơ `COSMIC_SIGNS_NAM_PHAI_V1`.
+
+**Tứ Hóa không phải bốn ngôi sao.** Nó là bốn *trạng thái* gắn vào sao đã an, nên
+tổng số sao trên lá số **không đổi theo năm sinh** — 27 sao dù can năm là gì.
+
+Bảng đang chạy:
 
 | Can năm | Hóa Lộc | Hóa Quyền | Hóa Khoa | Hóa Kỵ |
 |---|---|---|---|---|
@@ -410,7 +424,7 @@ Bảng dưới đây là **ĐỀ XUẤT để đối chiếu**, không phải qu
 | Đinh | Thái Âm | Thiên Đồng | Thiên Cơ | Cự Môn |
 | **Mậu** | Tham Lang | Thái Âm | **Hữu Bật ⚠️** | Thiên Cơ |
 | Kỷ | Vũ Khúc | Tham Lang | Thiên Lương | Văn Khúc |
-| **Canh** | Thái Dương | Vũ Khúc | **⚠️ TRANH CHẤP** | **⚠️ TRANH CHẤP** |
+| **Canh** | Thái Dương | Vũ Khúc | **Thái Âm ⚠️** | **Thiên Đồng ⚠️** |
 | Tân | Cự Môn | Thái Dương | Văn Khúc | Văn Xương |
 | **Nhâm** | Thiên Lương | Tử Vi | **Tả Phù ⚠️** | Vũ Khúc |
 | Quý | Phá Quân | Cự Môn | Thái Âm | Tham Lang |
@@ -423,8 +437,31 @@ Bảng dưới đây là **ĐỀ XUẤT để đối chiếu**, không phải qu
 - Canh: Dương Lộc, Vũ Quyền, **Thiên Đồng** Khoa, **Thái Âm** Kỵ
 - Canh: Dương Lộc, Vũ Quyền, **Thiên Phủ** Khoa, Thiên Đồng Kỵ
 
-> **Người viết code không đủ thẩm quyền chọn.** Phải do người thẩm định (Q3)
-> quyết theo nguồn đã chốt (Q2).
+**ĐANG CHỌN: phương án 1** — Dương Lộc, Vũ Quyền, **Thái Âm Khoa, Thiên Đồng Kỵ**
+(đa số bản Việt). Hằng số `SELECTED_CANH_VARIANT` trong
+`stars/four_transformations.py`; cả ba phương án nằm cạnh nhau trong `CANH_VARIANTS`,
+nên đổi lại là sửa một hằng số chứ không phải sửa bảng.
+
+> **Phương án 1 và 2 đổi chỗ Khoa với Kỵ.** Chọn nhầm không làm lá số sai một chi
+> tiết — nó **lật một cát tinh thành hung tinh** trên mọi lá số sinh năm Canh. Đây là
+> lý do Q7 phải ở lại `blocked_by` cho tới khi người thẩm định (Q3) quyết theo nguồn
+> đã chốt (Q2).
+
+### Hàng Mậu và Nhâm 🟡
+
+| Hàng | Đang chọn | Cách đọc đối lập |
+| --- | --- | --- |
+| Mậu — Hóa Khoa | **Hữu Bật** | Thái Dương |
+| Nhâm — Hóa Khoa | **Tả Phù** | Thiên Phủ |
+
+### Sao đích
+
+Bảng trỏ tới **15 sao**, tất cả đều đã được engine an: 12 chính tinh cộng Văn Xương,
+Văn Khúc, Tả Phù, Hữu Bật. **Không ô nào trong 40 ô bị treo.**
+
+Nếu một ngày bảng trỏ tới sao chưa an, engine **không im lặng bỏ qua**: nó ghi
+`Thiếu sao đích của Tứ Hóa: <tên>` ra log, ghi một bước trace *"CHƯA GIẢI ĐƯỢC"*, và
+lá số vẫn dùng được.
 
 ### Q8 — Hàng Mậu và Nhâm 🔴
 
@@ -783,6 +820,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 9 | §23 Ngũ hành sao | Tham Lang ghi "âm thủy hóa khí mộc"; Cự Môn ghi Thổ/Thủy/Kim tùy trường phái | 🟡 để trống 2 sao, vẽ mực trung tính; 12/14 sao có giá trị PROVISIONAL |
 | 10 | §24 Tràng Sinh | Thổ cục khởi ở Thân (theo Thủy) hay Dần (theo Hỏa); chiều theo âm dương nam nữ hay theo âm dương Cục | 🟡 chọn cách đọc đa số, ghi cả hai vào policy |
 | 11 | §26 Phụ tinh 1 | Hữu Bật ghi Thổ hay Thủy; Đào Hoa ghi Mộc hay Thủy; can Canh trong bảng Khôi/Việt | 🟡 để trống 2 sao; Canh xếp cùng nhóm Giáp/Mậu, ghi rõ cách đọc đối lập |
+| 12 | §15 Tứ Hóa | Hàng Canh có 3 biến thể, hai trong số đó đảo Khoa↔Kỵ; hàng Mậu và Nhâm khác nhau ở Hóa Khoa | 🟡 đã chọn phương án 1 cho Canh, Hữu Bật cho Mậu, Tả Phù cho Nhâm — đều PROVISIONAL, Q7 vẫn mở |
 
 ---
 

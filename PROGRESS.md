@@ -21,12 +21,12 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
-| Phase 6 — An sao | 🟡 14 chính tinh + phụ tinh nhóm 1 (27 sao); Tứ Hóa & nhóm 2 chưa làm |
+| Phase 6 — An sao | 🟡 27 sao + Tứ Hóa; phụ tinh nhóm 2 & miếu vượng chưa làm |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
 
-Quality gate **đều xanh**: **634 test pass** (443 engine + 41 api + 150 web),
+Quality gate **đều xanh**: **657 test pass** (444 engine + 41 api + 172 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440.
@@ -63,6 +63,9 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 - **Phụ tinh nhóm 1 (`stars/placement.py`)** theo Nam phái: Xương Khúc, Tả Hữu, Khôi Việt,
   Lộc Tồn, Kình Đà, Đào Hoa, Hồng Loan, Thiên Hỷ, Thiên Mã. Mỗi hàm trả về **một địa chi**;
   tên cung và toạ độ lưới là hai chuyện khác. 4 bất biến kiểm được không cần nguồn ngoài.
+- **Tứ Hóa (`stars/four_transformations.py`)**: bảng 10 can × 4 hóa. **Không sinh sao mới** —
+  hóa gắn vào sao đã an, nên tổng sao không đổi theo năm sinh. Hàng Canh chọn phương án 1
+  (Thái Âm Khoa, Thiên Đồng Kỵ); cả 3 biến thể nằm sẵn trong `CANH_VARIANTS`, **Q7 vẫn mở**.
 - **Bàn kiểm định (`review/`)** + trace giải thích được từng bước (inputs, policy,
   rule id, convention, source, verification).
 - 355 test, đối chiếu ngày Tết chính thống 2000–2026 và tháng nhuận Quý Mão 2023
@@ -232,6 +235,8 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 - **Chưa có auth** — ai giữ được UUID thì xem được lá số đó.
 - **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, lưu niên chưa làm.
   Vòng Tràng Sinh và đại vận **đã làm** nhưng ở mức `PROVISIONAL`.
+- **Tứ Hóa hàng Canh đang chọn phương án 1.** Phương án 1 và 2 **đảo Khoa với Kỵ** —
+  chọn nhầm lật cát tinh thành hung tinh trên mọi lá số sinh năm Canh. Cần Q3 quyết.
 - **Ngũ hành của sao: 23/27**. Để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các
   trường phái ghi khác nhau, vẽ bằng mực trung tính, không đoán.
   `make astrology-star-metadata-report`.

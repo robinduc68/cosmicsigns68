@@ -14,23 +14,31 @@ import { describe, expect, it } from 'vitest'
 const ROOT = join(import.meta.dirname, '..')
 
 /**
- * Every star the engine can place, plus the four Tứ Hóa it will place later.
+ * Every star the engine can place.
  *
  * "Tử Vi" is deliberately absent: it names both a star and the whole discipline,
  * so it appears legitimately in titles and file headers ("Lá Số Tử Vi"). The star
  * sense is covered by the id scan below, where `TU_VI` has no innocent reading.
+ *
+ * Hóa Lộc / Quyền / Khoa / Kỵ are absent for a different reason: they are not
+ * stars. They are states a placed star carries, so a label table keyed by the
+ * transformation enum is correct rather than a violation — the test below pins
+ * that it really is keyed by the enum and not by any star name.
  */
 const STAR_NAMES = [
   'Thiên Cơ', 'Thái Dương', 'Vũ Khúc', 'Thiên Đồng', 'Liêm Trinh',
   'Thiên Phủ', 'Thái Âm', 'Tham Lang', 'Cự Môn', 'Thiên Tướng', 'Thiên Lương',
   'Thất Sát', 'Phá Quân',
-  'Hóa Lộc', 'Hóa Quyền', 'Hóa Khoa', 'Hóa Kỵ',
+  'Văn Xương', 'Văn Khúc', 'Tả Phù', 'Hữu Bật', 'Thiên Khôi', 'Thiên Việt',
+  'Lộc Tồn', 'Kình Dương', 'Đà La', 'Đào Hoa', 'Hồng Loan', 'Thiên Mã',
 ]
 
 const STAR_IDS = [
   'TU_VI', 'THIEN_CO', 'THAI_DUONG', 'VU_KHUC', 'THIEN_DONG', 'LIEM_TRINH',
   'THIEN_PHU', 'THAI_AM', 'THAM_LANG', 'CU_MON', 'THIEN_TUONG', 'THIEN_LUONG',
   'THAT_SAT', 'PHA_QUAN',
+  'VAN_XUONG', 'VAN_KHUC', 'TA_PHU', 'HUU_BAT', 'THIEN_KHOI', 'THIEN_VIET',
+  'LOC_TON', 'KINH_DUONG', 'DA_LA', 'DAO_HOA', 'HONG_LOAN', 'THIEN_HY', 'THIEN_MA',
 ]
 
 /** Source that actually draws the chart. Tests and fixtures name stars freely. */
@@ -78,6 +86,16 @@ describe('the renderer never keys off a star name', () => {
       (m) => m[1],
     )
     expect(starColourRules.sort()).toEqual(['hoa', 'kim', 'moc', 'none', 'tho', 'thuy'])
+  })
+
+  it('keys the Tứ Hóa labels by the transformation, never by a star name', () => {
+    const utils = SOURCES.find((s) => s.path.endsWith('utils/tuvi-chart.ts'))!.text
+    // The table is Record<Transformation, string>; its keys are the four enum
+    // values. A star name appearing as a key would be the violation.
+    for (const key of ['HOA_LOC', 'HOA_QUYEN', 'HOA_KHOA', 'HOA_KY']) {
+      expect(utils).toContain(key)
+    }
+    expect(utils).toContain('Record<Transformation, string>')
   })
 
   it('builds the element class from the element alone', () => {

@@ -518,14 +518,14 @@
       },
       {
         "rule": "four_transformations",
-        "policy": "UNRESOLVED",
-        "implemented": false,
-        "verification": "UNVERIFIED",
-        "status": "BLOCKED",
+        "policy": "NAM_PHAI_TABLE_V1",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
         "blocked_by": [
-          "Q7",
-          "Q8",
-          "Q9"
+          "Q2",
+          "Q3",
+          "Q7"
         ],
         "source": {
           "title": null,
@@ -534,11 +534,11 @@
           "page": null,
           "verified_by": null,
           "verified_at": null,
-          "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "Hàng Canh có ít nhất 3 biến thể; hàng Mậu và Nhâm khác nhau ở Hóa Khoa. Ngoài ra còn phụ thuộc Văn Xương, Văn Khúc, Tả Phù, Hữu Bật — đều chưa cài."
+        "note": "Bảng theo can năm. Hàng Canh chọn phương án 'Thái Âm Khoa, Thiên Đồng Kỵ' (đa số bản Việt); hai biến thể còn lại đổi chỗ Khoa/Kỵ và nằm sẵn trong stars/four_transformations.py. Hàng Mậu chọn Hữu Bật Khoa, hàng Nhâm chọn Tả Phù Khoa — cả hai đều có cách đọc đối lập."
       },
       {
         "rule": "tuan",

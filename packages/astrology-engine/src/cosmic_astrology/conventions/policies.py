@@ -186,8 +186,15 @@ class MajorStarPolicy(StrEnum):
 
 
 class FourTransformationsPolicy(StrEnum):
-    """**Open questions Q7/Q8.** The Canh row alone has three recorded variants."""
+    """Bảng Tứ Hóa theo thiên can năm sinh.
 
+    **Q7 vẫn mở.** Hàng Canh có ba biến thể được ghi nhận, và hai trong số đó đổi
+    chỗ Hóa Khoa với Hóa Kỵ — tức lật một cát tinh thành hung tinh trên mọi lá số
+    sinh năm Canh. Bảng Nam phái dưới đây chọn phương án đa số bản Việt và ghi cả
+    ba biến thể trong ``stars/four_transformations.py``.
+    """
+
+    NAM_PHAI_TABLE_V1 = "NAM_PHAI_TABLE_V1"
     UNRESOLVED = UNRESOLVED
 
 

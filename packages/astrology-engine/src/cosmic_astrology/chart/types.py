@@ -6,7 +6,7 @@ on Pydantic, FastAPI or the database. The API layer maps them to its own schemas
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import StrEnum
 
 from cosmic_astrology.calendar.sexagenary import Element
@@ -19,6 +19,7 @@ from cosmic_astrology.chart.model import (
     StarCategory,
     StarProvenance,
     TraditionalMetadata,
+    Transformation,
     VoidMark,
     display_priority_for,
 )
@@ -184,6 +185,10 @@ class Star:
     palace_branch: str | None = None
     #: Where the placement came from and how far it is trusted.
     provenance: StarProvenance | None = None
+    #: Tứ Hóa this star carries. A tuple rather than a single value because the
+    #: model must survive a future where đại vận and lưu niên each add their own
+    #: hóa to the same star; today the engine only attaches the birth-year one.
+    transformations: tuple[Transformation, ...] = ()
 
     def __post_init__(self) -> None:
         if (self.strength is None) != (self.strength_verification is None):
@@ -202,7 +207,28 @@ class Star:
 
     @property
     def is_transformation(self) -> bool:
+        """Whether the star's own **category** is TRANSFORMATION.
+
+        Not the same as carrying a Tứ Hóa — see ``has_transformation``. Nothing is
+        placed with this category today: Tứ Hóa attaches to an existing star rather
+        than adding a fifth one, so a chart's star count does not change with the
+        birth year.
+        """
         return self.category is StarCategory.TRANSFORMATION
+
+    @property
+    def has_transformation(self) -> bool:
+        return bool(self.transformations)
+
+    def with_transformation(self, transformation: Transformation) -> Star:
+        """A copy carrying one more hóa. Duplicates are refused, not ignored.
+
+        Two rules pointing the same hóa at the same star means the table is wrong,
+        and silently de-duplicating would hide that.
+        """
+        if transformation in self.transformations:
+            raise ValueError(f"{self.name} đã mang {transformation.value} rồi")
+        return replace(self, transformations=(*self.transformations, transformation))
 
     @property
     def verification_status(self) -> VerificationStatus:
@@ -229,6 +255,8 @@ class Star:
             "is_major": self.is_major,
             "is_annual": self.is_annual,
             "is_transformation": self.is_transformation,
+            "has_transformation": self.has_transformation,
+            "transformations": [t.value for t in self.transformations],
             "display_priority": display_priority_for(self.category),
             "verification_status": self.verification_status.value,
             "provenance": self.provenance.to_dict() if self.provenance else None,

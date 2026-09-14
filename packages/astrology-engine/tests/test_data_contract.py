@@ -40,6 +40,8 @@ STAR_KEYS = {
     "is_major",
     "is_annual",
     "is_transformation",
+    "has_transformation",
+    "transformations",
     "display_priority",
     "verification_status",
     "provenance",

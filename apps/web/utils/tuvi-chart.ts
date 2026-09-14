@@ -1,4 +1,9 @@
-import { CHART_GRID_BRANCH_INDEXES, type ElementCode, type StarStrength } from '@cosmic/shared'
+import {
+  CHART_GRID_BRANCH_INDEXES,
+  type ElementCode,
+  type StarStrength,
+  type Transformation,
+} from '@cosmic/shared'
 import type { StarCategory } from '~/types/chart-view-model'
 
 /**
@@ -34,6 +39,24 @@ export function elementColor(element: ElementCode | null): string {
  */
 export function elementClass(element: ElementCode | null): string {
   return `is-element-${(element ?? 'none').toLowerCase()}`
+}
+
+/**
+ * Tứ Hóa labels, as a printed chart writes them. The marker uses square brackets
+ * so it cannot be confused with the round brackets that carry star strength.
+ */
+export const TRANSFORMATION_LABELS: Record<Transformation, string> = {
+  HOA_LOC: 'Lộc',
+  HOA_QUYEN: 'Quyền',
+  HOA_KHOA: 'Khoa',
+  HOA_KY: 'Kỵ',
+}
+
+export const TRANSFORMATION_FULL_LABELS: Record<Transformation, string> = {
+  HOA_LOC: 'Hóa Lộc',
+  HOA_QUYEN: 'Hóa Quyền',
+  HOA_KHOA: 'Hóa Khoa',
+  HOA_KY: 'Hóa Kỵ',
 }
 
 export const STRENGTH_LEGEND: { key: StarStrength; abbr: string; label: string }[] = [

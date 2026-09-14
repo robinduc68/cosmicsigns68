@@ -79,10 +79,21 @@ def test_implemented_and_verified_are_not_the_same_thing() -> None:
 
 
 def test_blocked_rules_report_as_blocked_not_merely_unverified() -> None:
-    for rule in (RuleId.FOUR_TRANSFORMATIONS, RuleId.STAR_STRENGTH):
-        binding = PROFILE.binding(rule)
-        assert binding.implemented is False
-        assert binding.display_status == "BLOCKED"
+    binding = PROFILE.binding(RuleId.STAR_STRENGTH)
+    assert binding.implemented is False
+    assert binding.display_status == "BLOCKED"
+
+
+def test_four_transformations_is_implemented_but_still_waiting_on_its_open_question() -> None:
+    """Chọn một phương án cho hàng Canh không phải là trả lời được Q7.
+
+    Bảng đã cài và chạy, nhưng câu hỏi "hàng Canh theo phương án nào" vẫn mở, nên
+    Q7 phải còn trong blocked_by. Code chạy được không bao giờ là bằng chứng kiểm định.
+    """
+    binding = PROFILE.binding(RuleId.FOUR_TRANSFORMATIONS)
+    assert binding.implemented is True
+    assert binding.verification is VerificationStatus.PROVISIONAL
+    assert "Q7" in binding.blocked_by
 
 
 def test_the_standard_profile_is_honest_about_not_being_production_ready() -> None:

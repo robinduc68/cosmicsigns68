@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from cosmic_astrology.conventions.policies import (
     DaoHoaPolicy,
+    FourTransformationsPolicy,
     HongLoanThienHyPolicy,
     KinhDuongDaLaPolicy,
     LocTonPolicy,
@@ -98,6 +99,21 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         RuleId.HONG_LOAN_THIEN_HY,
         HongLoanThienHyPolicy.YEAR_BRANCH_MAO_REVERSE.value,
         "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung.",
+    ),
+    RuleId.FOUR_TRANSFORMATIONS: RuleBinding(
+        rule=RuleId.FOUR_TRANSFORMATIONS,
+        policy=FourTransformationsPolicy.NAM_PHAI_TABLE_V1.value,
+        implemented=True,
+        verification=V.PROVISIONAL,
+        source=_NAM_PHAI_COMMON_USAGE,
+        # Q7 (hàng Canh) vẫn mở: bảng đã CHỌN một phương án chứ chưa GIẢI được câu hỏi.
+        blocked_by=("Q2", "Q3", "Q7"),
+        note=(
+            "Bảng theo can năm. Hàng Canh chọn phương án 'Thái Âm Khoa, Thiên Đồng Kỵ' "
+            "(đa số bản Việt); hai biến thể còn lại đổi chỗ Khoa/Kỵ và nằm sẵn trong "
+            "stars/four_transformations.py. Hàng Mậu chọn Hữu Bật Khoa, hàng Nhâm chọn "
+            "Tả Phù Khoa — cả hai đều có cách đọc đối lập."
+        ),
     ),
     RuleId.THIEN_MA: _nam_phai_rule(
         RuleId.THIEN_MA,

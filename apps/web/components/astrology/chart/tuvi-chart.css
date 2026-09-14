@@ -292,6 +292,16 @@
   font-weight: inherit;
 }
 
+/* Tứ Hóa. Nhỏ hơn tên sao và KHÔNG đặt màu: nó kế thừa màu ngũ hành của chính ngôi
+   sao đó, vì hóa là trạng thái của sao chứ không phải một thuộc tính màu riêng. */
+.tuvi-star__hoa {
+  margin-left: 2px;
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .tuvi-star__strength {
   /* A hair of space, the way a printed chart sets it. A margin rather than a text
      space so the nowrap rules used during PNG export are unaffected. */
