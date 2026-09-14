@@ -1,0 +1,615 @@
+{
+  "viewing_year": 2024,
+  "year_stem": "Giáp",
+  "year_branch": "Thìn",
+  "year_pillar": "Giáp Thìn",
+  "age_tuoi_ta": 24,
+  "age_completed": 23,
+  "age_convention": null,
+  "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
+  "convention_version": "2026.09",
+  "palaces": [
+    {
+      "branch_index": 4,
+      "branch": "Thìn",
+      "name": "MENH",
+      "label": "Mệnh",
+      "short_label": "MỆNH"
+    },
+    {
+      "branch_index": 5,
+      "branch": "Tỵ",
+      "name": "PHU_MAU",
+      "label": "Phụ Mẫu",
+      "short_label": "PHỤ"
+    },
+    {
+      "branch_index": 6,
+      "branch": "Ngọ",
+      "name": "PHUC_DUC",
+      "label": "Phúc Đức",
+      "short_label": "PHÚC"
+    },
+    {
+      "branch_index": 7,
+      "branch": "Mùi",
+      "name": "DIEN_TRACH",
+      "label": "Điền Trạch",
+      "short_label": "ĐIỀN"
+    },
+    {
+      "branch_index": 8,
+      "branch": "Thân",
+      "name": "QUAN_LOC",
+      "label": "Quan Lộc",
+      "short_label": "QUAN"
+    },
+    {
+      "branch_index": 9,
+      "branch": "Dậu",
+      "name": "NO_BOC",
+      "label": "Nô Bộc",
+      "short_label": "NÔ"
+    },
+    {
+      "branch_index": 10,
+      "branch": "Tuất",
+      "name": "THIEN_DI",
+      "label": "Thiên Di",
+      "short_label": "DI"
+    },
+    {
+      "branch_index": 11,
+      "branch": "Hợi",
+      "name": "TAT_ACH",
+      "label": "Tật Ách",
+      "short_label": "TẬT"
+    },
+    {
+      "branch_index": 0,
+      "branch": "Tý",
+      "name": "TAI_BACH",
+      "label": "Tài Bạch",
+      "short_label": "TÀI"
+    },
+    {
+      "branch_index": 1,
+      "branch": "Sửu",
+      "name": "TU_TUC",
+      "label": "Tử Tức",
+      "short_label": "TỬ"
+    },
+    {
+      "branch_index": 2,
+      "branch": "Dần",
+      "name": "PHU_THE",
+      "label": "Phu Thê",
+      "short_label": "PHỐI"
+    },
+    {
+      "branch_index": 3,
+      "branch": "Mão",
+      "name": "HUYNH_DE",
+      "label": "Huynh Đệ",
+      "short_label": "HUYNH"
+    }
+  ],
+  "stars": [
+    {
+      "id": "LUU_LOC_TON",
+      "name": "L.Lộc Tồn",
+      "base_star_id": "LOC_TON",
+      "category": "ANNUAL",
+      "element": "THO",
+      "polarity": "YIN",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Dần",
+      "palace_branch_index": 2,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THIEN_KHOI",
+      "name": "L.Thiên Khôi",
+      "base_star_id": "THIEN_KHOI",
+      "category": "ANNUAL",
+      "element": "HOA",
+      "polarity": "YANG",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Sửu",
+      "palace_branch_index": 1,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THIEN_VIET",
+      "name": "L.Thiên Việt",
+      "base_star_id": "THIEN_VIET",
+      "category": "ANNUAL",
+      "element": "HOA",
+      "polarity": "YIN",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Mùi",
+      "palace_branch_index": 7,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_KINH_DUONG",
+      "name": "L.Kình Dương",
+      "base_star_id": "KINH_DUONG",
+      "category": "ANNUAL",
+      "element": "KIM",
+      "polarity": "YANG",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Mão",
+      "palace_branch_index": 3,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_DA_LA",
+      "name": "L.Đà La",
+      "base_star_id": "DA_LA",
+      "category": "ANNUAL",
+      "element": "KIM",
+      "polarity": "YIN",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Sửu",
+      "palace_branch_index": 1,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_VAN_XUONG",
+      "name": "L.Văn Xương",
+      "base_star_id": "VAN_XUONG",
+      "category": "ANNUAL",
+      "element": "KIM",
+      "polarity": "YANG",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Tỵ",
+      "palace_branch_index": 5,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_VAN_KHUC",
+      "name": "L.Văn Khúc",
+      "base_star_id": "VAN_KHUC",
+      "category": "ANNUAL",
+      "element": "THUY",
+      "polarity": "YIN",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Dậu",
+      "palace_branch_index": 9,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THIEN_MA",
+      "name": "L.Thiên Mã",
+      "base_star_id": "THIEN_MA",
+      "category": "ANNUAL",
+      "element": "HOA",
+      "polarity": "YANG",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Dần",
+      "palace_branch_index": 2,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_DAO_HOA",
+      "name": "L.Đào Hoa",
+      "base_star_id": "DAO_HOA",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Dậu",
+      "palace_branch_index": 9,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_HONG_LOAN",
+      "name": "L.Hồng Loan",
+      "base_star_id": "HONG_LOAN",
+      "category": "ANNUAL",
+      "element": "THUY",
+      "polarity": "YIN",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Hợi",
+      "palace_branch_index": 11,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THIEN_HY",
+      "name": "L.Thiên Hỷ",
+      "base_star_id": "THIEN_HY",
+      "category": "ANNUAL",
+      "element": "THUY",
+      "polarity": "YANG",
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Tỵ",
+      "palace_branch_index": 5,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THIEN_KHOC",
+      "name": "L.Thiên Khốc",
+      "base_star_id": "THIEN_KHOC",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Dần",
+      "palace_branch_index": 2,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THIEN_HU",
+      "name": "L.Thiên Hư",
+      "base_star_id": "THIEN_HU",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Tuất",
+      "palace_branch_index": 10,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_THAI_TUE",
+      "name": "L.Thái Tuế",
+      "base_star_id": "THAI_TUE",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Thìn",
+      "palace_branch_index": 4,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_TANG_MON",
+      "name": "L.Tang Môn",
+      "base_star_id": "TANG_MON",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Ngọ",
+      "palace_branch_index": 6,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_QUAN_PHU",
+      "name": "L.Quan Phù",
+      "base_star_id": "QUAN_PHU_TT",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Thân",
+      "palace_branch_index": 8,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_BACH_HO",
+      "name": "L.Bạch Hổ",
+      "base_star_id": "BACH_HO",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Tý",
+      "palace_branch_index": 0,
+      "display_priority": 16
+    },
+    {
+      "id": "LUU_DIEU_KHACH",
+      "name": "L.Điếu Khách",
+      "base_star_id": "DIEU_KHACH",
+      "category": "ANNUAL",
+      "element": null,
+      "polarity": null,
+      "strength": null,
+      "is_annual": true,
+      "palace_branch": "Dần",
+      "palace_branch_index": 2,
+      "display_priority": 16
+    }
+  ],
+  "transformations": [
+    {
+      "transformation": "HOA_LOC",
+      "short_label": "Lộc",
+      "star_id": "LIEM_TRINH",
+      "star_name": "Liêm Trinh"
+    },
+    {
+      "transformation": "HOA_QUYEN",
+      "short_label": "Quyền",
+      "star_id": "PHA_QUAN",
+      "star_name": "Phá Quân"
+    },
+    {
+      "transformation": "HOA_KHOA",
+      "short_label": "Khoa",
+      "star_id": "VU_KHUC",
+      "star_name": "Vũ Khúc"
+    },
+    {
+      "transformation": "HOA_KY",
+      "short_label": "Kỵ",
+      "star_id": "THAI_DUONG",
+      "star_name": "Thái Dương"
+    }
+  ],
+  "rules": [
+    {
+      "rule": "loc_ton",
+      "policy": "YEAR_STEM_LAM_QUAN",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Lộc Tồn tại cung lâm quan của can năm. Không bao giờ vào tứ mộ."
+    },
+    {
+      "rule": "kinh_duong_da_la",
+      "policy": "ADJACENT_TO_LOC_TON",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "'Tiền Kình hậu Đà': Kình ở cung liền sau Lộc Tồn theo chiều thuận, Đà ở cung liền trước. Hai sao luôn kẹp Lộc Tồn ở giữa."
+    },
+    {
+      "rule": "thien_khoi_thien_viet",
+      "policy": "YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Bảng theo can năm ('Giáp Mậu Canh ngưu dương…'). Can Canh là chỗ các trường phái hay khác nhau; bản này xếp Canh cùng nhóm Giáp/Mậu."
+    },
+    {
+      "rule": "thien_ma",
+      "policy": "YEAR_BRANCH_TRINE",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Dịch mã theo tam hợp chi năm. Luôn rơi vào tứ sinh (Dần Thân Tỵ Hợi)."
+    },
+    {
+      "rule": "dao_hoa",
+      "policy": "YEAR_BRANCH_TRINE",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Theo tam hợp chi năm. Luôn rơi vào tứ chính (Tý Ngọ Mão Dậu)."
+    },
+    {
+      "rule": "hong_loan_thien_hy",
+      "policy": "YEAR_BRANCH_MAO_REVERSE",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung."
+    },
+    {
+      "rule": "thien_khoc_thien_hu",
+      "policy": "YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
+    },
+    {
+      "rule": "thai_tue_cycle",
+      "policy": "YEAR_BRANCH_FORWARD",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
+    },
+    {
+      "rule": "four_transformations",
+      "policy": "NAM_PHAI_TABLE_V1",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3",
+        "Q7"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Bảng theo can năm. Hàng Canh chọn phương án 'Thái Âm Khoa, Thiên Đồng Kỵ' (đa số bản Việt); hai biến thể còn lại đổi chỗ Khoa/Kỵ và nằm sẵn trong stars/four_transformations.py. Hàng Mậu chọn Hữu Bật Khoa, hàng Nhâm chọn Tả Phù Khoa — cả hai đều có cách đọc đối lập."
+    },
+    {
+      "rule": "luu_van_xuong_van_khuc",
+      "policy": "YEAR_STEM_FROM_LOC_TON",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q2",
+        "Q3"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Lưu Văn Xương cách Lộc Tồn của can năm xem 3 cung; Lưu Văn Khúc đối xứng qua trục Sửu–Mùi (tổng hai vị trí luôn ≡ 2 mod 12). KHÁC HẲN Xương/Khúc bản mệnh, vốn an theo giờ sinh."
+    },
+    {
+      "rule": "major_cycle_start_age",
+      "policy": "CUC_NUMBER",
+      "implemented": true,
+      "verification": "PROVISIONAL",
+      "status": "PROVISIONAL",
+      "blocked_by": [
+        "Q11",
+        "Q12"
+      ],
+      "source": {
+        "title": null,
+        "edition": null,
+        "year": null,
+        "page": null,
+        "verified_by": null,
+        "verified_at": null,
+        "note": "Chưa chốt nguồn chuẩn. Chặn bởi Q1 (trường phái), Q2 (ấn bản cụ thể) và Q3 (người thẩm định) — xem docs/astrology-conventions.md mục 0.",
+        "has_citation": false,
+        "is_reviewed": false
+      },
+      "note": "Đại vận 1 khởi ở cung Mệnh tại tuổi = số Cục, mỗi cung 10 năm. Con số thì các sách thống nhất; Q11 hỏi 'tuổi' là tuổi ta hay tuổi tròn — không đổi con số nào ở đây, nhưng chặn việc quy tuổi ra năm dương lịch, nên lưu niên vẫn chưa mở."
+    }
+  ]
+}

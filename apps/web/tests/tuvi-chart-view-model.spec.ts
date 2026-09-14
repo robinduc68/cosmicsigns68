@@ -115,7 +115,7 @@ describe('mapChartDtoToViewModel', () => {
     // The row survives with no value; the renderer is what omits the line.
     expect(byLabel.get('Họ tên')?.value).toBeNull()
     // Nothing the engine does not compute is given a stand-in value.
-    for (const notProduced of ['Chủ Mệnh', 'Chủ Thân', 'Năm xem', 'Cân lượng', 'Tuổi xem']) {
+    for (const notProduced of ['Chủ Mệnh', 'Chủ Thân', 'Năm xem', 'Cân lượng', 'Tuổi']) {
       const field = byLabel.get(notProduced)
       expect(field, notProduced).toBeDefined()
       expect(field!.value, notProduced).toBeNull()

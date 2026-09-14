@@ -1022,6 +1022,29 @@
         "note": "Từ Thái Tuế đếm nghịch tới tháng sinh, rồi từ cung đó đếm thuận tới giờ sinh."
       },
       {
+        "rule": "luu_van_xuong_van_khuc",
+        "policy": "YEAR_STEM_FROM_LOC_TON",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Lưu Văn Xương cách Lộc Tồn của can năm xem 3 cung; Lưu Văn Khúc đối xứng qua trục Sửu–Mùi (tổng hai vị trí luôn ≡ 2 mod 12). KHÁC HẲN Xương/Khúc bản mệnh, vốn an theo giờ sinh."
+      },
+      {
         "rule": "star_elements",
         "policy": "CLASSICAL_CONSENSUS_PARTIAL",
         "implemented": true,

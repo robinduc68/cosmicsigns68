@@ -5,6 +5,8 @@ import {
   type ChartPalace,
   type ChartPayload,
   type ChartStar,
+  type AnnualChart,
+  type AnnualStar,
   type ElementCode,
   type Transformation,
   type YinYangPolarity,
@@ -145,7 +147,41 @@ function transformationsOf(star: ChartStar): StarTransformationViewModel[] {
     }))
 }
 
-function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
+/** Một lưu tinh, đưa về đúng model sao chung — renderer không cần biết nó khác. */
+function mapAnnualStar(star: AnnualStar): StarViewModel {
+  const element = isElementCode(star.element) ? star.element : null
+  const elementLabel = element ? ELEMENT_COLOR_MAP[element].label : null
+  return {
+    code: star.id,
+    name: star.name,
+    category: 'ANNUAL',
+    element,
+    elementLabel,
+    polarityPrefix: null,
+    ariaLabel: [star.name, elementLabel && `hành ${elementLabel}`].filter(Boolean).join(', '),
+    strength: null,
+    strengthAbbr: null,
+    strengthVerification: null,
+    // Lưu tinh đi kèm lá số PROVISIONAL nên cũng chưa kiểm định, nhưng nó không
+    // mang dấu * nào — cảnh báo nằm ở banner chung.
+    provisional: true,
+    isMajor: false,
+    isTransformation: false,
+    isAnnual: true,
+    palaceBranch: star.palace_branch,
+    displayPriority: star.display_priority,
+    verificationStatus: 'PROVISIONAL',
+    provenance: null,
+    transformations: [],
+    annualTransformations: [],
+  }
+}
+
+function mapStar(
+  star: ChartStar,
+  fallback: StarCategory,
+  annualByStarId?: Map<string, StarTransformationViewModel[]>,
+): StarViewModel {
   const category = categoryOf(star, fallback)
   const raw = field(star, 'element')
   const element = isElementCode(raw) ? raw : null
@@ -182,6 +218,7 @@ function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
     ariaLabel: [
       name,
       ...transformations.map((t) => t.fullLabel),
+      ...(annualByStarId?.get(id) ?? []).map((t) => `lưu niên ${t.fullLabel}`),
       elementLabel && `hành ${elementLabel}`,
       strengthLabel,
     ]
@@ -192,6 +229,7 @@ function mapStar(star: ChartStar, fallback: StarCategory): StarViewModel {
     provisional: star.provisional,
     isTransformation: category === 'TRANSFORMATION',
     transformations,
+    annualTransformations: annualByStarId?.get(id) ?? [],
     isAnnual: category === 'ANNUAL',
   }
 }
@@ -230,14 +268,58 @@ function byDisplayPriority(stars: StarViewModel[]): StarViewModel[] {
     .map(({ star }) => star)
 }
 
-function mapPalace(palace: ChartPalace, starsPlaced: boolean): PalaceViewModel {
+/** Dữ liệu lưu niên đã sắp sẵn theo địa chi, để `mapPalace` không phải lọc lại. */
+interface AnnualIndex {
+  starsByBranch: Map<number, StarViewModel[]>
+  palaceRefByBranch: Map<number, string>
+  transformationsByStarId: Map<string, StarTransformationViewModel[]>
+}
+
+function indexAnnual(annual: AnnualChart | null): AnnualIndex | null {
+  if (!annual) return null
+  const starsByBranch = new Map<number, StarViewModel[]>()
+  for (const star of annual.stars) {
+    const list = starsByBranch.get(star.palace_branch_index) ?? []
+    list.push(mapAnnualStar(star))
+    starsByBranch.set(star.palace_branch_index, list)
+  }
+  const transformationsByStarId = new Map<string, StarTransformationViewModel[]>()
+  for (const entry of annual.transformations) {
+    const code = entry.transformation
+    if (!TRANSFORMATION_CODES.has(code)) continue
+    const list = transformationsByStarId.get(entry.star_id) ?? []
+    list.push({
+      code,
+      label: `L.${TRANSFORMATION_LABELS[code]}`,
+      fullLabel: `Lưu ${TRANSFORMATION_FULL_LABELS[code]}`,
+    })
+    transformationsByStarId.set(entry.star_id, list)
+  }
+  return {
+    starsByBranch,
+    palaceRefByBranch: new Map(
+      annual.palaces.map((p) => [p.branch_index, `LN.${p.short_label}`]),
+    ),
+    transformationsByStarId,
+  }
+}
+
+function mapPalace(
+  palace: ChartPalace,
+  starsPlaced: boolean,
+  annual: AnnualIndex | null,
+): PalaceViewModel {
   const { row, col } = gridPosition(palace.branch_index)
-  const majorStars = byDisplayPriority(palace.major_stars.map((s) => mapStar(s, 'MAJOR')))
+  const byStar = annual?.transformationsByStarId
+  const majorStars = byDisplayPriority(palace.major_stars.map((s) => mapStar(s, 'MAJOR', byStar)))
   const minorStars = byDisplayPriority([
-    ...palace.transformations.map((s) => mapStar(s, 'TRANSFORMATION')),
-    ...palace.minor_stars.map((s) => mapStar(s, 'OTHER')),
+    ...palace.transformations.map((s) => mapStar(s, 'TRANSFORMATION', byStar)),
+    ...palace.minor_stars.map((s) => mapStar(s, 'OTHER', byStar)),
     // Schema v2 only; grouped with the phụ tinh for layout, category preserved.
-    ...(palace.annual_stars ?? []).map((s) => mapStar(s, 'ANNUAL')),
+    ...(palace.annual_stars ?? []).map((s) => mapStar(s, 'ANNUAL', byStar)),
+    // Lưu tinh của năm xem. Chúng là instance RIÊNG — không sao bản mệnh nào bị
+    // sửa, nên bỏ năm xem đi là lá số trở về đúng như cũ.
+    ...(annual?.starsByBranch.get(palace.branch_index) ?? []),
   ])
   // A FRAME-stage chart places no stars, yet the engine still flags every palace
   // as empty. "Vô chính diệu" is a statement about the chart, so it is only shown
@@ -250,10 +332,9 @@ function mapPalace(palace: ChartPalace, starsPlaced: boolean): PalaceViewModel {
   const lifeStage = cycles?.trang_sinh_stage ?? null
   const majorCycleRef =
     typeof cycles?.major_cycle_index === 'number' ? `ĐV ${cycles.major_cycle_index}` : null
-  const annualRef =
-    cycles?.annual_target === null || cycles?.annual_target === undefined
-      ? null
-      : `LN ${cycles.annual_target}`
+  // Ô phải của footer: cung lưu niên trên địa chi này. `cycles.annual_target` là
+  // một khái niệm khác (đang xem lưu niên nào) và vẫn chưa cài.
+  const annualRef = annual?.palaceRefByBranch.get(palace.branch_index) ?? null
   const majorCycleAge = formatAgeRange(
     cycles?.major_cycle_age_start ?? null,
     cycles?.major_cycle_age_end ?? null,
@@ -281,6 +362,7 @@ function mapPalace(palace: ChartPalace, starsPlaced: boolean): PalaceViewModel {
     palaceIndex: optionalNumber(palace, 'palace_index'),
     cycles,
     majorCycleAge,
+    annualPalaceRef: annual?.palaceRefByBranch.get(palace.branch_index) ?? null,
     monthNumber: optionalNumber(palace, 'month_number'),
     lifeStage,
     majorCycleRef,
@@ -355,6 +437,17 @@ function elementOf(value: unknown): ElementCode | null {
 }
 
 /**
+ * "26 tuổi ta · 25 tuổi tròn" — cả hai, vì quy ước chưa chọn cách nào.
+ *
+ * Q11 chưa được trả lời, nên engine đưa ra hai con số và giao diện nói rõ cả hai
+ * thay vì chọn hộ một cái rồi trình bày như thể đó là câu trả lời.
+ */
+function formatViewingAge(annual: AnnualChart | null): string | null {
+  if (!annual || annual.age_tuoi_ta === null || annual.age_completed === null) return null
+  return `${annual.age_tuoi_ta} tuổi ta · ${annual.age_completed} tuổi tròn`
+}
+
+/**
  * Direction of the đại vận walk, read off any palace that carries it.
  *
  * The engine stamps the same value on all twelve, so the first one that has it is
@@ -370,16 +463,6 @@ function majorCycleDirection(chart: ChartPayload): 'FORWARD' | 'BACKWARD' | null
 }
 
 /**
- * A number as text, or `null`.
- *
- * Covers `undefined` as well as `null`: a chart persisted before a field existed
- * simply has no key, and stringifying that would print the word "undefined".
- */
-function asText(value: number | null | undefined): string | null {
-  return typeof value === 'number' ? String(value) : null
-}
-
-/**
  * The traditional block a printed chart carries in its centre.
  *
  * Every value here is either supplied by the engine or formatted from engine
@@ -387,7 +470,10 @@ function asText(value: number | null | undefined): string | null {
  * derived, and a field the engine does not produce is `pending` with a `null`
  * value so the renderer can leave the line out entirely.
  */
-function centerFields(chart: ChartPayload): CenterFieldViewModel[] {
+function centerFields(
+  chart: ChartPayload,
+  annual: AnnualChart | null = null,
+): CenterFieldViewModel[] {
   const { birth, lunar_birth: lunar, pillars } = chart
   const traditional = chart.traditional ?? null
 
@@ -441,15 +527,21 @@ function centerFields(chart: ChartPayload): CenterFieldViewModel[] {
     pending('Chủ Mệnh', traditional?.chu_menh ?? null),
     pending('Chủ Thân', traditional?.chu_than ?? null),
     pending('Lai nhân cung', traditional?.lai_nhan_cung ?? null),
-    pending('Năm xem', asText(traditional?.nam_xem)),
-    pending('Tuổi xem', asText(traditional?.tuoi_xem)),
+    // Năm xem đến từ khối lưu niên, không phải từ traditional metadata (vốn là
+    // chỗ dành cho giá trị engine chưa tính).
+    pending('Năm xem', annual ? `${annual.viewing_year} — ${annual.year_pillar}` : null),
+    pending('Tuổi', formatViewingAge(annual)),
   ].map((entry) => (entry.value?.trim() ? entry : { ...entry, value: null }))
 }
 
-export function mapChartDtoToViewModel(chart: ChartPayload): ChartViewModel {
+export function mapChartDtoToViewModel(
+  chart: ChartPayload,
+  annualChart: AnnualChart | null = null,
+): ChartViewModel {
   const warnings: string[] = []
   const starsPlaced = chart.palaces.some((palace) => palace.major_stars.length > 0)
-  const palaces = chart.palaces.map((palace) => mapPalace(palace, starsPlaced))
+  const annual = indexAnnual(annualChart)
+  const palaces = chart.palaces.map((palace) => mapPalace(palace, starsPlaced, annual))
   const byBranch = new Map(palaces.map((p) => [p.branchIndex, p]))
   reportMissingElements(palaces)
 
@@ -495,7 +587,11 @@ export function mapChartDtoToViewModel(chart: ChartPayload): ChartViewModel {
     cells: CHART_GRID_BRANCH_INDEXES.map((index) =>
       index === null ? null : (byBranch.get(index) ?? null),
     ),
-    center: { title: 'Lá Số Tử Vi', subtitle: 'Cosmic Signs', fields: centerFields(chart) },
+    center: {
+      title: 'Lá Số Tử Vi',
+      subtitle: 'Cosmic Signs',
+      fields: centerFields(chart, annualChart),
+    },
     voidMarkers,
     connections,
     meta: {
@@ -512,14 +608,33 @@ export function mapChartDtoToViewModel(chart: ChartPayload): ChartViewModel {
     // Absent means the chart predates the data contract, which is version 1 — a
     // fact about the stored payload, not a default for a field someone forgot.
     schemaVersion: optionalNumber(chart, 'schema_version') ?? 1,
+    annual: annualChart
+      ? {
+          viewingYear: annualChart.viewing_year,
+          label: `${annualChart.viewing_year} — ${annualChart.year_pillar}`,
+          ageTuoiTa: annualChart.age_tuoi_ta,
+          ageCompleted: annualChart.age_completed,
+          ageConvention: annualChart.age_convention,
+          starCount: annualChart.stars.length,
+        }
+      : null,
     warnings,
   }
 }
 
-/** Memoised view model for a chart that may still be loading. */
-export function useTuViChartViewModel(source: MaybeRefOrGetter<ChartPayload | null | undefined>) {
+/**
+ * Memoised view model for a chart that may still be loading.
+ *
+ * The annual source is separate and optional: a chart renders perfectly well with
+ * no viewing year, and supplying one adds data without touching the natal chart.
+ */
+export function useTuViChartViewModel(
+  source: MaybeRefOrGetter<ChartPayload | null | undefined>,
+  annualSource?: MaybeRefOrGetter<AnnualChart | null | undefined>,
+) {
   return computed(() => {
     const chart = toValue(source)
-    return chart ? mapChartDtoToViewModel(chart) : null
+    if (!chart) return null
+    return mapChartDtoToViewModel(chart, (annualSource ? toValue(annualSource) : null) ?? null)
   })
 }

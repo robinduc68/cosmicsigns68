@@ -29,6 +29,7 @@ from cosmic_astrology.conventions.policies import (
     KinhDuongDaLaPolicy,
     LocTonPolicy,
     LongTriPhuongCacPolicy,
+    LuuVanXuongVanKhucPolicy,
     PhaToaiPolicy,
     QuocAnDuongPhuPolicy,
     RuleId,
@@ -257,6 +258,13 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         RuleId.DAU_QUAN,
         DauQuanPolicy.THAI_TUE_MONTH_REVERSE_HOUR_FORWARD.value,
         "Từ Thái Tuế đếm nghịch tới tháng sinh, rồi từ cung đó đếm thuận tới giờ sinh.",
+    ),
+    RuleId.LUU_VAN_XUONG_VAN_KHUC: _nam_phai_rule(
+        RuleId.LUU_VAN_XUONG_VAN_KHUC,
+        LuuVanXuongVanKhucPolicy.YEAR_STEM_FROM_LOC_TON.value,
+        "Lưu Văn Xương cách Lộc Tồn của can năm xem 3 cung; Lưu Văn Khúc đối xứng "
+        "qua trục Sửu–Mùi (tổng hai vị trí luôn ≡ 2 mod 12). KHÁC HẲN Xương/Khúc "
+        "bản mệnh, vốn an theo giờ sinh.",
     ),
     RuleId.FOUR_TRANSFORMATIONS: RuleBinding(
         rule=RuleId.FOUR_TRANSFORMATIONS,

@@ -68,6 +68,7 @@ _RULE_LABELS: dict[RuleId, str] = {
     RuleId.THIEN_LA_DIA_VONG: "Thiên La / Địa Võng",
     RuleId.THIEN_THUONG_THIEN_SU: "Thiên Thương / Thiên Sứ",
     RuleId.DAU_QUAN: "Đẩu Quân",
+    RuleId.LUU_VAN_XUONG_VAN_KHUC: "Lưu Văn Xương / Văn Khúc",
     RuleId.STAR_ELEMENTS: "Ngũ hành của sao",
     RuleId.TUAN: "Tuần",
     RuleId.TRIET: "Triệt",

@@ -54,6 +54,11 @@ export interface StarViewModel {
    * star can hold more than one once đại vận and lưu niên hóa arrive.
    */
   transformations: StarTransformationViewModel[]
+  /**
+   * Tứ Hóa the **viewing year** puts on this star. Kept apart from `transformations`
+   * so a natal Hóa Lộc is never mistaken for this year's.
+   */
+  annualTransformations: StarTransformationViewModel[]
 }
 
 export interface StarTransformationViewModel {
@@ -90,6 +95,8 @@ export interface PalaceViewModel {
   cycles: ChartPalaceCycles | null
   /** Đại vận age span, e.g. `"6 – 15"`. `null` until đại vận is implemented. */
   majorCycleAge: string | null
+  /** `"LN.HUYNH"` — annual palace on this branch. `null` with no viewing year. */
+  annualPalaceRef: string | null
   monthNumber: number | null
   lifeStage: string | null
   majorCycleRef: string | null
@@ -142,6 +149,18 @@ export interface CenterFieldViewModel {
   pending: boolean
 }
 
+export interface AnnualChartViewModel {
+  viewingYear: number
+  /** `"2026 — Bính Ngọ"`. */
+  label: string
+  ageTuoiTa: number | null
+  ageCompleted: number | null
+  /** `null` until Q11 settles which reckoning the convention uses. */
+  ageConvention: string | null
+  /** How many lưu tinh the year put on the chart. */
+  starCount: number
+}
+
 export interface ChartMetaViewModel {
   engineVersion: string
   conventionProfile: string | null
@@ -167,6 +186,8 @@ export interface ChartViewModel {
   traditional: ChartTraditionalMetadata | null
   /** 1 for charts persisted before the data contract, 2 afterwards. */
   schemaVersion: number
+  /** The viewing year in force, or `null` when the chart shows natal data only. */
+  annual: AnnualChartViewModel | null
   warnings: string[]
 }
 

@@ -63,6 +63,15 @@ const title = computed(() =>
       :data-transformation="hoa.code"
       :title="hoa.fullLabel"
       >[{{ hoa.label }}]</span
+    ><!-- Hóa của NĂM XEM. Cùng dấu vuông, nhãn đã mang tiền tố "L." nên phân biệt
+         được với hóa bản mệnh mà không cần thêm màu hay badge nào.
+    --><span
+      v-for="hoa in star.annualTransformations"
+      :key="`annual-${hoa.code}`"
+      class="tuvi-star__hoa is-annual-hoa"
+      :data-transformation="hoa.code"
+      :title="hoa.fullLabel"
+      >[{{ hoa.label }}]</span
     >
   </span>
 </template>

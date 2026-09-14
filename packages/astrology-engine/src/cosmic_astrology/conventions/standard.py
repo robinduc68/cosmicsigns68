@@ -259,6 +259,7 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                     RuleId.THIEN_LA_DIA_VONG,
                     RuleId.THIEN_THUONG_THIEN_SU,
                     RuleId.DAU_QUAN,
+                    RuleId.LUU_VAN_XUONG_VAN_KHUC,
                 )
             ),
             _rule(

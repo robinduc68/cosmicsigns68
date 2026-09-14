@@ -322,6 +322,78 @@ export interface ChartPayload {
   four_transformations: Record<string, unknown>
 }
 
+/* ---------------------------------------------------------------- lưu niên */
+
+/** One of the twelve annual palaces for a viewing year. */
+export interface AnnualPalace {
+  branch_index: number
+  branch: string
+  name: PalaceCode
+  label: string
+  /** `"MỆNH"`, `"PHỤ"`, … — what the palace footer shows after `LN.` */
+  short_label: string
+}
+
+/**
+ * A lưu tinh. Separate from the natal star of the same name: both can sit on the
+ * chart at once, on different branches.
+ */
+export interface AnnualStar {
+  id: string
+  /** Already prefixed, e.g. `"L.Văn Xương"`. */
+  name: string
+  /** Natal star this one mirrors, if any. Its ngũ hành is reused, never redeclared. */
+  base_star_id: string | null
+  category: 'ANNUAL'
+  element: ElementCode | null
+  polarity: YinYangPolarity | null
+  /** Always null: annual stars carry no strength. */
+  strength: null
+  is_annual: true
+  palace_branch: string
+  palace_branch_index: number
+  display_priority: number
+}
+
+/** A Tứ Hóa of the viewing year. Attaches to a natal star; never creates one. */
+export interface AnnualTransformation {
+  transformation: Transformation
+  /** `"Lộc"`, `"Quyền"`, `"Khoa"`, `"Kỵ"`. */
+  short_label: string
+  star_id: string
+  star_name: string
+}
+
+/**
+ * Everything that depends on the viewing year.
+ *
+ * Computed on demand and never stored in the natal payload, so changing the
+ * viewing year cannot move a natal star.
+ */
+export interface AnnualChart {
+  chart_id?: string
+  viewing_year: number
+  year_stem: string
+  year_branch: string
+  /** `"Bính Ngọ"`. */
+  year_pillar: string
+  age_tuoi_ta: number | null
+  age_completed: number | null
+  /**
+   * Which of the two the convention uses. `null` until Q11 is answered — the
+   * engine reports both ages rather than choosing one.
+   */
+  age_convention: string | null
+  convention_profile: string
+  convention_version: string
+  palaces: AnnualPalace[]
+  stars: AnnualStar[]
+  transformations: AnnualTransformation[]
+  rules: ConventionRule[]
+  /** `chart_id:year:engine:convention` — keeps a 2026 result out of 2027. */
+  cache_key?: string
+}
+
 export interface ChartSummary {
   id: string
   subject_name: string

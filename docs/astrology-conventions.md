@@ -1041,6 +1041,74 @@ Toàn bộ `NOT_RECORDED`.
 
 ---
 
+## 30. Lưu niên 🟡 PENDING — **Nam phái**
+
+Dữ liệu của **một năm xem**, tách hoàn toàn khỏi lá số gốc.
+
+> **Nguyên tắc kiến trúc:** lưu niên **không được nướng vào `chart_json` đã lưu**.
+> Một lá số đã lưu không mang sẵn một năm xem nào; lưu niên tính theo yêu cầu qua
+> `GET /charts/{id}/annual?year=…`. Nhờ vậy đổi năm xem **không có đường nào** chạm
+> tới sao bản mệnh — không phải vì cẩn thận, mà vì kiến trúc không cho phép.
+
+### Tái dùng bảng của lá số gốc
+
+Phần lớn luật lưu **dùng đúng bảng bản mệnh**, chỉ thay can/chi năm sinh bằng can/chi
+năm xem. Chép lại bảng là tạo nguồn sự thật thứ hai, nên `annual.py` gọi thẳng vào
+`stars.placement` và `stars.placement_malefic`.
+
+| Lưu tinh | Dùng lại bảng | Đầu vào |
+| --- | --- | --- |
+| L.Lộc Tồn, L.Kình Dương, L.Đà La | `place_loc_ton` + kẹp hai bên | can năm xem |
+| L.Thiên Khôi, L.Thiên Việt | bảng Quý Nhân theo can | can năm xem |
+| L.Thiên Mã, L.Đào Hoa, L.Hồng Loan, L.Thiên Hỷ | tam hợp chi năm | chi năm xem |
+| L.Thiên Khốc, L.Thiên Hư | cặp đối xứng qua Ngọ | chi năm xem |
+| L.Thái Tuế, L.Tang Môn, L.Quan Phù, L.Bạch Hổ, L.Điếu Khách | **vòng Thái Tuế** | chi năm xem |
+| L.Hóa Lộc/Quyền/Khoa/Kỵ | bảng Tứ Hóa Nam phái | can năm xem |
+
+### Luật thật sự mới: `luu_van_xuong_van_khuc`
+
+Đây là chỗ duy nhất lưu niên **khác họ luật** với bản mệnh. Văn Xương / Văn Khúc bản
+mệnh an theo **giờ sinh**; bản lưu an theo **thiên can năm xem**:
+
+- **Lưu Văn Xương** = Lộc Tồn(can năm xem) **+ 3** cung
+- **Lưu Văn Khúc** = đối xứng qua trục Sửu–Mùi, tức tổng hai vị trí luôn ≡ 2 (mod 12)
+
+Hai quan hệ này đúng ở **cả 10 can**, nên bảng kiểm được mà không cần nguồn ngoài.
+
+### 12 cung lưu niên
+
+Cung Mệnh lưu rơi vào địa chi của **năm xem**, rồi dùng **đúng `PALACE_ORDER`** của lá
+số gốc. Trình tự 12 cung là một, không có bản "lưu niên" riêng.
+
+Footer mỗi cung: `ĐV.<số>` · `<Tràng Sinh>` · `LN.<cung lưu>`.
+
+### Tuổi xem — Q11 vẫn mở
+
+Engine đưa **cả hai** con số và **không chọn hộ**:
+
+| Trường | Ví dụ (sinh 2001, xem 2026) |
+| --- | --- |
+| `age_tuoi_ta` | 26 |
+| `age_completed` | 25 |
+| `age_convention` | **`null`** — chưa chốt quy ước dùng cách nào (Q11) |
+
+Giao diện hiển thị *"26 tuổi ta · 25 tuổi tròn"* thay vì chọn một cái rồi trình bày
+như thể đó là câu trả lời.
+
+### Tách bản mệnh và lưu niên
+
+Lưu tinh là **instance riêng**, không sửa `Star` bản mệnh. Lưu hóa gắn vào sao bản
+mệnh qua một trường **riêng** (`annualTransformations`), nên một ngôi sao có thể mang
+**cả hóa bản mệnh lẫn hóa năm xem** cùng lúc — ví dụ `Văn Xương [Kỵ] [L.Khoa]`.
+
+### Màu
+
+Lưu tinh dùng **ngũ hành của sao gốc** (`base_star_id`), không khai báo lại. Là lưu
+tinh **không làm đổi hành** của một ngôi sao. Trạng thái lưu niên thể hiện bằng tiền
+tố `L.` và chữ nghiêng — **không** bằng một màu riêng.
+
+---
+
 ## 21. Sổ mâu thuẫn giữa các nguồn
 
 Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
@@ -1062,6 +1130,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 13 | §27 Phụ tinh 2 | Ân Quang/Thiên Quý: bước "lùi 1 cung" có bản ghi khác; Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của từng luật |
 | 14 | §28 Sát tinh 1 | Chiều đếm Hỏa Tinh / Linh Tinh: theo âm dương nam nữ hay luôn thuận | 🟡 chọn theo âm dương nam nữ, ghi cách đọc đối lập trong note |
 | 15 | §29 Phụ tinh 3 | Lưu Hà: bảng theo can năm có chỗ bất quy tắc, không đối chiếu được | 🔴 chưa cài — cần bảng từ ấn bản |
+| 16 | §30 Lưu niên | Tuổi xem là tuổi ta hay tuổi tròn (Q11) | 🟡 engine đưa CẢ HAI, `age_convention` = null cho tới khi chốt |
 
 ---
 

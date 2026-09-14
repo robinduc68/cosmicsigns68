@@ -302,6 +302,13 @@
   text-transform: none;
 }
 
+/* Hóa của năm xem: nghiêng nhẹ để tách khỏi hóa bản mệnh. KHÔNG đổi màu — màu
+   vẫn là ngũ hành của chính ngôi sao. */
+.tuvi-star__hoa.is-annual-hoa {
+  font-style: italic;
+  font-weight: 500;
+}
+
 .tuvi-star__strength {
   /* A hair of space, the way a printed chart sets it. A margin rather than a text
      space so the nowrap rules used during PNG export are unaffected. */

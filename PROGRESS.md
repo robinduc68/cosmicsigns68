@@ -21,7 +21,7 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
-| Phase 6 — An sao | 🟡 **88 sao** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
+| Phase 6 — An sao | 🟡 **88 sao** bản mệnh + **18 lưu tinh** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
@@ -75,6 +75,10 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 - **Phụ tinh nhóm 3 (`stars/placement_group3.py`)**: Phá Toái, Thiên Hình, Thiên Diêu,
   Thiên La, Địa Võng, Thiên Thương, Thiên Sứ, Đẩu Quân. Đồng thời **gộp vòng Thái Tuế và
   vòng Bác Sĩ về một nguồn tính** — trước đó mỗi vòng bị an từ hai chỗ khác nhau.
+- **Lưu niên (`annual.py`)**: 18 lưu tinh + 4 lưu hóa + 12 cung lưu cho một năm xem
+  bất kỳ. **Tách hoàn toàn khỏi lá số gốc** — tính theo yêu cầu qua
+  `GET /charts/{id}/annual?year=…`, không nướng vào `chart_json`. Đổi năm xem không có
+  đường nào chạm tới sao bản mệnh.
 - **Độ sáng (`stars/strength.py`)**: tra cứu `star_id + địa chi` đã nối xong, render
   dạng `THÁI ÂM (M)`. **Bảng 168 ô còn RỖNG** — phải do người thẩm định chép từ nguồn
   vào `stars/data/nam_phai_star_strength_v1.json`. Engine từ chối nạp bảng điền nửa vời.

@@ -9,6 +9,7 @@ than being buried in calculation code, and the profile's id and version are
 stamped into every chart. See ``docs/astrology-conventions.md``.
 """
 
+from cosmic_astrology.annual import AnnualChart, build_annual_chart
 from cosmic_astrology.birth_moment import ResolvedBirthDates, resolve_birth_dates
 from cosmic_astrology.calendar.lunar import LunarDate, lunar_to_solar, solar_to_lunar
 from cosmic_astrology.calendar.sexagenary import (
@@ -38,6 +39,7 @@ __all__ = [
     "COSMIC_SIGNS_NAM_PHAI_V1",
     "COSMIC_SIGNS_STANDARD_V1",
     "ENGINE_VERSION",
+    "AnnualChart",
     "BirthInput",
     "Chart",
     "ConventionProfile",
@@ -52,6 +54,7 @@ __all__ = [
     "TraceLog",
     "UnresolvedConventionError",
     "VerificationStatus",
+    "build_annual_chart",
     "build_chart",
     "hour_branch_index",
     "is_production_ready",

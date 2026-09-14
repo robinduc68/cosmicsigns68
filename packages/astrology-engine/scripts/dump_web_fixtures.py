@@ -93,6 +93,31 @@ CASES: tuple[tuple[str, BirthInput, EngineStage], ...] = (
 )
 
 
+#: Năm xem dùng cho fixture lưu niên của trang demo. Pin cứng vì cùng lý do với
+#: ``GENERATED_AT``: fixture phải ổn định theo byte.
+ANNUAL_YEARS: tuple[int, ...] = (2024, 2025, 2026, 2027)
+
+
+def _dump_annual() -> None:
+    """Lưu niên của lá số demo, mỗi năm một file.
+
+    Lưu niên **không** nằm trong payload lá số — đó là điểm mấu chốt của kiến trúc,
+    nên fixture cũng phải tách riêng đúng như vậy.
+    """
+    from cosmic_astrology.annual import build_annual_chart
+    from cosmic_astrology.conventions import COSMIC_SIGNS_NAM_PHAI_V1
+
+    for year in ANNUAL_YEARS:
+        annual = build_annual_chart(
+            viewing_year=year, birth_year=2001, profile=COSMIC_SIGNS_NAM_PHAI_V1
+        )
+        target = OUT / f"annual-{year}.json"
+        target.write_text(
+            json.dumps(annual.to_dict(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        print(f"annual-{year}.json: {annual.year_pillar_name}, {len(annual.stars)} lưu tinh")
+
+
 def main() -> int:
     for filename, birth, stage in CASES:
         payload = build_chart(birth, stage=stage, generated_at=GENERATED_AT).to_dict()
@@ -106,6 +131,7 @@ def main() -> int:
             f"{filename}: schema v{payload['schema_version']}, "
             f"{len(stars)} chính tinh, {coloured} có ngũ hành"
         )
+    _dump_annual()
     return 0
 
 

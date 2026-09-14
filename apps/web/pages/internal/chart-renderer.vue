@@ -3,7 +3,11 @@ import { AlertTriangle } from 'lucide-vue-next'
 import TuViChart from '~/components/astrology/chart/TuViChart.vue'
 import { renderChartPng } from '~/composables/useChartExport'
 import { useTuViChartViewModel } from '~/composables/useTuViChartViewModel'
-import { CHART_RENDERER_SCENARIOS } from '~/fixtures/chart-renderer-scenarios'
+import {
+  ANNUAL_FIXTURES,
+  ANNUAL_YEARS,
+  CHART_RENDERER_SCENARIOS,
+} from '~/fixtures/chart-renderer-scenarios'
 import type { ChartViewMode } from '~/types/chart-view-model'
 
 /**
@@ -32,7 +36,22 @@ const scenarioId = computed({
 const current = computed(
   () => CHART_RENDERER_SCENARIOS.find((entry) => entry.id === scenarioId.value) ?? first,
 )
-const model = useTuViChartViewModel(() => current.value.chart)
+const viewingYear = ref<number | null>(null)
+const annual = computed(() => (viewingYear.value ? ANNUAL_FIXTURES[viewingYear.value] : null))
+const model = useTuViChartViewModel(
+  () => current.value.chart,
+  () => annual.value ?? null,
+)
+const yearOptions = [
+  { value: '', label: 'Không xem lưu niên' },
+  ...ANNUAL_YEARS.map((y) => ({ value: String(y), label: String(y) })),
+]
+const yearChoice = computed({
+  get: () => (viewingYear.value === null ? '' : String(viewingYear.value)),
+  set: (value: string | number | undefined) => {
+    viewingYear.value = value ? Number(value) : null
+  },
+})
 const showPendingFields = ref(false)
 const initialMode = computed<ChartViewMode | undefined>(() => {
   const requested = route.query.mode
@@ -81,6 +100,10 @@ onMounted(() => {
       />
       Dữ liệu giả, chỉ để thử bố cục — không phải kết quả tử vi và không bao giờ được hiển thị
       cho khách.
+    </div>
+
+    <div class="mt-6 max-w-xs">
+      <CsSelect v-model="yearChoice" label="Năm xem (lưu niên)" :options="yearOptions" />
     </div>
 
     <label class="mt-6 flex items-center gap-2 text-small text-[var(--text-muted)]">

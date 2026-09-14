@@ -1,4 +1,5 @@
 import type {
+  AnnualChart,
   ChartPayload,
   ChartStar,
   ElementCode,
@@ -283,6 +284,24 @@ export const CHART_RENDERER_SCENARIOS: ChartRendererScenario[] = [
     chart: asAuthoritativeDemo(asChart(reference1992)),
   },
 ]
+
+import annual2024 from './charts/annual-2024.json'
+import annual2025 from './charts/annual-2025.json'
+import annual2026 from './charts/annual-2026.json'
+import annual2027 from './charts/annual-2027.json'
+
+/**
+ * Lưu niên của lá số demo, tách riêng khỏi payload lá số — đúng như kiến trúc:
+ * một lá số đã lưu không mang sẵn một năm xem nào.
+ */
+export const ANNUAL_FIXTURES: Record<number, AnnualChart> = {
+  2024: annual2024 as unknown as AnnualChart,
+  2025: annual2025 as unknown as AnnualChart,
+  2026: annual2026 as unknown as AnnualChart,
+  2027: annual2027 as unknown as AnnualChart,
+}
+
+export const ANNUAL_YEARS = Object.keys(ANNUAL_FIXTURES).map(Number).sort()
 
 export function scenario(id: string): ChartRendererScenario {
   const found = CHART_RENDERER_SCENARIOS.find((entry) => entry.id === id)

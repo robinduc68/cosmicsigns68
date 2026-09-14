@@ -105,7 +105,7 @@ describe('TuViStar', () => {
     polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
     strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
     isAnnual: false, palaceBranch: null, displayPriority: 0,
-    verificationStatus: 'PROVISIONAL', provenance: null, transformations: [],
+    verificationStatus: 'PROVISIONAL', provenance: null, transformations: [], annualTransformations: [],
   }
 
   it('uses neutral ink when the engine declared no element', async () => {
@@ -166,7 +166,7 @@ describe('ngũ hành colouring of stars', () => {
     polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
     strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
     isAnnual: false, palaceBranch: null, displayPriority: 0,
-    verificationStatus: 'PROVISIONAL', provenance: null, transformations: [],
+    verificationStatus: 'PROVISIONAL', provenance: null, transformations: [], annualTransformations: [],
   }
 
   const CASES = [

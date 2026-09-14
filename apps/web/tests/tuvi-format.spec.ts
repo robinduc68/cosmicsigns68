@@ -156,7 +156,7 @@ describe('centre mapping', () => {
       'Chủ Thân',
       'Lai nhân cung',
       'Năm xem',
-      'Tuổi xem',
+      'Tuổi',
     ])
     expect(pending.every((f) => f.value === null)).toBe(true)
   })
@@ -239,7 +239,7 @@ describe('palace stem, branch and name', () => {
     expect(menh.majorCycleRef).toBe('ĐV 1')
   })
 
-  it('renders lưu niên once the engine does supply it', () => {
+  it('renders đại vận and Tràng Sinh from the cycles block', () => {
     // Proves the wiring is live rather than permanently reading a dead key.
     const chart = real()
     const palace = chart.palaces[0]!
@@ -249,7 +249,7 @@ describe('palace stem, branch and name', () => {
       major_cycle_index: 3,
       major_cycle_direction: 'FORWARD',
       major_cycle_target: null,
-      annual_target: 7,
+      annual_target: null,
       trang_sinh_stage: 'Đế Vượng',
     }
     const view = mapChartDtoToViewModel(chart).palaces.find(
@@ -258,6 +258,7 @@ describe('palace stem, branch and name', () => {
     expect(view.majorCycleAge).toBe('6 – 15')
     expect(view.lifeStage).toBe('Đế Vượng')
     expect(view.majorCycleRef).toBe('ĐV 3')
-    expect(view.annualRef).toBe('LN 7')
+    // Ô phải của footer trống khi chưa chọn năm xem.
+    expect(view.annualRef).toBeNull()
   })
 })

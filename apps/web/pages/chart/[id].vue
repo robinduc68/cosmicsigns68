@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Check, Link2, Trash2 } from 'lucide-vue-next'
-import { ApiError, INSIGHT_CATEGORIES, type ChartDetail } from '@cosmic/shared'
+import {
+  ApiError,
+  INSIGHT_CATEGORIES,
+  type AnnualChart,
+  type ChartDetail,
+} from '@cosmic/shared'
 import TuViChart from '~/components/astrology/chart/TuViChart.vue'
 import { useTuViChartViewModel } from '~/composables/useTuViChartViewModel'
 
@@ -29,8 +34,46 @@ if (error.value) {
 }
 
 const payload = computed(() => chart.value?.chart)
+
+/**
+ * Năm xem. `null` nghĩa là chỉ hiển thị lá số gốc.
+ *
+ * Đổi năm chỉ nạp lại **khối lưu niên** — lá số gốc không được tải lại, không được
+ * tính lại, và vì thế không thể xê dịch.
+ */
+const viewingYear = ref<number | null>(null)
+const yearOptions = computed(() => {
+  const thisYear = new Date().getFullYear()
+  return [
+    { value: '', label: 'Không xem lưu niên' },
+    ...Array.from({ length: 5 }, (_, i) => thisYear - 1 + i).map((y) => ({
+      value: String(y),
+      label: String(y),
+    })),
+  ]
+})
+const yearChoice = computed({
+  get: () => (viewingYear.value === null ? '' : String(viewingYear.value)),
+  set: (value: string | number | undefined) => {
+    viewingYear.value = value ? Number(value) : null
+  },
+})
+
+const { data: annual } = await useAsyncData<AnnualChart | null>(
+  // Khóa gồm cả năm xem, nên kết quả 2026 không bao giờ bị dùng lại cho 2027.
+  () => `annual-${id.value}-${viewingYear.value ?? 'none'}`,
+  () =>
+    viewingYear.value
+      ? request<AnnualChart>(`/api/v1/charts/${id.value}/annual?year=${viewingYear.value}`)
+      : Promise.resolve(null),
+  { watch: [id, viewingYear], default: () => null },
+)
+
 // Engine output → view model. The renderer never decides astrology.
-const chartModel = useTuViChartViewModel(() => payload.value)
+const chartModel = useTuViChartViewModel(
+  () => payload.value,
+  () => annual.value,
+)
 
 useHead({ title: () => (chart.value ? `Lá số của ${chart.value.subject_name}` : 'Lá số') })
 // Lá số là dữ liệu cá nhân và địa chỉ của nó là lớp bảo vệ duy nhất lúc này —
@@ -148,6 +191,9 @@ async function remove() {
     </CsCard>
 
     <div class="mt-8">
+      <div class="mb-4 max-w-xs">
+        <CsSelect v-model="yearChoice" label="Năm xem (lưu niên)" :options="yearOptions" />
+      </div>
       <TuViChart v-if="chartModel" :model="chartModel" :file-slug="chart.subject_name" />
     </div>
 

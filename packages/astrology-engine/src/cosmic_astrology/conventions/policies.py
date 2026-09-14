@@ -88,6 +88,7 @@ class RuleId(StrEnum):
     THIEN_LA_DIA_VONG = "thien_la_dia_vong"
     THIEN_THUONG_THIEN_SU = "thien_thuong_thien_su"
     DAU_QUAN = "dau_quan"
+    LUU_VAN_XUONG_VAN_KHUC = "luu_van_xuong_van_khuc"
     STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
@@ -380,6 +381,16 @@ class DauQuanPolicy(StrEnum):
     """Đẩu Quân: từ Thái Tuế đếm nghịch tới tháng sinh, rồi thuận tới giờ sinh."""
 
     THAI_TUE_MONTH_REVERSE_HOUR_FORWARD = "THAI_TUE_MONTH_REVERSE_HOUR_FORWARD"
+
+
+class LuuVanXuongVanKhucPolicy(StrEnum):
+    """Lưu Văn Xương / Lưu Văn Khúc theo **thiên can năm xem**.
+
+    Khác hẳn Văn Xương / Văn Khúc bản mệnh, vốn an theo **giờ sinh** — đây là hai
+    họ luật khác nhau, không phải cùng một luật đổi đầu vào.
+    """
+
+    YEAR_STEM_FROM_LOC_TON = "YEAR_STEM_FROM_LOC_TON"
 
 
 class FourTransformationsPolicy(StrEnum):

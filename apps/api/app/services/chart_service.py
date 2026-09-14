@@ -8,12 +8,14 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import Sequence
+from typing import Any
 
 from cosmic_astrology import (
     COSMIC_SIGNS_NAM_PHAI_V1,
     ENGINE_VERSION,
     BirthInput,
     UnresolvedConventionError,
+    build_annual_chart,
     build_chart,
     needs_recalculation,
 )
@@ -122,6 +124,31 @@ class ChartService:
             stored_engine_version=chart.engine_version,
             current_engine_version=ENGINE_VERSION,
         )
+
+    async def annual(self, chart_id: uuid.UUID, viewing_year: int) -> dict[str, Any]:
+        """Dữ liệu lưu niên của một năm xem, tính theo yêu cầu.
+
+        **Không đụng vào lá số đã lưu.** Lưu niên không được nướng vào ``chart_json``:
+        một lá số đã lưu không mang sẵn một năm xem nào, và đổi năm xem chỉ đổi đúng
+        khối này. Nhờ vậy sao bản mệnh không có đường nào để dịch chuyển.
+        """
+        chart = await self.get(chart_id)
+        try:
+            annual = build_annual_chart(
+                viewing_year=viewing_year,
+                birth_year=chart.birth_year,
+                profile=COSMIC_SIGNS_NAM_PHAI_V1,
+            )
+        except ValueError as exc:
+            raise ChartCalculationError(str(exc)) from exc
+
+        payload = annual.to_dict()
+        # Khóa nhận dạng bộ nhớ đệm: một kết quả 2026 không được lẫn với 2027.
+        payload["cache_key"] = (
+            f"{chart.id}:{viewing_year}:{chart.engine_version}:{annual.convention_version}"
+        )
+        payload["chart_id"] = str(chart.id)
+        return payload
 
     def schema_version(self, chart: Chart) -> int:
         """Payload shape of a stored chart.

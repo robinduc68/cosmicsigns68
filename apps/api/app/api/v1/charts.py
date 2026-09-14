@@ -72,6 +72,16 @@ async def get_chart(chart_id: uuid.UUID, service: ChartServiceDep) -> dict[str, 
     return success(_detail(chart, service))
 
 
+@router.get("/{chart_id}/annual", summary="Dữ liệu lưu niên của một năm xem")
+async def get_annual(
+    chart_id: uuid.UUID,
+    service: ChartServiceDep,
+    year: Annotated[int, Query(ge=1900, le=2100, description="Năm xem")],
+) -> dict[str, Any]:
+    """Lưu niên tính theo yêu cầu — lá số gốc đã lưu không hề thay đổi."""
+    return success(await service.annual(chart_id, year))
+
+
 @router.delete("/{chart_id}", status_code=status.HTTP_200_OK, summary="Xóa lá số")
 async def delete_chart(chart_id: uuid.UUID, service: ChartServiceDep) -> dict[str, Any]:
     await service.delete(chart_id)
