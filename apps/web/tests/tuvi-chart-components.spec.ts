@@ -39,9 +39,14 @@ describe('TuViChartCanvas', () => {
     expect(wrapper.get('[data-palace="MENH"]').text()).toContain('Thái Âm')
   })
 
-  it('marks provisional stars for screen readers too', async () => {
+  it('keeps the star name traditional and moves the caveat into the tooltip', async () => {
     const wrapper = await mountSuspended(TuViChartCanvas, { props: { model: modelFor('cross-check-2001') } })
-    expect(wrapper.get('.tuvi-star .sr-only').text()).toContain('chưa được kiểm định')
+    const star = wrapper.get('.tuvi-star[data-provisional="true"]')
+    // A customer chart reads like a printed one: no debug asterisk in the body.
+    expect(star.text()).not.toContain('*')
+    // The caveat survives — in the tooltip, and in the chart-level banner.
+    expect(star.attributes('title')).toContain('chưa được kiểm định')
+    expect(wrapper.find('[data-provisional-badge]').exists()).toBe(true)
   })
 
   it('draws Tuần, Triệt and four connection lines from engine data', async () => {

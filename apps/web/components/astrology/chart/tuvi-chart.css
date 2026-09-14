@@ -310,12 +310,6 @@
   text-decoration: none;
 }
 
-.tuvi-star__mark {
-  margin-left: 1px;
-  font-weight: 500;
-  color: var(--chart-subtle);
-}
-
 .tuvi-star.is-transformation {
   font-weight: 600;
 }

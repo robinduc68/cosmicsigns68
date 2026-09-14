@@ -60,6 +60,46 @@ function demoStar(
 }
 
 /**
+ * Strengths sprinkled onto real stars, so the `(M)` / `(V)` / `(Đ)` form can be
+ * seen rendering next to the Ngũ Hành colour.
+ *
+ * The values are the fixture's own invention and carry `UNVERIFIED`. The real
+ * table is 168 cells that must be copied from a chosen edition and is still empty
+ * — see `docs/astrology-conventions.md` §19. Stars left untouched keep
+ * `strength: null` and must render with no suffix at all.
+ */
+function withDemoStrengths(base: ChartPayload): ChartPayload {
+  const chart = clone(base)
+  const byStar: Record<string, StarStrength> = {
+    THAI_AM: 'MIEU',
+    THIEN_CO: 'DAC',
+    PHA_QUAN: 'VUONG',
+    LIEM_TRINH: 'HAM',
+    VAN_XUONG: 'BINH',
+  }
+  // Every list has to be touched: the payload arrives as JSON, so `stars` and the
+  // grouped lists are separate objects rather than views of one another — and the
+  // mapper reads the grouped ones.
+  for (const palace of chart.palaces) {
+    const lists = [
+      palace.stars ?? [],
+      palace.major_stars,
+      palace.minor_stars,
+      palace.transformations,
+      palace.annual_stars ?? [],
+    ]
+    for (const star of lists.flat()) {
+      const value = byStar[star.id ?? '']
+      if (value) {
+        star.strength = value
+        star.strength_verification = 'UNVERIFIED'
+      }
+    }
+  }
+  return chart
+}
+
+/**
  * One openly fake star per category, so the normalized star model can be seen
  * iterating and ordering consistently.
  *
@@ -225,6 +265,15 @@ export const CHART_RENDERER_SCENARIOS: ChartRendererScenario[] = [
       'duyệt và sắp thứ tự thống nhất. Loại do fixture gán, không phải engine. Không phải tử vi.',
     synthetic: true,
     chart: withEveryStarCategory(crossCheck),
+  },
+  {
+    id: 'strength-demo',
+    label: 'GIẢ — độ sáng sao',
+    description:
+      'Gán độ sáng M/V/Đ/B/H cho vài sao để xem dạng "THÁI ÂM (M)". Độ sáng do fixture ' +
+      'gán, KHÔNG phải engine — bảng 168 ô còn rỗng. Không phải tử vi.',
+    synthetic: true,
+    chart: withDemoStrengths(crossCheck),
   },
   {
     id: 'authoritative-demo',

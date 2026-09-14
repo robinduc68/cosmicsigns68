@@ -548,7 +548,15 @@ hiện coi **hai cung như nhau** (`has_triet: bool`).
 
 ## 19. Bảng Miếu / Vượng / Đắc / Bình / Hãm 🔴 OPEN — **tuyệt đối không bịa**
 
-**Chưa cài đặt. Và sẽ không được cài cho tới khi có nguồn.**
+**Cơ chế đã cài. Bảng vẫn RỖNG. Hai việc khác nhau.**
+
+> **Cập nhật 2026-09-14.** Toàn bộ đường ống đã dựng xong: tra cứu `star_id + địa chi`,
+> gắn `star.strength`, hiển thị dạng `THÁI ÂM (M)`, chú giải M/V/Đ/B/H. **Nhưng
+> 168 ô vẫn trống**, nên mọi độ sáng là `null` và lá số render tên sao trơn.
+>
+> Đây là trạng thái đúng. Điều kiện tiên quyết — *một bảng Nam phái đã được chọn* —
+> chưa thỏa, và nguyên tắc "không có giá trị đáng tin thì để `null`, không bịa" được
+> áp dụng đúng như nó được viết ra.
 
 Bảng này gồm **14 sao × 12 địa chi = 168 ô**. Nó **khác nhau đáng kể** giữa các
 trường phái, và không có cách nào suy ra bằng công thức — phải chép từ nguồn.
@@ -563,7 +571,35 @@ trường phái, và không có cách nào suy ra bằng công thức — phải
 **Kiểu dữ liệu đã sẵn sàng:** `StarStrength = MIEU | VUONG | DAC | BINH | HAM`,
 trường `Star.strength` đang luôn `null`.
 
-**Bất biến để kiểm khi bảng có:** mỗi sao phải có đủ 12 ô, không ô nào trống.
+### Cách điền bảng
+
+Bảng nằm ở **file dữ liệu riêng**, không nằm trong code, vì người điền nó là người
+thẩm định chứ không phải người viết code:
+
+```
+packages/astrology-engine/src/cosmic_astrology/stars/data/nam_phai_star_strength_v1.json
+```
+
+1. Điền `source_title`, `source_page`, `verified_by`.
+2. Thêm từng sao vào `entries`. **Một sao đã vào bảng thì phải đủ 12 địa chi.**
+3. `make astrology-star-strength-report` để xem còn thiếu ô nào.
+4. Khi đủ, đổi `implemented=True` ở binding `star_strength` trong `conventions/nam_phai.py`.
+
+**Điền đủ KHÔNG tự động thành `VERIFIED`.** Nâng nhãn là việc của quy trình thẩm định.
+
+### Bất biến đã cưỡng chế trong code
+
+Engine **từ chối nạp** bảng sai thay vì lặng lẽ bỏ qua — một ô gõ sai chính tả sẽ
+biến thành "chưa biết" mà không ai phát hiện:
+
+| Lỗi | Engine làm gì |
+| --- | --- |
+| Sao có 11/12 địa chi | **Từ chối nạp**, nêu tên địa chi còn thiếu |
+| Địa chi sai chính tả (`Tuat`) | **Từ chối nạp** |
+| Độ sáng không hợp lệ (`MIEUU`, `mieu`) | **Từ chối nạp**, liệt kê giá trị hợp lệ |
+
+> **Ô thiếu nghĩa là "chưa biết", KHÔNG phải "bình hòa".** Hai thứ đó khác nhau và
+> không được lẫn — đó là lý do bảng điền nửa vời bị từ chối thay vì được chấp nhận.
 
 ---
 

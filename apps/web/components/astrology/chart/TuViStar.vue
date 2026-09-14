@@ -16,6 +16,17 @@ const elementSelector = computed(() => elementClass(props.star.element))
 const strengthTitle = computed(() =>
   props.star.strength ? STRENGTH_LABELS[props.star.strength] : undefined,
 )
+
+/**
+ * Tooltip text. This is where "chưa kiểm định" lives now.
+ *
+ * The chart body used to append a visible `*` to every star name. A customer-facing
+ * chart should read like a printed one, so the caveat moved here and to the
+ * chart-level ENGINE PROVISIONAL banner, which nothing can hide.
+ */
+const title = computed(() =>
+  props.star.provisional ? `${props.star.ariaLabel} — vị trí chưa được kiểm định` : props.star.ariaLabel,
+)
 </script>
 
 <template>
@@ -34,7 +45,8 @@ const strengthTitle = computed(() =>
     :data-element="star.element ?? 'NONE'"
     :data-category="star.category"
     :aria-label="star.ariaLabel"
-    :title="star.ariaLabel"
+    :title="title"
+    :data-provisional="star.provisional ? 'true' : undefined"
     ><span v-if="star.polarityPrefix" class="tuvi-star__polarity" aria-hidden="true">{{
       star.polarityPrefix
     }}</span
@@ -51,7 +63,6 @@ const strengthTitle = computed(() =>
       :data-transformation="hoa.code"
       :title="hoa.fullLabel"
       >[{{ hoa.label }}]</span
-    ><span v-if="star.provisional" class="tuvi-star__mark" aria-hidden="true">*</span
-    ><span v-if="star.provisional" class="sr-only"> — vị trí chưa được kiểm định</span>
+    >
   </span>
 </template>

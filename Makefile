@@ -12,7 +12,7 @@ export DATABASE_URL ?= postgresql+asyncpg://cosmic:cosmic@localhost:5436/cosmic_
 .DEFAULT_GOAL := help
 .PHONY: help setup install-web install-api db-up db-down up down logs \
         dev dev-api dev-web migrate migration lint format typecheck test \
-        test-api test-engine test-web clean astrology-star-metadata-report
+        test-api test-engine test-web clean astrology-star-metadata-report astrology-star-strength-report
 
 help: ## Show the available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -90,6 +90,10 @@ astrology-verification-report: ## Show what the astrology engine is verified to 
 astrology-star-metadata-report: ## Show ngũ hành / âm dương coverage of the star catalog
 	cd packages/astrology-engine && PYTHONPATH=src ../../apps/api/.venv/bin/python \
 		-m cosmic_astrology.stars.report
+
+astrology-star-strength-report: ## Show how much of the miếu/vượng table is filled
+	cd packages/astrology-engine && PYTHONPATH=src ../../apps/api/.venv/bin/python \
+		-m cosmic_astrology.stars.strength_report
 
 test: test-engine test-api test-web ## Run every test suite
 

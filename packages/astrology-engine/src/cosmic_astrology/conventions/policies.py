@@ -276,13 +276,14 @@ class StarElementPolicy(StrEnum):
 
 
 class StarStrengthPolicy(StrEnum):
-    """**Open question, blocked on Q1/Q2.**
+    """Bảng miếu/vượng/đắc/bình/hãm.
 
-    The miếu/vượng/đắc/bình/hãm table is 14 stars × 12 branches and cannot be
-    derived from any formula — it has to be copied from a named source. There is
-    deliberately no default value here.
+    168 ô, **không suy ra được bằng công thức** — phải chép từ một ấn bản cụ thể.
+    Policy chỉ nói *dùng bảng nào*; nội dung bảng nằm ở file dữ liệu riêng để người
+    thẩm định điền mà không phải đụng code. Bảng Nam phái hiện **rỗng**.
     """
 
+    NAM_PHAI_TABLE_V1 = "NAM_PHAI_TABLE_V1"
     UNRESOLVED = UNRESOLVED
 
 

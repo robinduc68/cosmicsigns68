@@ -21,6 +21,7 @@ from cosmic_astrology.conventions.policies import (
     KinhDuongDaLaPolicy,
     LocTonPolicy,
     RuleId,
+    StarStrengthPolicy,
     TaPhuHuuBatPolicy,
     ThienKhoiThienVietPolicy,
     ThienMaPolicy,
@@ -113,6 +114,22 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
             "(đa số bản Việt); hai biến thể còn lại đổi chỗ Khoa/Kỵ và nằm sẵn trong "
             "stars/four_transformations.py. Hàng Mậu chọn Hữu Bật Khoa, hàng Nhâm chọn "
             "Tả Phù Khoa — cả hai đều có cách đọc đối lập."
+        ),
+    ),
+    RuleId.STAR_STRENGTH: RuleBinding(
+        rule=RuleId.STAR_STRENGTH,
+        policy=StarStrengthPolicy.NAM_PHAI_TABLE_V1.value,
+        # Cơ chế đã cài và chạy; BẢNG thì chưa có. Hai việc khác nhau, và đánh dấu
+        # implemented=True lúc này sẽ là nói dối về thứ khách nhận được.
+        implemented=False,
+        verification=V.UNVERIFIED,
+        source=_NAM_PHAI_COMMON_USAGE,
+        blocked_by=("Q2", "Q3"),
+        note=(
+            "Tra cứu star_id + địa chi đã nối xong, nhưng bảng 168 ô còn RỖNG nên mọi "
+            "độ sáng là null. Bảng phải do người thẩm định chép từ ấn bản đã chốt vào "
+            "stars/data/nam_phai_star_strength_v1.json — không suy ra được bằng công thức. "
+            "Điền xong đổi implemented=True; điền đủ KHÔNG tự thành VERIFIED."
         ),
     ),
     RuleId.THIEN_MA: _nam_phai_rule(

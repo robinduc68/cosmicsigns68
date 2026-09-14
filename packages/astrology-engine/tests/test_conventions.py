@@ -66,8 +66,24 @@ def test_exploring_a_variant_does_not_mutate_the_shared_profile() -> None:
 
 def test_asking_for_an_unresolved_policy_raises_with_the_open_question() -> None:
     with pytest.raises(UnresolvedConventionError) as exc:
-        PROFILE.policy(RuleId.STAR_STRENGTH)
-    assert "Q1" in str(exc.value)
+        PROFILE.policy(RuleId.LATE_ZI)
+    assert "Q6" in str(exc.value)
+
+
+def test_star_strength_has_a_policy_but_no_data_and_says_so() -> None:
+    """Cơ chế tra cứu đã cài; bảng 168 ô thì chưa có. Hai việc khác nhau.
+
+    Đánh dấu implemented=True lúc này sẽ là nói dối về thứ khách nhận được: mọi
+    độ sáng vẫn là null. Bảng phải do người thẩm định chép từ nguồn.
+    """
+    from cosmic_astrology.stars.strength import NAM_PHAI_STAR_STRENGTH_V1
+
+    binding = PROFILE.binding(RuleId.STAR_STRENGTH)
+    assert binding.policy == "NAM_PHAI_TABLE_V1"
+    assert binding.implemented is False
+    assert binding.display_status == "BLOCKED"
+    assert NAM_PHAI_STAR_STRENGTH_V1.is_empty is True
+    assert NAM_PHAI_STAR_STRENGTH_V1.has_source is False
 
 
 def test_implemented_and_verified_are_not_the_same_thing() -> None:

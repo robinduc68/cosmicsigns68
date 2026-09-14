@@ -21,12 +21,12 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
-| Phase 6 — An sao | 🟡 27 sao + Tứ Hóa; phụ tinh nhóm 2 & miếu vượng chưa làm |
+| Phase 6 — An sao | 🟡 27 sao + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
 
-Quality gate **đều xanh**: **657 test pass** (444 engine + 41 api + 172 web),
+Quality gate **đều xanh**: **658 test pass** (445 engine + 41 api + 172 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440.
@@ -63,6 +63,10 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 - **Phụ tinh nhóm 1 (`stars/placement.py`)** theo Nam phái: Xương Khúc, Tả Hữu, Khôi Việt,
   Lộc Tồn, Kình Đà, Đào Hoa, Hồng Loan, Thiên Hỷ, Thiên Mã. Mỗi hàm trả về **một địa chi**;
   tên cung và toạ độ lưới là hai chuyện khác. 4 bất biến kiểm được không cần nguồn ngoài.
+- **Độ sáng (`stars/strength.py`)**: tra cứu `star_id + địa chi` đã nối xong, render
+  dạng `THÁI ÂM (M)`. **Bảng 168 ô còn RỖNG** — phải do người thẩm định chép từ nguồn
+  vào `stars/data/nam_phai_star_strength_v1.json`. Engine từ chối nạp bảng điền nửa vời.
+  `make astrology-star-strength-report`.
 - **Tứ Hóa (`stars/four_transformations.py`)**: bảng 10 can × 4 hóa. **Không sinh sao mới** —
   hóa gắn vào sao đã an, nên tổng sao không đổi theo năm sinh. Hàng Canh chọn phương án 1
   (Thái Âm Khoa, Thiên Đồng Kỵ); cả 3 biến thể nằm sẵn trong `CANH_VARIANTS`, **Q7 vẫn mở**.
@@ -235,6 +239,9 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 - **Chưa có auth** — ai giữ được UUID thì xem được lá số đó.
 - **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, lưu niên chưa làm.
   Vòng Tràng Sinh và đại vận **đã làm** nhưng ở mức `PROVISIONAL`.
+- **Bảng miếu vượng RỖNG (0/324 ô).** Mọi `star.strength` là `null`, lá số render tên
+  sao trơn. Đây là trạng thái đúng — 168 ô không suy ra được bằng công thức, phải chép
+  từ ấn bản. Chặn bởi Q2/Q3.
 - **Tứ Hóa hàng Canh đang chọn phương án 1.** Phương án 1 và 2 **đảo Khoa với Kỵ** —
   chọn nhầm lật cát tinh thành hung tinh trên mọi lá số sinh năm Canh. Cần Q3 quyết.
 - **Ngũ hành của sao: 23/27**. Để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các

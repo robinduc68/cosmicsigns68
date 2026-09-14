@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
+from dataclasses import replace
 from datetime import UTC, datetime
 
 from cosmic_astrology.birth_moment import ResolvedBirthDates, resolve_birth_dates
@@ -59,7 +60,7 @@ from cosmic_astrology.conventions.profile import (
     validate_convention_profile,
 )
 from cosmic_astrology.cycles import major_cycle, trang_sinh
-from cosmic_astrology.stars import four_transformations, placement
+from cosmic_astrology.stars import four_transformations, placement, strength
 from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
@@ -339,6 +340,7 @@ def build_chart(
         _apply_four_transformations(
             by_branch, year_stem=pillars.year.can_index, profile=profile, trace_log=log
         )
+        _apply_star_strength(by_branch, profile=profile)
 
     _attach_cycles(
         by_branch,
@@ -589,6 +591,35 @@ def _apply_four_transformations(
                 bang=four_transformations.TABLE_VERSION,
                 sao_dich=star_id,
             )
+
+
+def _apply_star_strength(
+    by_branch: dict[int, Palace], *, profile: ConventionProfile
+) -> None:
+    """Attach miếu/vượng/đắc/bình/hãm by looking the star up at its own branch.
+
+    Metadata only — no star moves. Strength is a property of *where a star already
+    is*, so this runs last and reads positions rather than deciding them.
+
+    The table ships empty, so today every lookup returns ``None`` and every star
+    keeps ``strength=None``. That is the designed state: a wrong strength table
+    still looks plausible to a non-expert, which is exactly why it is left blank
+    until a reviewer copies one from a chosen edition.
+    """
+    binding = profile.binding(RuleId.STAR_STRENGTH)
+    if binding.is_unresolved:
+        return
+    table = strength.NAM_PHAI_STAR_STRENGTH_V1
+    if table.is_empty:
+        return
+
+    for palace in by_branch.values():
+        for index, star in enumerate(palace.stars):
+            value = table.strength_for(star.id, palace.branch)
+            if value is not None:
+                palace.stars[index] = replace(
+                    star, strength=value, strength_verification=binding.verification
+                )
 
 
 def _attach_cycles(
