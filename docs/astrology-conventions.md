@@ -920,6 +920,60 @@ chọn bừa*; Thiên Trù và Thiên Y là *không nêu lại được đườn
 
 ---
 
+## 28. Sát tinh / bại tinh nhóm 1 🟡 PENDING — **Nam phái**
+
+16 sao. Nhưng **chỉ 6 luật mới**: sáu sao đã thuộc chu kỳ engine đang đi, nên được
+**tái dùng** thay vì viết lại — hai nguồn sự thật cho cùng một chu kỳ là lỗi chờ sẵn.
+
+### Tái dùng chu kỳ có sẵn (6 sao, 0 luật mới)
+
+| Sao | Chu kỳ | Offset |
+| --- | --- | --- |
+| Tang Môn, Quan Phù, Bạch Hổ, Điếu Khách | vòng Thái Tuế (§27) | +2, +4, +8, +10 |
+| Tiểu Hao, Đại Hao | vòng Bác Sĩ (§27) | +3, +9 |
+
+### Luật mới (6 luật, 10 sao)
+
+| Luật | Sao | Cách an | Phụ thuộc |
+| --- | --- | --- | --- |
+| `dia_khong_dia_kiep` | Địa Không, Địa Kiếp | Cùng khởi **Hợi** giờ Tý; Kiếp thuận, Không nghịch | giờ sinh |
+| `hoa_tinh_linh_tinh` | Hỏa Tinh, Linh Tinh | Địa chi khởi theo tam hợp chi năm, đếm theo giờ sinh | chi năm + giờ + chiều |
+| `kiep_sat` | Kiếp Sát | Cung tuyệt của tam hợp chi năm | chi năm |
+| `co_than_qua_tu` | Cô Thần, Quả Tú | Theo **mùa** của chi năm | chi năm |
+| `thien_khong` | Thiên Không | Cung liền sau Thái Tuế | chi năm |
+| `thien_khoc_thien_hu` | Thiên Khốc, Thiên Hư | Cùng khởi **Ngọ** năm Tý; Khốc nghịch, Hư thuận | chi năm |
+
+### Sáu bất biến kiểm được
+
+1. **Địa Không và Địa Kiếp đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ).**
+2. **Thiên Khốc và Thiên Hư đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ).**
+3. Kiếp Sát luôn ở **tứ sinh**.
+4. Cô Thần luôn ở **tứ sinh**, Quả Tú luôn ở **tứ mộ**.
+5. Cô Thần và Quả Tú luôn cách nhau **4 cung**.
+6. **Thiên Không luôn đồng cung Thiếu Dương** — cả hai ở offset +1 của vòng Thái Tuế.
+   Đây là kết quả đúng, không phải trùng lặp cần khử.
+
+> **Địa Không ≠ Thiên Không.** Hai sao khác nhau, khác luật (giờ sinh vs chi năm),
+> khác mã (`DIA_KHONG` vs `THIEN_KHONG`). Chúng chỉ chung một chữ.
+
+### Chỗ các bản khác nhau
+
+**Chiều đếm của Hỏa Tinh / Linh Tinh.** Bản này lấy dương nam / âm nữ đi thuận, cùng
+luật chiều với đại vận. Một số bản cho cả hai sao **luôn đi thuận**. Ghi trong note của
+`hoa_tinh_linh_tinh`.
+
+### Ngũ hành: **2/16**
+
+Chỉ **Hỏa Tinh** (dương hỏa) và **Linh Tinh** (âm hỏa) — hai sao mà chính tên đã nói ra
+hành. 14 sao còn lại `NOT_RECORDED`.
+
+> **Màu trên lá số là NGŨ HÀNH, không phải "tốt hay xấu".** Địa Không, Địa Kiếp, Bạch
+> Hổ, Tang Môn — những sao đáng sợ nhất — đều vẽ **mực trung tính**, vì chưa tra được
+> hành của chúng. Tô đỏ một sát tinh chỉ vì nó là sát tinh sẽ phá vỡ ý nghĩa của toàn
+> bộ hệ màu. Ngược lại Hỏa Tinh đỏ vì nó **là** Hỏa, không phải vì nó hung.
+
+---
+
 ## 21. Sổ mâu thuẫn giữa các nguồn
 
 Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
@@ -939,6 +993,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 11 | §26 Phụ tinh 1 | Hữu Bật ghi Thổ hay Thủy; Đào Hoa ghi Mộc hay Thủy; can Canh trong bảng Khôi/Việt | 🟡 để trống 2 sao; Canh xếp cùng nhóm Giáp/Mậu, ghi rõ cách đọc đối lập |
 | 12 | §15 Tứ Hóa | Hàng Canh có 3 biến thể, hai trong số đó đảo Khoa↔Kỵ; hàng Mậu và Nhâm khác nhau ở Hóa Khoa | 🟡 đã chọn phương án 1 cho Canh, Hữu Bật cho Mậu, Tả Phù cho Nhâm — đều PROVISIONAL, Q7 vẫn mở |
 | 13 | §27 Phụ tinh 2 | Ân Quang/Thiên Quý: bước "lùi 1 cung" có bản ghi khác; Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của từng luật |
+| 14 | §28 Sát tinh 1 | Chiều đếm Hỏa Tinh / Linh Tinh: theo âm dương nam nữ hay luôn thuận | 🟡 chọn theo âm dương nam nữ, ghi cách đọc đối lập trong note |
 
 ---
 

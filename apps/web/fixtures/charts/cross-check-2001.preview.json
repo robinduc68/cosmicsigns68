@@ -769,6 +769,144 @@
         "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
       },
       {
+        "rule": "dia_khong_dia_kiep",
+        "policy": "HOUR_FROM_HOI_BOTH_DIRECTIONS",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ)."
+      },
+      {
+        "rule": "hoa_tinh_linh_tinh",
+        "policy": "TRINE_START_YANG_MALE_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả hai sao luôn đi thuận."
+      },
+      {
+        "rule": "kiep_sat",
+        "policy": "YEAR_BRANCH_TRINE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Kiếp Sát tại cung tuyệt của tam hợp chi năm. Luôn rơi vào tứ sinh."
+      },
+      {
+        "rule": "co_than_qua_tu",
+        "policy": "YEAR_BRANCH_SEASON",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú luôn ở tứ mộ, hai sao luôn cách nhau 4 cung."
+      },
+      {
+        "rule": "thien_khong",
+        "policy": "ONE_AFTER_THAI_TUE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Thiên Không ở cung liền sau Thái Tuế, nên luôn đồng cung Thiếu Dương. KHÁC HOÀN TOÀN Địa Không — khác luật, khác mã sao."
+      },
+      {
+        "rule": "thien_khoc_thien_hu",
+        "policy": "YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
+      },
+      {
         "rule": "star_elements",
         "policy": "CLASSICAL_CONSENSUS_PARTIAL",
         "implemented": true,
@@ -1168,7 +1306,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 8,
+          "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
@@ -1222,7 +1360,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_duc_nguyet_duc/YEAR_BRANCH_DAU_AND_TY",
@@ -1284,7 +1422,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 8,
+          "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
@@ -1338,7 +1476,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_duc_nguyet_duc/YEAR_BRANCH_DAU_AND_TY",
@@ -1487,7 +1625,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_phu_phong_cao/HOUR_NGO_AND_DAN_FORWARD",
@@ -1497,6 +1635,33 @@
               "Q3"
             ],
             "note": "Thai Phụ khởi Ngọ, Phong Cáo khởi Dần, cùng đếm thuận theo giờ sinh. Cách phát biểu 'Văn Khúc ± 2 cung' cho cùng kết quả ở cả 12 giờ — một luật, hai cách nói, không phải hai luật mâu thuẫn."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_HU",
+          "name": "Thiên Hư",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoc_thien_hu/YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
           },
           "provisional": true
         }
@@ -1604,7 +1769,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_phu_phong_cao/HOUR_NGO_AND_DAN_FORWARD",
@@ -1614,6 +1779,33 @@
               "Q3"
             ],
             "note": "Thai Phụ khởi Ngọ, Phong Cáo khởi Dần, cùng đếm thuận theo giờ sinh. Cách phát biểu 'Văn Khúc ± 2 cung' cho cùng kết quả ở cả 12 giờ — một luật, hai cách nói, không phải hai luật mâu thuẫn."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_HU",
+          "name": "Thiên Hư",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoc_thien_hu/YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
           },
           "provisional": true
         }
@@ -1700,7 +1892,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -1727,7 +1919,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "tam_thai_bat_toa/FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY",
@@ -1737,6 +1929,33 @@
               "Q3"
             ],
             "note": "Tam Thai từ Tả Phù đếm thuận tới ngày âm; Bát Tọa từ Hữu Bật đếm nghịch. Phụ thuộc vị trí Tả Phù / Hữu Bật, nên phải an sau nhóm 1."
+          },
+          "provisional": true
+        },
+        {
+          "id": "TIEU_HAO",
+          "name": "Tiểu Hao",
+          "category": "LOSS",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tý",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "bac_si_cycle/FROM_LOC_TON_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -1791,7 +2010,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -1818,7 +2037,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "tam_thai_bat_toa/FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY",
@@ -1828,6 +2047,33 @@
               "Q3"
             ],
             "note": "Tam Thai từ Tả Phù đếm thuận tới ngày âm; Bát Tọa từ Hữu Bật đếm nghịch. Phụ thuộc vị trí Tả Phù / Hữu Bật, nên phải an sau nhóm 1."
+          },
+          "provisional": true
+        },
+        {
+          "id": "TIEU_HAO",
+          "name": "Tiểu Hao",
+          "category": "LOSS",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tý",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "bac_si_cycle/FROM_LOC_TON_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -1912,7 +2158,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 10,
+          "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "hoa_cai/YEAR_BRANCH_TRINE_TOMB",
@@ -1939,7 +2185,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
@@ -1976,6 +2222,60 @@
               "Q3"
             ],
             "note": "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_KHOC",
+          "name": "Thiên Khốc",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Sửu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoc_thien_hu/YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "BACH_HO",
+          "name": "Bạch Hổ",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Sửu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -2028,7 +2328,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 10,
+          "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "hoa_cai/YEAR_BRANCH_TRINE_TOMB",
@@ -2055,7 +2355,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
@@ -2092,6 +2392,60 @@
               "Q3"
             ],
             "note": "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_KHOC",
+          "name": "Thiên Khốc",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Sửu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoc_thien_hu/YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "BACH_HO",
+          "name": "Bạch Hổ",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Sửu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -2231,7 +2585,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_duc_nguyet_duc/YEAR_BRANCH_DAU_AND_TY",
@@ -2258,7 +2612,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -2285,7 +2639,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "tam_thai_bat_toa/FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY",
@@ -2312,7 +2666,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 7,
+          "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "quoc_an_duong_phu/OFFSET_FROM_LOC_TON",
@@ -2322,6 +2676,33 @@
               "Q3"
             ],
             "note": "Quốc Ấn cách Lộc Tồn 8 cung, Đường Phù cách 5 cung, đều theo chiều thuận. Bảng theo can năm khớp đúng hai offset này ở cả 10 can."
+          },
+          "provisional": true
+        },
+        {
+          "id": "KIEP_SAT",
+          "name": "Kiếp Sát",
+          "category": "MALEFIC",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "kiep_sat/YEAR_BRANCH_TRINE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Kiếp Sát tại cung tuyệt của tam hợp chi năm. Luôn rơi vào tứ sinh."
           },
           "provisional": true
         }
@@ -2429,7 +2810,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_duc_nguyet_duc/YEAR_BRANCH_DAU_AND_TY",
@@ -2456,7 +2837,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -2483,7 +2864,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "tam_thai_bat_toa/FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY",
@@ -2510,7 +2891,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 7,
+          "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "quoc_an_duong_phu/OFFSET_FROM_LOC_TON",
@@ -2520,6 +2901,33 @@
               "Q3"
             ],
             "note": "Quốc Ấn cách Lộc Tồn 8 cung, Đường Phù cách 5 cung, đều theo chiều thuận. Bảng theo can năm khớp đúng hai offset này ở cả 10 can."
+          },
+          "provisional": true
+        },
+        {
+          "id": "KIEP_SAT",
+          "name": "Kiếp Sát",
+          "category": "MALEFIC",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "kiep_sat/YEAR_BRANCH_TRINE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Kiếp Sát tại cung tuyệt của tam hợp chi năm. Luôn rơi vào tứ sinh."
           },
           "provisional": true
         }
@@ -2644,6 +3052,60 @@
             "note": "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm."
           },
           "provisional": true
+        },
+        {
+          "id": "LINH_TINH",
+          "name": "Linh Tinh",
+          "category": "MALEFIC",
+          "element": "HOA",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hoa_tinh_linh_tinh/TRINE_START_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả hai sao luôn đi thuận."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DIEU_KHACH",
+          "name": "Điếu Khách",
+          "category": "LEGAL",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 7,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
         }
       ],
       "transformations": [],
@@ -2734,6 +3196,60 @@
             "note": "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm."
           },
           "provisional": true
+        },
+        {
+          "id": "LINH_TINH",
+          "name": "Linh Tinh",
+          "category": "MALEFIC",
+          "element": "HOA",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hoa_tinh_linh_tinh/TRINE_START_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả hai sao luôn đi thuận."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DIEU_KHACH",
+          "name": "Điếu Khách",
+          "category": "LEGAL",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 7,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
         }
       ],
       "tuan": {
@@ -2818,7 +3334,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 8,
+          "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
@@ -2845,7 +3361,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "bac_si_cycle/FROM_LOC_TON_YANG_MALE_FORWARD",
@@ -2855,6 +3371,60 @@
               "Q3"
             ],
             "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
+        },
+        {
+          "id": "QUA_TU",
+          "name": "Quả Tú",
+          "category": "ISOLATION",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 8,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "co_than_qua_tu/YEAR_BRANCH_SEASON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú luôn ở tứ mộ, hai sao luôn cách nhau 4 cung."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DIA_KIEP",
+          "name": "Địa Kiếp",
+          "category": "VOID",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "dia_khong_dia_kiep/HOUR_FROM_HOI_BOTH_DIRECTIONS",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ)."
           },
           "provisional": true
         }
@@ -2909,7 +3479,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 8,
+          "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
@@ -2936,7 +3506,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "bac_si_cycle/FROM_LOC_TON_YANG_MALE_FORWARD",
@@ -2946,6 +3516,60 @@
               "Q3"
             ],
             "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
+        },
+        {
+          "id": "QUA_TU",
+          "name": "Quả Tú",
+          "category": "ISOLATION",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 8,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "co_than_qua_tu/YEAR_BRANCH_SEASON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú luôn ở tứ mộ, hai sao luôn cách nhau 4 cung."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DIA_KIEP",
+          "name": "Địa Kiếp",
+          "category": "VOID",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "dia_khong_dia_kiep/HOUR_FROM_HOI_BOTH_DIRECTIONS",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ)."
           },
           "provisional": true
         }
@@ -3003,7 +3627,7 @@
           "transformations": [
             "HOA_KY"
           ],
-          "display_priority": 6,
+          "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
@@ -3057,7 +3681,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "long_tri_phuong_cac/YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE",
@@ -3084,7 +3708,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
@@ -3111,7 +3735,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_quan_thien_phuc/YEAR_STEM_TABLE",
@@ -3138,7 +3762,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 7,
+          "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "quoc_an_duong_phu/OFFSET_FROM_LOC_TON",
@@ -3174,7 +3798,7 @@
           "transformations": [
             "HOA_KY"
           ],
-          "display_priority": 6,
+          "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
@@ -3228,7 +3852,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "long_tri_phuong_cac/YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE",
@@ -3255,7 +3879,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
@@ -3282,7 +3906,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_quan_thien_phuc/YEAR_STEM_TABLE",
@@ -3309,7 +3933,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 7,
+          "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "quoc_an_duong_phu/OFFSET_FROM_LOC_TON",
@@ -3430,7 +4054,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 8,
+          "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "dao_hoa/YEAR_BRANCH_TRINE",
@@ -3457,7 +4081,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 10,
+          "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -3467,6 +4091,87 @@
               "Q3"
             ],
             "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_KHONG",
+          "name": "Thiên Không",
+          "category": "VOID",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khong/ONE_AFTER_THAI_TUE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Thiên Không ở cung liền sau Thái Tuế, nên luôn đồng cung Thiếu Dương. KHÁC HOÀN TOÀN Địa Không — khác luật, khác mã sao."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DIA_KHONG",
+          "name": "Địa Không",
+          "category": "VOID",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "dia_khong_dia_kiep/HOUR_FROM_HOI_BOTH_DIRECTIONS",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DAI_HAO",
+          "name": "Đại Hao",
+          "category": "LOSS",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "bac_si_cycle/FROM_LOC_TON_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -3546,7 +4251,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 8,
+          "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "dao_hoa/YEAR_BRANCH_TRINE",
@@ -3573,7 +4278,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 10,
+          "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -3583,6 +4288,87 @@
               "Q3"
             ],
             "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_KHONG",
+          "name": "Thiên Không",
+          "category": "VOID",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khong/ONE_AFTER_THAI_TUE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Thiên Không ở cung liền sau Thái Tuế, nên luôn đồng cung Thiếu Dương. KHÁC HOÀN TOÀN Địa Không — khác luật, khác mã sao."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DIA_KHONG",
+          "name": "Địa Không",
+          "category": "VOID",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "dia_khong_dia_kiep/HOUR_FROM_HOI_BOTH_DIRECTIONS",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DAI_HAO",
+          "name": "Đại Hao",
+          "category": "LOSS",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "bac_si_cycle/FROM_LOC_TON_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -3695,7 +4481,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_phu_phong_cao/HOUR_NGO_AND_DAN_FORWARD",
@@ -3705,6 +4491,33 @@
               "Q3"
             ],
             "note": "Thai Phụ khởi Ngọ, Phong Cáo khởi Dần, cùng đếm thuận theo giờ sinh. Cách phát biểu 'Văn Khúc ± 2 cung' cho cùng kết quả ở cả 12 giờ — một luật, hai cách nói, không phải hai luật mâu thuẫn."
+          },
+          "provisional": true
+        },
+        {
+          "id": "TANG_MON",
+          "name": "Tang Môn",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mùi",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -3785,7 +4598,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_phu_phong_cao/HOUR_NGO_AND_DAN_FORWARD",
@@ -3795,6 +4608,33 @@
               "Q3"
             ],
             "note": "Thai Phụ khởi Ngọ, Phong Cáo khởi Dần, cùng đếm thuận theo giờ sinh. Cách phát biểu 'Văn Khúc ± 2 cung' cho cùng kết quả ở cả 12 giờ — một luật, hai cách nói, không phải hai luật mâu thuẫn."
+          },
+          "provisional": true
+        },
+        {
+          "id": "TANG_MON",
+          "name": "Tang Môn",
+          "category": "MOURNING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mùi",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -3877,7 +4717,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 10,
+          "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -3904,7 +4744,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_giai_dia_giai/LUNAR_MONTH_THAN_AND_MUI",
@@ -3914,6 +4754,60 @@
               "Q3"
             ],
             "note": "Thiên Giải khởi Thân, Địa Giải khởi Mùi, cùng đếm thuận theo tháng âm. Hệ quả: hai sao luôn đứng liền kề."
+          },
+          "provisional": true
+        },
+        {
+          "id": "CO_THAN",
+          "name": "Cô Thần",
+          "category": "ISOLATION",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 8,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "co_than_qua_tu/YEAR_BRANCH_SEASON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú luôn ở tứ mộ, hai sao luôn cách nhau 4 cung."
+          },
+          "provisional": true
+        },
+        {
+          "id": "HOA_TINH",
+          "name": "Hỏa Tinh",
+          "category": "MALEFIC",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hoa_tinh_linh_tinh/TRINE_START_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả hai sao luôn đi thuận."
           },
           "provisional": true
         }
@@ -3965,7 +4859,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 10,
+          "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
@@ -3992,7 +4886,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_giai_dia_giai/LUNAR_MONTH_THAN_AND_MUI",
@@ -4002,6 +4896,60 @@
               "Q3"
             ],
             "note": "Thiên Giải khởi Thân, Địa Giải khởi Mùi, cùng đếm thuận theo tháng âm. Hệ quả: hai sao luôn đứng liền kề."
+          },
+          "provisional": true
+        },
+        {
+          "id": "CO_THAN",
+          "name": "Cô Thần",
+          "category": "ISOLATION",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 8,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "co_than_qua_tu/YEAR_BRANCH_SEASON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú luôn ở tứ mộ, hai sao luôn cách nhau 4 cung."
+          },
+          "provisional": true
+        },
+        {
+          "id": "HOA_TINH",
+          "name": "Hỏa Tinh",
+          "category": "MALEFIC",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hoa_tinh_linh_tinh/TRINE_START_YANG_MALE_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả hai sao luôn đi thuận."
           },
           "provisional": true
         }
@@ -4088,7 +5036,7 @@
           "transformations": [
             "HOA_KHOA"
           ],
-          "display_priority": 6,
+          "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
@@ -4142,7 +5090,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 9,
+          "display_priority": 14,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "loc_ton/YEAR_STEM_LAM_QUAN",
@@ -4169,7 +5117,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "long_tri_phuong_cac/YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE",
@@ -4196,7 +5144,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_quan_thien_phuc/YEAR_STEM_TABLE",
@@ -4223,7 +5171,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_giai_dia_giai/LUNAR_MONTH_THAN_AND_MUI",
@@ -4233,6 +5181,33 @@
               "Q3"
             ],
             "note": "Thiên Giải khởi Thân, Địa Giải khởi Mùi, cùng đếm thuận theo tháng âm. Hệ quả: hai sao luôn đứng liền kề."
+          },
+          "provisional": true
+        },
+        {
+          "id": "QUAN_PHU_TT",
+          "name": "Quan Phù",
+          "category": "LEGAL",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 7,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }
@@ -4287,7 +5262,7 @@
           "transformations": [
             "HOA_KHOA"
           ],
-          "display_priority": 6,
+          "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
@@ -4341,7 +5316,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 9,
+          "display_priority": 14,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "loc_ton/YEAR_STEM_LAM_QUAN",
@@ -4368,7 +5343,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "long_tri_phuong_cac/YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE",
@@ -4395,7 +5370,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 4,
+          "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_quan_thien_phuc/YEAR_STEM_TABLE",
@@ -4422,7 +5397,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
-          "display_priority": 5,
+          "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
             "rule": "thien_giai_dia_giai/LUNAR_MONTH_THAN_AND_MUI",
@@ -4432,6 +5407,33 @@
               "Q3"
             ],
             "note": "Thiên Giải khởi Thân, Địa Giải khởi Mùi, cùng đếm thuận theo tháng âm. Hệ quả: hai sao luôn đứng liền kề."
+          },
+          "provisional": true
+        },
+        {
+          "id": "QUAN_PHU_TT",
+          "name": "Quan Phù",
+          "category": "LEGAL",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 7,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thai_tue_cycle/YEAR_BRANCH_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau."
           },
           "provisional": true
         }

@@ -71,6 +71,16 @@ class StarCategory(StrEnum):
     MAJOR = "MAJOR"
     SUPPORTING = "SUPPORTING"
     MALEFIC = "MALEFIC"
+    #: Không vong — Địa Không, Địa Kiếp, Thiên Không.
+    VOID = "VOID"
+    #: Hao tán — Đại Hao, Tiểu Hao.
+    LOSS = "LOSS"
+    #: Tang chế, khóc hư — Tang Môn, Bạch Hổ, Thiên Khốc, Thiên Hư.
+    MOURNING = "MOURNING"
+    #: Quan tụng, thị phi — Quan Phù, Điếu Khách.
+    LEGAL = "LEGAL"
+    #: Cô quả — Cô Thần, Quả Tú.
+    ISOLATION = "ISOLATION"
     LITERARY = "LITERARY"
     #: Quý nhân — sao chủ về danh vị, che chở. Tam Thai, Bát Tọa, Ân Quang…
     NOBILITY = "NOBILITY"
@@ -97,14 +107,19 @@ _CATEGORY_PRIORITY: dict[StarCategory, int] = {
     StarCategory.TRANSFORMATION: 1,
     StarCategory.SUPPORTING: 2,
     StarCategory.MALEFIC: 3,
-    StarCategory.NOBILITY: 4,
-    StarCategory.BLESSING: 5,
-    StarCategory.LITERARY: 6,
-    StarCategory.AUTHORITY: 7,
-    StarCategory.ROMANCE: 8,
-    StarCategory.WEALTH: 9,
-    StarCategory.OTHER: 10,
-    StarCategory.ANNUAL: 11,
+    StarCategory.VOID: 4,
+    StarCategory.LOSS: 5,
+    StarCategory.MOURNING: 6,
+    StarCategory.LEGAL: 7,
+    StarCategory.ISOLATION: 8,
+    StarCategory.NOBILITY: 9,
+    StarCategory.BLESSING: 10,
+    StarCategory.LITERARY: 11,
+    StarCategory.AUTHORITY: 12,
+    StarCategory.ROMANCE: 13,
+    StarCategory.WEALTH: 14,
+    StarCategory.OTHER: 15,
+    StarCategory.ANNUAL: 16,
 }
 
 

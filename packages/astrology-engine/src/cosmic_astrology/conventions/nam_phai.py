@@ -17,10 +17,14 @@ from __future__ import annotations
 from cosmic_astrology.conventions.policies import (
     AnQuangThienQuyPolicy,
     BacSiCyclePolicy,
+    CoThanQuaTuPolicy,
     DaoHoaPolicy,
+    DiaKhongDiaKiepPolicy,
     FourTransformationsPolicy,
     HoaCaiPolicy,
+    HoaTinhLinhTinhPolicy,
     HongLoanThienHyPolicy,
+    KiepSatPolicy,
     KinhDuongDaLaPolicy,
     LocTonPolicy,
     LongTriPhuongCacPolicy,
@@ -33,7 +37,9 @@ from cosmic_astrology.conventions.policies import (
     ThaiTueCyclePolicy,
     ThienDucNguyetDucPolicy,
     ThienGiaiDiaGiaiPolicy,
+    ThienKhocThienHuPolicy,
     ThienKhoiThienVietPolicy,
+    ThienKhongPolicy,
     ThienMaPolicy,
     ThienQuanThienPhucPolicy,
     ThienTaiThienThoPolicy,
@@ -182,6 +188,42 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         BacSiCyclePolicy.FROM_LOC_TON_YANG_MALE_FORWARD.value,
         "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều "
         "với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau.",
+    ),
+    RuleId.DIA_KHONG_DIA_KIEP: _nam_phai_rule(
+        RuleId.DIA_KHONG_DIA_KIEP,
+        DiaKhongDiaKiepPolicy.HOUR_FROM_HOI_BOTH_DIRECTIONS.value,
+        "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ "
+        "sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ).",
+    ),
+    RuleId.HOA_TINH_LINH_TINH: _nam_phai_rule(
+        RuleId.HOA_TINH_LINH_TINH,
+        HoaTinhLinhTinhPolicy.TRINE_START_YANG_MALE_FORWARD.value,
+        "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các "
+        "bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả "
+        "hai sao luôn đi thuận.",
+    ),
+    RuleId.KIEP_SAT: _nam_phai_rule(
+        RuleId.KIEP_SAT,
+        KiepSatPolicy.YEAR_BRANCH_TRINE.value,
+        "Kiếp Sát tại cung tuyệt của tam hợp chi năm. Luôn rơi vào tứ sinh.",
+    ),
+    RuleId.CO_THAN_QUA_TU: _nam_phai_rule(
+        RuleId.CO_THAN_QUA_TU,
+        CoThanQuaTuPolicy.YEAR_BRANCH_SEASON.value,
+        "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú "
+        "luôn ở tứ mộ, hai sao luôn cách nhau 4 cung.",
+    ),
+    RuleId.THIEN_KHONG: _nam_phai_rule(
+        RuleId.THIEN_KHONG,
+        ThienKhongPolicy.ONE_AFTER_THAI_TUE.value,
+        "Thiên Không ở cung liền sau Thái Tuế, nên luôn đồng cung Thiếu Dương. "
+        "KHÁC HOÀN TOÀN Địa Không — khác luật, khác mã sao.",
+    ),
+    RuleId.THIEN_KHOC_THIEN_HU: _nam_phai_rule(
+        RuleId.THIEN_KHOC_THIEN_HU,
+        ThienKhocThienHuPolicy.YEAR_BRANCH_FROM_NGO_SYMMETRIC.value,
+        "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng "
+        "cung tại Ngọ (năm Tý) và Tý (năm Ngọ).",
     ),
     RuleId.FOUR_TRANSFORMATIONS: RuleBinding(
         rule=RuleId.FOUR_TRANSFORMATIONS,

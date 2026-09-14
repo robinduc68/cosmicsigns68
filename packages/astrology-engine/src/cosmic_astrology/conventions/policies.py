@@ -77,6 +77,12 @@ class RuleId(StrEnum):
     THAI_PHU_PHONG_CAO = "thai_phu_phong_cao"
     QUOC_AN_DUONG_PHU = "quoc_an_duong_phu"
     BAC_SI_CYCLE = "bac_si_cycle"
+    DIA_KHONG_DIA_KIEP = "dia_khong_dia_kiep"
+    HOA_TINH_LINH_TINH = "hoa_tinh_linh_tinh"
+    KIEP_SAT = "kiep_sat"
+    CO_THAN_QUA_TU = "co_than_qua_tu"
+    THIEN_KHONG = "thien_khong"
+    THIEN_KHOC_THIEN_HU = "thien_khoc_thien_hu"
     STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
@@ -288,6 +294,53 @@ class BacSiCyclePolicy(StrEnum):
     """
 
     FROM_LOC_TON_YANG_MALE_FORWARD = "FROM_LOC_TON_YANG_MALE_FORWARD"
+
+
+class DiaKhongDiaKiepPolicy(StrEnum):
+    """Địa Không / Địa Kiếp theo giờ sinh, cùng khởi từ Hợi.
+
+    Hệ quả kiểm được: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ).
+    """
+
+    HOUR_FROM_HOI_BOTH_DIRECTIONS = "HOUR_FROM_HOI_BOTH_DIRECTIONS"
+
+
+class HoaTinhLinhTinhPolicy(StrEnum):
+    """Hỏa Tinh / Linh Tinh: địa chi khởi theo tam hợp chi năm, đếm theo giờ sinh.
+
+    **Chiều là chỗ các bản khác nhau.** Bản này lấy dương nam / âm nữ đi thuận,
+    cùng luật chiều với đại vận; một số bản cho cả hai sao luôn đi thuận.
+    """
+
+    TRINE_START_YANG_MALE_FORWARD = "TRINE_START_YANG_MALE_FORWARD"
+
+
+class KiepSatPolicy(StrEnum):
+    """Kiếp Sát tại cung tuyệt của tam hợp chi năm. Luôn rơi vào tứ sinh."""
+
+    YEAR_BRANCH_TRINE = "YEAR_BRANCH_TRINE"
+
+
+class CoThanQuaTuPolicy(StrEnum):
+    """Cô Thần / Quả Tú theo mùa của chi năm. Luôn cách nhau 4 cung."""
+
+    YEAR_BRANCH_SEASON = "YEAR_BRANCH_SEASON"
+
+
+class ThienKhongPolicy(StrEnum):
+    """Thiên Không: cung liền sau Thái Tuế.
+
+    Hệ quả là **luôn đồng cung Thiếu Dương** — kết quả đúng, không phải trùng lặp.
+    Đây không phải Địa Không.
+    """
+
+    ONE_AFTER_THAI_TUE = "ONE_AFTER_THAI_TUE"
+
+
+class ThienKhocThienHuPolicy(StrEnum):
+    """Thiên Khốc / Thiên Hư: cặp đối xứng qua trục Tý–Ngọ, khởi Ngọ năm Tý."""
+
+    YEAR_BRANCH_FROM_NGO_SYMMETRIC = "YEAR_BRANCH_FROM_NGO_SYMMETRIC"
 
 
 class FourTransformationsPolicy(StrEnum):

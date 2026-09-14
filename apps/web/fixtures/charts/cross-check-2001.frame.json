@@ -769,6 +769,144 @@
         "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
       },
       {
+        "rule": "dia_khong_dia_kiep",
+        "policy": "HOUR_FROM_HOI_BOTH_DIRECTIONS",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cùng khởi Hợi giờ Tý: Địa Kiếp đếm thuận, Địa Không đếm nghịch theo giờ sinh. Hệ quả: đồng cung tại Hợi (giờ Tý) và Tỵ (giờ Ngọ)."
+      },
+      {
+        "rule": "hoa_tinh_linh_tinh",
+        "policy": "TRINE_START_YANG_MALE_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Địa chi khởi theo tam hợp chi năm, rồi đếm theo giờ sinh. CHIỀU là chỗ các bản khác nhau: bản này lấy dương nam / âm nữ đi thuận; một số bản cho cả hai sao luôn đi thuận."
+      },
+      {
+        "rule": "kiep_sat",
+        "policy": "YEAR_BRANCH_TRINE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Kiếp Sát tại cung tuyệt của tam hợp chi năm. Luôn rơi vào tứ sinh."
+      },
+      {
+        "rule": "co_than_qua_tu",
+        "policy": "YEAR_BRANCH_SEASON",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cô Thần và Quả Tú theo mùa của chi năm. Cô Thần luôn ở tứ sinh, Quả Tú luôn ở tứ mộ, hai sao luôn cách nhau 4 cung."
+      },
+      {
+        "rule": "thien_khong",
+        "policy": "ONE_AFTER_THAI_TUE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Thiên Không ở cung liền sau Thái Tuế, nên luôn đồng cung Thiếu Dương. KHÁC HOÀN TOÀN Địa Không — khác luật, khác mã sao."
+      },
+      {
+        "rule": "thien_khoc_thien_hu",
+        "policy": "YEAR_BRANCH_FROM_NGO_SYMMETRIC",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng cung tại Ngọ (năm Tý) và Tý (năm Ngọ)."
+      },
+      {
         "rule": "star_elements",
         "policy": "CLASSICAL_CONSENSUS_PARTIAL",
         "implemented": true,

@@ -62,6 +62,7 @@ from cosmic_astrology.conventions.profile import (
 from cosmic_astrology.cycles import major_cycle, trang_sinh
 from cosmic_astrology.stars import four_transformations, placement, strength
 from cosmic_astrology.stars import placement_group2 as group2
+from cosmic_astrology.stars import placement_malefic as malefic
 from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
@@ -347,6 +348,14 @@ def build_chart(
             menh_branch=menh_branch,
             than_branch=than_branch,
             # Cùng luật chiều với đại vận: dương nam / âm nữ đi thuận.
+            cycle_forward=pillars.year.is_yang == (birth.gender is Gender.MALE),
+            profile=profile,
+            trace_log=log,
+        )
+        _place_malefic_stars(
+            by_branch,
+            year_branch=pillars.year.chi_index,
+            hour_branch=hour_chi,
             cycle_forward=pillars.year.is_yang == (birth.gender is Gender.MALE),
             profile=profile,
             trace_log=log,
@@ -675,6 +684,93 @@ def _place_supporting_stars_group_2(
                 },
             )
         )
+
+    for star_id, rule, branch, inputs in placed:
+        star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)
+        by_branch[branch].stars.append(star)
+        if trace_log is not None:
+            trace_log.record(profile, rule, f"{star.name} → {CHI[branch]}", **inputs)
+
+
+#: Sát tinh / bại tinh nhóm 1 phụ thuộc chi năm.
+_MALEFIC_FROM_YEAR_BRANCH: tuple[tuple[str, RuleId, Callable[[int], int]], ...] = (
+    ("KIEP_SAT", RuleId.KIEP_SAT, malefic.place_kiep_sat),
+    ("CO_THAN", RuleId.CO_THAN_QUA_TU, malefic.place_co_than),
+    ("QUA_TU", RuleId.CO_THAN_QUA_TU, malefic.place_qua_tu),
+    ("THIEN_KHONG", RuleId.THIEN_KHONG, malefic.place_thien_khong),
+    ("THIEN_KHOC", RuleId.THIEN_KHOC_THIEN_HU, malefic.place_thien_khoc),
+    ("THIEN_HU", RuleId.THIEN_KHOC_THIEN_HU, malefic.place_thien_hu),
+)
+
+#: Bốn sao của vòng Thái Tuế thuộc nhóm sát tinh. Vòng đã có sẵn — tái dùng chứ
+#: không viết lại, nếu không sẽ có hai nguồn sự thật cho cùng một chu kỳ.
+_MALEFIC_THAI_TUE: tuple[str, ...] = ("TANG_MON", "QUAN_PHU_TT", "BACH_HO", "DIEU_KHACH")
+
+#: Hai sao hao thuộc vòng Bác Sĩ. Cũng tái dùng.
+_MALEFIC_BAC_SI: tuple[str, ...] = ("TIEU_HAO", "DAI_HAO")
+
+
+def _place_malefic_stars(
+    by_branch: dict[int, Palace],
+    *,
+    year_branch: int,
+    hour_branch: int,
+    cycle_forward: bool,
+    profile: ConventionProfile,
+    trace_log: TraceLog | None = None,
+) -> None:
+    """Place sát tinh / bại tinh nhóm 1.
+
+    Six of the sixteen are members of cycles this engine already walks — vòng Thái
+    Tuế and vòng Bác Sĩ — so they are read off those, not given fresh formulas.
+
+    Nothing here decides whether a star is "good" or "bad": that is interpretation,
+    and the chart's colour means ngũ hành, not fortune.
+    """
+    if profile.binding(RuleId.DIA_KHONG_DIA_KIEP).is_unresolved:
+        return
+
+    year_inputs: dict[str, object] = {"chi_nam": CHI[year_branch]}
+    hour_inputs: dict[str, object] = {"gio_sinh": CHI[hour_branch]}
+    placed: list[tuple[str, RuleId, int, dict[str, object]]] = [
+        (star_id, rule, place(year_branch), year_inputs)
+        for star_id, rule, place in _MALEFIC_FROM_YEAR_BRANCH
+    ]
+
+    khong_kiep = RuleId.DIA_KHONG_DIA_KIEP
+    placed.append(("DIA_KIEP", khong_kiep, malefic.place_dia_kiep(hour_branch), hour_inputs))
+    placed.append(("DIA_KHONG", khong_kiep, malefic.place_dia_khong(hour_branch), hour_inputs))
+
+    hoa_linh_inputs: dict[str, object] = {
+        "chi_nam": CHI[year_branch],
+        "gio_sinh": CHI[hour_branch],
+        "chieu": "thuận" if cycle_forward else "nghịch",
+    }
+    for star_id, place_hl in (
+        ("HOA_TINH", malefic.place_hoa_tinh),
+        ("LINH_TINH", malefic.place_linh_tinh),
+    ):
+        branch = place_hl(year_branch, hour_branch, forward=cycle_forward)
+        placed.append((star_id, RuleId.HOA_TINH_LINH_TINH, branch, hoa_linh_inputs))
+
+    for star_id in _MALEFIC_THAI_TUE:
+        branch = group2.place_thai_tue_member(year_branch, star_id)
+        placed.append((star_id, RuleId.THAI_TUE_CYCLE, branch, year_inputs))
+
+    loc_ton = next(
+        (b for b, palace in by_branch.items() for star in palace.stars if star.id == "LOC_TON"),
+        None,
+    )
+    if loc_ton is None:
+        _logger.warning("Thiếu Lộc Tồn nên không an được Đại Hao, Tiểu Hao.")
+    else:
+        hao_inputs: dict[str, object] = {
+            "loc_ton": CHI[loc_ton],
+            "chieu": "thuận" if cycle_forward else "nghịch",
+        }
+        for star_id in _MALEFIC_BAC_SI:
+            branch = group2.place_bac_si_member(loc_ton, star_id, forward=cycle_forward)
+            placed.append((star_id, RuleId.BAC_SI_CYCLE, branch, hao_inputs))
 
     for star_id, rule, branch, inputs in placed:
         star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)
