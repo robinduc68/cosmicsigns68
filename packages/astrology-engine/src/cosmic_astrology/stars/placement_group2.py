@@ -119,8 +119,18 @@ def place_an_quang(van_xuong_branch: int, lunar_day: int) -> int:
 
 
 def place_thien_quy(van_khuc_branch: int, lunar_day: int) -> int:
-    """Thiên Quý: từ **Văn Khúc** đếm thuận tới ngày sinh, rồi **lùi một cung**."""
-    return (_branch(van_khuc_branch, "Văn Khúc") + _lunar_day(lunar_day) - 2) % 12
+    """Thiên Quý: từ **Văn Khúc** đếm **nghịch** tới ngày sinh, rồi **lùi một cung**.
+
+    Hai sao soi gương nhau, không cùng chiều. "Lùi một cung" ở đây là lùi ngược
+    chiều đếm — phép đếm đi nghịch, nên bước lùi đi thuận một bậc địa chi.
+
+    Bản cài đầu tiên cho cả hai sao đếm thuận rồi cùng lùi một bậc địa chi. Đó là
+    một phép đối xứng hoá tự suy, và nó sai: với lá số 13/10/1999 giờ Ngọ (Văn Khúc
+    tại Tuất, mùng 5) nó đặt Thiên Quý ở Sửu, trong khi bản đối chiếu đặt ở Mùi.
+    Không một biến thể nào của bước "lùi một cung" trên phép đếm **thuận** ra được
+    Mùi — thuận chỉ với tới Tý…Thìn — nên thứ sai là chiều đếm, không phải bước lùi.
+    """
+    return (_branch(van_khuc_branch, "Văn Khúc") - _lunar_day(lunar_day) + 2) % 12
 
 
 # ------------------------------------------------------- Thiên Đức / Nguyệt Đức

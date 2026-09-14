@@ -26,6 +26,7 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 5 — Renderer lá số | ✅ xong |
 | Phase 6 — An sao | 🟡 **88 sao** bản mệnh + **18 lưu tinh** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 | Đường ống hiển thị | ✅ đã soi: engine → API → ViewModel → DOM **không mất sao nào** (`docs/chart-render-loss-report.md`) |
+| Đối chiếu lá số chuẩn | 🟡 lá số 13/10/1999 giờ Ngọ: sửa Thiên Quý + gộp nhãn Tuần-Triệt, còn lại khớp (`astrology-conventions.md` mục 31) |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
@@ -255,6 +256,12 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   uvicorn, nếu không lá số mới vẫn mang `engine_version` cũ.
 - **API chạy ở cổng 8100**, không phải 8000 — Nuxt trỏ sang đó (`NUXT_PUBLIC_API_BASE`).
   Bật nhầm cổng thì trang lá số trả 500 "Không tải được lá số" chứ không báo gì rõ hơn.
+- **Fixture renderer phải dựng lại sau mỗi lần đổi luật an sao**:
+  `apps/api/.venv/bin/python packages/astrology-engine/scripts/dump_web_fixtures.py`.
+  Không dựng lại thì trang demo nội bộ hiển thị vị trí sao mà engine không còn sinh ra —
+  đúng loại lỗi "bản đã lưu lạc hậu" vừa mất công truy.
+- **Đừng ghim `engine_version` bằng chuỗi trong test.** Một test từng đỏ chỉ vì nâng
+  phiên bản. Đọc từ chính fixture, rồi kiểm tra hình dạng chuỗi.
 - **`ENGINE_VERSION` là chuỗi gõ tay, và nó đã bị bỏ quên.** Nó đứng yên ở `0.2.0-frame`
   suốt tám đợt việc trong khi số sao đi từ 14 lên 88, nên `needs_recalculation()` báo
   "vẫn mới" cho những lá số thiếu 61 sao — và người dùng thấy lá số thưa mà không hiểu vì sao.

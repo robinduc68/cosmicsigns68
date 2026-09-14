@@ -84,7 +84,11 @@ _logger = logging.getLogger(__name__)
 # through all of it, so charts stored along the way reported themselves as current
 # while missing up to 61 stars. That is why ``Chart.rule_fingerprint`` now exists:
 # a version string only works if somebody remembers it, and nobody did.
-ENGINE_VERSION = "0.3.0-frame"
+#
+# 0.3.1: Thiên Quý now counts backward from Văn Khúc instead of forward. Only that
+# one star moves; the star set is unchanged, so this is exactly the kind of change
+# the fingerprint alone would miss if the rule policy had not also been renamed.
+ENGINE_VERSION = "0.3.1-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:

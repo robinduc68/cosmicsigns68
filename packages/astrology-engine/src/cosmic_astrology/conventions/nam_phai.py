@@ -139,9 +139,10 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
     ),
     RuleId.AN_QUANG_THIEN_QUY: _nam_phai_rule(
         RuleId.AN_QUANG_THIEN_QUY,
-        AnQuangThienQuyPolicy.FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE.value,
-        "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi "
-        "một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau.",
+        AnQuangThienQuyPolicy.XUONG_FORWARD_KHUC_BACKWARD_MIRRORED.value,
+        "Hai sao soi gương nhau: Ân Quang từ Văn Xương đếm THUẬN rồi lùi một cung; "
+        "Thiên Quý từ Văn Khúc đếm NGHỊCH rồi lùi một cung (lùi ngược chiều đếm). "
+        "Đối chiếu bằng lá số 13/10/1999 giờ Ngọ, nam — xem docs mục 31.",
     ),
     RuleId.THIEN_DUC_NGUYET_DUC: _nam_phai_rule(
         RuleId.THIEN_DUC_NGUYET_DUC,

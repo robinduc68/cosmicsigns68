@@ -851,7 +851,7 @@ Cài đặt: `stars/placement_group2.py`.
 | `hoa_cai` | Hoa Cái | Cung mộ của tam hợp chi năm | chi năm |
 | `thai_tue_cycle` | Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức | Vòng Thái Tuế khởi tại chi năm, đi thuận | chi năm |
 | `tam_thai_bat_toa` | Tam Thai, Bát Tọa | Từ **Tả Phù** thuận / **Hữu Bật** nghịch tới ngày âm | Tả Phù, Hữu Bật, ngày âm |
-| `an_quang_thien_quy` | Ân Quang, Thiên Quý | Từ **Văn Xương** / **Văn Khúc** thuận tới ngày âm, rồi **lùi 1 cung** | Văn Xương, Văn Khúc, ngày âm |
+| `an_quang_thien_quy` | Ân Quang, Thiên Quý | Ân Quang từ **Văn Xương** đếm **thuận**; Thiên Quý từ **Văn Khúc** đếm **nghịch**. Cả hai rồi **lùi 1 cung** theo chiều đếm của mình | Văn Xương, Văn Khúc, ngày âm |
 | `thien_tai_thien_tho` | Thiên Tài, Thiên Thọ | Từ **cung Mệnh** / **cung Thân**, đếm thuận theo chi năm | Mệnh, Thân, chi năm |
 
 Sáu sao cuối phụ thuộc vị trí đã an, nên **nhóm 2 bắt buộc chạy sau nhóm 1**. Sao neo
@@ -1127,7 +1127,8 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 10 | §24 Tràng Sinh | Thổ cục khởi ở Thân (theo Thủy) hay Dần (theo Hỏa); chiều theo âm dương nam nữ hay theo âm dương Cục | 🟡 chọn cách đọc đa số, ghi cả hai vào policy |
 | 11 | §26 Phụ tinh 1 | Hữu Bật ghi Thổ hay Thủy; Đào Hoa ghi Mộc hay Thủy; can Canh trong bảng Khôi/Việt | 🟡 để trống 2 sao; Canh xếp cùng nhóm Giáp/Mậu, ghi rõ cách đọc đối lập |
 | 12 | §15 Tứ Hóa | Hàng Canh có 3 biến thể, hai trong số đó đảo Khoa↔Kỵ; hàng Mậu và Nhâm khác nhau ở Hóa Khoa | 🟡 đã chọn phương án 1 cho Canh, Hữu Bật cho Mậu, Tả Phù cho Nhâm — đều PROVISIONAL, Q7 vẫn mở |
-| 13 | §27 Phụ tinh 2 | Ân Quang/Thiên Quý: bước "lùi 1 cung" có bản ghi khác; Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của từng luật |
+| 13 | §27 Phụ tinh 2 | Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của luật |
+| 13b | §27 Ân Quang/Thiên Quý | Dự án từng ghi "bước lùi 1 cung là chỗ khác nhau". **Ghi sai chỗ.** Bản cài cho cả hai sao đếm thuận — một phép đối xứng hoá tự suy — và đặt Thiên Quý lệch 6 cung so với bản đối chiếu | ✅ đã sửa 0.3.1: Thiên Quý đếm **nghịch**. Xem mục 31 |
 | 14 | §28 Sát tinh 1 | Chiều đếm Hỏa Tinh / Linh Tinh: theo âm dương nam nữ hay luôn thuận | 🟡 chọn theo âm dương nam nữ, ghi cách đọc đối lập trong note |
 | 15 | §29 Phụ tinh 3 | Lưu Hà: bảng theo can năm có chỗ bất quy tắc, không đối chiếu được | 🔴 chưa cài — cần bảng từ ấn bản |
 | 16 | §30 Lưu niên | Tuổi xem là tuổi ta hay tuổi tròn (Q11) | 🟡 engine đưa CẢ HAI, `age_convention` = null cho tới khi chốt |
@@ -1145,3 +1146,67 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
    không sao giữ chỗ, không độ sáng đoán. Renderer quyết định hiển thị gì khi
    thiếu; domain và API thì không được bù. Chi tiết và danh sách field ở
    `chart-data-contract.md` mục 0.
+
+---
+
+## 31. Đối chiếu lá số 13/10/1999 · giờ Ngọ · nam ✅ ĐÃ SOÁT
+
+Lá số chuẩn đầu tiên dự án có cho **đúng một bộ dữ liệu sinh**. Hai chỗ lệch, hai
+nguyên nhân khác hẳn nhau.
+
+**Dữ liệu:** dương 13/10/1999 12:30 · âm 05/09 Kỷ Mão · giờ Ngọ · nam ·
+Mệnh tại Thìn · Thân cư Mệnh · Mộc tam cục.
+
+### 31.1 Thiên Quý — lỗi engine, đã sửa
+
+| | Trước | Bản đối chiếu |
+|---|---|---|
+| Ân Quang | Mùi / Điền Trạch | Mùi / Điền Trạch ✅ |
+| Thiên Quý | **Sửu / Tử Tức** | **Mùi / Điền Trạch** |
+
+Bản cài đầu tiên cho **cả hai sao** đếm thuận rồi lùi một cung. Ghi chú của luật đổ
+lỗi cho bước "lùi một cung". Ghi chú ấy sai chỗ, và chứng minh được:
+
+Văn Xương tại Thìn (4), Văn Khúc tại Tuất (10), ngày âm mùng 5. Đếm **thuận** từ Văn
+Khúc rồi dịch một bậc chỉ với tới Tý, Sửu, Dần, Mão — **không bước lùi/tiến nào ra
+được Mùi**. Thứ sai là **chiều đếm**, không phải bước lùi.
+
+Luật đúng — hai sao **soi gương nhau**:
+
+- Ân Quang: từ Văn Xương đếm **thuận** tới ngày sinh, rồi lùi một cung
+  → `(xương + ngày − 2) mod 12`
+- Thiên Quý: từ Văn Khúc đếm **nghịch** tới ngày sinh, rồi lùi một cung. Phép đếm đi
+  nghịch, nên bước lùi đi thuận một bậc địa chi
+  → `(khúc − ngày + 2) mod 12`
+
+Hai sao trùng cung ở lá số này là **tình cờ**, không phải quy luật: chúng trùng khi
+`văn_xương + ngày ≡ 3 hoặc 9 (mod 12)`. Test `test_supporting_placement.py` chặn cả
+việc đọc nhầm tình cờ ấy thành luật.
+
+Đây **không** phải mâu thuẫn trường phái — không có biến thể nào chống lưng cho bản
+cũ. Nó là một phép đối xứng hoá do người viết tự suy ra. Sửa toàn cục, không sửa
+riêng cho fixture. Trạng thái: **PROVISIONAL** — một lá số đối chiếu chứng minh được
+bản cũ sai, nhưng chưa đủ để gọi là VERIFIED.
+
+### 31.2 Tuần / Triệt — engine đúng, renderer nuốt mất
+
+Engine đặt **cả Tuần lẫn Triệt** ở Thân + Dậu, và đó đúng như bản đối chiếu:
+
+- **Tuần** theo vòng giáp của trụ năm. Kỷ Mão thuộc vòng **Giáp Tuất**, vòng ấy thiếu
+  Thân và Dậu → Tuần tại Thân–Dậu.
+- **Triệt** theo can năm. Can **Kỷ** → Thân–Dậu.
+
+Hai luật khác nhau, cùng ra một đường biên. API cũng trả đúng. Chỗ mất là view model:
+nó dựng **hai** dấu ở **cùng một toạ độ**, và dấu vẽ sau che hẳn dấu vẽ trước — lá số
+im lặng mất một thông tin, không cảnh báo gì.
+
+Đã thêm bước gộp: hai dấu cùng đường biên thành một nhãn **"Tuần - Triệt"**. Nhãn
+dựng từ chính các dấu có mặt, **không ghép chuỗi cứng ở tầng vẽ** — biên nào chỉ có
+một dấu thì vẫn chỉ hiện một chữ.
+
+Không đụng vào phép tính Tuần/Triệt. Đây là lỗi hiển thị thuần tuý.
+
+### 31.3 Phần đã khớp sẵn, không đụng vào
+
+12 cung, 14 chính tinh, Mệnh, Thân, Cục, vị trí Tuần/Triệt trong engine — tất cả khớp
+bản đối chiếu từ trước. Không sửa thứ đang đúng.

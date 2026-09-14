@@ -401,7 +401,7 @@ function voidMarker(
   }
   if (a.row === b.row && Math.abs(a.col - b.col) === 1) {
     return {
-      kind,
+      kinds: [kind],
       label,
       branches: [a.branchIndex, b.branchIndex],
       x: (Math.max(a.col, b.col) - 1) * 25,
@@ -413,7 +413,7 @@ function voidMarker(
   }
   if (a.col === b.col && Math.abs(a.row - b.row) === 1) {
     return {
-      kind,
+      kinds: [kind],
       label,
       branches: [a.branchIndex, b.branchIndex],
       x: (a.col - 0.5) * 25,
@@ -423,6 +423,31 @@ function voidMarker(
   }
   warnings.push(`${label}: hai cung ${a.branch} và ${b.branch} không kề nhau trên lưới.`)
   return null
+}
+
+/**
+ * Gộp những dấu rơi vào cùng một đường biên thành một nhãn "Tuần - Triệt".
+ *
+ * Vị trí vẫn do engine quyết; chỗ này chỉ nhận ra hai dấu đang chồng lên nhau. Không
+ * ghép chuỗi cứng ở tầng vẽ: nhãn dựng từ chính các dấu có mặt, nên biên nào chỉ có
+ * một dấu thì vẫn chỉ hiện một chữ.
+ */
+function mergeCoincidentVoids(markers: VoidMarkerViewModel[]): VoidMarkerViewModel[] {
+  const byBorder = new Map<string, VoidMarkerViewModel>()
+  for (const marker of markers) {
+    const border = `${marker.x}:${marker.y}:${marker.orientation}`
+    const existing = byBorder.get(border)
+    if (!existing) {
+      byBorder.set(border, marker)
+      continue
+    }
+    byBorder.set(border, {
+      ...existing,
+      kinds: [...existing.kinds, ...marker.kinds],
+      label: `${existing.label} - ${marker.label}`,
+    })
+  }
+  return [...byBorder.values()]
 }
 
 function link(from: number, to: number, type: ConnectionType): ConnectionViewModel {
@@ -557,10 +582,12 @@ export function mapChartDtoToViewModel(
     }
   }
 
-  const voidMarkers = [
-    voidMarker('TUAN', 'Tuần', palaces, warnings),
-    voidMarker('TRIET', 'Triệt', palaces, warnings),
-  ].filter((marker): marker is VoidMarkerViewModel => marker !== null)
+  const voidMarkers = mergeCoincidentVoids(
+    [
+      voidMarker('TUAN', 'Tuần', palaces, warnings),
+      voidMarker('TRIET', 'Triệt', palaces, warnings),
+    ].filter((marker): marker is VoidMarkerViewModel => marker !== null),
+  )
 
   // Tam phương tứ chính comes from the engine; the renderer only draws it.
   const directions = chart.menh.three_directions_four_positions

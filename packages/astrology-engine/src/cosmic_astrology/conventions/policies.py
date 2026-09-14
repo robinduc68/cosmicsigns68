@@ -227,10 +227,19 @@ class TamThaiBatToaPolicy(StrEnum):
 class AnQuangThienQuyPolicy(StrEnum):
     """Ân Quang / Thiên Quý theo Văn Xương, Văn Khúc và ngày âm.
 
-    Đếm thuận tới ngày sinh rồi **lùi một cung** — chỗ này có bản ghi khác.
+    Hai cách an, khác nhau ở **chiều đếm của Thiên Quý** — không phải ở bước
+    "lùi một cung" như ghi chú cũ của dự án từng đoán.
     """
 
+    #: Cả hai sao đếm **thuận** rồi lùi một cung. Đây là cách dự án cài lúc đầu:
+    #: một phép đối xứng hoá do người viết tự suy ra, không có bản đối chiếu nào
+    #: chống lưng. Giữ lại để còn gọi tên được thứ đã bị thay.
     FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE = "FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE"
+
+    #: Hai sao **soi gương nhau**: Ân Quang từ Văn Xương đếm thuận rồi lùi một cung;
+    #: Thiên Quý từ Văn Khúc đếm **nghịch** rồi lùi một cung — "lùi" ở đây là lùi
+    #: ngược chiều đếm, tức tiến một bậc theo thứ tự địa chi.
+    XUONG_FORWARD_KHUC_BACKWARD_MIRRORED = "XUONG_FORWARD_KHUC_BACKWARD_MIRRORED"
 
 
 class ThienDucNguyetDucPolicy(StrEnum):

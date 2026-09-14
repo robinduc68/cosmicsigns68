@@ -15,6 +15,7 @@ import pytest
 
 from cosmic_astrology.calendar.sexagenary import CAN, CHI
 from cosmic_astrology.stars import placement
+from cosmic_astrology.stars import placement_group2 as group2
 
 TU_CHINH = {"Tý", "Ngọ", "Mão", "Dậu"}
 TU_SINH = {"Dần", "Thân", "Tỵ", "Hợi"}
@@ -83,3 +84,46 @@ def test_out_of_range_input_is_rejected_rather_than_wrapped() -> None:
         placement.place_ta_phu(13)
     with pytest.raises(ValueError):
         placement.place_thien_khoi(10)
+
+
+# --------------------------------------------------- Ân Quang / Thiên Quý soi gương
+
+
+def test_an_quang_thien_quy_khop_ban_doi_chieu() -> None:
+    """Lá số 13/10/1999 giờ Ngọ, nam — mốc duy nhất hiện có cho cặp sao này.
+
+    Bản đối chiếu đặt **cả hai** sao ở Mùi. Bản cài đầu tiên cho Thiên Quý đếm thuận
+    như Ân Quang và đặt nó ở Sửu. Trùng cung ở đây là *tình cờ* của lá số này, không
+    phải quy luật — xem `test_hai_sao_khong_phai_luc_nao_cung_trung_cung`.
+    """
+    van_xuong, van_khuc, ngay_am = 4, 10, 5  # Thìn, Tuất, mùng 5
+    assert group2.place_an_quang(van_xuong, ngay_am) == CHI.index("Mùi")
+    assert group2.place_thien_quy(van_khuc, ngay_am) == CHI.index("Mùi")
+
+
+@pytest.mark.parametrize("ngay_am", range(1, 31))
+@pytest.mark.parametrize("gio", range(12))
+def test_thien_quy_dem_nghich_chu_khong_dem_thuan(gio: int, ngay_am: int) -> None:
+    """Chặn đúng cái sai đã xảy ra: cho Thiên Quý đếm cùng chiều với Ân Quang.
+
+    Phát biểu bất biến theo **chiều đếm** chứ không theo một cặp giá trị, nên nó bắt
+    được lỗi ở mọi giờ sinh và mọi ngày âm, không chỉ ở lá số đối chiếu.
+    """
+    van_khuc = placement.place_van_khuc(gio)
+    di_nghich = (van_khuc - (ngay_am - 1) + 1) % 12
+    assert group2.place_thien_quy(van_khuc, ngay_am) == di_nghich
+
+
+def test_hai_sao_khong_phai_luc_nao_cung_trung_cung() -> None:
+    """Lá số đối chiếu cho hai sao trùng cung — đừng biến tình cờ ấy thành luật.
+
+    Nếu ai đó "đơn giản hoá" bằng cách cho Thiên Quý dùng luôn vị trí Ân Quang, mọi
+    khẳng định phía trên vẫn xanh. Test này thì không.
+    """
+    trung = sum(
+        group2.place_an_quang(placement.place_van_xuong(gio), ngay)
+        == group2.place_thien_quy(placement.place_van_khuc(gio), ngay)
+        for gio in range(12)
+        for ngay in range(1, 31)
+    )
+    assert 0 < trung < 12 * 30

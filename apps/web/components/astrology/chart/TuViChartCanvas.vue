@@ -50,7 +50,7 @@ const subjectName = computed(
         :connections="model.connections"
         :show-pending-fields="showPendingFields"
       />
-      <TuViVoidMarker v-for="marker in model.voidMarkers" :key="marker.kind" :marker="marker" />
+      <TuViVoidMarker v-for="marker in model.voidMarkers" :key="marker.kinds.join('-')" :marker="marker" />
     </div>
     <TuViChartLegend :meta="model.meta" />
   </div>

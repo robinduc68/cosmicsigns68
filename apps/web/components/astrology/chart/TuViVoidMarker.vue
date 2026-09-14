@@ -19,7 +19,7 @@ const description = computed(
     :style="{ left: `${marker.x}%`, top: `${marker.y}%` }"
     role="note"
     :aria-label="description"
-    :data-void="marker.kind"
+    :data-void="marker.kinds.join('-')"
   >
     {{ marker.label }}
   </span>

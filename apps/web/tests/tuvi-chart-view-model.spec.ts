@@ -68,8 +68,8 @@ describe('mapChartDtoToViewModel', () => {
 
   it('puts Tuần and Triệt on the border their two palaces share', () => {
     const vm = mapChartDtoToViewModel(real())
-    const tuan = vm.voidMarkers.find((m) => m.kind === 'TUAN')!
-    const triet = vm.voidMarkers.find((m) => m.kind === 'TRIET')!
+    const tuan = vm.voidMarkers.find((m) => m.kinds.includes('TUAN'))!
+    const triet = vm.voidMarkers.find((m) => m.kinds.includes('TRIET'))!
     // Thân sits top-right with Dậu below it; Tỵ top-left with Thìn below.
     expect(branchNames(tuan.branches)).toEqual(['Dậu', 'Thân'])
     expect(tuan).toMatchObject({ orientation: 'horizontal', x: 87.5, y: 25 })
@@ -79,10 +79,28 @@ describe('mapChartDtoToViewModel', () => {
 
   it('handles a border shared side by side as well', () => {
     const vm = mapChartDtoToViewModel(structuredClone(scenario('at-suu-1985').chart))
-    const triet = vm.voidMarkers.find((m) => m.kind === 'TRIET')!
+    const triet = vm.voidMarkers.find((m) => m.kinds.includes('TRIET'))!
     expect(branchNames(triet.branches)).toEqual(['Mùi', 'Ngọ'])
     // Low in the top row, so the label does not cut through the star area.
     expect(triet).toMatchObject({ orientation: 'vertical', x: 50, y: 22 })
+  })
+
+  it('merges Tuần and Triệt into one label when they land on the same border', () => {
+    // Không dựng lá số giả: lấy lá số thật rồi kéo Tuần về đúng biên của Triệt, nên
+    // phép gộp được thử trên chính hình dạng dữ liệu mà engine gửi.
+    const chart = real()
+    chart.palaces.forEach((p) => (p.has_tuan = p.has_triet))
+    const vm = mapChartDtoToViewModel(chart)
+
+    const onThatBorder = vm.voidMarkers.filter((m) => m.x === 12.5 && m.y === 25)
+    expect(onThatBorder).toHaveLength(1)
+    expect(onThatBorder[0]!.kinds.sort()).toEqual(['TRIET', 'TUAN'])
+    expect(onThatBorder[0]!.label).toBe('Tuần - Triệt')
+  })
+
+  it('leaves a lone marker alone instead of inventing a partner', () => {
+    const vm = mapChartDtoToViewModel(real())
+    expect(vm.voidMarkers.map((m) => m.label).sort()).toEqual(['Triệt', 'Tuần'])
   })
 
   it('warns instead of guessing when the Tuần flags do not make a pair', () => {
@@ -90,7 +108,7 @@ describe('mapChartDtoToViewModel', () => {
     chart.palaces.forEach((p) => (p.has_tuan = false))
     chart.palaces[0]!.has_tuan = true
     const vm = mapChartDtoToViewModel(chart)
-    expect(vm.voidMarkers.some((m) => m.kind === 'TUAN')).toBe(false)
+    expect(vm.voidMarkers.some((m) => m.kinds.includes('TUAN'))).toBe(false)
     expect(vm.warnings.join(' ')).toContain('Tuần')
   })
 
@@ -136,9 +154,14 @@ describe('mapChartDtoToViewModel', () => {
   })
 
   it('reads engine and convention metadata and flags unverified data', () => {
-    const meta = mapChartDtoToViewModel(real()).meta
+    const chart = real()
+    const meta = mapChartDtoToViewModel(chart).meta
     expect(meta.provisional).toBe(true)
-    expect(meta.engineVersion).toBe('0.2.0-frame')
+    // Đọc từ chính fixture, không ghim chuỗi: bài này kiểm tra mapper có chuyển dữ
+    // liệu qua hay không, chứ không kiểm tra engine đang ở phiên bản nào. Ghim chuỗi
+    // thì mỗi lần nâng phiên bản lại đỏ một test chẳng liên quan.
+    expect(meta.engineVersion).toBe(chart.identity!.engine_version)
+    expect(meta.engineVersion).toMatch(/^\d+\.\d+\.\d+-/)
     expect(meta.conventionProfile).toBe('COSMIC_SIGNS_NAM_PHAI_V1')
     expect(meta.utcOffsetHours).toBe(7)
     expect(mapChartDtoToViewModel(scenario('authoritative-demo').chart).meta.provisional).toBe(false)

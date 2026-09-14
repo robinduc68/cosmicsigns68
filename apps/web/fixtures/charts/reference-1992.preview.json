@@ -2,11 +2,12 @@
   "schema_version": 2,
   "identity": {
     "chart_id": null,
-    "engine_version": "0.2.0-frame",
+    "engine_version": "0.3.1-frame",
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09",
     "production_ready": false,
-    "generated_at": "2026-09-11T00:00:00+00:00"
+    "generated_at": "2026-09-11T00:00:00+00:00",
+    "rule_fingerprint": "e67bb86b14d4e52d"
   },
   "traditional": {
     "chu_menh": null,
@@ -18,7 +19,7 @@
   },
   "engine": {
     "stage": "PREVIEW",
-    "version": "0.2.0-frame",
+    "version": "0.3.1-frame",
     "is_authoritative": false,
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09"
@@ -540,7 +541,7 @@
       },
       {
         "rule": "an_quang_thien_quy",
-        "policy": "FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
+        "policy": "XUONG_FORWARD_KHUC_BACKWARD_MIRRORED",
         "implemented": true,
         "verification": "PROVISIONAL",
         "status": "PROVISIONAL",
@@ -559,7 +560,7 @@
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau."
+        "note": "Hai sao soi gương nhau: Ân Quang từ Văn Xương đếm THUẬN rồi lùi một cung; Thiên Quý từ Văn Khúc đếm NGHỊCH rồi lùi một cung (lùi ngược chiều đếm). Đối chiếu bằng lá số 13/10/1999 giờ Ngọ, nam — xem docs mục 31."
       },
       {
         "rule": "thien_duc_nguyet_duc",
@@ -2098,13 +2099,13 @@
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
-            "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
+            "rule": "an_quang_thien_quy/XUONG_FORWARD_KHUC_BACKWARD_MIRRORED",
             "verification": "PROVISIONAL",
             "blocked_by": [
               "Q2",
               "Q3"
             ],
-            "note": "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau."
+            "note": "Hai sao soi gương nhau: Ân Quang từ Văn Xương đếm THUẬN rồi lùi một cung; Thiên Quý từ Văn Khúc đếm NGHỊCH rồi lùi một cung (lùi ngược chiều đếm). Đối chiếu bằng lá số 13/10/1999 giờ Ngọ, nam — xem docs mục 31."
           },
           "provisional": true
         },
@@ -2352,13 +2353,13 @@
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
-            "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
+            "rule": "an_quang_thien_quy/XUONG_FORWARD_KHUC_BACKWARD_MIRRORED",
             "verification": "PROVISIONAL",
             "blocked_by": [
               "Q2",
               "Q3"
             ],
-            "note": "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau."
+            "note": "Hai sao soi gương nhau: Ân Quang từ Văn Xương đếm THUẬN rồi lùi một cung; Thiên Quý từ Văn Khúc đếm NGHỊCH rồi lùi một cung (lùi ngược chiều đếm). Đối chiếu bằng lá số 13/10/1999 giờ Ngọ, nam — xem docs mục 31."
           },
           "provisional": true
         },
@@ -5512,13 +5513,13 @@
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
-            "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
+            "rule": "an_quang_thien_quy/XUONG_FORWARD_KHUC_BACKWARD_MIRRORED",
             "verification": "PROVISIONAL",
             "blocked_by": [
               "Q2",
               "Q3"
             ],
-            "note": "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau."
+            "note": "Hai sao soi gương nhau: Ân Quang từ Văn Xương đếm THUẬN rồi lùi một cung; Thiên Quý từ Văn Khúc đếm NGHỊCH rồi lùi một cung (lùi ngược chiều đếm). Đối chiếu bằng lá số 13/10/1999 giờ Ngọ, nam — xem docs mục 31."
           },
           "provisional": true
         },
@@ -5766,13 +5767,13 @@
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
-            "rule": "an_quang_thien_quy/FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE",
+            "rule": "an_quang_thien_quy/XUONG_FORWARD_KHUC_BACKWARD_MIRRORED",
             "verification": "PROVISIONAL",
             "blocked_by": [
               "Q2",
               "Q3"
             ],
-            "note": "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau."
+            "note": "Hai sao soi gương nhau: Ân Quang từ Văn Xương đếm THUẬN rồi lùi một cung; Thiên Quý từ Văn Khúc đếm NGHỊCH rồi lùi một cung (lùi ngược chiều đếm). Đối chiếu bằng lá số 13/10/1999 giờ Ngọ, nam — xem docs mục 31."
           },
           "provisional": true
         },

@@ -180,7 +180,7 @@ describe('charts persisted under schema v1 still map', () => {
 
   it('still draws Tuần and Triệt from the v1 booleans', () => {
     const vm = mapChartDtoToViewModel(legacyChart())
-    expect(vm.voidMarkers.map((m) => m.kind).sort()).toEqual(['TRIET', 'TUAN'])
+    expect(vm.voidMarkers.flatMap((m) => m.kinds).sort()).toEqual(['TRIET', 'TUAN'])
   })
 
   it('falls back to the local ordering when the engine sent no priority', () => {

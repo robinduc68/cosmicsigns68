@@ -109,7 +109,15 @@ export interface PalaceViewModel {
 export type VoidKind = 'TUAN' | 'TRIET'
 
 export interface VoidMarkerViewModel {
-  kind: VoidKind
+  /**
+   * Một hoặc hai loại cùng rơi vào **một** đường biên.
+   *
+   * Tuần và Triệt dùng hai luật khác nhau — Tuần theo vòng giáp của trụ năm, Triệt
+   * theo can năm — nên chúng trùng biên được, và với can Kỷ thì trùng thật. Dựng hai
+   * dấu rời ở cùng toạ độ thì cái vẽ sau che hẳn cái vẽ trước, và lá số im lặng mất
+   * một thông tin. Gộp ở đây, chỗ duy nhất biết cả hai.
+   */
+  kinds: VoidKind[]
   label: string
   branches: [number, number]
   /** Centre of the border the two palaces share, as a percentage of the canvas. */
