@@ -36,6 +36,7 @@ from cosmic_astrology.chart.model import (
     StarCategory,
     StarProvenance,
     VoidMark,
+    rule_fingerprint,
 )
 from cosmic_astrology.chart.types import (
     PALACE_LABELS,
@@ -65,7 +66,7 @@ from cosmic_astrology.stars import four_transformations, placement, strength
 from cosmic_astrology.stars import placement_group2 as group2
 from cosmic_astrology.stars import placement_group3 as group3
 from cosmic_astrology.stars import placement_malefic as malefic
-from cosmic_astrology.stars.catalog import definition_for
+from cosmic_astrology.stars.catalog import STAR_CATALOG, definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
 
@@ -77,7 +78,32 @@ _logger = logging.getLogger(__name__)
 
 # 0.2.0: fixes mirrored palace names and the Tý/Sửu palace stems. Charts built by
 # 0.1.0 may carry wrong palace names, Thân cư, and — when Mệnh is in Tý or Sửu — Cục.
-ENGINE_VERSION = "0.2.0-frame"
+#
+# 0.3.0: the star set grew from 14 to 88 — star catalogue, Tràng Sinh, đại vận, Tứ
+# Hóa, three supporting groups and the malefic group. This string stayed at 0.2.0
+# through all of it, so charts stored along the way reported themselves as current
+# while missing up to 61 stars. That is why ``Chart.rule_fingerprint`` now exists:
+# a version string only works if somebody remembers it, and nobody did.
+ENGINE_VERSION = "0.3.0-frame"
+
+
+def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:
+    """Vân tay của engine *hiện hành* dưới một hồ sơ quy ước.
+
+    Dùng ``STAR_CATALOG`` chứ không dùng một lá số cụ thể, nên gọi được mà không
+    phải tính lại lá số — bộ kiểm tra lạc hậu chạy trên mỗi lần đọc. Hai giá trị
+    này khớp nhau vì mọi lá số đều an đủ tập sao trong catalog; điều đó được khoá
+    bằng test, không phải bằng niềm tin.
+    """
+    return rule_fingerprint(
+        STAR_CATALOG.keys(),
+        (
+            (rule.value, binding.policy)
+            for rule in RuleId
+            if (binding := profile.binding(rule)).implemented
+        ),
+    )
+
 
 # Cục số per ngũ hành of cung Mệnh.
 _CUC_BY_ELEMENT: dict[Element, tuple[int, str]] = {
@@ -245,11 +271,20 @@ def build_chart(
     solar_day, solar_month, solar_year = dates.placement_solar
 
     if log is not None:
-        log.record(profile, RuleId.TIMEZONE, f"UTC{tz_offset:+g}",
-                   timezone_id=birth.timezone_id, source=tz.source)
-        log.record(profile, RuleId.LATE_ZI,
-                   f"ngày an sao {dates.placement_solar}, trụ ngày {dates.day_pillar_solar}",
-                   hour=birth.hour, late_zi=dates.late_zi)
+        log.record(
+            profile,
+            RuleId.TIMEZONE,
+            f"UTC{tz_offset:+g}",
+            timezone_id=birth.timezone_id,
+            source=tz.source,
+        )
+        log.record(
+            profile,
+            RuleId.LATE_ZI,
+            f"ngày an sao {dates.placement_solar}, trụ ngày {dates.day_pillar_solar}",
+            hour=birth.hour,
+            late_zi=dates.late_zi,
+        )
 
     pillars = pillars_for_birth(
         solar_day,
@@ -322,12 +357,23 @@ def build_chart(
     relation_code, relation_label = _element_relation(menh_element, menh_palace.element)
 
     if log is not None:
-        log.record(profile, RuleId.MENH_PLACEMENT, CHI[menh_branch],
-                   lunar_month=lunar.month, hour_branch=CHI[hour_chi])
-        log.record(profile, RuleId.THAN_PLACEMENT, CHI[than_branch],
-                   lunar_month=lunar.month, hour_branch=CHI[hour_chi])
-        log.record(profile, RuleId.CUC, cuc_label,
-                   menh_palace=CHI[menh_branch], nap_am=menh_palace.nap_am)
+        log.record(
+            profile,
+            RuleId.MENH_PLACEMENT,
+            CHI[menh_branch],
+            lunar_month=lunar.month,
+            hour_branch=CHI[hour_chi],
+        )
+        log.record(
+            profile,
+            RuleId.THAN_PLACEMENT,
+            CHI[than_branch],
+            lunar_month=lunar.month,
+            hour_branch=CHI[hour_chi],
+        )
+        log.record(
+            profile, RuleId.CUC, cuc_label, menh_palace=CHI[menh_branch], nap_am=menh_palace.nap_am
+        )
 
     if stage is EngineStage.PREVIEW:
         _place_major_stars(by_branch, cuc_number, lunar.day, profile=profile, trace_log=log)
@@ -579,6 +625,7 @@ _GROUP_2_FROM_YEAR_BRANCH: tuple[tuple[str, RuleId, Callable[[int], int]], ...] 
     ("HOA_CAI", RuleId.HOA_CAI, group2.place_hoa_cai),
 )
 
+
 def _place_supporting_stars_group_2(
     by_branch: dict[int, Palace],
     *,
@@ -624,9 +671,7 @@ def _place_supporting_stars_group_2(
         anchor_branch = anchors.get(anchor_id)
         if anchor_branch is None:
             # Nhóm 1 chưa an sao neo — không đoán một vị trí thay thế.
-            _logger.warning(
-                "Thiếu sao neo %s nên không an được %s.", anchor_id, star_id
-            )
+            _logger.warning("Thiếu sao neo %s nên không an được %s.", anchor_id, star_id)
             continue
         placed.append(
             (
@@ -680,7 +725,6 @@ def _place_supporting_stars_group_2(
         placed.append(("QUOC_AN", an, group2.place_quoc_an(loc_ton), anchor_inputs))
         placed.append(("DUONG_PHU", an, group2.place_duong_phu(loc_ton), anchor_inputs))
 
-
     for star_id, rule, branch, inputs in placed:
         star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)
         by_branch[branch].stars.append(star)
@@ -697,6 +741,7 @@ _MALEFIC_FROM_YEAR_BRANCH: tuple[tuple[str, RuleId, Callable[[int], int]], ...] 
     ("THIEN_KHOC", RuleId.THIEN_KHOC_THIEN_HU, malefic.place_thien_khoc),
     ("THIEN_HU", RuleId.THIEN_KHOC_THIEN_HU, malefic.place_thien_hu),
 )
+
 
 def _place_malefic_stars(
     by_branch: dict[int, Palace],
@@ -944,9 +989,7 @@ def _apply_four_transformations(
             )
 
 
-def _apply_star_strength(
-    by_branch: dict[int, Palace], *, profile: ConventionProfile
-) -> None:
+def _apply_star_strength(by_branch: dict[int, Palace], *, profile: ConventionProfile) -> None:
     """Attach miếu/vượng/đắc/bình/hãm by looking the star up at its own branch.
 
     Metadata only — no star moves. Strength is a property of *where a star already
@@ -1085,19 +1128,32 @@ def _place_major_stars(
     tu_vi = _tu_vi_branch(cuc_number, lunar_day)
     thien_phu = (4 - tu_vi) % 12
     if trace_log is not None:
-        trace_log.record(profile, RuleId.TU_VI_PLACEMENT, CHI[tu_vi],
-                         cuc=cuc_number, lunar_day=lunar_day)
+        trace_log.record(
+            profile, RuleId.TU_VI_PLACEMENT, CHI[tu_vi], cuc=cuc_number, lunar_day=lunar_day
+        )
     for star_id, offset in _TU_VI_CHAIN:
         branch = (tu_vi + offset) % 12
         star = _placed_star(star_id, CHI[branch], profile=profile)
         by_branch[branch].stars.append(star)
         if trace_log is not None:
-            trace_log.record(profile, RuleId.MAJOR_STARS, f"{star.name} → {CHI[branch]}",
-                             chain="Tử Vi", anchor=CHI[tu_vi], offset=offset)
+            trace_log.record(
+                profile,
+                RuleId.MAJOR_STARS,
+                f"{star.name} → {CHI[branch]}",
+                chain="Tử Vi",
+                anchor=CHI[tu_vi],
+                offset=offset,
+            )
     for star_id, offset in _THIEN_PHU_CHAIN:
         branch = (thien_phu + offset) % 12
         star = _placed_star(star_id, CHI[branch], profile=profile)
         by_branch[branch].stars.append(star)
         if trace_log is not None:
-            trace_log.record(profile, RuleId.MAJOR_STARS, f"{star.name} → {CHI[branch]}",
-                             chain="Thiên Phủ", anchor=CHI[thien_phu], offset=offset)
+            trace_log.record(
+                profile,
+                RuleId.MAJOR_STARS,
+                f"{star.name} → {CHI[branch]}",
+                chain="Thiên Phủ",
+                anchor=CHI[thien_phu],
+                offset=offset,
+            )

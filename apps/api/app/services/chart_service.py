@@ -19,6 +19,7 @@ from cosmic_astrology import (
     build_chart,
     needs_recalculation,
 )
+from cosmic_astrology.chart.builder import current_rule_fingerprint
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
 from cosmic_astrology.conventions.profile import RecalculationCheck
 
@@ -117,12 +118,22 @@ class ChartService:
         paid for — is never rewritten underneath them; the answer is surfaced so the
         decision to rebuild stays with a person.
         """
+        stored = chart.chart_json if isinstance(chart.chart_json, dict) else {}
+        identity = stored.get("identity")
+        stored_fingerprint = (
+            identity.get("rule_fingerprint") if isinstance(identity, dict) else None
+        )
         return needs_recalculation(
             chart.convention_profile,
             chart.convention_version,
             COSMIC_SIGNS_NAM_PHAI_V1,
             stored_engine_version=chart.engine_version,
             current_engine_version=ENGINE_VERSION,
+            # Lá số lưu trước khi có vân tay không mang trường này. Để ``None`` thì
+            # bộ kiểm tra bỏ qua vế vân tay và vẫn bắt được qua phiên bản engine —
+            # chuỗi rỗng sẽ là một so sánh sai, báo lệch cho mọi lá số cũ.
+            stored_fingerprint=stored_fingerprint or None,
+            current_fingerprint=current_rule_fingerprint(COSMIC_SIGNS_NAM_PHAI_V1),
         )
 
     async def annual(self, chart_id: uuid.UUID, viewing_year: int) -> dict[str, Any]:

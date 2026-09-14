@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import pytest
 
-from cosmic_astrology.chart.builder import build_chart, three_directions_four_positions
+from cosmic_astrology.chart.builder import (
+    build_chart,
+    current_rule_fingerprint,
+    three_directions_four_positions,
+)
+from cosmic_astrology.chart.model import rule_fingerprint
 from cosmic_astrology.chart.types import (
     BirthInput,
     CalendarType,
@@ -10,6 +15,7 @@ from cosmic_astrology.chart.types import (
     Gender,
     PalaceName,
 )
+from cosmic_astrology.stars.catalog import STAR_CATALOG
 
 
 def _birth(**overrides: object) -> BirthInput:
@@ -203,3 +209,44 @@ def test_building_the_same_chart_twice_is_deterministic() -> None:
     first = build_chart(_birth(), stage=EngineStage.PREVIEW).to_dict()
     second = build_chart(_birth(), stage=EngineStage.PREVIEW).to_dict()
     assert first == second
+
+
+@pytest.mark.parametrize(
+    ("day", "month", "year", "hour", "gender"),
+    [
+        (4, 3, 2001, 9, Gender.FEMALE),
+        (17, 11, 1988, 20, Gender.MALE),
+        (1, 1, 1975, 3, Gender.MALE),
+        (29, 7, 1993, 14, Gender.FEMALE),
+    ],
+)
+def test_chart_fingerprint_matches_the_engine_fingerprint(
+    day: int, month: int, year: int, hour: int, gender: Gender
+) -> None:
+    """Khoá giả định mà ``current_rule_fingerprint`` đang dựa vào.
+
+    Nó đọc ``STAR_CATALOG`` thay vì tính một lá số, để bộ kiểm tra lạc hậu chạy được
+    trên mỗi lần đọc. Điều đó chỉ đúng chừng nào mọi lá số đều an đủ tập sao trong
+    catalog. Nếu một ngày nào đó có sao chỉ an trong vài trường hợp, test này vỡ —
+    và nó vỡ ở đây, chứ không vỡ bằng cách im lặng bảo một lá số cũ là vẫn mới.
+    """
+    chart = build_chart(
+        _birth(day=day, month=month, year=year, hour=hour, gender=gender),
+        stage=EngineStage.PREVIEW,
+    )
+    assert chart.rule_fingerprint == current_rule_fingerprint()
+    assert {star.id for star in chart.stars} == set(STAR_CATALOG)
+
+
+def test_fingerprint_moves_when_the_star_set_moves() -> None:
+    """Vân tay phải *đổi* khi tập sao đổi — nếu không thì nó vô dụng."""
+    chart = build_chart(_birth(), stage=EngineStage.PREVIEW)
+    trimmed = rule_fingerprint(
+        (star.id for star in chart.stars if star.id != "TU_VI"),
+        (
+            (str(rule["rule"]), str(rule["policy"]))
+            for rule in chart.convention_rules
+            if rule.get("implemented")
+        ),
+    )
+    assert trimmed != chart.rule_fingerprint

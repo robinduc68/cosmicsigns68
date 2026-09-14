@@ -180,10 +180,31 @@ Dữ liệu giả **không bao giờ** được hiển thị cho khách.
 
 ---
 
+## 9b. Chế độ soi cung (chỉ ở bản dev)
+
+Nút **"Soi cung"** trên thanh công cụ bật một dòng đếm ở mỗi cung:
+
+```
+Natal: 8 · Annual: 0 · Rendered: 8
+```
+
+Hai số đầu đọc từ view model; số thứ ba **đếm `.tuvi-star` thật trong DOM của cung
+đó**. Nếu `Rendered` chỉ lặp lại `Natal + Annual` thì nó không chứng minh được gì —
+đếm trong DOM mới bắt được bộ lọc âm thầm ở renderer và sao bị CSS nuốt. Ba số lệch
+nhau thì dòng đếm chuyển nền đỏ.
+
+Khối này gác sau `import.meta.dev`, được gấp thành hằng `false` lúc build — nhánh
+chết, không bao giờ chạy ở production. Phần đánh dấu vẫn nằm trong bundle; bộ gom
+không xoá nhánh chết bên trong hàm render.
+Xem `docs/chart-render-loss-report.md` để biết vì sao nó tồn tại.
+
+---
+
 ## 10. Hạn chế đã biết
 
-- Engine chưa gửi phụ tinh, miếu vượng, tứ hóa, đại vận, tràng sinh, lưu niên, ngũ hành của
-  sao, chủ mệnh / chủ thân — renderer có sẵn chỗ nhưng **không hiển thị gì** cho tới khi có.
+- Engine chưa gửi chủ mệnh / chủ thân — renderer có sẵn chỗ nhưng **không hiển thị gì**
+  cho tới khi có. Phụ tinh, miếu vượng, tứ hóa, đại vận, tràng sinh, lưu niên và ngũ
+  hành của sao thì đã có.
 - Chưa có screenshot regression tự động: Playwright chưa được cài. Việc soát ảnh hiện làm
   bằng Chrome headless qua CDP.
 - Ở chế độ "Toàn lá số" trên cảm ứng, vuốt trên vùng lá số không cuộn được trang (panzoom

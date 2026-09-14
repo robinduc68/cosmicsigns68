@@ -11,8 +11,13 @@ import TuViVoidMarker from './TuViVoidMarker.vue'
  * export all render this same element and scale it from outside.
  */
 const props = withDefaults(
-  defineProps<{ model: ChartViewModel; showPendingFields?: boolean }>(),
-  { showPendingFields: false },
+  defineProps<{
+    model: ChartViewModel
+    showPendingFields?: boolean
+    /** Dev-only: chuyển tiếp bộ đếm sao xuống từng cung. */
+    inspect?: boolean
+  }>(),
+  { showPendingFields: false, inspect: false },
 )
 
 const root = ref<HTMLElement | null>(null)
@@ -36,6 +41,7 @@ const subjectName = computed(
         <TuViPalace
           v-if="cell"
           :palace="cell"
+          :inspect="inspect"
           :style="{ gridRow: String(cell.row), gridColumn: String(cell.col) }"
         />
       </template>

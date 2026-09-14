@@ -225,6 +225,8 @@ def needs_recalculation(
     *,
     stored_engine_version: str | None = None,
     current_engine_version: str | None = None,
+    stored_fingerprint: str | None = None,
+    current_fingerprint: str | None = None,
 ) -> RecalculationCheck:
     """Whether a stored chart predates the conventions or the engine now in force.
 
@@ -232,6 +234,11 @@ def needs_recalculation(
     the same rules but changes the answer, and the charts already on disk keep the
     old one. Both versions are passed in rather than imported, so this module stays
     free of any dependency on the calculation layer.
+
+    The fingerprints are the backstop. ``engine_version`` is typed by hand, and it
+    sat at ``0.2.0-frame`` while the star set grew from 14 to 88 — so this function
+    told charts missing 61 stars that they were current. The fingerprint is derived
+    from the star ids and rule policies themselves, so it cannot be forgotten.
 
     Charts are not recomputed on read: a reading a customer has already paid for
     must not change under them. This answers the migration question instead —
@@ -262,5 +269,16 @@ def needs_recalculation(
             f"Lá số lập bằng engine {stored_engine_version}, hiện dùng "
             f"{current_engine_version}. Cùng bộ quy ước nhưng engine đã sửa lỗi "
             "tính toán, nên kết quả có thể khác.",
+        )
+    if (
+        stored_fingerprint is not None
+        and current_fingerprint is not None
+        and stored_fingerprint != current_fingerprint
+    ):
+        return RecalculationCheck(
+            True,
+            "Cùng phiên bản engine nhưng tập sao hoặc tập luật đã khác "
+            f"(vân tay {stored_fingerprint} → {current_fingerprint}). "
+            "Nhiều khả năng một đợt việc đã đổi kết quả mà quên nâng phiên bản.",
         )
     return RecalculationCheck(False, "Khớp hồ sơ quy ước và engine hiện hành.")

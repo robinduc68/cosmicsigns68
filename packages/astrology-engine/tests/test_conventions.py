@@ -235,3 +235,36 @@ def test_the_profile_check_still_wins_over_the_engine_check() -> None:
 def test_an_unknown_engine_version_does_not_raise_a_false_alarm() -> None:
     """Nothing is claimed when the caller cannot supply the versions."""
     assert needs_recalculation(PROFILE.profile_id, PROFILE.version, PROFILE).needed is False
+
+
+def test_fingerprint_catches_a_forgotten_version_bump() -> None:
+    """Cùng hồ sơ, cùng phiên bản engine, nhưng tập sao đã khác → phải báo tính lại.
+
+    Đây chính là lỗi đã xảy ra thật: ``ENGINE_VERSION`` đứng yên ở ``0.2.0-frame``
+    suốt tám đợt việc, và những lá số thiếu 61 sao tự báo mình vẫn mới.
+    """
+    check = needs_recalculation(
+        PROFILE.profile_id,
+        PROFILE.version,
+        PROFILE,
+        stored_engine_version="0.3.0-frame",
+        current_engine_version="0.3.0-frame",
+        stored_fingerprint="aaaaaaaaaaaaaaaa",
+        current_fingerprint="bbbbbbbbbbbbbbbb",
+    )
+    assert check.needed is True
+    assert "vân tay" in check.reason
+
+
+def test_chart_without_a_stored_fingerprint_is_not_falsely_flagged() -> None:
+    """Lá số lưu trước khi có vân tay: bỏ qua vế vân tay, không báo lệch vô cớ."""
+    check = needs_recalculation(
+        PROFILE.profile_id,
+        PROFILE.version,
+        PROFILE,
+        stored_engine_version="0.3.0-frame",
+        current_engine_version="0.3.0-frame",
+        stored_fingerprint=None,
+        current_fingerprint="bbbbbbbbbbbbbbbb",
+    )
+    assert check.needed is False

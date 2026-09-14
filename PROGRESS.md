@@ -1,8 +1,11 @@
 # Tiến độ Cosmic Signs
 
-Cập nhật: **2026-09-11** · Checkpoint để tiếp tục làm sau.
+Cập nhật: **2026-09-14** · Checkpoint để tiếp tục làm sau.
 
 > Đọc `docs/chart-data-contract.md` trước khi đụng vào hình dạng dữ liệu lá số.
+
+> **Lá số cũ không tự tính lại.** Nếu một lá số trông thưa, kiểm tra
+> `recalculation.needed` trước khi nghi renderer — xem `docs/chart-render-loss-report.md`.
 
 > Trạng thái từng phase và thứ tự làm tiếp: xem [`docs/roadmap.md`](docs/roadmap.md).
 
@@ -22,6 +25,7 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
 | Phase 6 — An sao | 🟡 **88 sao** bản mệnh + **18 lưu tinh** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
+| Đường ống hiển thị | ✅ đã soi: engine → API → ViewModel → DOM **không mất sao nào** (`docs/chart-render-loss-report.md`) |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
@@ -249,6 +253,14 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   Scale ngay khi mount, thư viện tương tác tới sau.
 - **Tiến trình API không tự nạp lại code engine**: sau khi sửa engine phải khởi động lại
   uvicorn, nếu không lá số mới vẫn mang `engine_version` cũ.
+- **API chạy ở cổng 8100**, không phải 8000 — Nuxt trỏ sang đó (`NUXT_PUBLIC_API_BASE`).
+  Bật nhầm cổng thì trang lá số trả 500 "Không tải được lá số" chứ không báo gì rõ hơn.
+- **`ENGINE_VERSION` là chuỗi gõ tay, và nó đã bị bỏ quên.** Nó đứng yên ở `0.2.0-frame`
+  suốt tám đợt việc trong khi số sao đi từ 14 lên 88, nên `needs_recalculation()` báo
+  "vẫn mới" cho những lá số thiếu 61 sao — và người dùng thấy lá số thưa mà không hiểu vì sao.
+  Nay có thêm **vân tay nội dung** (`rule_fingerprint`) tự đổi theo tập sao và tập luật,
+  nên quên bump không còn gây hậu quả. Vẫn phải bump khi sửa **phép tính** mà tập sao
+  không đổi — vân tay không bắt được loại thay đổi đó. Xem `docs/chart-render-loss-report.md`.
 
 ## Hạn chế đã biết
 

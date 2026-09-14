@@ -72,6 +72,7 @@ const MODES: { value: ChartViewMode; label: string; icon: typeof LayoutGrid }[] 
         <template #leading><Download class="size-4" aria-hidden="true" /></template>
         Tải PNG
       </CsButton>
+      <slot name="dev" />
     </div>
   </div>
 </template>

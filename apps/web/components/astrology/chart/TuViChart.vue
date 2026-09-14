@@ -37,6 +37,15 @@ const props = withDefaults(
 )
 
 const mode = ref<ChartViewMode>(props.initialMode ?? 'overview')
+
+/**
+ * Chế độ soi lá số, chỉ có ở dev: mỗi cung hiện ``Natal · Annual · Rendered``.
+ *
+ * Có mặt vì đợt việc này bắt đầu bằng câu hỏi "lá số thưa vì tính thiếu hay vì vẽ
+ * thiếu?", và câu đó đã phải trả lời bằng cách đo DOM qua giao thức debug của trình
+ * duyệt. Lần sau nhìn là thấy.
+ */
+const inspecting = ref(false)
 const viewport = ref<HTMLElement | null>(null)
 const stage = ref<HTMLElement | null>(null)
 const offscreen = ref<InstanceType<typeof TuViChartCanvas> | null>(null)
@@ -192,7 +201,20 @@ defineExpose({ mode, exportPng: onExportPng, print: onPrint })
       @fullscreen="toggleFullscreen"
       @export-png="onExportPng"
       @print="onPrint"
-    />
+    >
+      <template v-if="isDev" #dev>
+        <button
+          type="button"
+          class="inline-flex h-9 items-center rounded-lg border border-[var(--border)] px-3 text-small"
+          :class="inspecting ? 'bg-[var(--accent)]/15 text-[var(--accent)]' : ''"
+          :aria-pressed="inspecting"
+          data-dev-inspect-toggle
+          @click="inspecting = !inspecting"
+        >
+          Soi cung
+        </button>
+      </template>
+    </TuViChartToolbar>
 
     <ul
       v-if="isDev && model.warnings.length"
@@ -210,7 +232,11 @@ defineExpose({ mode, exportPng: onExportPng, print: onPrint })
     >
       <p v-if="!ready" class="tuvi-viewport__placeholder" role="status">Đang dựng lá số…</p>
       <div ref="stage" class="tuvi-stage" :class="{ 'is-ready': ready }">
-        <TuViChartCanvas :model="model" :show-pending-fields="showPendingFields" />
+        <TuViChartCanvas
+          :model="model"
+          :show-pending-fields="showPendingFields"
+          :inspect="inspecting"
+        />
       </div>
     </div>
 

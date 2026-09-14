@@ -660,3 +660,25 @@
     transform-origin: top left;
   }
 }
+
+/* Bộ đếm soi cung — chỉ dựng ở bản dev, xem TuViPalace.vue.
+   Đặt ngoài luồng chữ để không đẩy sao xuống và tự gây ra đúng cái lỗi tràn mà nó
+   sinh ra để phát hiện. */
+.tuvi-palace__inspect {
+  position: absolute;
+  inset-inline: 4px;
+  bottom: 2px;
+  z-index: 2;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  font-size: 15px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.tuvi-palace__inspect[data-mismatch='true'] {
+  background: color-mix(in srgb, #b91c1c 20%, var(--surface));
+  color: #b91c1c;
+  font-weight: 600;
+}

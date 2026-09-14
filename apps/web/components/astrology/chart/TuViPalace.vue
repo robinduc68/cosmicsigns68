@@ -11,8 +11,10 @@ const props = withDefaults(
      * mode); on the canvas they sit on the shared border instead.
      */
     inlineVoids?: string[]
+    /** Dev-only: hiện bộ đếm sao trên cung. Không có tác dụng ở bản production. */
+    inspect?: boolean
   }>(),
-  { inlineVoids: () => [] },
+  { inlineVoids: () => [], inspect: false },
 )
 
 const hasFooter = computed(
@@ -25,12 +27,46 @@ const cycleNumber = computed(() => props.palace.cycles?.major_cycle_index ?? nul
 const root = ref<HTMLElement | null>(null)
 const overflowing = ref(false)
 
+/**
+ * Bộ đếm kiểm tra, chỉ có ở chế độ dev.
+ *
+ * Hai số đầu đọc từ view model, số thứ ba **đếm trong DOM**. Đó là chủ ý: nếu
+ * ``Rendered`` lặp lại ``Natal + Annual`` thì nó chẳng chứng minh được gì. Đếm thật
+ * trong DOM mới bắt được cả bộ lọc âm thầm ở renderer lẫn sao bị CSS nuốt mất.
+ */
+const natalCount = computed(
+  () =>
+    props.palace.majorStars.filter((star) => !star.isAnnual).length +
+    props.palace.minorStars.filter((star) => !star.isAnnual).length,
+)
+const annualCount = computed(
+  () =>
+    props.palace.majorStars.filter((star) => star.isAnnual).length +
+    props.palace.minorStars.filter((star) => star.isAnnual).length,
+)
+const renderedCount = ref(0)
+
+async function measureRendered(): Promise<void> {
+  if (!import.meta.dev) return
+  await nextTick()
+  renderedCount.value = root.value?.querySelectorAll('.tuvi-star').length ?? 0
+}
+
+watch(
+  () => [props.inspect, props.palace] as const,
+  () => void measureRendered(),
+  { immediate: true },
+)
+
+const isDev = import.meta.dev
+
 onMounted(async () => {
   if (!import.meta.dev || !root.value) return
   // Measure after web fonts settle; fallback metrics would give a false reading.
   await document.fonts?.ready
   const el = root.value
   // Canvas palaces have a fixed height; reading-mode cards grow and never trip this.
+  await measureRendered()
   if (el.scrollHeight > el.clientHeight + 1) {
     overflowing.value = true
     console.warn(
@@ -83,6 +119,18 @@ onMounted(async () => {
         </span>
       </div>
     </header>
+
+    <!-- Bộ đếm dev. ``isDev`` được gấp thành hằng ``false`` lúc build, nên đây là
+         nhánh chết ở production. Phần đánh dấu vẫn nằm trong bundle — nhánh chết
+         trong hàm render không bị gom bỏ — nhưng không có đường nào chạy tới nó. -->
+    <p
+      v-if="isDev && inspect"
+      class="tuvi-palace__inspect"
+      :data-mismatch="renderedCount !== natalCount + annualCount ? 'true' : undefined"
+      data-palace-inspect
+    >
+      Natal: {{ natalCount }} · Annual: {{ annualCount }} · Rendered: {{ renderedCount }}
+    </p>
 
     <ul v-if="palace.majorStars.length" class="tuvi-palace__majors">
       <li v-for="star in palace.majorStars" :key="star.code">

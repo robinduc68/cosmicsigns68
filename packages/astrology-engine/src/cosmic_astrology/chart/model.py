@@ -12,6 +12,8 @@ this module computes astrology.
 
 from __future__ import annotations
 
+import hashlib
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from enum import StrEnum
 
@@ -26,6 +28,7 @@ __all__ = [
     "TraditionalMetadata",
     "Transformation",
     "VoidMark",
+    "rule_fingerprint",
 ]
 
 #: Bumped when the payload shape changes. Charts persisted under an older version
@@ -127,6 +130,27 @@ def display_priority_for(category: StarCategory) -> int:
     return _CATEGORY_PRIORITY[category]
 
 
+def rule_fingerprint(star_ids: Iterable[str], rules: Iterable[tuple[str, str]]) -> str:
+    """Vân tay của **nội dung** engine: tập sao an được và tập luật đang chọn.
+
+    Tồn tại vì một bài học đắt: ``engine_version`` là một chuỗi do người gõ tay, và
+    nó đã đứng yên suốt tám đợt việc trong khi số sao trên lá số đi từ 14 lên 88.
+    Bộ phát hiện lá số lạc hậu so chuỗi đó, nên nó báo "vẫn mới" cho những lá số
+    thiếu 61 sao.
+
+    Vân tay này đổi **tự động** khi tập sao hoặc tập luật đổi, nên không ai phải
+    nhớ gì nữa. Nó bổ sung cho ``engine_version`` chứ không thay thế: phiên bản nói
+    *chủ ý*, vân tay nói *thực tế*.
+    """
+    payload = "|".join(
+        (
+            ",".join(sorted(star_ids)),
+            ",".join(f"{rule}={policy}" for rule, policy in sorted(rules)),
+        )
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+
+
 @dataclass(frozen=True, slots=True)
 class ChartIdentity:
     """Which engine and which rulebook produced this chart, and when.
@@ -144,6 +168,9 @@ class ChartIdentity:
     production_ready: bool
     #: UTC, ISO-8601. When the calculation ran, not when the person was born.
     generated_at: str
+    #: Vân tay nội dung — xem ``rule_fingerprint``. Đổi khi tập sao hoặc tập luật
+    #: đổi, kể cả khi không ai nhớ nâng ``engine_version``.
+    rule_fingerprint: str = ""
     chart_id: str | None = None
 
     def to_dict(self) -> dict[str, object]:
@@ -154,6 +181,7 @@ class ChartIdentity:
             "convention_version": self.convention_version,
             "production_ready": self.production_ready,
             "generated_at": self.generated_at,
+            "rule_fingerprint": self.rule_fingerprint,
         }
 
 

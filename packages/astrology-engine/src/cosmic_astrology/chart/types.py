@@ -22,6 +22,7 @@ from cosmic_astrology.chart.model import (
     Transformation,
     VoidMark,
     display_priority_for,
+    rule_fingerprint,
 )
 from cosmic_astrology.conventions.policies import VerificationStatus
 from cosmic_astrology.stars.catalog import Polarity
@@ -413,6 +414,19 @@ class Chart:
             convention_version=self.convention_version,
             production_ready=self.production_ready,
             generated_at=self.generated_at,
+            rule_fingerprint=self.rule_fingerprint,
+        )
+
+    @property
+    def rule_fingerprint(self) -> str:
+        """Vân tay của tập sao thực tế trên lá số này và tập luật đã dùng."""
+        return rule_fingerprint(
+            (star.id for star in self.stars),
+            (
+                (str(rule["rule"]), str(rule["policy"]))
+                for rule in self.convention_rules
+                if rule.get("implemented")
+            ),
         )
 
     @property
