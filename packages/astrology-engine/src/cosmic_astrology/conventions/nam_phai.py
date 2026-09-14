@@ -19,6 +19,7 @@ from cosmic_astrology.conventions.policies import (
     BacSiCyclePolicy,
     CoThanQuaTuPolicy,
     DaoHoaPolicy,
+    DauQuanPolicy,
     DiaKhongDiaKiepPolicy,
     FourTransformationsPolicy,
     HoaCaiPolicy,
@@ -28,6 +29,7 @@ from cosmic_astrology.conventions.policies import (
     KinhDuongDaLaPolicy,
     LocTonPolicy,
     LongTriPhuongCacPolicy,
+    PhaToaiPolicy,
     QuocAnDuongPhuPolicy,
     RuleId,
     StarStrengthPolicy,
@@ -37,12 +39,15 @@ from cosmic_astrology.conventions.policies import (
     ThaiTueCyclePolicy,
     ThienDucNguyetDucPolicy,
     ThienGiaiDiaGiaiPolicy,
+    ThienHinhThienDieuPolicy,
     ThienKhocThienHuPolicy,
     ThienKhoiThienVietPolicy,
     ThienKhongPolicy,
+    ThienLaDiaVongPolicy,
     ThienMaPolicy,
     ThienQuanThienPhucPolicy,
     ThienTaiThienThoPolicy,
+    ThienThuongThienSuPolicy,
     VanXuongVanKhucPolicy,
     VerificationStatus,
 )
@@ -224,6 +229,34 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         ThienKhocThienHuPolicy.YEAR_BRANCH_FROM_NGO_SYMMETRIC.value,
         "Cùng khởi Ngọ năm Tý: Khốc đếm nghịch, Hư đếm thuận theo chi năm. Đồng "
         "cung tại Ngọ (năm Tý) và Tý (năm Ngọ).",
+    ),
+    RuleId.PHA_TOAI: _nam_phai_rule(
+        RuleId.PHA_TOAI,
+        PhaToaiPolicy.YEAR_BRANCH_GROUP.value,
+        "Tứ chính → Tỵ, tứ sinh → Sửu, tứ mộ → Dậu. Cả ba kết quả đều nằm trong tam "
+        "hợp Tỵ–Dậu–Sửu, một đặc điểm dễ kiểm.",
+    ),
+    RuleId.THIEN_HINH_THIEN_DIEU: _nam_phai_rule(
+        RuleId.THIEN_HINH_THIEN_DIEU,
+        ThienHinhThienDieuPolicy.LUNAR_MONTH_DAU_AND_SUU.value,
+        "Thiên Hình khởi Dậu, Thiên Diêu khởi Sửu, cùng đếm thuận theo tháng âm. "
+        "Hai sao luôn cách nhau 8 cung.",
+    ),
+    RuleId.THIEN_LA_DIA_VONG: _nam_phai_rule(
+        RuleId.THIEN_LA_DIA_VONG,
+        ThienLaDiaVongPolicy.FIXED_THIN_AND_TUAT.value,
+        "Cố định: Thiên La tại Thìn, Địa Võng tại Tuất. Không phụ thuộc ngày sinh.",
+    ),
+    RuleId.THIEN_THUONG_THIEN_SU: _nam_phai_rule(
+        RuleId.THIEN_THUONG_THIEN_SU,
+        ThienThuongThienSuPolicy.NO_BOC_AND_TAT_ACH.value,
+        "Thiên Thương tại cung Nô Bộc, Thiên Sứ tại cung Tật Ách. Gắn vào cung, "
+        "nhưng engine trả về địa chi của cung đó.",
+    ),
+    RuleId.DAU_QUAN: _nam_phai_rule(
+        RuleId.DAU_QUAN,
+        DauQuanPolicy.THAI_TUE_MONTH_REVERSE_HOUR_FORWARD.value,
+        "Từ Thái Tuế đếm nghịch tới tháng sinh, rồi từ cung đó đếm thuận tới giờ sinh.",
     ),
     RuleId.FOUR_TRANSFORMATIONS: RuleBinding(
         rule=RuleId.FOUR_TRANSFORMATIONS,

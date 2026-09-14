@@ -21,12 +21,12 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
-| Phase 6 — An sao | 🟡 **67 sao** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
+| Phase 6 — An sao | 🟡 **88 sao** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
 
-Quality gate **đều xanh**: **780 test pass** (567 engine + 41 api + 172 web),
+Quality gate **đều xanh**: **843 test pass** (630 engine + 41 api + 172 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440.
@@ -72,6 +72,9 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
   Linh Tinh, Kiếp Sát, Cô Thần, Quả Tú, Thiên Không, Thiên Khốc, Thiên Hư — 6 luật mới.
   Tang Môn, Quan Phù, Bạch Hổ, Điếu Khách, Đại Hao, Tiểu Hao **tái dùng** vòng Thái Tuế
   và vòng Bác Sĩ, không viết luật mới.
+- **Phụ tinh nhóm 3 (`stars/placement_group3.py`)**: Phá Toái, Thiên Hình, Thiên Diêu,
+  Thiên La, Địa Võng, Thiên Thương, Thiên Sứ, Đẩu Quân. Đồng thời **gộp vòng Thái Tuế và
+  vòng Bác Sĩ về một nguồn tính** — trước đó mỗi vòng bị an từ hai chỗ khác nhau.
 - **Độ sáng (`stars/strength.py`)**: tra cứu `star_id + địa chi` đã nối xong, render
   dạng `THÁI ÂM (M)`. **Bảng 168 ô còn RỖNG** — phải do người thẩm định chép từ nguồn
   vào `stars/data/nam_phai_star_strength_v1.json`. Engine từ chối nạp bảng điền nửa vời.
@@ -253,11 +256,12 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   từ ấn bản. Chặn bởi Q2/Q3.
 - **Tứ Hóa hàng Canh đang chọn phương án 1.** Phương án 1 và 2 **đảo Khoa với Kỵ** —
   chọn nhầm lật cát tinh thành hung tinh trên mọi lá số sinh năm Canh. Cần Q3 quyết.
-- **Ngũ hành của sao: 25/67** (known 25 · disputed 4 · not recorded 38). Màu trên lá số
+- **Ngũ hành của sao: 25/88** (known 25 · disputed 4 · not recorded 59). Màu trên lá số
   là **ngũ hành**, không phải tốt/xấu: Địa Không, Địa Kiếp, Bạch Hổ đều vẽ mực trung
   tính; Hỏa Tinh đỏ vì nó **là** Hỏa. Nhóm 2 để trống toàn bộ (`NOT_RECORDED` — chưa tra được,
   khác với `DISPUTED` của Tham Lang/Cự Môn/Hữu Bật/Đào Hoa).
-- **3 sao vẫn chưa cài**: **Giải Thần** (DISPUTED — hai luật ứng viên, chưa có quyết
+- **4 sao vẫn chưa cài**: **Lưu Hà** (bảng can năm có chỗ bất quy tắc, không đối chiếu
+  được), **Giải Thần** (DISPUTED — hai luật ứng viên, chưa có quyết
   định để chọn), **Thiên Trù** và **Thiên Y** (không nêu lại được luật đáng tin). Để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các
   trường phái ghi khác nhau, vẽ bằng mực trung tính, không đoán.
   `make astrology-star-metadata-report`.

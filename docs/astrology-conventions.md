@@ -974,6 +974,73 @@ hành. 14 sao còn lại `NOT_RECORDED`.
 
 ---
 
+## 29. Phụ tinh nhóm 3 🟡 PENDING — **Nam phái**
+
+21 sao, nhưng **chỉ 5 luật mới**. Việc lớn nhất của mục này không phải thêm sao —
+mà là **gộp hai chu kỳ về một nguồn tính**.
+
+### Gộp chu kỳ: sửa một lỗi cấu trúc đang lớn dần
+
+Trước mục này, **vòng Bác Sĩ được an từ hai chỗ khác nhau** trong builder (Hỷ Thần
+ở nhóm 2, Đại/Tiểu Hao ở nhóm sát tinh), và **vòng Thái Tuế từ hai chỗ khác** nữa.
+Mỗi lần một nhóm mới xin vài sao của chu kỳ, lại thêm một chỗ gọi.
+
+Đó chính là cách một chu kỳ có hai cách tính rồi lặng lẽ lệch nhau. Nay mỗi chu kỳ
+được đi **trọn một lần, ở một chỗ**, và mọi sao chỉ là một offset trong đó.
+
+| Chu kỳ | Neo | Số sao |
+| --- | --- | --- |
+| Vòng Thái Tuế | chi năm | 12/12 |
+| Vòng Bác Sĩ | **Lộc Tồn**, chiều theo âm dương nam nữ | 12/12 |
+
+Việc gộp này làm lộ ra **Thái Tuế** và **Tuế Phá** chưa có trong catalog — engine
+cảnh báo thay vì im lặng vẽ mã sao. Hai sao này không nằm trong danh sách yêu cầu
+nhưng có trên mọi lá số, nên đã được bổ sung.
+
+### Năm luật mới (8 sao)
+
+| Luật | Sao | Cách an | Phụ thuộc |
+| --- | --- | --- | --- |
+| `pha_toai` | Phá Toái | Tứ chính → Tỵ, tứ sinh → Sửu, tứ mộ → Dậu | chi năm |
+| `thien_hinh_thien_dieu` | Thiên Hình, Thiên Diêu | Khởi **Dậu** và **Sửu**, thuận theo tháng âm | tháng âm |
+| `thien_la_dia_vong` | Thiên La, Địa Võng | **Cố định** tại Thìn và Tuất | — |
+| `thien_thuong_thien_su` | Thiên Thương, Thiên Sứ | Tại **cung Nô Bộc** và **cung Tật Ách** | vị trí cung |
+| `dau_quan` | Đẩu Quân | Từ Thái Tuế nghịch tới tháng, rồi thuận tới giờ | chi năm + tháng + giờ |
+
+**Thiên La / Địa Võng là hằng số, không phải hàm** — để không ai tưởng chúng phụ
+thuộc ngày sinh.
+
+**Thiên Thương / Thiên Sứ gắn vào *cung*, nhưng engine vẫn trả về *địa chi***. Cung
+nào nằm ở địa chi nào là việc engine đã biết; frontend tuyệt đối không được tự suy.
+
+### Ba bất biến kiểm được
+
+1. **Phá Toái luôn nằm trong tam hợp Tỵ–Dậu–Sửu** — cả ba nhánh của bảng.
+2. **Thiên Hình và Thiên Diêu luôn cách nhau 8 cung.**
+3. Thiên La luôn ở Thìn, Địa Võng luôn ở Tuất.
+
+### Quan Phù ≠ Quan Phủ
+
+Hai sao khác nhau, thuộc hai chu kỳ khác nhau:
+
+| Sao | Chu kỳ | Mã |
+| --- | --- | --- |
+| **Quan Phù** 官符 | vòng Thái Tuế, +4 | `QUAN_PHU_TT` |
+| **Quan Phủ** 官府 | vòng Bác Sĩ, +11 | `QUAN_PHU_BS` |
+
+### Sao trong danh sách nhưng **CHƯA cài**
+
+**Lưu Hà** — bảng theo can năm. Người viết code nêu lại được một bảng nhưng phát
+hiện **một chỗ bất quy tắc** trong đó (cặp Canh/Tân phá vỡ quy luật của bốn cặp
+trước), và **không có cấu trúc nội tại nào để đối chiếu** như Quốc Ấn hay Đường Phù.
+Đó là dấu hiệu bảng có thể đã nhớ sai, nên không cài. Cần bảng từ ấn bản đã chốt.
+
+### Ngũ hành: **0/21**
+
+Toàn bộ `NOT_RECORDED`.
+
+---
+
 ## 21. Sổ mâu thuẫn giữa các nguồn
 
 Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
@@ -994,6 +1061,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 12 | §15 Tứ Hóa | Hàng Canh có 3 biến thể, hai trong số đó đảo Khoa↔Kỵ; hàng Mậu và Nhâm khác nhau ở Hóa Khoa | 🟡 đã chọn phương án 1 cho Canh, Hữu Bật cho Mậu, Tả Phù cho Nhâm — đều PROVISIONAL, Q7 vẫn mở |
 | 13 | §27 Phụ tinh 2 | Ân Quang/Thiên Quý: bước "lùi 1 cung" có bản ghi khác; Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của từng luật |
 | 14 | §28 Sát tinh 1 | Chiều đếm Hỏa Tinh / Linh Tinh: theo âm dương nam nữ hay luôn thuận | 🟡 chọn theo âm dương nam nữ, ghi cách đọc đối lập trong note |
+| 15 | §29 Phụ tinh 3 | Lưu Hà: bảng theo can năm có chỗ bất quy tắc, không đối chiếu được | 🔴 chưa cài — cần bảng từ ấn bản |
 
 ---
 

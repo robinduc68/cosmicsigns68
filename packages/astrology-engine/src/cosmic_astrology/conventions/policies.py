@@ -83,6 +83,11 @@ class RuleId(StrEnum):
     CO_THAN_QUA_TU = "co_than_qua_tu"
     THIEN_KHONG = "thien_khong"
     THIEN_KHOC_THIEN_HU = "thien_khoc_thien_hu"
+    PHA_TOAI = "pha_toai"
+    THIEN_HINH_THIEN_DIEU = "thien_hinh_thien_dieu"
+    THIEN_LA_DIA_VONG = "thien_la_dia_vong"
+    THIEN_THUONG_THIEN_SU = "thien_thuong_thien_su"
+    DAU_QUAN = "dau_quan"
     STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
@@ -341,6 +346,40 @@ class ThienKhocThienHuPolicy(StrEnum):
     """Thiên Khốc / Thiên Hư: cặp đối xứng qua trục Tý–Ngọ, khởi Ngọ năm Tý."""
 
     YEAR_BRANCH_FROM_NGO_SYMMETRIC = "YEAR_BRANCH_FROM_NGO_SYMMETRIC"
+
+
+class PhaToaiPolicy(StrEnum):
+    """Phá Toái theo nhóm chi năm: tứ chính → Tỵ, tứ sinh → Sửu, tứ mộ → Dậu."""
+
+    YEAR_BRANCH_GROUP = "YEAR_BRANCH_GROUP"
+
+
+class ThienHinhThienDieuPolicy(StrEnum):
+    """Thiên Hình / Thiên Diêu theo tháng âm. Luôn cách nhau 8 cung."""
+
+    LUNAR_MONTH_DAU_AND_SUU = "LUNAR_MONTH_DAU_AND_SUU"
+
+
+class ThienLaDiaVongPolicy(StrEnum):
+    """Thiên La tại Thìn, Địa Võng tại Tuất — **cố định**, không phụ thuộc ngày sinh."""
+
+    FIXED_THIN_AND_TUAT = "FIXED_THIN_AND_TUAT"
+
+
+class ThienThuongThienSuPolicy(StrEnum):
+    """Thiên Thương tại cung Nô Bộc, Thiên Sứ tại cung Tật Ách.
+
+    Gắn vào **cung**, nhưng engine vẫn trả về địa chi — cung nào ở địa chi nào là
+    việc engine đã biết, và frontend không được tự suy.
+    """
+
+    NO_BOC_AND_TAT_ACH = "NO_BOC_AND_TAT_ACH"
+
+
+class DauQuanPolicy(StrEnum):
+    """Đẩu Quân: từ Thái Tuế đếm nghịch tới tháng sinh, rồi thuận tới giờ sinh."""
+
+    THAI_TUE_MONTH_REVERSE_HOUR_FORWARD = "THAI_TUE_MONTH_REVERSE_HOUR_FORWARD"
 
 
 class FourTransformationsPolicy(StrEnum):

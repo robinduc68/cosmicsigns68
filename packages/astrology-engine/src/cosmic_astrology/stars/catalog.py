@@ -636,6 +636,141 @@ _MALEFIC_GROUP_1: tuple[StarDefinition, ...] = (
     ),
 )
 
+#: Phụ tinh nhóm 3. Chín sao đầu hoàn tất vòng Bác Sĩ, hai sao tiếp hoàn tất
+#: phần vòng Thái Tuế nhóm này cần — cả hai chu kỳ vẫn chỉ có MỘT nguồn tính.
+#: "Quan Phủ" (vòng Bác Sĩ) khác "Quan Phù" (vòng Thái Tuế) — hai sao, hai chữ.
+_SUPPORTING_GROUP_3: tuple[StarDefinition, ...] = (
+    _minor(
+        "BAC_SI", "Bác Sĩ", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "LUC_SI", "Lực Sĩ", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THANH_LONG", "Thanh Long", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "TUONG_QUAN", "Tướng Quân", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "TAU_THU", "Tấu Thư", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "PHI_LIEM", "Phi Liêm", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "BENH_PHU", "Bệnh Phù", StarCategory.MOURNING, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "PHUC_BINH", "Phục Binh", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "QUAN_PHU_BS", "Quan Phủ", StarCategory.LEGAL, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    # Hai sao này KHÔNG nằm trong danh sách yêu cầu, nhưng đi trọn vòng Thái Tuế thì
+    # chúng được an — và chúng là sao thật, có trên mọi lá số. Bỏ qua chỉ vì không
+    # được nhắc tên sẽ để lại hai ô trống khó giải thích.
+    _minor(
+        "THAI_TUE", "Thái Tuế", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "TUE_PHA", "Tuế Phá", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "TU_PHU", "Tử Phù", StarCategory.MOURNING, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "TRUC_PHU", "Trực Phù", StarCategory.LEGAL, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "PHA_TOAI", "Phá Toái", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_HINH", "Thiên Hình", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_DIEU", "Thiên Diêu", StarCategory.ROMANCE, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_LA", "Thiên La", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "DIA_VONG", "Địa Võng", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_THUONG", "Thiên Thương", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_SU", "Thiên Sứ", StarCategory.MALEFIC, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "DAU_QUAN", "Đẩu Quân", StarCategory.OTHER, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+)
+
 #: Read-only so no caller can add a star at runtime.
 STAR_CATALOG: Mapping[str, StarDefinition] = MappingProxyType(
     {
@@ -646,6 +781,7 @@ STAR_CATALOG: Mapping[str, StarDefinition] = MappingProxyType(
             *_SUPPORTING_GROUP_2,
             *_SUPPORTING_GROUP_2B,
             *_MALEFIC_GROUP_1,
+            *_SUPPORTING_GROUP_3,
         )
     }
 )
