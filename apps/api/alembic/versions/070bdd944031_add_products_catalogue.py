@@ -11,8 +11,10 @@ import uuid
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
+
+from alembic import op
+
 revision: str = '070bdd944031'
 down_revision: str | None = 'f69828b34e88'
 branch_labels: str | Sequence[str] | None = None

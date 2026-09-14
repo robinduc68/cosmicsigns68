@@ -10,8 +10,10 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
+
+from alembic import op
+
 revision: str = 'f69828b34e88'
 down_revision: str | None = None
 branch_labels: str | Sequence[str] | None = None

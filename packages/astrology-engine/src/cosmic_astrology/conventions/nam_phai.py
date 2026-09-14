@@ -15,16 +15,23 @@ Hồ sơ kế thừa toàn bộ ràng buộc của hồ sơ chuẩn rồi ghi đ
 from __future__ import annotations
 
 from cosmic_astrology.conventions.policies import (
+    AnQuangThienQuyPolicy,
     DaoHoaPolicy,
     FourTransformationsPolicy,
+    HoaCaiPolicy,
     HongLoanThienHyPolicy,
     KinhDuongDaLaPolicy,
     LocTonPolicy,
+    LongTriPhuongCacPolicy,
     RuleId,
     StarStrengthPolicy,
+    TamThaiBatToaPolicy,
     TaPhuHuuBatPolicy,
+    ThaiTueCyclePolicy,
+    ThienDucNguyetDucPolicy,
     ThienKhoiThienVietPolicy,
     ThienMaPolicy,
+    ThienTaiThienThoPolicy,
     VanXuongVanKhucPolicy,
     VerificationStatus,
 )
@@ -100,6 +107,46 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         RuleId.HONG_LOAN_THIEN_HY,
         HongLoanThienHyPolicy.YEAR_BRANCH_MAO_REVERSE.value,
         "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung.",
+    ),
+    RuleId.LONG_TRI_PHUONG_CAC: _nam_phai_rule(
+        RuleId.LONG_TRI_PHUONG_CAC,
+        LongTriPhuongCacPolicy.YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE.value,
+        "Long Trì khởi Thìn đếm thuận theo chi năm; Phượng Các khởi Tuất đếm nghịch. "
+        "Hệ quả kiểm được: đồng cung tại Mùi (năm Mão) và Sửu (năm Dậu).",
+    ),
+    RuleId.TAM_THAI_BAT_TOA: _nam_phai_rule(
+        RuleId.TAM_THAI_BAT_TOA,
+        TamThaiBatToaPolicy.FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY.value,
+        "Tam Thai từ Tả Phù đếm thuận tới ngày âm; Bát Tọa từ Hữu Bật đếm nghịch. "
+        "Phụ thuộc vị trí Tả Phù / Hữu Bật, nên phải an sau nhóm 1.",
+    ),
+    RuleId.AN_QUANG_THIEN_QUY: _nam_phai_rule(
+        RuleId.AN_QUANG_THIEN_QUY,
+        AnQuangThienQuyPolicy.FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE.value,
+        "Ân Quang từ Văn Xương, Thiên Quý từ Văn Khúc: đếm thuận tới ngày âm rồi lùi "
+        "một cung. Bước 'lùi một cung' là chỗ các bản ghi khác nhau.",
+    ),
+    RuleId.THIEN_DUC_NGUYET_DUC: _nam_phai_rule(
+        RuleId.THIEN_DUC_NGUYET_DUC,
+        ThienDucNguyetDucPolicy.YEAR_BRANCH_DAU_AND_TY.value,
+        "Thiên Đức khởi Dậu, Nguyệt Đức khởi Tỵ, cùng đếm thuận theo chi năm. Hai sao "
+        "luôn cách nhau 4 cung. Một số bản an theo tháng âm thay vì chi năm.",
+    ),
+    RuleId.THAI_TUE_CYCLE: _nam_phai_rule(
+        RuleId.THAI_TUE_CYCLE,
+        ThaiTueCyclePolicy.YEAR_BRANCH_FORWARD.value,
+        "Vòng Thái Tuế khởi tại chi năm, đi thuận. Nhóm này CHỈ an Thiếu Dương, "
+        "Thiếu Âm, Long Đức, Phúc Đức; các sao còn lại thuộc nhóm sau.",
+    ),
+    RuleId.HOA_CAI: _nam_phai_rule(
+        RuleId.HOA_CAI,
+        HoaCaiPolicy.YEAR_BRANCH_TRINE_TOMB.value,
+        "Hoa Cái tại cung mộ của tam hợp chi năm. Luôn rơi vào tứ mộ.",
+    ),
+    RuleId.THIEN_TAI_THIEN_THO: _nam_phai_rule(
+        RuleId.THIEN_TAI_THIEN_THO,
+        ThienTaiThienThoPolicy.FROM_MENH_AND_THAN_BY_YEAR_BRANCH.value,
+        "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm.",
     ),
     RuleId.FOUR_TRANSFORMATIONS: RuleBinding(
         rule=RuleId.FOUR_TRANSFORMATIONS,

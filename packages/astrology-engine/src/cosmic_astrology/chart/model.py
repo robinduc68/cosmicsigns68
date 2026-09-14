@@ -72,6 +72,10 @@ class StarCategory(StrEnum):
     SUPPORTING = "SUPPORTING"
     MALEFIC = "MALEFIC"
     LITERARY = "LITERARY"
+    #: Quý nhân — sao chủ về danh vị, che chở. Tam Thai, Bát Tọa, Ân Quang…
+    NOBILITY = "NOBILITY"
+    #: Cát tinh chủ về phúc đức. Thiên Đức, Nguyệt Đức, Long Đức, Phúc Đức.
+    BLESSING = "BLESSING"
     ROMANCE = "ROMANCE"
     WEALTH = "WEALTH"
     TRANSFORMATION = "TRANSFORMATION"
@@ -83,16 +87,21 @@ class StarCategory(StrEnum):
 
 #: Display order inside a palace. Moves text on the page and implies no astrological
 #: weight. Supplied by the engine so the renderer stops inventing an ordering.
+#: Thứ tự đọc quen thuộc của một lá số in: chính tinh trước, rồi phụ tinh quan
+#: trọng, quý nhân và cát tinh, sau cùng là các sao lẻ và lưu tinh. **Chỉ là thứ tự
+#: chữ trên trang** — không hàm ý sức nặng tử vi nào.
 _CATEGORY_PRIORITY: dict[StarCategory, int] = {
     StarCategory.MAJOR: 0,
     StarCategory.TRANSFORMATION: 1,
     StarCategory.SUPPORTING: 2,
     StarCategory.MALEFIC: 3,
-    StarCategory.LITERARY: 4,
-    StarCategory.ROMANCE: 5,
-    StarCategory.WEALTH: 6,
-    StarCategory.OTHER: 7,
-    StarCategory.ANNUAL: 8,
+    StarCategory.NOBILITY: 4,
+    StarCategory.BLESSING: 5,
+    StarCategory.LITERARY: 6,
+    StarCategory.ROMANCE: 7,
+    StarCategory.WEALTH: 8,
+    StarCategory.OTHER: 9,
+    StarCategory.ANNUAL: 10,
 }
 
 

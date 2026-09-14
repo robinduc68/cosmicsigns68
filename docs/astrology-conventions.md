@@ -839,6 +839,62 @@ chờ ai ký duyệt:
 
 ---
 
+## 27. Phụ tinh nhóm 2 🟡 PENDING — **Nam phái**
+
+15 sao, 7 luật, tất cả trong `COSMIC_SIGNS_NAM_PHAI_V1` ở mức `PROVISIONAL`.
+Cài đặt: `stars/placement_group2.py`.
+
+| Luật | Sao | Cách an | Phụ thuộc |
+| --- | --- | --- | --- |
+| `long_tri_phuong_cac` | Long Trì, Phượng Các | Long Trì khởi **Thìn** thuận; Phượng Các khởi **Tuất** nghịch | chi năm |
+| `thien_duc_nguyet_duc` | Thiên Đức, Nguyệt Đức | Khởi **Dậu** và **Tỵ**, cùng đếm thuận | chi năm |
+| `hoa_cai` | Hoa Cái | Cung mộ của tam hợp chi năm | chi năm |
+| `thai_tue_cycle` | Thiếu Dương, Thiếu Âm, Long Đức, Phúc Đức | Vòng Thái Tuế khởi tại chi năm, đi thuận | chi năm |
+| `tam_thai_bat_toa` | Tam Thai, Bát Tọa | Từ **Tả Phù** thuận / **Hữu Bật** nghịch tới ngày âm | Tả Phù, Hữu Bật, ngày âm |
+| `an_quang_thien_quy` | Ân Quang, Thiên Quý | Từ **Văn Xương** / **Văn Khúc** thuận tới ngày âm, rồi **lùi 1 cung** | Văn Xương, Văn Khúc, ngày âm |
+| `thien_tai_thien_tho` | Thiên Tài, Thiên Thọ | Từ **cung Mệnh** / **cung Thân**, đếm thuận theo chi năm | Mệnh, Thân, chi năm |
+
+Sáu sao cuối phụ thuộc vị trí đã an, nên **nhóm 2 bắt buộc chạy sau nhóm 1**. Sao neo
+được **đọc lại từ lá số**, không tính lại — chỉ có một chỗ quyết định Tả Phù nằm đâu.
+
+### Bất biến kiểm được
+
+1. **Long Trì và Phượng Các đồng cung tại Mùi (năm Mão) và Sửu (năm Dậu)** — cùng
+   dạng đối xứng như Xương/Khúc.
+2. **Hoa Cái luôn ở tứ mộ** (Thìn Tuất Sửu Mùi).
+3. **Thiên Đức và Nguyệt Đức luôn cách nhau 4 cung.**
+4. Offset vòng Thái Tuế: Thiếu Dương +1, Thiếu Âm +3, Long Đức +7, Phúc Đức +9.
+
+### Vòng Thái Tuế — chỉ an 4/12 sao
+
+Vòng có 12 sao. Nhóm này cố ý **chỉ an bốn**; Tang Môn, Bạch Hổ, Quan Phù, Điếu Khách
+và các sao còn lại thuộc nhóm sau. `THAI_TUE_CYCLE` trong code liệt kê đủ 12 để offset
+đọc được, nhưng builder chỉ lấy bốn.
+
+### Ngũ hành: **0/15**
+
+Toàn bộ nhóm 2 để trống, đánh dấu `NOT_RECORDED` — **khác với `DISPUTED`**:
+
+| Trạng thái | Nghĩa | Việc cần làm |
+| --- | --- | --- |
+| `DISPUTED` | Các sách ghi khác nhau | Người thẩm định phải **chọn** |
+| `NOT_RECORDED` | Chưa tra được từ nguồn nào | Người thẩm định phải **tìm** |
+
+Gộp hai trạng thái này lại là đánh mất thông tin về việc cần làm tiếp, nên code cưỡng
+chế: để trống ngũ hành mà không nói rõ lý do thì `StarDefinition` từ chối khởi tạo.
+
+### Sao trong danh sách nhưng **CHƯA cài**
+
+12 sao sau được yêu cầu nhưng người viết code **không nêu được luật với độ tin cậy
+thật**, nên không cài — theo đúng §19: thà để trống còn hơn bịa một luật trông hợp lý.
+
+Thiên Quan · Thiên Phúc · Thiên Giải · Địa Giải · Giải Thần · Thai Phụ · Phong Cáo ·
+Quốc Ấn · Đường Phù · Thiên Trù · Thiên Y · Hỷ Thần
+
+Cần người thẩm định cung cấp luật từ ấn bản đã chốt (Q2/Q3).
+
+---
+
 ## 21. Sổ mâu thuẫn giữa các nguồn
 
 Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
@@ -857,6 +913,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 10 | §24 Tràng Sinh | Thổ cục khởi ở Thân (theo Thủy) hay Dần (theo Hỏa); chiều theo âm dương nam nữ hay theo âm dương Cục | 🟡 chọn cách đọc đa số, ghi cả hai vào policy |
 | 11 | §26 Phụ tinh 1 | Hữu Bật ghi Thổ hay Thủy; Đào Hoa ghi Mộc hay Thủy; can Canh trong bảng Khôi/Việt | 🟡 để trống 2 sao; Canh xếp cùng nhóm Giáp/Mậu, ghi rõ cách đọc đối lập |
 | 12 | §15 Tứ Hóa | Hàng Canh có 3 biến thể, hai trong số đó đảo Khoa↔Kỵ; hàng Mậu và Nhâm khác nhau ở Hóa Khoa | 🟡 đã chọn phương án 1 cho Canh, Hữu Bật cho Mậu, Tả Phù cho Nhâm — đều PROVISIONAL, Q7 vẫn mở |
+| 13 | §27 Phụ tinh 2 | Ân Quang/Thiên Quý: bước "lùi 1 cung" có bản ghi khác; Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của từng luật |
 
 ---
 

@@ -21,12 +21,12 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
-| Phase 6 — An sao | 🟡 27 sao + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
+| Phase 6 — An sao | 🟡 **42 sao** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
 
-Quality gate **đều xanh**: **658 test pass** (445 engine + 41 api + 172 web),
+Quality gate **đều xanh**: **705 test pass** (492 engine + 41 api + 172 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440.
@@ -63,6 +63,10 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 - **Phụ tinh nhóm 1 (`stars/placement.py`)** theo Nam phái: Xương Khúc, Tả Hữu, Khôi Việt,
   Lộc Tồn, Kình Đà, Đào Hoa, Hồng Loan, Thiên Hỷ, Thiên Mã. Mỗi hàm trả về **một địa chi**;
   tên cung và toạ độ lưới là hai chuyện khác. 4 bất biến kiểm được không cần nguồn ngoài.
+- **Phụ tinh nhóm 2 (`stars/placement_group2.py`)**: Long Trì, Phượng Các, Tam Thai,
+  Bát Tọa, Ân Quang, Thiên Quý, Thiên Đức, Nguyệt Đức, Long Đức, Phúc Đức, Thiếu Dương,
+  Thiếu Âm, Hoa Cái, Thiên Tài, Thiên Thọ. Sáu sao phụ thuộc vị trí nhóm 1 nên **đọc lại
+  sao neo từ lá số**, không tính lại.
 - **Độ sáng (`stars/strength.py`)**: tra cứu `star_id + địa chi` đã nối xong, render
   dạng `THÁI ÂM (M)`. **Bảng 168 ô còn RỖNG** — phải do người thẩm định chép từ nguồn
   vào `stars/data/nam_phai_star_strength_v1.json`. Engine từ chối nạp bảng điền nửa vời.
@@ -244,7 +248,11 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   từ ấn bản. Chặn bởi Q2/Q3.
 - **Tứ Hóa hàng Canh đang chọn phương án 1.** Phương án 1 và 2 **đảo Khoa với Kỵ** —
   chọn nhầm lật cát tinh thành hung tinh trên mọi lá số sinh năm Canh. Cần Q3 quyết.
-- **Ngũ hành của sao: 23/27**. Để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các
+- **Ngũ hành của sao: 23/42**. Nhóm 2 để trống toàn bộ (`NOT_RECORDED` — chưa tra được,
+  khác với `DISPUTED` của Tham Lang/Cự Môn/Hữu Bật/Đào Hoa).
+- **12 sao được yêu cầu nhưng CHƯA cài** vì chưa nêu được luật đáng tin: Thiên Quan,
+  Thiên Phúc, Thiên Giải, Địa Giải, Giải Thần, Thai Phụ, Phong Cáo, Quốc Ấn, Đường Phù,
+  Thiên Trù, Thiên Y, Hỷ Thần. Cần người thẩm định cấp luật từ ấn bản. Để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các
   trường phái ghi khác nhau, vẽ bằng mực trung tính, không đoán.
   `make astrology-star-metadata-report`.
 - **Hai phân kỳ trường phái đang chọn theo cách đọc đa số**, cả hai cách đều ghi trong

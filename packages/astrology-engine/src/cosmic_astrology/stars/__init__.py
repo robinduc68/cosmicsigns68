@@ -7,6 +7,7 @@ birth moment.
 
 from cosmic_astrology.stars.catalog import (
     STAR_CATALOG,
+    BlankReason,
     CategoryCoverage,
     MetadataCoverage,
     Polarity,
@@ -18,6 +19,7 @@ from cosmic_astrology.stars.catalog import (
 
 __all__ = [
     "STAR_CATALOG",
+    "BlankReason",
     "CategoryCoverage",
     "MetadataCoverage",
     "Polarity",

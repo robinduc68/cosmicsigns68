@@ -61,6 +61,7 @@ from cosmic_astrology.conventions.profile import (
 )
 from cosmic_astrology.cycles import major_cycle, trang_sinh
 from cosmic_astrology.stars import four_transformations, placement, strength
+from cosmic_astrology.stars import placement_group2 as group2
 from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
@@ -336,6 +337,15 @@ def build_chart(
             profile=profile,
             trace_log=log,
         )
+        _place_supporting_stars_group_2(
+            by_branch,
+            year_branch=pillars.year.chi_index,
+            lunar_day=lunar.day,
+            menh_branch=menh_branch,
+            than_branch=than_branch,
+            profile=profile,
+            trace_log=log,
+        )
         # Sau cùng: Tứ Hóa gắn vào sao đã an, nên phải chạy sau cả chính tinh lẫn phụ tinh.
         _apply_four_transformations(
             by_branch, year_stem=pillars.year.can_index, profile=profile, trace_log=log
@@ -522,6 +532,104 @@ def _place_supporting_stars(
         placed.append(("DA_LA", RuleId.KINH_DUONG_DA_LA, placement.place_da_la(loc_ton)))
 
     for star_id, rule, branch in placed:
+        star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)
+        by_branch[branch].stars.append(star)
+        if trace_log is not None:
+            trace_log.record(profile, rule, f"{star.name} → {CHI[branch]}", **inputs)
+
+
+#: Nhóm phụ tinh 2. Sáu sao đầu chỉ cần chi năm; sáu sao sau phụ thuộc vị trí sao
+#: hoặc cung đã an, nên nhóm này **bắt buộc chạy sau nhóm 1**.
+_GROUP_2_FROM_YEAR_BRANCH: tuple[tuple[str, RuleId, Callable[[int], int]], ...] = (
+    ("LONG_TRI", RuleId.LONG_TRI_PHUONG_CAC, group2.place_long_tri),
+    ("PHUONG_CAC", RuleId.LONG_TRI_PHUONG_CAC, group2.place_phuong_cac),
+    ("THIEN_DUC", RuleId.THIEN_DUC_NGUYET_DUC, group2.place_thien_duc),
+    ("NGUYET_DUC", RuleId.THIEN_DUC_NGUYET_DUC, group2.place_nguyet_duc),
+    ("HOA_CAI", RuleId.HOA_CAI, group2.place_hoa_cai),
+)
+
+#: Bốn sao của vòng Thái Tuế mà nhóm này an. Vòng có 12 sao; tám sao còn lại thuộc
+#: nhóm sau và cố ý không có mặt ở đây.
+_GROUP_2_THAI_TUE: tuple[str, ...] = ("THIEU_DUONG", "THIEU_AM", "LONG_DUC", "PHUC_DUC_STAR")
+
+
+def _place_supporting_stars_group_2(
+    by_branch: dict[int, Palace],
+    *,
+    year_branch: int,
+    lunar_day: int,
+    menh_branch: int,
+    than_branch: int,
+    profile: ConventionProfile,
+    trace_log: TraceLog | None = None,
+) -> None:
+    """Place phụ tinh nhóm 2.
+
+    Six of these are positioned relative to a star that group 1 already placed
+    (Tả Phù, Hữu Bật, Văn Xương, Văn Khúc) or to cung Mệnh / cung Thân. Those
+    anchors are read back off the chart rather than recomputed, so there is only
+    one place that decides where Tả Phù sits.
+
+    A profile that has not named a school leaves these rules unresolved and the
+    chart simply carries no group-2 stars.
+    """
+    if profile.binding(RuleId.LONG_TRI_PHUONG_CAC).is_unresolved:
+        return
+
+    anchors = {star.id: branch for branch, palace in by_branch.items() for star in palace.stars}
+    placed: list[tuple[str, RuleId, int, dict[str, object]]] = []
+
+    for star_id, rule, place in _GROUP_2_FROM_YEAR_BRANCH:
+        year_inputs: dict[str, object] = {"chi_nam": CHI[year_branch]}
+        placed.append((star_id, rule, place(year_branch), year_inputs))
+
+    for star_id in _GROUP_2_THAI_TUE:
+        branch = group2.place_thai_tue_member(year_branch, star_id)
+        cycle_inputs: dict[str, object] = {"chi_nam": CHI[year_branch], "vong": "Thái Tuế"}
+        placed.append((star_id, RuleId.THAI_TUE_CYCLE, branch, cycle_inputs))
+
+    #: ``(mã sao, luật, mã sao neo, hàm)`` — sao neo do nhóm 1 an.
+    anchored: tuple[tuple[str, RuleId, str, Callable[[int, int], int]], ...] = (
+        ("TAM_THAI", RuleId.TAM_THAI_BAT_TOA, "TA_PHU", group2.place_tam_thai),
+        ("BAT_TOA", RuleId.TAM_THAI_BAT_TOA, "HUU_BAT", group2.place_bat_toa),
+        ("AN_QUANG", RuleId.AN_QUANG_THIEN_QUY, "VAN_XUONG", group2.place_an_quang),
+        ("THIEN_QUY", RuleId.AN_QUANG_THIEN_QUY, "VAN_KHUC", group2.place_thien_quy),
+    )
+    for star_id, rule, anchor_id, place_from_anchor in anchored:
+        anchor_branch = anchors.get(anchor_id)
+        if anchor_branch is None:
+            # Nhóm 1 chưa an sao neo — không đoán một vị trí thay thế.
+            _logger.warning(
+                "Thiếu sao neo %s nên không an được %s.", anchor_id, star_id
+            )
+            continue
+        placed.append(
+            (
+                star_id,
+                rule,
+                place_from_anchor(anchor_branch, lunar_day),
+                {"sao_neo": f"{anchor_id}@{CHI[anchor_branch]}", "ngay_am": lunar_day},
+            )
+        )
+
+    placed.append(
+        (
+            "THIEN_TAI",
+            RuleId.THIEN_TAI_THIEN_THO,
+            group2.place_thien_tai(menh_branch, year_branch),
+            {"cung_menh": CHI[menh_branch], "chi_nam": CHI[year_branch]},
+        )
+    )
+    placed.append(
+        (
+            "THIEN_THO",
+            RuleId.THIEN_TAI_THIEN_THO,
+            group2.place_thien_tho(than_branch, year_branch),
+            {"cung_than": CHI[than_branch], "chi_nam": CHI[year_branch]},
+        )
+    )
+
+    for star_id, rule, branch, inputs in placed:
         star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)
         by_branch[branch].stars.append(star)
         if trace_log is not None:

@@ -21,6 +21,7 @@ from cosmic_astrology.conventions.policies import RuleId, VerificationStatus
 from cosmic_astrology.conventions.provenance import SourceReference
 from cosmic_astrology.stars import (
     STAR_CATALOG,
+    BlankReason,
     Polarity,
     StarDefinition,
     canonical_form,
@@ -69,7 +70,7 @@ def test_every_star_the_engine_can_place_exists_in_the_catalog() -> None:
     placed = {s["id"] for s in _placed_stars()}
     uncatalogued = [sid for sid in placed if definition_for(sid) is None]
     assert uncatalogued == [], f"thiếu mục trong catalog: {uncatalogued}"
-    assert len(placed) == 27
+    assert len(placed) == 42
 
 
 def test_the_catalog_holds_all_fourteen_major_stars() -> None:
@@ -136,17 +137,27 @@ def test_every_entry_explains_itself(definition: StarDefinition) -> None:
 
 def test_stars_without_an_element_record_the_competing_readings() -> None:
     """Trống không được phép là im lặng: phải nói rõ các trường phái ghi gì."""
-    blank = [d for d in STAR_CATALOG.values() if not d.has_element]
-    assert sorted(d.vietnamese_name for d in blank) == [
+    disputed = [d for d in STAR_CATALOG.values() if d.blank_reason is BlankReason.DISPUTED]
+    assert sorted(d.vietnamese_name for d in disputed) == [
         "Cự Môn",
         "Hữu Bật",
         "Tham Lang",
         "Đào Hoa",
     ]
-    for definition in blank:
+    for definition in disputed:
         assert len(definition.alternatives) >= 2
         assert "CHƯA GHI NHẬN" in definition.note
         assert definition.verification_status is VerificationStatus.UNVERIFIED
+
+
+def test_a_blank_element_always_says_why_it_is_blank() -> None:
+    """Tranh chấp và chưa tra cứu là hai việc khác nhau: một bên phải CHỌN, một
+    bên phải TÌM. Gộp lại là đánh mất thông tin về việc cần làm tiếp."""
+    for definition in STAR_CATALOG.values():
+        if definition.has_element:
+            assert definition.blank_reason is None, definition.vietnamese_name
+        else:
+            assert definition.blank_reason is not None, definition.vietnamese_name
 
 
 def test_nothing_is_verified_while_no_reference_edition_is_selected() -> None:
@@ -188,7 +199,22 @@ def test_an_entry_without_a_reason_is_rejected() -> None:
         )
 
 
-def test_a_blank_element_without_alternatives_is_rejected() -> None:
+def test_a_blank_element_without_a_reason_is_rejected() -> None:
+    with pytest.raises(ValueError, match="phải nói RÕ vì sao"):
+        StarDefinition(
+            id="X",
+            canonical_name="Sao X",
+            vietnamese_name="Sao X",
+            category=MAJOR,
+            element=None,
+            polarity=None,
+            verification_status=VerificationStatus.UNVERIFIED,
+            provenance=SourceReference(note="thử"),
+            note="chưa rõ",
+        )
+
+
+def test_claiming_a_dispute_without_listing_the_readings_is_rejected() -> None:
     with pytest.raises(ValueError, match="mâu thuẫn"):
         StarDefinition(
             id="X",
@@ -201,6 +227,7 @@ def test_a_blank_element_without_alternatives_is_rejected() -> None:
             provenance=SourceReference(note="thử"),
             note="chưa rõ",
             alternatives=("chỉ một cách đọc",),
+            blank_reason=BlankReason.DISPUTED,
         )
 
 
@@ -218,6 +245,7 @@ def test_a_star_without_an_element_cannot_claim_to_be_provisional() -> None:
             provenance=SourceReference(note="thử"),
             note="chưa rõ",
             alternatives=("cách đọc A", "cách đọc B"),
+            blank_reason=BlankReason.DISPUTED,
         )
 
 
@@ -278,7 +306,7 @@ def test_every_category_has_a_row_even_at_zero() -> None:
     coverage = metadata_coverage()
     assert {row.category for row in coverage.categories} == set(StarCategory)
     # Chưa có sao nào thuộc các loại này — vẫn phải có hàng trong báo cáo.
-    for category in (StarCategory.TRANSFORMATION, StarCategory.ANNUAL, StarCategory.OTHER):
+    for category in (StarCategory.TRANSFORMATION, StarCategory.ANNUAL):
         assert coverage.by_category(category).total == 0
 
 
@@ -309,7 +337,7 @@ def test_definition_for_returns_none_for_an_uncatalogued_star() -> None:
 def test_the_chart_dto_carries_catalogued_metadata() -> None:
     stars = _placed_stars()
     # 14 chính tinh + 13 phụ tinh nhóm 1 (Nam phái).
-    assert len(stars) == 27
+    assert len(stars) == 42
     for star in stars:
         definition = definition_for(star["id"])
         assert definition is not None
@@ -321,13 +349,12 @@ def test_the_chart_dto_carries_catalogued_metadata() -> None:
 
 
 def test_the_dto_never_invents_an_element() -> None:
+    """Sao chưa tra được ngũ hành thì ra null — không có giá trị nào được đoán."""
     stars = _placed_stars()
-    assert sorted(s["name"] for s in stars if not s["element"]) == [
-        "Cự Môn",
-        "Hữu Bật",
-        "Tham Lang",
-        "Đào Hoa",
-    ]
+    blank = {s["name"] for s in stars if not s["element"]}
+    catalogued_blank = {d.vietnamese_name for d in STAR_CATALOG.values() if not d.has_element}
+    assert blank <= catalogued_blank
+    assert {"Tham Lang", "Cự Môn", "Hữu Bật", "Đào Hoa"} <= blank
 
 
 def test_missing_element_stays_null_all_the_way_through() -> None:

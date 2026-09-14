@@ -223,7 +223,7 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                     verification=V.UNVERIFIED,
                     blocked_by=("Q1",),
                     note=(
-                        "Hồ sơ chuẩn không nêu trường phái, nên không an nhóm phụ tinh 1. "
+                        "Hồ sơ chuẩn không nêu trường phái, nên không an phụ tinh nào. "
                         "Xem COSMIC_SIGNS_NAM_PHAI_V1."
                     ),
                 )
@@ -236,6 +236,13 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                     RuleId.DAO_HOA,
                     RuleId.HONG_LOAN_THIEN_HY,
                     RuleId.THIEN_MA,
+                    RuleId.LONG_TRI_PHUONG_CAC,
+                    RuleId.TAM_THAI_BAT_TOA,
+                    RuleId.AN_QUANG_THIEN_QUY,
+                    RuleId.THIEN_DUC_NGUYET_DUC,
+                    RuleId.THAI_TUE_CYCLE,
+                    RuleId.HOA_CAI,
+                    RuleId.THIEN_TAI_THIEN_THO,
                 )
             ),
             _rule(

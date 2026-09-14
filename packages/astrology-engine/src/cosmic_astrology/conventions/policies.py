@@ -65,6 +65,13 @@ class RuleId(StrEnum):
     DAO_HOA = "dao_hoa"
     HONG_LOAN_THIEN_HY = "hong_loan_thien_hy"
     THIEN_MA = "thien_ma"
+    LONG_TRI_PHUONG_CAC = "long_tri_phuong_cac"
+    TAM_THAI_BAT_TOA = "tam_thai_bat_toa"
+    AN_QUANG_THIEN_QUY = "an_quang_thien_quy"
+    THIEN_DUC_NGUYET_DUC = "thien_duc_nguyet_duc"
+    THAI_TUE_CYCLE = "thai_tue_cycle"
+    HOA_CAI = "hoa_cai"
+    THIEN_TAI_THIEN_THO = "thien_tai_thien_tho"
     STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
@@ -183,6 +190,58 @@ class TuViPolicy(StrEnum):
 class MajorStarPolicy(StrEnum):
     #: Tử Vi chain counter-clockwise, Thiên Phủ chain clockwise about Dần–Thân.
     TWO_CHAINS_CLASSICAL = "TWO_CHAINS_CLASSICAL"
+
+
+class LongTriPhuongCacPolicy(StrEnum):
+    """Long Trì / Phượng Các theo chi năm.
+
+    Hệ quả kiểm được: hai sao đồng cung tại Mùi (năm Mão) và Sửu (năm Dậu).
+    """
+
+    YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE = "YEAR_BRANCH_THIN_FORWARD_TUAT_REVERSE"
+
+
+class TamThaiBatToaPolicy(StrEnum):
+    """Tam Thai / Bát Tọa theo Tả Phù, Hữu Bật và ngày âm."""
+
+    FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY = "FROM_TA_PHU_HUU_BAT_BY_LUNAR_DAY"
+
+
+class AnQuangThienQuyPolicy(StrEnum):
+    """Ân Quang / Thiên Quý theo Văn Xương, Văn Khúc và ngày âm.
+
+    Đếm thuận tới ngày sinh rồi **lùi một cung** — chỗ này có bản ghi khác.
+    """
+
+    FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE = "FROM_XUONG_KHUC_BY_LUNAR_DAY_BACK_ONE"
+
+
+class ThienDucNguyetDucPolicy(StrEnum):
+    """Thiên Đức / Nguyệt Đức theo chi năm."""
+
+    YEAR_BRANCH_DAU_AND_TY = "YEAR_BRANCH_DAU_AND_TY"
+
+
+class ThaiTueCyclePolicy(StrEnum):
+    """Vòng Thái Tuế, khởi tại chi năm và đi thuận.
+
+    Nhóm này **chỉ an bốn sao** trong vòng: Thiếu Dương, Thiếu Âm, Long Đức,
+    Phúc Đức. Các sao còn lại thuộc nhóm sau.
+    """
+
+    YEAR_BRANCH_FORWARD = "YEAR_BRANCH_FORWARD"
+
+
+class HoaCaiPolicy(StrEnum):
+    """Hoa Cái theo tam hợp chi năm. Luôn rơi vào tứ mộ."""
+
+    YEAR_BRANCH_TRINE_TOMB = "YEAR_BRANCH_TRINE_TOMB"
+
+
+class ThienTaiThienThoPolicy(StrEnum):
+    """Thiên Tài / Thiên Thọ tính từ cung Mệnh và cung Thân theo chi năm."""
+
+    FROM_MENH_AND_THAN_BY_YEAR_BRANCH = "FROM_MENH_AND_THAN_BY_YEAR_BRANCH"
 
 
 class FourTransformationsPolicy(StrEnum):
