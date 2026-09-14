@@ -77,6 +77,8 @@ class StarCategory(StrEnum):
     #: Cát tinh chủ về phúc đức. Thiên Đức, Nguyệt Đức, Long Đức, Phúc Đức.
     BLESSING = "BLESSING"
     ROMANCE = "ROMANCE"
+    #: Sao chủ về quyền bính, ấn tín. Quốc Ấn, Đường Phù.
+    AUTHORITY = "AUTHORITY"
     WEALTH = "WEALTH"
     TRANSFORMATION = "TRANSFORMATION"
     ANNUAL = "ANNUAL"
@@ -98,10 +100,11 @@ _CATEGORY_PRIORITY: dict[StarCategory, int] = {
     StarCategory.NOBILITY: 4,
     StarCategory.BLESSING: 5,
     StarCategory.LITERARY: 6,
-    StarCategory.ROMANCE: 7,
-    StarCategory.WEALTH: 8,
-    StarCategory.OTHER: 9,
-    StarCategory.ANNUAL: 10,
+    StarCategory.AUTHORITY: 7,
+    StarCategory.ROMANCE: 8,
+    StarCategory.WEALTH: 9,
+    StarCategory.OTHER: 10,
+    StarCategory.ANNUAL: 11,
 }
 
 

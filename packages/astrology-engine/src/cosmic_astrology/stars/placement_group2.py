@@ -26,19 +26,29 @@ mức ``PROVISIONAL`` — xem ``docs/astrology-conventions.md`` §27.
 
 from __future__ import annotations
 
-from cosmic_astrology.calendar.sexagenary import CHI
+from cosmic_astrology.calendar.sexagenary import CAN, CHI
 
 __all__ = [
+    "BAC_SI_CYCLE",
     "THAI_TUE_CYCLE",
     "place_an_quang",
+    "place_bac_si_member",
     "place_bat_toa",
+    "place_dia_giai",
+    "place_duong_phu",
     "place_hoa_cai",
     "place_long_tri",
     "place_nguyet_duc",
+    "place_phong_cao",
     "place_phuong_cac",
+    "place_quoc_an",
     "place_tam_thai",
+    "place_thai_phu",
     "place_thai_tue_member",
     "place_thien_duc",
+    "place_thien_giai",
+    "place_thien_phuc",
+    "place_thien_quan",
     "place_thien_quy",
     "place_thien_tai",
     "place_thien_tho",
@@ -185,3 +195,128 @@ def place_thien_tai(menh_branch: int, year_branch: int) -> int:
 def place_thien_tho(than_branch: int, year_branch: int) -> int:
     """Thiên Thọ: từ **cung Thân**, đếm thuận theo chi năm."""
     return (_branch(than_branch, "cung Thân") + _branch(year_branch, "chi năm")) % 12
+
+
+# ------------------------------------------------------- Thiên Quan / Thiên Phúc
+
+#: Thiên Quan Quý Nhân theo thiên can năm sinh.
+_THIEN_QUAN_BY_STEM: dict[int, int] = {
+    CAN.index("Giáp"): _MUI, CAN.index("Ất"): _THIN, CAN.index("Bính"): _TY_RAN,
+    CAN.index("Đinh"): _DAN, CAN.index("Mậu"): _MAO, CAN.index("Kỷ"): _DAU,
+    CAN.index("Canh"): _HOI, CAN.index("Tân"): _DAU, CAN.index("Nhâm"): _TUAT,
+    CAN.index("Quý"): _NGO,
+}  # fmt: skip
+
+#: Thiên Phúc Quý Nhân theo thiên can năm sinh.
+_THIEN_PHUC_BY_STEM: dict[int, int] = {
+    CAN.index("Giáp"): _DAU, CAN.index("Ất"): _THAN, CAN.index("Bính"): _TY,
+    CAN.index("Đinh"): _HOI, CAN.index("Mậu"): _MAO, CAN.index("Kỷ"): _DAN,
+    CAN.index("Canh"): _NGO, CAN.index("Tân"): _TY_RAN, CAN.index("Nhâm"): _NGO,
+    CAN.index("Quý"): _TY_RAN,
+}  # fmt: skip
+
+
+def _stem(year_stem: int) -> int:
+    if not 0 <= year_stem <= 9:
+        raise ValueError(f"Thiên can phải trong 0–9, nhận {year_stem}")
+    return year_stem
+
+
+def place_thien_quan(year_stem: int) -> int:
+    """Thiên Quan Quý Nhân theo thiên can năm sinh."""
+    return _THIEN_QUAN_BY_STEM[_stem(year_stem)]
+
+
+def place_thien_phuc(year_stem: int) -> int:
+    """Thiên Phúc Quý Nhân theo thiên can năm sinh."""
+    return _THIEN_PHUC_BY_STEM[_stem(year_stem)]
+
+
+# --------------------------------------------------------- Thiên Giải / Địa Giải
+
+
+def _month(lunar_month: int) -> int:
+    if not 1 <= lunar_month <= 12:
+        raise ValueError(f"Tháng âm phải trong 1–12, nhận {lunar_month}")
+    return lunar_month
+
+
+def place_thien_giai(lunar_month: int) -> int:
+    """Thiên Giải: khởi Thân tháng Giêng, đếm thuận theo tháng âm."""
+    return (_THAN + _month(lunar_month) - 1) % 12
+
+
+def place_dia_giai(lunar_month: int) -> int:
+    """Địa Giải: khởi Mùi tháng Giêng, đếm thuận theo tháng âm.
+
+    Thiên Giải luôn đứng ngay sau Địa Giải một cung — hệ quả của hai mốc khởi.
+    """
+    return (_MUI + _month(lunar_month) - 1) % 12
+
+
+# ---------------------------------------------------------- Thai Phụ / Phong Cáo
+
+
+def place_thai_phu(hour_branch: int) -> int:
+    """Thai Phụ: khởi Ngọ giờ Tý, đếm thuận theo giờ sinh.
+
+    Phát biểu tương đương thường gặp là "Văn Khúc tiến 2 cung" — hai cách cho **cùng
+    một kết quả** ở cả 12 giờ, vì Văn Khúc chính là Thìn + giờ.
+    """
+    return (_NGO + _branch(hour_branch, "giờ sinh")) % 12
+
+
+def place_phong_cao(hour_branch: int) -> int:
+    """Phong Cáo: khởi Dần giờ Tý, đếm thuận. Tương đương "Văn Khúc lùi 2 cung"."""
+    return (_DAN + _branch(hour_branch, "giờ sinh")) % 12
+
+
+# ---------------------------------------------------------- Quốc Ấn / Đường Phù
+
+
+def place_quoc_an(loc_ton_branch: int) -> int:
+    """Quốc Ấn: cách **Lộc Tồn** 8 cung theo chiều thuận.
+
+    Bảng theo can năm mà các sách ghi ra đúng bằng offset cố định này ở cả 10 can —
+    hai cách phát biểu độc lập trùng khớp, nên bảng kiểm được mà không cần nguồn ngoài.
+    """
+    return (_branch(loc_ton_branch, "Lộc Tồn") + 8) % 12
+
+
+def place_duong_phu(loc_ton_branch: int) -> int:
+    """Đường Phù: cách **Lộc Tồn** 5 cung theo chiều thuận."""
+    return (_branch(loc_ton_branch, "Lộc Tồn") + 5) % 12
+
+
+# ------------------------------------------------------------------- Hỷ Thần
+
+#: Vòng Bác Sĩ, khởi tại **Lộc Tồn**. Chiều theo âm dương nam nữ, cùng luật với đại
+#: vận. Nhóm này **chỉ an Hỷ Thần**; Đại Hao, Tiểu Hao… thuộc nhóm sau.
+BAC_SI_CYCLE: tuple[str, ...] = (
+    "BAC_SI",
+    "LUC_SI",
+    "THANH_LONG",
+    "TIEU_HAO",
+    "TUONG_QUAN",
+    "TAU_THU",
+    "PHI_LIEM",
+    "HY_THAN",
+    "BENH_PHU",
+    "DAI_HAO",
+    "PHUC_BINH",
+    "QUAN_PHU_BS",
+)
+
+
+def place_bac_si_member(loc_ton_branch: int, star_id: str, *, forward: bool) -> int:
+    """Vị trí một sao trong vòng Bác Sĩ, tính từ Lộc Tồn.
+
+    ``forward`` là chiều đã quyết ở tầng trên (dương nam / âm nữ đi thuận) — module
+    này không tự suy chiều, để chỉ có một chỗ trong engine quyết định điều đó.
+    """
+    try:
+        offset = BAC_SI_CYCLE.index(star_id)
+    except ValueError as exc:
+        raise ValueError(f"{star_id} không thuộc vòng Bác Sĩ") from exc
+    step = 1 if forward else -1
+    return (_branch(loc_ton_branch, "Lộc Tồn") + step * offset) % 12

@@ -841,7 +841,7 @@ chờ ai ký duyệt:
 
 ## 27. Phụ tinh nhóm 2 🟡 PENDING — **Nam phái**
 
-15 sao, 7 luật, tất cả trong `COSMIC_SIGNS_NAM_PHAI_V1` ở mức `PROVISIONAL`.
+24 sao, 12 luật, tất cả trong `COSMIC_SIGNS_NAM_PHAI_V1` ở mức `PROVISIONAL`.
 Cài đặt: `stars/placement_group2.py`.
 
 | Luật | Sao | Cách an | Phụ thuộc |
@@ -871,7 +871,7 @@ Vòng có 12 sao. Nhóm này cố ý **chỉ an bốn**; Tang Môn, Bạch Hổ,
 và các sao còn lại thuộc nhóm sau. `THAI_TUE_CYCLE` trong code liệt kê đủ 12 để offset
 đọc được, nhưng builder chỉ lấy bốn.
 
-### Ngũ hành: **0/15**
+### Ngũ hành: **0/24**
 
 Toàn bộ nhóm 2 để trống, đánh dấu `NOT_RECORDED` — **khác với `DISPUTED`**:
 
@@ -883,15 +883,40 @@ Toàn bộ nhóm 2 để trống, đánh dấu `NOT_RECORDED` — **khác với 
 Gộp hai trạng thái này lại là đánh mất thông tin về việc cần làm tiếp, nên code cưỡng
 chế: để trống ngũ hành mà không nói rõ lý do thì `StarDefinition` từ chối khởi tạo.
 
-### Sao trong danh sách nhưng **CHƯA cài**
+### Phần bổ sung (S4.1) — thêm 9 sao, 5 luật
 
-12 sao sau được yêu cầu nhưng người viết code **không nêu được luật với độ tin cậy
-thật**, nên không cài — theo đúng §19: thà để trống còn hơn bịa một luật trông hợp lý.
+| Luật | Sao | Cách an | Phụ thuộc |
+| --- | --- | --- | --- |
+| `thien_quan_thien_phuc` | Thiên Quan, Thiên Phúc | Bảng Quý Nhân theo can năm | can năm |
+| `thien_giai_dia_giai` | Thiên Giải, Địa Giải | Khởi **Thân** và **Mùi**, đếm thuận theo tháng âm | tháng âm |
+| `thai_phu_phong_cao` | Thai Phụ, Phong Cáo | Khởi **Ngọ** và **Dần**, đếm thuận theo giờ sinh | giờ sinh |
+| `quoc_an_duong_phu` | Quốc Ấn, Đường Phù | Cách **Lộc Tồn** 8 và 5 cung, chiều thuận | Lộc Tồn |
+| `bac_si_cycle` | Hỷ Thần | Vòng Bác Sĩ từ **Lộc Tồn**, dương nam/âm nữ thuận | Lộc Tồn, âm dương nam nữ |
 
-Thiên Quan · Thiên Phúc · Thiên Giải · Địa Giải · Giải Thần · Thai Phụ · Phong Cáo ·
-Quốc Ấn · Đường Phù · Thiên Trù · Thiên Y · Hỷ Thần
+**Ba bằng chứng nội tại** khiến các bảng này kiểm được mà không cần nguồn ngoài —
+hai cách phát biểu độc lập trùng khớp thì khó là trùng hợp:
 
-Cần người thẩm định cung cấp luật từ ấn bản đã chốt (Q2/Q3).
+1. Bảng **Quốc Ấn** theo can năm khớp đúng `Lộc Tồn + 8` ở **cả 10 can**.
+2. Bảng **Đường Phù** khớp đúng `Lộc Tồn + 5` ở **cả 10 can**.
+3. **Thai Phụ / Phong Cáo**: phát biểu "khởi Ngọ / khởi Dần theo giờ" và phát biểu
+   "Văn Khúc ± 2 cung" cho **cùng kết quả ở cả 12 giờ**. Đây là *một* luật với hai
+   cách nói, không phải hai luật mâu thuẫn — điều mà lần rà trước đã hiểu nhầm.
+
+Bất biến khác: Thiên Giải luôn đứng liền sau Địa Giải; Thai Phụ và Phong Cáo luôn
+cách nhau 4 cung.
+
+**Vòng Bác Sĩ chỉ an 1/12 sao.** Đại Hao, Tiểu Hao, Thanh Long… thuộc nhóm sau.
+
+### Sao trong danh sách nhưng **VẪN CHƯA cài** — 3 sao
+
+| Sao | Lý do | Cần gì để mở |
+| --- | --- | --- |
+| **Giải Thần** | 🔴 **DISPUTED** — có hai luật ứng viên (theo tam hợp chi năm / theo tháng âm) và dự án chưa có quyết định nào để chọn | Người thẩm định chọn một |
+| **Thiên Trù** | Bảng theo can năm không nêu lại được với độ tin cậy đủ, và **không có cấu trúc nội tại nào để đối chiếu** (khác Quốc Ấn / Đường Phù) | Bảng từ ấn bản |
+| **Thiên Y** | Luật theo tháng âm không nêu lại được chắc chắn | Luật từ ấn bản |
+
+Hai lý do này **khác nhau** và đừng gộp: Giải Thần là *biết hai đường, không được
+chọn bừa*; Thiên Trù và Thiên Y là *không nêu lại được đường nào*.
 
 ---
 

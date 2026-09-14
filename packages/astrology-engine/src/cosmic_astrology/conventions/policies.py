@@ -72,6 +72,11 @@ class RuleId(StrEnum):
     THAI_TUE_CYCLE = "thai_tue_cycle"
     HOA_CAI = "hoa_cai"
     THIEN_TAI_THIEN_THO = "thien_tai_thien_tho"
+    THIEN_QUAN_THIEN_PHUC = "thien_quan_thien_phuc"
+    THIEN_GIAI_DIA_GIAI = "thien_giai_dia_giai"
+    THAI_PHU_PHONG_CAO = "thai_phu_phong_cao"
+    QUOC_AN_DUONG_PHU = "quoc_an_duong_phu"
+    BAC_SI_CYCLE = "bac_si_cycle"
     STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
@@ -242,6 +247,47 @@ class ThienTaiThienThoPolicy(StrEnum):
     """Thiên Tài / Thiên Thọ tính từ cung Mệnh và cung Thân theo chi năm."""
 
     FROM_MENH_AND_THAN_BY_YEAR_BRANCH = "FROM_MENH_AND_THAN_BY_YEAR_BRANCH"
+
+
+class ThienQuanThienPhucPolicy(StrEnum):
+    """Thiên Quan / Thiên Phúc Quý Nhân theo thiên can năm sinh."""
+
+    YEAR_STEM_TABLE = "YEAR_STEM_TABLE"
+
+
+class ThienGiaiDiaGiaiPolicy(StrEnum):
+    """Thiên Giải / Địa Giải theo tháng âm. Hai sao luôn đứng liền kề."""
+
+    LUNAR_MONTH_THAN_AND_MUI = "LUNAR_MONTH_THAN_AND_MUI"
+
+
+class ThaiPhuPhongCaoPolicy(StrEnum):
+    """Thai Phụ / Phong Cáo theo giờ sinh.
+
+    Phát biểu "Văn Khúc ± 2 cung" cho **cùng một kết quả** ở cả 12 giờ, nên đây là
+    một luật chứ không phải hai.
+    """
+
+    HOUR_NGO_AND_DAN_FORWARD = "HOUR_NGO_AND_DAN_FORWARD"
+
+
+class QuocAnDuongPhuPolicy(StrEnum):
+    """Quốc Ấn / Đường Phù, cách Lộc Tồn 8 và 5 cung.
+
+    Bảng theo can năm mà các sách ghi ra đúng bằng hai offset cố định này ở cả 10
+    can — hai cách phát biểu độc lập trùng khớp.
+    """
+
+    OFFSET_FROM_LOC_TON = "OFFSET_FROM_LOC_TON"
+
+
+class BacSiCyclePolicy(StrEnum):
+    """Vòng Bác Sĩ, khởi tại Lộc Tồn, chiều theo âm dương nam nữ.
+
+    Nhóm này **chỉ an Hỷ Thần**; Đại Hao, Tiểu Hao… thuộc nhóm sau.
+    """
+
+    FROM_LOC_TON_YANG_MALE_FORWARD = "FROM_LOC_TON_YANG_MALE_FORWARD"
 
 
 class FourTransformationsPolicy(StrEnum):

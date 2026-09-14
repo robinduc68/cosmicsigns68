@@ -243,6 +243,11 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                     RuleId.THAI_TUE_CYCLE,
                     RuleId.HOA_CAI,
                     RuleId.THIEN_TAI_THIEN_THO,
+                    RuleId.THIEN_QUAN_THIEN_PHUC,
+                    RuleId.THIEN_GIAI_DIA_GIAI,
+                    RuleId.THAI_PHU_PHONG_CAO,
+                    RuleId.QUOC_AN_DUONG_PHU,
+                    RuleId.BAC_SI_CYCLE,
                 )
             ),
             _rule(

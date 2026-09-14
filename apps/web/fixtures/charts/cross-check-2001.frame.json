@@ -654,6 +654,121 @@
         "note": "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm."
       },
       {
+        "rule": "thien_quan_thien_phuc",
+        "policy": "YEAR_STEM_TABLE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Thiên Quan và Thiên Phúc Quý Nhân, mỗi sao một bảng theo can năm sinh."
+      },
+      {
+        "rule": "thien_giai_dia_giai",
+        "policy": "LUNAR_MONTH_THAN_AND_MUI",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Thiên Giải khởi Thân, Địa Giải khởi Mùi, cùng đếm thuận theo tháng âm. Hệ quả: hai sao luôn đứng liền kề."
+      },
+      {
+        "rule": "thai_phu_phong_cao",
+        "policy": "HOUR_NGO_AND_DAN_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Thai Phụ khởi Ngọ, Phong Cáo khởi Dần, cùng đếm thuận theo giờ sinh. Cách phát biểu 'Văn Khúc ± 2 cung' cho cùng kết quả ở cả 12 giờ — một luật, hai cách nói, không phải hai luật mâu thuẫn."
+      },
+      {
+        "rule": "quoc_an_duong_phu",
+        "policy": "OFFSET_FROM_LOC_TON",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Quốc Ấn cách Lộc Tồn 8 cung, Đường Phù cách 5 cung, đều theo chiều thuận. Bảng theo can năm khớp đúng hai offset này ở cả 10 can."
+      },
+      {
+        "rule": "bac_si_cycle",
+        "policy": "FROM_LOC_TON_YANG_MALE_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
+      },
+      {
         "rule": "star_elements",
         "policy": "CLASSICAL_CONSENSUS_PARTIAL",
         "implemented": true,

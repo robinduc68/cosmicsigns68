@@ -339,10 +339,15 @@ def build_chart(
         )
         _place_supporting_stars_group_2(
             by_branch,
+            year_stem=pillars.year.can_index,
             year_branch=pillars.year.chi_index,
+            lunar_month=lunar.month,
             lunar_day=lunar.day,
+            hour_branch=hour_chi,
             menh_branch=menh_branch,
             than_branch=than_branch,
+            # Cùng luật chiều với đại vận: dương nam / âm nữ đi thuận.
+            cycle_forward=pillars.year.is_yang == (birth.gender is Gender.MALE),
             profile=profile,
             trace_log=log,
         )
@@ -556,10 +561,14 @@ _GROUP_2_THAI_TUE: tuple[str, ...] = ("THIEU_DUONG", "THIEU_AM", "LONG_DUC", "PH
 def _place_supporting_stars_group_2(
     by_branch: dict[int, Palace],
     *,
+    year_stem: int,
     year_branch: int,
+    lunar_month: int,
     lunar_day: int,
+    hour_branch: int,
     menh_branch: int,
     than_branch: int,
+    cycle_forward: bool,
     profile: ConventionProfile,
     trace_log: TraceLog | None = None,
 ) -> None:
@@ -628,6 +637,44 @@ def _place_supporting_stars_group_2(
             {"cung_than": CHI[than_branch], "chi_nam": CHI[year_branch]},
         )
     )
+
+    stem_inputs: dict[str, object] = {"can_nam": CAN[year_stem]}
+    quy_nhan = RuleId.THIEN_QUAN_THIEN_PHUC
+    placed.append(("THIEN_QUAN", quy_nhan, group2.place_thien_quan(year_stem), stem_inputs))
+    placed.append(("THIEN_PHUC", quy_nhan, group2.place_thien_phuc(year_stem), stem_inputs))
+
+    month_inputs: dict[str, object] = {"thang_am": lunar_month}
+    giai = RuleId.THIEN_GIAI_DIA_GIAI
+    placed.append(("THIEN_GIAI", giai, group2.place_thien_giai(lunar_month), month_inputs))
+    placed.append(("DIA_GIAI", giai, group2.place_dia_giai(lunar_month), month_inputs))
+
+    hour_inputs: dict[str, object] = {"gio_sinh": CHI[hour_branch]}
+    thai_phu = RuleId.THAI_PHU_PHONG_CAO
+    placed.append(("THAI_PHU", thai_phu, group2.place_thai_phu(hour_branch), hour_inputs))
+    placed.append(("PHONG_CAO", thai_phu, group2.place_phong_cao(hour_branch), hour_inputs))
+
+    # Quốc Ấn, Đường Phù và Hỷ Thần đều neo vào Lộc Tồn — đọc lại từ lá số, không
+    # tính lại, để chỉ một chỗ quyết định Lộc Tồn nằm đâu.
+    loc_ton = anchors.get("LOC_TON")
+    if loc_ton is None:
+        _logger.warning("Thiếu Lộc Tồn nên không an được Quốc Ấn, Đường Phù, Hỷ Thần.")
+    else:
+        anchor_inputs: dict[str, object] = {"loc_ton": CHI[loc_ton]}
+        an = RuleId.QUOC_AN_DUONG_PHU
+        placed.append(("QUOC_AN", an, group2.place_quoc_an(loc_ton), anchor_inputs))
+        placed.append(("DUONG_PHU", an, group2.place_duong_phu(loc_ton), anchor_inputs))
+        placed.append(
+            (
+                "HY_THAN",
+                RuleId.BAC_SI_CYCLE,
+                group2.place_bac_si_member(loc_ton, "HY_THAN", forward=cycle_forward),
+                {
+                    "loc_ton": CHI[loc_ton],
+                    "chieu": "thuận" if cycle_forward else "nghịch",
+                    "vong": "Bác Sĩ",
+                },
+            )
+        )
 
     for star_id, rule, branch, inputs in placed:
         star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)

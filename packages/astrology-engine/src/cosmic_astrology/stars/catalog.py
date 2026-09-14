@@ -36,12 +36,21 @@ __all__ = [
     "BlankReason",
     "CategoryCoverage",
     "MetadataCoverage",
+    "MetadataStatus",
     "Polarity",
     "StarDefinition",
     "canonical_form",
     "definition_for",
     "metadata_coverage",
 ]
+
+
+class MetadataStatus(StrEnum):
+    """Ba trạng thái của một trường metadata sao, không phải hai."""
+
+    KNOWN = "KNOWN"
+    DISPUTED = "DISPUTED"
+    NOT_RECORDED = "NOT_RECORDED"
 
 
 class BlankReason(StrEnum):
@@ -154,6 +163,30 @@ class StarDefinition:
             raise ValueError(
                 f"{self.vietnamese_name}: canonical_name phải là dạng bỏ dấu của tên tiếng Việt."
             )
+
+    @property
+    def element_status(self) -> MetadataStatus:
+        """KNOWN / DISPUTED / NOT_RECORDED — trạng thái ngũ hành của sao này.
+
+        Ba trạng thái dẫn tới ba việc khác nhau: dùng được ngay, phải **chọn**, hay
+        phải **tìm**. Gộp chúng thành "có/không" là đánh mất điều đó.
+        """
+        if self.element is not None:
+            return MetadataStatus.KNOWN
+        return (
+            MetadataStatus.DISPUTED
+            if self.blank_reason is BlankReason.DISPUTED
+            else MetadataStatus.NOT_RECORDED
+        )
+
+    @property
+    def polarity_status(self) -> MetadataStatus:
+        """Trạng thái âm/dương.
+
+        Luôn bằng ``element_status``: sách ghi hai thứ này trong cùng một câu
+        ("âm thủy"), nên bất biến của catalog buộc chúng cùng có hoặc cùng thiếu.
+        """
+        return MetadataStatus.KNOWN if self.polarity is not None else self.element_status
 
     @property
     def has_element(self) -> bool:
@@ -446,9 +479,75 @@ _SUPPORTING_GROUP_2: tuple[StarDefinition, ...] = (
     ),
 )
 
+#: Phụ tinh nhóm 2 — phần bổ sung. Ngũ hành cả nhóm vẫn NOT_RECORDED.
+_SUPPORTING_GROUP_2B: tuple[StarDefinition, ...] = (
+    _minor(
+        "THIEN_QUAN", "Thiên Quan", StarCategory.NOBILITY, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_PHUC", "Thiên Phúc", StarCategory.BLESSING, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THIEN_GIAI", "Thiên Giải", StarCategory.BLESSING, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "DIA_GIAI", "Địa Giải", StarCategory.BLESSING, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "THAI_PHU", "Thai Phụ", StarCategory.NOBILITY, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "PHONG_CAO", "Phong Cáo", StarCategory.NOBILITY, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "QUOC_AN", "Quốc Ấn", StarCategory.AUTHORITY, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "DUONG_PHU", "Đường Phù", StarCategory.AUTHORITY, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+    _minor(
+        "HY_THAN", "Hỷ Thần", StarCategory.BLESSING, None, None,
+        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
+        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
+        blank_reason=BlankReason.NOT_RECORDED,
+    ),
+)
+
 #: Read-only so no caller can add a star at runtime.
 STAR_CATALOG: Mapping[str, StarDefinition] = MappingProxyType(
-    {d.id: d for d in (*_DEFINITIONS, *_SUPPORTING_GROUP_1, *_SUPPORTING_GROUP_2)}
+    {
+        d.id: d
+        for d in (
+            *_DEFINITIONS,
+            *_SUPPORTING_GROUP_1,
+            *_SUPPORTING_GROUP_2,
+            *_SUPPORTING_GROUP_2B,
+        )
+    }
 )
 
 

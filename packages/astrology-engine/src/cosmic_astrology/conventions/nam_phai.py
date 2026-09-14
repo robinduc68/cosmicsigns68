@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from cosmic_astrology.conventions.policies import (
     AnQuangThienQuyPolicy,
+    BacSiCyclePolicy,
     DaoHoaPolicy,
     FourTransformationsPolicy,
     HoaCaiPolicy,
@@ -23,14 +24,18 @@ from cosmic_astrology.conventions.policies import (
     KinhDuongDaLaPolicy,
     LocTonPolicy,
     LongTriPhuongCacPolicy,
+    QuocAnDuongPhuPolicy,
     RuleId,
     StarStrengthPolicy,
     TamThaiBatToaPolicy,
     TaPhuHuuBatPolicy,
+    ThaiPhuPhongCaoPolicy,
     ThaiTueCyclePolicy,
     ThienDucNguyetDucPolicy,
+    ThienGiaiDiaGiaiPolicy,
     ThienKhoiThienVietPolicy,
     ThienMaPolicy,
+    ThienQuanThienPhucPolicy,
     ThienTaiThienThoPolicy,
     VanXuongVanKhucPolicy,
     VerificationStatus,
@@ -147,6 +152,36 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         RuleId.THIEN_TAI_THIEN_THO,
         ThienTaiThienThoPolicy.FROM_MENH_AND_THAN_BY_YEAR_BRANCH.value,
         "Thiên Tài từ cung Mệnh, Thiên Thọ từ cung Thân, cùng đếm thuận theo chi năm.",
+    ),
+    RuleId.THIEN_QUAN_THIEN_PHUC: _nam_phai_rule(
+        RuleId.THIEN_QUAN_THIEN_PHUC,
+        ThienQuanThienPhucPolicy.YEAR_STEM_TABLE.value,
+        "Thiên Quan và Thiên Phúc Quý Nhân, mỗi sao một bảng theo can năm sinh.",
+    ),
+    RuleId.THIEN_GIAI_DIA_GIAI: _nam_phai_rule(
+        RuleId.THIEN_GIAI_DIA_GIAI,
+        ThienGiaiDiaGiaiPolicy.LUNAR_MONTH_THAN_AND_MUI.value,
+        "Thiên Giải khởi Thân, Địa Giải khởi Mùi, cùng đếm thuận theo tháng âm. "
+        "Hệ quả: hai sao luôn đứng liền kề.",
+    ),
+    RuleId.THAI_PHU_PHONG_CAO: _nam_phai_rule(
+        RuleId.THAI_PHU_PHONG_CAO,
+        ThaiPhuPhongCaoPolicy.HOUR_NGO_AND_DAN_FORWARD.value,
+        "Thai Phụ khởi Ngọ, Phong Cáo khởi Dần, cùng đếm thuận theo giờ sinh. Cách "
+        "phát biểu 'Văn Khúc ± 2 cung' cho cùng kết quả ở cả 12 giờ — một luật, hai "
+        "cách nói, không phải hai luật mâu thuẫn.",
+    ),
+    RuleId.QUOC_AN_DUONG_PHU: _nam_phai_rule(
+        RuleId.QUOC_AN_DUONG_PHU,
+        QuocAnDuongPhuPolicy.OFFSET_FROM_LOC_TON.value,
+        "Quốc Ấn cách Lộc Tồn 8 cung, Đường Phù cách 5 cung, đều theo chiều thuận. "
+        "Bảng theo can năm khớp đúng hai offset này ở cả 10 can.",
+    ),
+    RuleId.BAC_SI_CYCLE: _nam_phai_rule(
+        RuleId.BAC_SI_CYCLE,
+        BacSiCyclePolicy.FROM_LOC_TON_YANG_MALE_FORWARD.value,
+        "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều "
+        "với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau.",
     ),
     RuleId.FOUR_TRANSFORMATIONS: RuleBinding(
         rule=RuleId.FOUR_TRANSFORMATIONS,
