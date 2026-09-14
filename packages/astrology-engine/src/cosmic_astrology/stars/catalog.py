@@ -185,6 +185,32 @@ def _major(
     )
 
 
+def _minor(
+    star_id: str,
+    vietnamese_name: str,
+    category: StarCategory,
+    element: Element | None,
+    polarity: Polarity | None,
+    note: str,
+    alternatives: tuple[str, ...] = (),
+) -> StarDefinition:
+    """A phụ tinh. Same standing as a chính tinh: recorded, never verified yet."""
+    return StarDefinition(
+        id=star_id,
+        canonical_name=canonical_form(vietnamese_name),
+        vietnamese_name=vietnamese_name,
+        category=category,
+        element=element,
+        polarity=polarity,
+        verification_status=(
+            VerificationStatus.PROVISIONAL if element else VerificationStatus.UNVERIFIED
+        ),
+        provenance=_NO_REFERENCE_SELECTED,
+        note=note,
+        alternatives=alternatives,
+    )
+
+
 #: The 14 chính tinh. Ids are the placement chains' only reference to a star.
 _DEFINITIONS: tuple[StarDefinition, ...] = (
     _major("TU_VI", "Tử Vi", Element.THO, Polarity.YIN, "Âm thổ — nhất quán giữa các sách."),
@@ -232,8 +258,69 @@ _DEFINITIONS: tuple[StarDefinition, ...] = (
     _major("PHA_QUAN", "Phá Quân", Element.THUY, Polarity.YIN, "Âm thủy — nhất quán."),
 )
 
+#: Phụ tinh nhóm 1 — an theo Nam phái, xem ``stars/placement.py``.
+_SUPPORTING_GROUP_1: tuple[StarDefinition, ...] = (
+    _minor(
+        "VAN_XUONG", "Văn Xương", StarCategory.LITERARY,
+        Element.KIM, Polarity.YANG, "Dương kim — nhất quán giữa các sách.",
+    ),
+    _minor(
+        "VAN_KHUC", "Văn Khúc", StarCategory.LITERARY,
+        Element.THUY, Polarity.YIN, "Âm thủy — nhất quán.",
+    ),
+    _minor(
+        "TA_PHU", "Tả Phù", StarCategory.SUPPORTING,
+        Element.THO, Polarity.YANG, "Dương thổ — nhất quán.",
+    ),
+    _minor(
+        "HUU_BAT", "Hữu Bật", StarCategory.SUPPORTING, None, None,
+        "CHƯA GHI NHẬN. Tả Phù thì các sách thống nhất là Thổ, nhưng Hữu Bật thì "
+        "không — đủ khác nhau để không chọn bừa một bên.",
+        ("Thổ (đi theo Tả Phù, phần lớn bản Việt)", "Thủy (phần lớn bản Hoa: 右弼 屬水)"),
+    ),
+    _minor(
+        "THIEN_KHOI", "Thiên Khôi", StarCategory.SUPPORTING,
+        Element.HOA, Polarity.YANG, "Dương hỏa — nhất quán.",
+    ),
+    _minor(
+        "THIEN_VIET", "Thiên Việt", StarCategory.SUPPORTING,
+        Element.HOA, Polarity.YIN, "Âm hỏa — nhất quán.",
+    ),
+    _minor(
+        "LOC_TON", "Lộc Tồn", StarCategory.WEALTH,
+        Element.THO, Polarity.YIN, "Âm thổ — nhất quán.",
+    ),
+    _minor(
+        "KINH_DUONG", "Kình Dương", StarCategory.MALEFIC,
+        Element.KIM, Polarity.YANG, "Dương kim — nhất quán.",
+    ),
+    _minor(
+        "DA_LA", "Đà La", StarCategory.MALEFIC,
+        Element.KIM, Polarity.YIN, "Âm kim — nhất quán.",
+    ),
+    _minor(
+        "DAO_HOA", "Đào Hoa", StarCategory.ROMANCE, None, None,
+        "CHƯA GHI NHẬN. Các sách chia hai hướng rõ rệt, chưa có nguồn chuẩn để chọn.",
+        ("Mộc (một số bản Việt)", "Thủy (Hàm Trì 咸池 thuộc thủy, phần lớn bản Hoa)"),
+    ),
+    _minor(
+        "HONG_LOAN", "Hồng Loan", StarCategory.ROMANCE,
+        Element.THUY, Polarity.YIN, "Âm thủy — nhất quán.",
+    ),
+    _minor(
+        "THIEN_HY", "Thiên Hỷ", StarCategory.ROMANCE,
+        Element.THUY, Polarity.YANG, "Dương thủy — nhất quán.",
+    ),
+    _minor(
+        "THIEN_MA", "Thiên Mã", StarCategory.SUPPORTING,
+        Element.HOA, Polarity.YANG, "Dương hỏa — nhất quán.",
+    ),
+)
+
 #: Read-only so no caller can add a star at runtime.
-STAR_CATALOG: Mapping[str, StarDefinition] = MappingProxyType({d.id: d for d in _DEFINITIONS})
+STAR_CATALOG: Mapping[str, StarDefinition] = MappingProxyType(
+    {d.id: d for d in (*_DEFINITIONS, *_SUPPORTING_GROUP_1)}
+)
 
 
 def definition_for(star_id: str) -> StarDefinition | None:

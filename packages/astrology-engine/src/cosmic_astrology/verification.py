@@ -12,9 +12,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from cosmic_astrology.chart.model import StarCategory
+from cosmic_astrology.conventions.nam_phai import COSMIC_SIGNS_NAM_PHAI_V1
 from cosmic_astrology.conventions.policies import RuleId
 from cosmic_astrology.conventions.profile import ConventionProfile, validate_convention_profile
-from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
 from cosmic_astrology.stars.catalog import MetadataCoverage, metadata_coverage
 
 __all__ = ["FixtureStats", "VerificationReport", "build_report", "render_report"]
@@ -37,6 +37,14 @@ _RULE_LABELS: dict[RuleId, str] = {
     RuleId.PALACE_STEMS: "Ngũ Hổ Độn",
     RuleId.TU_VI_PLACEMENT: "Tử Vi placement",
     RuleId.MAJOR_STARS: "14 major stars",
+    RuleId.VAN_XUONG_VAN_KHUC: "Văn Xương / Văn Khúc",
+    RuleId.TA_PHU_HUU_BAT: "Tả Phù / Hữu Bật",
+    RuleId.THIEN_KHOI_THIEN_VIET: "Thiên Khôi / Thiên Việt",
+    RuleId.LOC_TON: "Lộc Tồn",
+    RuleId.KINH_DUONG_DA_LA: "Kình Dương / Đà La",
+    RuleId.DAO_HOA: "Đào Hoa",
+    RuleId.HONG_LOAN_THIEN_HY: "Hồng Loan / Thiên Hỷ",
+    RuleId.THIEN_MA: "Thiên Mã",
     RuleId.STAR_ELEMENTS: "Ngũ hành của sao",
     RuleId.TUAN: "Tuần",
     RuleId.TRIET: "Triệt",
@@ -117,7 +125,7 @@ def _fixture_stats(path: Path) -> FixtureStats:
 
 
 def build_report(
-    profile: ConventionProfile = COSMIC_SIGNS_STANDARD_V1,
+    profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1,
     fixture_path: Path = DEFAULT_FIXTURE,
 ) -> VerificationReport:
     validation = validate_convention_profile(profile)

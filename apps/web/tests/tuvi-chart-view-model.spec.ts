@@ -139,7 +139,7 @@ describe('mapChartDtoToViewModel', () => {
     const meta = mapChartDtoToViewModel(real()).meta
     expect(meta.provisional).toBe(true)
     expect(meta.engineVersion).toBe('0.2.0-frame')
-    expect(meta.conventionProfile).toBe('COSMIC_SIGNS_STANDARD_V1')
+    expect(meta.conventionProfile).toBe('COSMIC_SIGNS_NAM_PHAI_V1')
     expect(meta.utcOffsetHours).toBe(7)
     expect(mapChartDtoToViewModel(scenario('authoritative-demo').chart).meta.provisional).toBe(false)
   })

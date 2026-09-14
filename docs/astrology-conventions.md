@@ -693,6 +693,79 @@ không chép từ đầu ra engine. Không được tự nâng lên `VERIFIED`.
 
 ---
 
+## 26. Phụ tinh nhóm 1 🟡 PENDING — **Nam phái**
+
+Hồ sơ `COSMIC_SIGNS_NAM_PHAI_V1` là nơi duy nhất chọn các luật dưới đây. Hồ sơ
+`COSMIC_SIGNS_STANDARD_V1` **không** chọn: nó không nêu trường phái, nên không có cơ
+sở để an nhóm này, và lá số lập theo nó đơn giản là không có phụ tinh.
+
+> **Đã nêu trường phái, chưa chốt ấn bản.** Q1 coi như đã trả lời là *Nam phái*, nhưng
+> Q2 (ấn bản cụ thể) và Q3 (người thẩm định) thì chưa. Vì vậy cả 8 luật ở mức
+> `PROVISIONAL`, và mọi giá trị dưới đây là **cách đọc thông dụng**, không phải trích
+> dẫn. Cài đặt nằm gọn trong `stars/placement.py` để đổi một luật chỉ phải sửa một hàm.
+
+| Luật | Sao | Cách an |
+| --- | --- | --- |
+| `van_xuong_van_khuc` | Văn Xương, Văn Khúc | Xương khởi **Tuất** đếm nghịch theo giờ sinh; Khúc khởi **Thìn** đếm thuận |
+| `ta_phu_huu_bat` | Tả Phù, Hữu Bật | Tả khởi **Thìn** đếm thuận, Hữu khởi **Tuất** đếm nghịch, từ tháng Giêng âm |
+| `thien_khoi_thien_viet` | Thiên Khôi, Thiên Việt | Bảng theo can năm (xem dưới) |
+| `loc_ton` | Lộc Tồn | Cung lâm quan của can năm |
+| `kinh_duong_da_la` | Kình Dương, Đà La | "Tiền Kình hậu Đà" — kẹp hai bên Lộc Tồn |
+| `dao_hoa` | Đào Hoa | Tam hợp chi năm |
+| `hong_loan_thien_hy` | Hồng Loan, Thiên Hỷ | Hồng Loan khởi **Mão** năm Tý đếm nghịch; Thiên Hỷ đối cung |
+| `thien_ma` | Thiên Mã | Tam hợp chi năm (dịch mã) |
+
+### Bảng theo thiên can năm sinh
+
+Đọc từ câu quyết *"Giáp Mậu Canh ngưu dương · Ất Kỷ thử hầu hương · Bính Đinh trư kê
+vị · Nhâm Quý thỏ xà tàng · Lục Tân phùng mã hổ"*.
+
+| Can | Lộc Tồn | Kình | Đà | Khôi | Việt |
+| --- | --- | --- | --- | --- | --- |
+| Giáp | Dần | Mão | Sửu | Sửu | Mùi |
+| Ất | Mão | Thìn | Dần | Tý | Thân |
+| Bính | Tỵ | Ngọ | Thìn | Hợi | Dậu |
+| Đinh | Ngọ | Mùi | Tỵ | Hợi | Dậu |
+| Mậu | Tỵ | Ngọ | Thìn | Sửu | Mùi |
+| Kỷ | Ngọ | Mùi | Tỵ | Tý | Thân |
+| Canh | Thân | Dậu | Mùi | **Sửu** | **Mùi** |
+| Tân | Dậu | Tuất | Thân | Ngọ | Dần |
+| Nhâm | Hợi | Tý | Tuất | Mão | Tỵ |
+| Quý | Tý | Sửu | Hợi | Mão | Tỵ |
+
+**ALTERNATIVE_RULE:** can **Canh** là chỗ các trường phái hay khác nhau — một số bản
+tách Canh ra khỏi nhóm Giáp/Mậu. Bản này xếp Canh cùng nhóm theo câu quyết.
+
+### Tam hợp chi năm
+
+| Chi năm | Đào Hoa | Thiên Mã |
+| --- | --- | --- |
+| Thân Tý Thìn | Dậu | Dần |
+| Dần Ngọ Tuất | Mão | Thân |
+| Tỵ Dậu Sửu | Ngọ | Hợi |
+| Hợi Mão Mùi | Tý | Tỵ |
+
+### Bất biến kiểm được (không cần nguồn ngoài)
+
+Bốn hệ quả sau suy thẳng từ các luật trên, nên chúng bắt được lỗi bảng mà không cần
+chờ ai ký duyệt:
+
+1. **Văn Xương và Văn Khúc đồng cung tại Mùi (giờ Mão) và Sửu (giờ Dậu).** Hai sao
+   này **không** đối cung nhau — chúng đối xứng qua trục Thìn–Tuất.
+2. **Đào Hoa luôn ở tứ chính** (Tý Ngọ Mão Dậu).
+3. **Thiên Mã luôn ở tứ sinh** (Dần Thân Tỵ Hợi).
+4. **Kình Dương và Đà La luôn kẹp Lộc Tồn**, và Lộc Tồn không bao giờ vào tứ mộ.
+
+### Ngũ hành
+
+11/13 sao có ngũ hành. Hai sao để trống vì các sách chia hai hướng rõ rệt:
+
+- **Hữu Bật** — Thổ (đi theo Tả Phù, phần lớn bản Việt) / Thủy (`右弼 屬水`, phần lớn
+  bản Hoa). Tả Phù thì thống nhất là Thổ; chỉ Hữu Bật là tranh chấp.
+- **Đào Hoa** — Mộc (một số bản Việt) / Thủy (Hàm Trì 咸池 thuộc thủy, phần lớn bản Hoa).
+
+---
+
 ## 21. Sổ mâu thuẫn giữa các nguồn
 
 Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầm chọn một bên.
@@ -709,6 +782,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 8 | §12 Can cung | Engine tính can Tý/Sửu lùi thay vì tới; lá số đối chiếu chéo cho Canh Tý / Tân Sửu | ✅ lỗi engine, đã sửa 0.2.0 |
 | 9 | §23 Ngũ hành sao | Tham Lang ghi "âm thủy hóa khí mộc"; Cự Môn ghi Thổ/Thủy/Kim tùy trường phái | 🟡 để trống 2 sao, vẽ mực trung tính; 12/14 sao có giá trị PROVISIONAL |
 | 10 | §24 Tràng Sinh | Thổ cục khởi ở Thân (theo Thủy) hay Dần (theo Hỏa); chiều theo âm dương nam nữ hay theo âm dương Cục | 🟡 chọn cách đọc đa số, ghi cả hai vào policy |
+| 11 | §26 Phụ tinh 1 | Hữu Bật ghi Thổ hay Thủy; Đào Hoa ghi Mộc hay Thủy; can Canh trong bảng Khôi/Việt | 🟡 để trống 2 sao; Canh xếp cùng nhóm Giáp/Mậu, ghi rõ cách đọc đối lập |
 
 ---
 

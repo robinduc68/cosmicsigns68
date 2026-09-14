@@ -270,10 +270,13 @@ def test_verification_metadata_survives_serialisation(payload: dict[str, Any]) -
             assert star["verification_status"] in {v.value for v in VerificationStatus}
             provenance = star["provenance"]
             assert provenance is not None, star["name"]
-            assert provenance["rule"].startswith("major_stars/")
+            # Provenance phải chỉ đúng LUẬT đã đặt sao đó, không phải một luật chung.
+            rule, _, policy = provenance["rule"].partition("/")
+            assert rule in {r["rule"] for r in payload["convention"]["rules"]}
+            assert policy, star["name"]
             assert provenance["verification"] == star["verification_status"]
             # Chặn bởi câu hỏi mở nào phải nói ra, không được ẩn trong code.
-            assert provenance["blocked_by"] == ["Q1", "Q2", "Q3"]
+            assert provenance["blocked_by"], star["name"]
 
     for palace in payload["palaces"]:
         for mark in (palace["tuan"], palace["triet"]):

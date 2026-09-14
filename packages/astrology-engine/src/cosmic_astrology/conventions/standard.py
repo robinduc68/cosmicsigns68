@@ -9,6 +9,7 @@ guessing. Every ``blocked_by`` entry points at a question in
 from __future__ import annotations
 
 from cosmic_astrology.conventions.policies import (
+    UNRESOLVED,
     BirthTimeCorrectionPolicy,
     CalendarPolicy,
     CucPolicy,
@@ -211,6 +212,31 @@ COSMIC_SIGNS_STANDARD_V1 = ConventionProfile(
                 verification=V.PROVISIONAL,
                 blocked_by=("Q1", "Q2", "Q3"),
                 note="14 chính tinh đã an nhưng chưa có ca nào được ký duyệt.",
+            ),
+            # Nhóm phụ tinh 1: hồ sơ này KHÔNG phải Nam phái, nên nó không chọn
+            # luật nào cho chúng. Hồ sơ COSMIC_SIGNS_NAM_PHAI_V1 mới là nơi chọn.
+            *(
+                _rule(
+                    rule,
+                    UNRESOLVED,
+                    implemented=False,
+                    verification=V.UNVERIFIED,
+                    blocked_by=("Q1",),
+                    note=(
+                        "Hồ sơ chuẩn không nêu trường phái, nên không an nhóm phụ tinh 1. "
+                        "Xem COSMIC_SIGNS_NAM_PHAI_V1."
+                    ),
+                )
+                for rule in (
+                    RuleId.VAN_XUONG_VAN_KHUC,
+                    RuleId.TA_PHU_HUU_BAT,
+                    RuleId.THIEN_KHOI_THIEN_VIET,
+                    RuleId.LOC_TON,
+                    RuleId.KINH_DUONG_DA_LA,
+                    RuleId.DAO_HOA,
+                    RuleId.HONG_LOAN_THIEN_HY,
+                    RuleId.THIEN_MA,
+                )
             ),
             _rule(
                 RuleId.STAR_ELEMENTS,

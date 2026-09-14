@@ -16,6 +16,7 @@ tứ hoá, đại vận and lưu niên. Those arrive with the full engine (see
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from datetime import UTC, datetime
 
 from cosmic_astrology.birth_moment import ResolvedBirthDates, resolve_birth_dates
@@ -46,6 +47,7 @@ from cosmic_astrology.chart.types import (
     Palace,
     Star,
 )
+from cosmic_astrology.conventions.nam_phai import COSMIC_SIGNS_NAM_PHAI_V1
 from cosmic_astrology.conventions.policies import (
     MajorCycleStartAgePolicy,
     RuleId,
@@ -56,8 +58,8 @@ from cosmic_astrology.conventions.profile import (
     UnresolvedConventionError,
     validate_convention_profile,
 )
-from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
 from cosmic_astrology.cycles import major_cycle, trang_sinh
+from cosmic_astrology.stars import placement
 from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
@@ -190,7 +192,7 @@ def build_chart(
     birth: BirthInput,
     stage: EngineStage = EngineStage.FRAME,
     *,
-    profile: ConventionProfile = COSMIC_SIGNS_STANDARD_V1,
+    profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1,
     trace: bool = False,
     generated_at: str | None = None,
 ) -> Chart:
@@ -324,6 +326,15 @@ def build_chart(
 
     if stage is EngineStage.PREVIEW:
         _place_major_stars(by_branch, cuc_number, lunar.day, profile=profile, trace_log=log)
+        _place_supporting_stars(
+            by_branch,
+            year_stem=pillars.year.can_index,
+            year_branch=pillars.year.chi_index,
+            lunar_month=lunar.month,
+            hour_branch=hour_chi,
+            profile=profile,
+            trace_log=log,
+        )
 
     _attach_cycles(
         by_branch,
@@ -406,7 +417,13 @@ def build_chart(
     )
 
 
-def _placed_star(star_id: str, branch: str, *, profile: ConventionProfile) -> Star:
+def _placed_star(
+    star_id: str,
+    branch: str,
+    *,
+    profile: ConventionProfile,
+    rule: RuleId = RuleId.MAJOR_STARS,
+) -> Star:
     """A placed star, with its catalogue entry attached.
 
     Everything about *what* the star is comes from the catalogue; this function
@@ -424,7 +441,7 @@ def _placed_star(star_id: str, branch: str, *, profile: ConventionProfile) -> St
             "ngũ hành. Thêm mục vào cosmic_astrology/stars/catalog.py.",
             star_id,
         )
-    binding = profile.binding(RuleId.MAJOR_STARS)
+    binding = profile.binding(rule)
     return Star(
         id=star_id,
         name=definition.vietnamese_name if definition else star_id,
@@ -433,12 +450,76 @@ def _placed_star(star_id: str, branch: str, *, profile: ConventionProfile) -> St
         polarity=definition.polarity if definition else None,
         palace_branch=branch,
         provenance=StarProvenance(
-            rule=f"{RuleId.MAJOR_STARS.value}/{binding.policy}",
+            rule=f"{rule.value}/{binding.policy}",
             verification=binding.verification,
             blocked_by=binding.blocked_by,
             note=binding.note,
         ),
     )
+
+
+#: Nhóm phụ tinh 1. Mỗi mục: (mã sao, mã quy ước, tên đầu vào, hàm an sao).
+#: Bảng này là chỗ duy nhất nối "sao nào" với "luật nào" — thêm một sao là thêm một
+#: dòng, không phải sửa vòng lặp.
+_SUPPORTING_GROUP_1: tuple[tuple[str, RuleId, str, Callable[[int], int]], ...] = (
+    ("VAN_XUONG", RuleId.VAN_XUONG_VAN_KHUC, "hour_branch", placement.place_van_xuong),
+    ("VAN_KHUC", RuleId.VAN_XUONG_VAN_KHUC, "hour_branch", placement.place_van_khuc),
+    ("TA_PHU", RuleId.TA_PHU_HUU_BAT, "lunar_month", placement.place_ta_phu),
+    ("HUU_BAT", RuleId.TA_PHU_HUU_BAT, "lunar_month", placement.place_huu_bat),
+    ("THIEN_KHOI", RuleId.THIEN_KHOI_THIEN_VIET, "year_stem", placement.place_thien_khoi),
+    ("THIEN_VIET", RuleId.THIEN_KHOI_THIEN_VIET, "year_stem", placement.place_thien_viet),
+    ("LOC_TON", RuleId.LOC_TON, "year_stem", placement.place_loc_ton),
+    ("DAO_HOA", RuleId.DAO_HOA, "year_branch", placement.place_dao_hoa),
+    ("HONG_LOAN", RuleId.HONG_LOAN_THIEN_HY, "year_branch", placement.place_hong_loan),
+    ("THIEN_HY", RuleId.HONG_LOAN_THIEN_HY, "year_branch", placement.place_thien_hy),
+    ("THIEN_MA", RuleId.THIEN_MA, "year_branch", placement.place_thien_ma),
+)
+
+
+def _place_supporting_stars(
+    by_branch: dict[int, Palace],
+    *,
+    year_stem: int,
+    year_branch: int,
+    lunar_month: int,
+    hour_branch: int,
+    profile: ConventionProfile,
+    trace_log: TraceLog | None = None,
+) -> None:
+    """Place phụ tinh nhóm 1.
+
+    A profile that has not named a school leaves these rules unresolved; asking it
+    for one raises rather than guessing, so a chart built under the plain standard
+    profile simply carries no phụ tinh instead of carrying somebody's guess.
+
+    Kình Dương and Đà La are placed after the loop because they are positioned
+    relative to Lộc Tồn rather than from the birth data directly.
+    """
+    inputs = {
+        "year_stem": year_stem,
+        "year_branch": year_branch,
+        "lunar_month": lunar_month,
+        "hour_branch": hour_branch,
+    }
+    if profile.binding(RuleId.VAN_XUONG_VAN_KHUC).is_unresolved:
+        return
+
+    placed: list[tuple[str, RuleId, int]] = [
+        (star_id, rule, place(inputs[argument]))
+        for star_id, rule, argument, place in _SUPPORTING_GROUP_1
+    ]
+
+    loc_ton_binding = profile.binding(RuleId.KINH_DUONG_DA_LA)
+    if not loc_ton_binding.is_unresolved:
+        loc_ton = placement.place_loc_ton(year_stem)
+        placed.append(("KINH_DUONG", RuleId.KINH_DUONG_DA_LA, placement.place_kinh_duong(loc_ton)))
+        placed.append(("DA_LA", RuleId.KINH_DUONG_DA_LA, placement.place_da_la(loc_ton)))
+
+    for star_id, rule, branch in placed:
+        star = _placed_star(star_id, CHI[branch], profile=profile, rule=rule)
+        by_branch[branch].stars.append(star)
+        if trace_log is not None:
+            trace_log.record(profile, rule, f"{star.name} → {CHI[branch]}", **inputs)
 
 
 def _attach_cycles(

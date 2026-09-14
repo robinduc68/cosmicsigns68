@@ -10,8 +10,8 @@ import argparse
 import sys
 from pathlib import Path
 
+from cosmic_astrology.conventions.nam_phai import COSMIC_SIGNS_NAM_PHAI_V1
 from cosmic_astrology.conventions.policies import RuleId
-from cosmic_astrology.conventions.standard import COSMIC_SIGNS_STANDARD_V1
 from cosmic_astrology.review.model import ReviewState
 from cosmic_astrology.review.pack import apply_import, export_csv, export_json, preview_import
 from cosmic_astrology.review.promotion import promote_rule_verification
@@ -100,7 +100,7 @@ def _cmd_promote(rule_name: str, reviewer: str | None, source_id: str | None, ev
     result = promote_rule_verification(
         rule=rule,
         store=load_store(),
-        profile=COSMIC_SIGNS_STANDARD_V1,
+        profile=COSMIC_SIGNS_NAM_PHAI_V1,
         reviewer=reviewer,
         source_id=source_id,
         evidence=evidence,

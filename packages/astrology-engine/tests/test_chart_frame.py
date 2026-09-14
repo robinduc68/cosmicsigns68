@@ -159,7 +159,8 @@ def test_frame_stage_places_no_stars() -> None:
 
 def test_preview_stage_places_all_fourteen_major_stars_and_marks_them_provisional() -> None:
     chart = build_chart(_birth(), stage=EngineStage.PREVIEW)
-    stars = [s for p in chart.palaces for s in p.stars]
+    # Nam phái an cả phụ tinh nhóm 1, nên lọc riêng chính tinh.
+    stars = [s for p in chart.palaces for s in p.major_stars]
     assert len(stars) == 14
     assert {s.id for s in stars} == {
         "TU_VI", "THIEN_CO", "THAI_DUONG", "VU_KHUC", "THIEN_DONG", "LIEM_TRINH",

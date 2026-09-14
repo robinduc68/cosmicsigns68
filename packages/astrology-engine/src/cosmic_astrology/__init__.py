@@ -19,6 +19,7 @@ from cosmic_astrology.calendar.sexagenary import (
 from cosmic_astrology.chart.builder import ENGINE_VERSION, build_chart
 from cosmic_astrology.chart.types import BirthInput, Chart, EngineStage
 from cosmic_astrology.conventions import (
+    COSMIC_SIGNS_NAM_PHAI_V1,
     COSMIC_SIGNS_STANDARD_V1,
     ConventionProfile,
     LateZiPolicy,
@@ -34,6 +35,7 @@ from cosmic_astrology.timezone import TimezoneResolution, resolve_timezone
 from cosmic_astrology.trace import TraceLog
 
 __all__ = [
+    "COSMIC_SIGNS_NAM_PHAI_V1",
     "COSMIC_SIGNS_STANDARD_V1",
     "ENGINE_VERSION",
     "BirthInput",

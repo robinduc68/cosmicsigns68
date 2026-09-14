@@ -57,6 +57,14 @@ class RuleId(StrEnum):
     PALACE_STEMS = "palace_stems"
     TU_VI_PLACEMENT = "tu_vi_placement"
     MAJOR_STARS = "major_stars"
+    VAN_XUONG_VAN_KHUC = "van_xuong_van_khuc"
+    TA_PHU_HUU_BAT = "ta_phu_huu_bat"
+    THIEN_KHOI_THIEN_VIET = "thien_khoi_thien_viet"
+    LOC_TON = "loc_ton"
+    KINH_DUONG_DA_LA = "kinh_duong_da_la"
+    DAO_HOA = "dao_hoa"
+    HONG_LOAN_THIEN_HY = "hong_loan_thien_hy"
+    THIEN_MA = "thien_ma"
     STAR_ELEMENTS = "star_elements"
     FOUR_TRANSFORMATIONS = "four_transformations"
     TUAN = "tuan"
@@ -191,6 +199,61 @@ class TrietPolicy(StrEnum):
     #: Table by year stem, both branches weighted equally. **Q10** asks whether
     #: the two branches should carry different weight.
     YEAR_STEM_TABLE_EQUAL_WEIGHT = "YEAR_STEM_TABLE_EQUAL_WEIGHT"
+
+
+class VanXuongVanKhucPolicy(StrEnum):
+    """Văn Xương / Văn Khúc theo giờ sinh."""
+
+    #: Xương khởi Tuất đếm nghịch, Khúc khởi Thìn đếm thuận. Hệ quả kiểm được:
+    #: hai sao đồng cung tại Sửu (giờ Dậu) và Mùi (giờ Mão).
+    HOUR_TUAT_REVERSE_THIN_FORWARD = "HOUR_TUAT_REVERSE_THIN_FORWARD"
+
+
+class TaPhuHuuBatPolicy(StrEnum):
+    """Tả Phù / Hữu Bật theo tháng âm."""
+
+    #: Tả khởi Thìn đếm thuận, Hữu khởi Tuất đếm nghịch, từ tháng Giêng.
+    MONTH_THIN_FORWARD_TUAT_REVERSE = "MONTH_THIN_FORWARD_TUAT_REVERSE"
+
+
+class ThienKhoiThienVietPolicy(StrEnum):
+    """Thiên Khôi / Thiên Việt theo thiên can năm sinh."""
+
+    #: Bảng theo câu quyết "Giáp Mậu Canh ngưu dương…". Chỗ các trường phái hay
+    #: khác nhau là can **Canh**; bản này xếp Canh cùng nhóm Giáp/Mậu.
+    YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU = "YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU"
+
+
+class LocTonPolicy(StrEnum):
+    """Lộc Tồn theo thiên can năm sinh — cung lâm quan của can."""
+
+    YEAR_STEM_LAM_QUAN = "YEAR_STEM_LAM_QUAN"
+
+
+class KinhDuongDaLaPolicy(StrEnum):
+    """Kình Dương / Đà La kẹp hai bên Lộc Tồn."""
+
+    #: "Tiền Kình hậu Đà": Kình ở cung liền sau, Đà ở cung liền trước.
+    ADJACENT_TO_LOC_TON = "ADJACENT_TO_LOC_TON"
+
+
+class DaoHoaPolicy(StrEnum):
+    """Đào Hoa theo tam hợp chi năm. Luôn rơi vào tứ chính."""
+
+    YEAR_BRANCH_TRINE = "YEAR_BRANCH_TRINE"
+
+
+class HongLoanThienHyPolicy(StrEnum):
+    """Hồng Loan / Thiên Hỷ theo chi năm."""
+
+    #: Hồng Loan khởi Mão năm Tý đếm nghịch; Thiên Hỷ luôn đối cung.
+    YEAR_BRANCH_MAO_REVERSE = "YEAR_BRANCH_MAO_REVERSE"
+
+
+class ThienMaPolicy(StrEnum):
+    """Thiên Mã (dịch mã) theo tam hợp chi năm. Luôn rơi vào tứ sinh."""
+
+    YEAR_BRANCH_TRINE = "YEAR_BRANCH_TRINE"
 
 
 class StarElementPolicy(StrEnum):

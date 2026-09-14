@@ -10,7 +10,7 @@ import uuid
 from collections.abc import Sequence
 
 from cosmic_astrology import (
-    COSMIC_SIGNS_STANDARD_V1,
+    COSMIC_SIGNS_NAM_PHAI_V1,
     ENGINE_VERSION,
     BirthInput,
     UnresolvedConventionError,
@@ -118,7 +118,7 @@ class ChartService:
         return needs_recalculation(
             chart.convention_profile,
             chart.convention_version,
-            COSMIC_SIGNS_STANDARD_V1,
+            COSMIC_SIGNS_NAM_PHAI_V1,
             stored_engine_version=chart.engine_version,
             current_engine_version=ENGINE_VERSION,
         )

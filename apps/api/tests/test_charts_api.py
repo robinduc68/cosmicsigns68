@@ -132,7 +132,7 @@ async def test_chart_records_the_convention_profile_it_was_built_under(
     client: AsyncClient, birth_payload: dict[str, Any]
 ) -> None:
     data = await _create(client, birth_payload)
-    assert data["convention_profile"] == "COSMIC_SIGNS_STANDARD_V1"
+    assert data["convention_profile"] == "COSMIC_SIGNS_NAM_PHAI_V1"
     assert data["convention_version"]
     # Also inside the payload, so an exported chart stays self-describing.
     assert data["chart"]["convention"]["profile"] == data["convention_profile"]

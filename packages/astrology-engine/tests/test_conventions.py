@@ -7,7 +7,7 @@ import pytest
 from cosmic_astrology import ENGINE_VERSION, BirthInput, build_chart
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
 from cosmic_astrology.conventions import (
-    COSMIC_SIGNS_STANDARD_V1,
+    COSMIC_SIGNS_NAM_PHAI_V1,
     ConventionProfile,
     RuleId,
     UnresolvedConventionError,
@@ -19,7 +19,9 @@ from cosmic_astrology.conventions import (
 from cosmic_astrology.conventions.profile import CRITICAL_RULES, RuleBinding
 from cosmic_astrology.conventions.provenance import NO_SOURCE_YET
 
-PROFILE = COSMIC_SIGNS_STANDARD_V1
+#: Hồ sơ engine đang thực sự dùng. Đổi sang Nam phái cùng lúc với engine, nếu
+#: không thì bộ test sẽ kiểm một hồ sơ không ai chạy.
+PROFILE = COSMIC_SIGNS_NAM_PHAI_V1
 
 
 def _birth(**over: object) -> BirthInput:

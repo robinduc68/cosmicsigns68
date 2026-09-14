@@ -1,6 +1,6 @@
 # Đối chiếu runtime: dữ liệu lá số qua từng tầng
 
-Đo thật, không suy đoán. Ngày đo **2026-09-14**, commit `d96bec5`, trên đúng fixture
+Đo thật, không suy đoán. Ngày đo **2026-09-14**, commit `d96bec5` (số sao cập nhật sau khi thêm phụ tinh nhóm 1), trên đúng fixture
 đang hiển thị mặc định ở trang lá số: **`cross-check-2001`** — Nguyễn Thị Minh Anh,
 nữ, 04/03/2001 09:30, `Asia/Ho_Chi_Minh`, stage `PREVIEW`.
 
@@ -121,10 +121,10 @@ Số lượng phát ra trên fixture này:
 | Nhóm | Engine phát | Render |
 | --- | --- | --- |
 | Chính tinh | **14** | **14** |
-| Phụ tinh | **0** | 0 |
+| Phụ tinh | **13** *(nhóm 1, Nam phái)* | **13** |
 | Tứ Hóa | **0** | 0 |
 | Lưu tinh | **0** | 0 |
-| **Tổng** | **14** | **14** |
+| **Tổng** | **27** | **27** |
 
 Mười trường của mỗi sao, đo trên **cả 14 sao**:
 

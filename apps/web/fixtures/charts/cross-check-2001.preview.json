@@ -3,7 +3,7 @@
   "identity": {
     "chart_id": null,
     "engine_version": "0.2.0-frame",
-    "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+    "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09",
     "production_ready": false,
     "generated_at": "2026-09-11T00:00:00+00:00"
@@ -20,11 +20,11 @@
     "stage": "PREVIEW",
     "version": "0.2.0-frame",
     "is_authoritative": false,
-    "convention_profile": "COSMIC_SIGNS_STANDARD_V1",
+    "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09"
   },
   "convention": {
-    "profile": "COSMIC_SIGNS_STANDARD_V1",
+    "profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "version": "2026.09",
     "rules": [
       {
@@ -307,6 +307,190 @@
           "is_reviewed": false
         },
         "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+      },
+      {
+        "rule": "van_xuong_van_khuc",
+        "policy": "HOUR_TUAT_REVERSE_THIN_FORWARD",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Xương khởi Tuất đếm nghịch theo giờ; Khúc khởi Thìn đếm thuận. Hệ quả kiểm được: hai sao đồng cung tại Mùi (giờ Mão) và Sửu (giờ Dậu)."
+      },
+      {
+        "rule": "ta_phu_huu_bat",
+        "policy": "MONTH_THIN_FORWARD_TUAT_REVERSE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Tả khởi Thìn đếm thuận, Hữu khởi Tuất đếm nghịch, tính từ tháng Giêng âm."
+      },
+      {
+        "rule": "thien_khoi_thien_viet",
+        "policy": "YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Bảng theo can năm ('Giáp Mậu Canh ngưu dương…'). Can Canh là chỗ các trường phái hay khác nhau; bản này xếp Canh cùng nhóm Giáp/Mậu."
+      },
+      {
+        "rule": "loc_ton",
+        "policy": "YEAR_STEM_LAM_QUAN",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Lộc Tồn tại cung lâm quan của can năm. Không bao giờ vào tứ mộ."
+      },
+      {
+        "rule": "kinh_duong_da_la",
+        "policy": "ADJACENT_TO_LOC_TON",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "'Tiền Kình hậu Đà': Kình ở cung liền sau Lộc Tồn theo chiều thuận, Đà ở cung liền trước. Hai sao luôn kẹp Lộc Tồn ở giữa."
+      },
+      {
+        "rule": "dao_hoa",
+        "policy": "YEAR_BRANCH_TRINE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Theo tam hợp chi năm. Luôn rơi vào tứ chính (Tý Ngọ Mão Dậu)."
+      },
+      {
+        "rule": "hong_loan_thien_hy",
+        "policy": "YEAR_BRANCH_MAO_REVERSE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung."
+      },
+      {
+        "rule": "thien_ma",
+        "policy": "YEAR_BRANCH_TRINE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Dịch mã theo tam hợp chi năm. Luôn rơi vào tứ sinh (Dần Thân Tỵ Hợi)."
       },
       {
         "rule": "star_elements",
@@ -692,7 +876,58 @@
           "provisional": true
         }
       ],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "HONG_LOAN",
+          "name": "Hồng Loan",
+          "category": "ROMANCE",
+          "element": "THUY",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung."
+          },
+          "provisional": true
+        },
+        {
+          "id": "KINH_DUONG",
+          "name": "Kình Dương",
+          "category": "MALEFIC",
+          "element": "KIM",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "kinh_duong_da_la/ADJACENT_TO_LOC_TON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "'Tiền Kình hậu Đà': Kình ở cung liền sau Lộc Tồn theo chiều thuận, Đà ở cung liền trước. Hai sao luôn kẹp Lộc Tồn ở giữa."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "MENH",
       "palace_index": 0,
@@ -722,6 +957,56 @@
               "Q3"
             ],
             "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "HONG_LOAN",
+          "name": "Hồng Loan",
+          "category": "ROMANCE",
+          "element": "THUY",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung."
+          },
+          "provisional": true
+        },
+        {
+          "id": "KINH_DUONG",
+          "name": "Kình Dương",
+          "category": "MALEFIC",
+          "element": "KIM",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "kinh_duong_da_la/ADJACENT_TO_LOC_TON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "'Tiền Kình hậu Đà': Kình ở cung liền sau Lộc Tồn theo chiều thuận, Đà ở cung liền trước. Hai sao luôn kẹp Lộc Tồn ở giữa."
           },
           "provisional": true
         }
@@ -815,7 +1100,33 @@
           "provisional": true
         }
       ],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "THIEN_MA",
+          "name": "Thiên Mã",
+          "category": "SUPPORTING",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_ma/YEAR_BRANCH_TRINE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Dịch mã theo tam hợp chi năm. Luôn rơi vào tứ sinh (Dần Thân Tỵ Hợi)."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "PHU_MAU",
       "palace_index": 1,
@@ -871,6 +1182,31 @@
               "Q3"
             ],
             "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_MA",
+          "name": "Thiên Mã",
+          "category": "SUPPORTING",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Hợi",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_ma/YEAR_BRANCH_TRINE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Dịch mã theo tam hợp chi năm. Luôn rơi vào tứ sinh (Dần Thân Tỵ Hợi)."
           },
           "provisional": true
         }
@@ -1158,7 +1494,33 @@
           "provisional": true
         }
       ],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "THIEN_VIET",
+          "name": "Thiên Việt",
+          "category": "SUPPORTING",
+          "element": "HOA",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoi_thien_viet/YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng theo can năm ('Giáp Mậu Canh ngưu dương…'). Can Canh là chỗ các trường phái hay khác nhau; bản này xếp Canh cùng nhóm Giáp/Mậu."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "QUAN_LOC",
       "palace_index": 4,
@@ -1214,6 +1576,31 @@
               "Q3"
             ],
             "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_VIET",
+          "name": "Thiên Việt",
+          "category": "SUPPORTING",
+          "element": "HOA",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoi_thien_viet/YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng theo can năm ('Giáp Mậu Canh ngưu dương…'). Can Canh là chỗ các trường phái hay khác nhau; bản này xếp Canh cùng nhóm Giáp/Mậu."
           },
           "provisional": true
         }
@@ -1430,7 +1817,33 @@
           "provisional": true
         }
       ],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "THIEN_HY",
+          "name": "Thiên Hỷ",
+          "category": "ROMANCE",
+          "element": "THUY",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "THIEN_DI",
       "palace_index": 6,
@@ -1460,6 +1873,31 @@
               "Q3"
             ],
             "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_HY",
+          "name": "Thiên Hỷ",
+          "category": "ROMANCE",
+          "element": "THUY",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thìn",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "hong_loan_thien_hy/YEAR_BRANCH_MAO_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Hồng Loan khởi Mão năm Tý, đếm nghịch theo chi năm; Thiên Hỷ luôn đối cung."
           },
           "provisional": true
         }
@@ -1500,13 +1938,115 @@
       "has_triet": true,
       "is_empty_main_star": true,
       "major_stars": [],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "VAN_XUONG",
+          "name": "Văn Xương",
+          "category": "LITERARY",
+          "element": "KIM",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tỵ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Xương khởi Tuất đếm nghịch theo giờ; Khúc khởi Thìn đếm thuận. Hệ quả kiểm được: hai sao đồng cung tại Mùi (giờ Mão) và Sửu (giờ Dậu)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "TA_PHU",
+          "name": "Tả Phù",
+          "category": "SUPPORTING",
+          "element": "THO",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tỵ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "ta_phu_huu_bat/MONTH_THIN_FORWARD_TUAT_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Tả khởi Thìn đếm thuận, Hữu khởi Tuất đếm nghịch, tính từ tháng Giêng âm."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "TAT_ACH",
       "palace_index": 7,
       "month_number": null,
       "annual_stars": [],
-      "stars": [],
+      "stars": [
+        {
+          "id": "VAN_XUONG",
+          "name": "Văn Xương",
+          "category": "LITERARY",
+          "element": "KIM",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tỵ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Xương khởi Tuất đếm nghịch theo giờ; Khúc khởi Thìn đếm thuận. Hệ quả kiểm được: hai sao đồng cung tại Mùi (giờ Mão) và Sửu (giờ Dậu)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "TA_PHU",
+          "name": "Tả Phù",
+          "category": "SUPPORTING",
+          "element": "THO",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tỵ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "ta_phu_huu_bat/MONTH_THIN_FORWARD_TUAT_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Tả khởi Thìn đếm thuận, Hữu khởi Tuất đếm nghịch, tính từ tháng Giêng âm."
+          },
+          "provisional": true
+        }
+      ],
       "tuan": {
         "present": false,
         "verification": "PROVISIONAL",
@@ -1570,7 +2110,58 @@
           "provisional": true
         }
       ],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "THIEN_KHOI",
+          "name": "Thiên Khôi",
+          "category": "SUPPORTING",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoi_thien_viet/YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng theo can năm ('Giáp Mậu Canh ngưu dương…'). Can Canh là chỗ các trường phái hay khác nhau; bản này xếp Canh cùng nhóm Giáp/Mậu."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DAO_HOA",
+          "name": "Đào Hoa",
+          "category": "ROMANCE",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "dao_hoa/YEAR_BRANCH_TRINE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Theo tam hợp chi năm. Luôn rơi vào tứ chính (Tý Ngọ Mão Dậu)."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "TAI_BACH",
       "palace_index": 8,
@@ -1600,6 +2191,56 @@
               "Q3"
             ],
             "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_KHOI",
+          "name": "Thiên Khôi",
+          "category": "SUPPORTING",
+          "element": "HOA",
+          "polarity": "YANG",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_khoi_thien_viet/YEAR_STEM_TABLE_CANH_WITH_GIAP_MAU",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng theo can năm ('Giáp Mậu Canh ngưu dương…'). Can Canh là chỗ các trường phái hay khác nhau; bản này xếp Canh cùng nhóm Giáp/Mậu."
+          },
+          "provisional": true
+        },
+        {
+          "id": "DAO_HOA",
+          "name": "Đào Hoa",
+          "category": "ROMANCE",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Ngọ",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 5,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "dao_hoa/YEAR_BRANCH_TRINE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Theo tam hợp chi năm. Luôn rơi vào tứ chính (Tý Ngọ Mão Dậu)."
           },
           "provisional": true
         }
@@ -1789,13 +2430,65 @@
       "has_triet": false,
       "is_empty_main_star": true,
       "major_stars": [],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "DA_LA",
+          "name": "Đà La",
+          "category": "MALEFIC",
+          "element": "KIM",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "kinh_duong_da_la/ADJACENT_TO_LOC_TON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "'Tiền Kình hậu Đà': Kình ở cung liền sau Lộc Tồn theo chiều thuận, Đà ở cung liền trước. Hai sao luôn kẹp Lộc Tồn ở giữa."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "PHU_THE",
       "palace_index": 10,
       "month_number": null,
       "annual_stars": [],
-      "stars": [],
+      "stars": [
+        {
+          "id": "DA_LA",
+          "name": "Đà La",
+          "category": "MALEFIC",
+          "element": "KIM",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "kinh_duong_da_la/ADJACENT_TO_LOC_TON",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "'Tiền Kình hậu Đà': Kình ở cung liền sau Lộc Tồn theo chiều thuận, Đà ở cung liền trước. Hai sao luôn kẹp Lộc Tồn ở giữa."
+          },
+          "provisional": true
+        }
+      ],
       "tuan": {
         "present": true,
         "verification": "PROVISIONAL",
@@ -1859,7 +2552,83 @@
           "provisional": true
         }
       ],
-      "minor_stars": [],
+      "minor_stars": [
+        {
+          "id": "VAN_KHUC",
+          "name": "Văn Khúc",
+          "category": "LITERARY",
+          "element": "THUY",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Xương khởi Tuất đếm nghịch theo giờ; Khúc khởi Thìn đếm thuận. Hệ quả kiểm được: hai sao đồng cung tại Mùi (giờ Mão) và Sửu (giờ Dậu)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "HUU_BAT",
+          "name": "Hữu Bật",
+          "category": "SUPPORTING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "ta_phu_huu_bat/MONTH_THIN_FORWARD_TUAT_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Tả khởi Thìn đếm thuận, Hữu khởi Tuất đếm nghịch, tính từ tháng Giêng âm."
+          },
+          "provisional": true
+        },
+        {
+          "id": "LOC_TON",
+          "name": "Lộc Tồn",
+          "category": "WEALTH",
+          "element": "THO",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "loc_ton/YEAR_STEM_LAM_QUAN",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Lộc Tồn tại cung lâm quan của can năm. Không bao giờ vào tứ mộ."
+          },
+          "provisional": true
+        }
+      ],
       "transformations": [],
       "id": "HUYNH_DE",
       "palace_index": 11,
@@ -1889,6 +2658,81 @@
               "Q3"
             ],
             "note": "14 chính tinh đã an nhưng chưa có ca nào được ký duyệt."
+          },
+          "provisional": true
+        },
+        {
+          "id": "VAN_KHUC",
+          "name": "Văn Khúc",
+          "category": "LITERARY",
+          "element": "THUY",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 4,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "van_xuong_van_khuc/HOUR_TUAT_REVERSE_THIN_FORWARD",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Xương khởi Tuất đếm nghịch theo giờ; Khúc khởi Thìn đếm thuận. Hệ quả kiểm được: hai sao đồng cung tại Mùi (giờ Mão) và Sửu (giờ Dậu)."
+          },
+          "provisional": true
+        },
+        {
+          "id": "HUU_BAT",
+          "name": "Hữu Bật",
+          "category": "SUPPORTING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 2,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "ta_phu_huu_bat/MONTH_THIN_FORWARD_TUAT_REVERSE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Tả khởi Thìn đếm thuận, Hữu khởi Tuất đếm nghịch, tính từ tháng Giêng âm."
+          },
+          "provisional": true
+        },
+        {
+          "id": "LOC_TON",
+          "name": "Lộc Tồn",
+          "category": "WEALTH",
+          "element": "THO",
+          "polarity": "YIN",
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dậu",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "display_priority": 6,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "loc_ton/YEAR_STEM_LAM_QUAN",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Lộc Tồn tại cung lâm quan của can năm. Không bao giờ vào tứ mộ."
           },
           "provisional": true
         }

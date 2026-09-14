@@ -1,5 +1,10 @@
 """Convention profiles — every school-dependent choice, named and versioned."""
 
+from cosmic_astrology.conventions.nam_phai import (
+    COSMIC_SIGNS_NAM_PHAI_V1,
+    NAM_PHAI_PROFILE_ID,
+    NAM_PHAI_PROFILE_VERSION,
+)
 from cosmic_astrology.conventions.policies import (
     BirthTimeCorrectionPolicy,
     LateZiPolicy,
@@ -25,7 +30,10 @@ from cosmic_astrology.conventions.standard import (
 )
 
 __all__ = [
+    "COSMIC_SIGNS_NAM_PHAI_V1",
     "COSMIC_SIGNS_STANDARD_V1",
+    "NAM_PHAI_PROFILE_ID",
+    "NAM_PHAI_PROFILE_VERSION",
     "NO_SOURCE_YET",
     "STANDARD_PROFILE_ID",
     "STANDARD_PROFILE_VERSION",

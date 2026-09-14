@@ -65,6 +65,12 @@ def test_every_star_the_engine_can_place_exists_in_the_catalog() -> None:
     assert missing == [], f"thiếu mục trong catalog: {missing}"
     assert len(PLACED_IDS) == 14
 
+    # Phụ tinh nhóm 1 cũng phải có mặt, nếu không sẽ render bằng mã sao trơ.
+    placed = {s["id"] for s in _placed_stars()}
+    uncatalogued = [sid for sid in placed if definition_for(sid) is None]
+    assert uncatalogued == [], f"thiếu mục trong catalog: {uncatalogued}"
+    assert len(placed) == 27
+
 
 def test_the_catalog_holds_all_fourteen_major_stars() -> None:
     expected = {
@@ -131,7 +137,12 @@ def test_every_entry_explains_itself(definition: StarDefinition) -> None:
 def test_stars_without_an_element_record_the_competing_readings() -> None:
     """Trống không được phép là im lặng: phải nói rõ các trường phái ghi gì."""
     blank = [d for d in STAR_CATALOG.values() if not d.has_element]
-    assert [d.vietnamese_name for d in blank] == ["Tham Lang", "Cự Môn"]
+    assert sorted(d.vietnamese_name for d in blank) == [
+        "Cự Môn",
+        "Hữu Bật",
+        "Tham Lang",
+        "Đào Hoa",
+    ]
     for definition in blank:
         assert len(definition.alternatives) >= 2
         assert "CHƯA GHI NHẬN" in definition.note
@@ -266,9 +277,9 @@ def test_every_category_has_a_row_even_at_zero() -> None:
     """0/0 là một sự thật đáng thấy, không phải một hàng nên giấu đi."""
     coverage = metadata_coverage()
     assert {row.category for row in coverage.categories} == set(StarCategory)
-    for category in StarCategory:
-        if category is not MAJOR:
-            assert coverage.by_category(category).total == 0
+    # Chưa có sao nào thuộc các loại này — vẫn phải có hàng trong báo cáo.
+    for category in (StarCategory.TRANSFORMATION, StarCategory.ANNUAL, StarCategory.OTHER):
+        assert coverage.by_category(category).total == 0
 
 
 def test_all_five_elements_are_represented() -> None:
@@ -297,7 +308,8 @@ def test_definition_for_returns_none_for_an_uncatalogued_star() -> None:
 
 def test_the_chart_dto_carries_catalogued_metadata() -> None:
     stars = _placed_stars()
-    assert len(stars) == 14
+    # 14 chính tinh + 13 phụ tinh nhóm 1 (Nam phái).
+    assert len(stars) == 27
     for star in stars:
         definition = definition_for(star["id"])
         assert definition is not None
@@ -310,9 +322,12 @@ def test_the_chart_dto_carries_catalogued_metadata() -> None:
 
 def test_the_dto_never_invents_an_element() -> None:
     stars = _placed_stars()
-    coloured = [s["name"] for s in stars if s["element"]]
-    assert len(coloured) == metadata_coverage().by_category(MAJOR).with_element
-    assert sorted(s["name"] for s in stars if not s["element"]) == ["Cự Môn", "Tham Lang"]
+    assert sorted(s["name"] for s in stars if not s["element"]) == [
+        "Cự Môn",
+        "Hữu Bật",
+        "Tham Lang",
+        "Đào Hoa",
+    ]
 
 
 def test_missing_element_stays_null_all_the_way_through() -> None:
@@ -358,10 +373,11 @@ def test_attaching_metadata_did_not_move_any_star() -> None:
         assert placed[star_id] == (thien_phu + offset) % 12
 
 
-def test_every_placed_star_is_a_major_star_of_known_category() -> None:
+def test_every_placed_star_has_a_known_category() -> None:
+    known = {c.value for c in StarCategory}
     for star in _placed_stars():
-        assert star["category"] == MAJOR.value
-        assert star["is_major"] is True
+        assert star["category"] in known
+        assert star["is_major"] is (star["category"] == MAJOR.value)
 
 
 def test_frame_stage_places_no_stars_at_all() -> None:

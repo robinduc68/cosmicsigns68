@@ -15,7 +15,7 @@ from typing import Any
 
 from cosmic_astrology import BirthInput, build_chart
 from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
-from cosmic_astrology.conventions import COSMIC_SIGNS_STANDARD_V1, RuleId
+from cosmic_astrology.conventions import COSMIC_SIGNS_NAM_PHAI_V1, RuleId
 from cosmic_astrology.conventions.profile import validate_convention_profile
 from cosmic_astrology.review import (
     Discrepancy,
@@ -266,7 +266,7 @@ async def save_review(fixture_id: str, payload: ReviewInput) -> dict[str, Any]:
 @router.get("/progress", summary="Bảng tiến độ kiểm định")
 async def progress() -> dict[str, Any]:
     store = load_store()
-    profile = COSMIC_SIGNS_STANDARD_V1
+    profile = COSMIC_SIGNS_NAM_PHAI_V1
     validation = validate_convention_profile(profile)
     return success(
         {
@@ -389,7 +389,7 @@ async def promote(payload: PromoteInput) -> dict[str, Any]:
     result = promote_rule_verification(
         rule=rule,
         store=load_store(),
-        profile=COSMIC_SIGNS_STANDARD_V1,
+        profile=COSMIC_SIGNS_NAM_PHAI_V1,
         reviewer=payload.reviewer,
         source_id=payload.source_id,
         evidence=payload.evidence,

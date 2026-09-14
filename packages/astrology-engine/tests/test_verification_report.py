@@ -54,7 +54,7 @@ def test_the_report_says_the_engine_is_not_production_ready_and_why() -> None:
     assert report.failures
 
     rendered = render_report(report)
-    assert "COSMIC_SIGNS_STANDARD_V1" in rendered
+    assert "COSMIC_SIGNS_NAM_PHAI_V1" in rendered
     assert "BLOCKED" in rendered
     assert "PROVISIONAL" in rendered
     assert "Sẵn sàng cho production: KHÔNG" in rendered

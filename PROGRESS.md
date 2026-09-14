@@ -21,9 +21,12 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 3 — Create Chart UX | ✅ xong |
 | Phase 4 — Calendar / tứ trụ / 12 cung | ✅ xong (PROVISIONAL) |
 | Phase 5 — Renderer lá số | ✅ xong |
-| Phase 6 — An sao | 🟡 mới có 14 chính tinh; phụ tinh & Tứ Hóa chưa làm |
+| Phase 6 — An sao | 🟡 14 chính tinh + phụ tinh nhóm 1 (27 sao); Tứ Hóa & nhóm 2 chưa làm |
 
-Quality gate **đều xanh**: **546 test pass** (355 engine + 41 api + 150 web),
+Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
+nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
+
+Quality gate **đều xanh**: **634 test pass** (443 engine + 41 api + 150 web),
 ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
 `nuxt build` production thành công.
 Đã soát responsive thật bằng Chrome headless ở 375 / 390 / 430 / 768 / 1024 / 1440.
@@ -57,6 +60,9 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
   display priority. Luật an sao chỉ mang **id**, không mang tên — một nguồn sự thật.
 - **Vòng Tràng Sinh + đại vận (`cycles/`)**: 12 chặng, chiều, tuổi khởi, dãy 12 đại vận.
   Làm trên **chỉ số địa chi**, tên 12 cung không đảo theo.
+- **Phụ tinh nhóm 1 (`stars/placement.py`)** theo Nam phái: Xương Khúc, Tả Hữu, Khôi Việt,
+  Lộc Tồn, Kình Đà, Đào Hoa, Hồng Loan, Thiên Hỷ, Thiên Mã. Mỗi hàm trả về **một địa chi**;
+  tên cung và toạ độ lưới là hai chuyện khác. 4 bất biến kiểm được không cần nguồn ngoài.
 - **Bàn kiểm định (`review/`)** + trace giải thích được từng bước (inputs, policy,
   rule id, convention, source, verification).
 - 355 test, đối chiếu ngày Tết chính thống 2000–2026 và tháng nhuận Quý Mão 2023
@@ -115,11 +121,12 @@ ruff sạch, mypy strict sạch, eslint sạch, `nuxt typecheck` + `tsc` sạch,
    Việc code duy nhất liên quan: điền `tests/fixtures/sources.json` khi đã chốt.
 1. **Kiểm định 14 chính tinh** — dùng bàn kiểm định nội bộ ở `/_internal/astrology-verification`.
    Quy trình chống tự xác nhận đã dựng sẵn: không được tự nâng nhãn chỉ vì test xanh.
-2. **Phụ tinh** (Lộc Tồn, Xương Khúc, Tả Hữu, Khôi Việt, Kình Đà, Không Kiếp, Hỏa Linh,
-   Đào Hồng Hỷ, Đại/Tiểu Hao) → **Tứ Hóa** (Q7/Q8/Q9) → **Miếu/Vượng/Đắc/Hãm** (bảng
-   168 ô, phải chép từ nguồn, tuyệt đối không bịa) → **lưu niên** (chặn bởi Q11/Q12).
-   Hợp đồng dữ liệu đã sẵn sàng đón hết: thêm sao là điền catalog + luật an sao, không
-   phải đổi DTO.
+2. **Phụ tinh nhóm 2** (Không Kiếp, Hỏa Linh, Khốc Hư, Long Phượng, Tam Thai Bát Tọa,
+   Thai Phụ Phong Cáo, Ân Quang Thiên Quý, Cô Thần Quả Tú, Đại/Tiểu Hao, vòng Thái Tuế,
+   vòng Bác Sĩ) → **Tứ Hóa** (Q7/Q8/Q9) → **Miếu/Vượng/Đắc/Hãm** (bảng 168 ô, phải chép
+   từ nguồn, tuyệt đối không bịa) → **lưu niên** (chặn bởi Q11/Q12).
+   Nhóm 1 đã chứng minh đường ống: thêm sao = thêm luật trong `stars/placement.py` +
+   mục trong catalog + một dòng trong `_SUPPORTING_GROUP_1`. **Không đụng frontend.**
 3. **Rule / Analysis engine** — sinh *facts + score + evidence* từ chart JSON.
    Không có nó thì không thể mở bất kỳ section luận giải nào mà không bịa.
 4. **Auth** (email/password + Google). Phải xong trước khi mở public.
@@ -225,8 +232,9 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 - **Chưa có auth** — ai giữ được UUID thì xem được lá số đó.
 - **14 chính tinh chưa được kiểm định**; phụ tinh, miếu vượng, tứ hóa, lưu niên chưa làm.
   Vòng Tràng Sinh và đại vận **đã làm** nhưng ở mức `PROVISIONAL`.
-- **Ngũ hành của sao: 12/14**. Tham Lang và Cự Môn để trống vì các trường phái ghi
-  khác nhau — vẽ bằng mực trung tính, không đoán. `make astrology-star-metadata-report`.
+- **Ngũ hành của sao: 23/27**. Để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các
+  trường phái ghi khác nhau, vẽ bằng mực trung tính, không đoán.
+  `make astrology-star-metadata-report`.
 - **Hai phân kỳ trường phái đang chọn theo cách đọc đa số**, cả hai cách đều ghi trong
   policy: Thổ cục khởi Tràng Sinh ở Thân hay Dần; chiều vòng Tràng Sinh theo âm dương
   nam nữ hay theo âm dương Cục. Xem `docs/astrology-conventions.md` mục 24.
