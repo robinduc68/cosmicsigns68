@@ -443,41 +443,45 @@ _SUPPORTING_GROUP_2: tuple[StarDefinition, ...] = (
         "LONG_TRI",
         "Long Trì",
         StarCategory.NOBILITY,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THUY,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "PHUONG_CAC",
         "Phượng Các",
         StarCategory.NOBILITY,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "TAM_THAI",
         "Tam Thai",
         StarCategory.NOBILITY,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "BAT_TOA",
         "Bát Tọa",
         StarCategory.NOBILITY,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "AN_QUANG",
@@ -583,21 +587,23 @@ _SUPPORTING_GROUP_2: tuple[StarDefinition, ...] = (
         "THIEU_DUONG",
         "Thiếu Dương",
         StarCategory.OTHER,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "THIEU_AM",
         "Thiếu Âm",
         StarCategory.OTHER,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THUY,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "HOA_CAI",
@@ -613,21 +619,23 @@ _SUPPORTING_GROUP_2: tuple[StarDefinition, ...] = (
         "THIEN_TAI",
         "Thiên Tài",
         StarCategory.SUPPORTING,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "THIEN_THO",
         "Thiên Thọ",
         StarCategory.SUPPORTING,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
 )
 
@@ -677,21 +685,23 @@ _SUPPORTING_GROUP_2B: tuple[StarDefinition, ...] = (
         "THAI_PHU",
         "Thai Phụ",
         StarCategory.NOBILITY,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "PHONG_CAO",
         "Phong Cáo",
         StarCategory.NOBILITY,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THO,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "QUOC_AN",
@@ -749,21 +759,23 @@ _MALEFIC_GROUP_1: tuple[StarDefinition, ...] = (
         "DIA_KHONG",
         "Địa Không",
         StarCategory.VOID,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "DIA_KIEP",
         "Địa Kiếp",
         StarCategory.VOID,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "THIEN_KHONG",
@@ -779,21 +791,23 @@ _MALEFIC_GROUP_1: tuple[StarDefinition, ...] = (
         "DAI_HAO",
         "Đại Hao",
         StarCategory.LOSS,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "TIEU_HAO",
         "Tiểu Hao",
         StarCategory.LOSS,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "TANG_MON",
@@ -869,21 +883,23 @@ _MALEFIC_GROUP_1: tuple[StarDefinition, ...] = (
         "CO_THAN",
         "Cô Thần",
         StarCategory.ISOLATION,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "QUA_TU",
         "Quả Tú",
         StarCategory.ISOLATION,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
 )
 
@@ -988,11 +1004,12 @@ _SUPPORTING_GROUP_3: tuple[StarDefinition, ...] = (
         "THAI_TUE",
         "Thái Tuế",
         StarCategory.OTHER,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "TUE_PHA",
@@ -1038,21 +1055,23 @@ _SUPPORTING_GROUP_3: tuple[StarDefinition, ...] = (
         "THIEN_HINH",
         "Thiên Hình",
         StarCategory.MALEFIC,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.HOA,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "THIEN_DIEU",
         "Thiên Diêu",
         StarCategory.ROMANCE,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THUY,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "THIEN_LA",
@@ -1078,21 +1097,23 @@ _SUPPORTING_GROUP_3: tuple[StarDefinition, ...] = (
         "THIEN_THUONG",
         "Thiên Thương",
         StarCategory.MALEFIC,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THUY,
+        Polarity.YANG,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "THIEN_SU",
         "Thiên Sứ",
         StarCategory.MALEFIC,
-        None,
-        None,
-        "CHƯA TRA CỨU. Ngũ hành của sao này chưa tra được từ nguồn nào — khác với "
-        "trường hợp các sách ghi mâu thuẫn. Vẽ bằng mực trung tính.",
-        blank_reason=BlankReason.NOT_RECORDED,
+        Element.THUY,
+        Polarity.YIN,
+        "Ngũ hành và âm dương theo cách đọc chung của Nam phái. CHƯA đối chiếu ấn "
+        "bản nào, nên PROVISIONAL — đúng hạng dữ liệu đã từng sai một lần trong dự "
+        "án (hàng Kỷ của bảng Thiên Trù). Điền được vì cặp sao này nêu lại được CẢ "
+        "HAI nửa của câu; những sao chỉ nhớ được nửa hành thì để trống.",
     ),
     _minor(
         "DAU_QUAN",

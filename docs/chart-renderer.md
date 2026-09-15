@@ -345,6 +345,21 @@ Chỗ dễ đọc hơn đến từ **khoảng cách**, không từ cỡ chữ: `
 
 ---
 
+## 9j. Thủy từng không nói gì
+
+`--chart-thuy` là `#1a2531`, mực trung tính là `#221c16`. Hai màu cách nhau **1.09 lần
+độ sáng** — ở cỡ phụ tinh, một sao hành Thủy và một sao chưa rõ hành trông y hệt nhau,
+nên hành Thủy coi như không truyền tải gì.
+
+Nay `#1d4e80`: vẫn tối (8.4:1 trên nền giấy, thừa ngưỡng đọc), nhưng tách được bằng
+**sắc** — xanh lạnh cạnh nâu ấm. Quy ước không đổi: Thủy vẫn là "tối".
+
+Sao chưa có hành giữ mực trung tính, và nó **đã là mực đậm nhất** của lá số nên không
+"đậm hơn" được nữa. Chỗ cải thiện còn lại là nét: phụ tinh trung tính dày thêm nửa bậc
+(500 → 600) để đứng ngang hàng với sao có màu thay vì đọc như chữ bị mờ.
+
+---
+
 ## 10. Hạn chế đã biết
 
 - **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có

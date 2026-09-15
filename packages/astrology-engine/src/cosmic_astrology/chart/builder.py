@@ -109,7 +109,10 @@ _logger = logging.getLogger(__name__)
 #
 # 0.4.4: mỗi lưu tinh mang thêm ``traditional_display`` — siêu dữ liệu TRÌNH BÀY, nói
 # bản in đối chiếu có ghi nó ra hay không. Không phép an sao nào đọc cờ này.
-ENGINE_VERSION = "0.4.4-frame"
+#
+# 0.4.5: 21 phụ tinh được điền ngũ hành + âm dương trong catalog. Metadata, không
+# phải phép tính — không sao nào dịch chỗ.
+ENGINE_VERSION = "0.4.5-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:

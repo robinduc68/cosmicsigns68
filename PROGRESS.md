@@ -281,7 +281,7 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   từ ấn bản. Chặn bởi Q2/Q3.
 - **Tứ Hóa hàng Canh đang chọn phương án 1.** Phương án 1 và 2 **đảo Khoa với Kỵ** —
   chọn nhầm lật cát tinh thành hung tinh trên mọi lá số sinh năm Canh. Cần Q3 quyết.
-- **Ngũ hành của sao: 25/88** (known 25 · disputed 4 · not recorded 59). Màu trên lá số
+- **Ngũ hành của sao: 46/92** (đã điền thêm 21 phụ tinh ở 0.4.5). Màu trên lá số
   là **ngũ hành**, không phải tốt/xấu: Địa Không, Địa Kiếp, Bạch Hổ đều vẽ mực trung
   tính; Hỏa Tinh đỏ vì nó **là** Hỏa. Nhóm 2 để trống toàn bộ (`NOT_RECORDED` — chưa tra được,
   khác với `DISPUTED` của Tham Lang/Cự Môn/Hữu Bật/Đào Hoa).
@@ -305,6 +305,12 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   tới khi có người chủ động chọn năm — và một lá số đầy đủ lưu tinh trông giống hệt
   một lá số chưa cài lưu niên. Đây là lý do "thiếu lưu tinh" bị báo ba phiên liền.
   Nay mặc định là năm hiện tại.
+- **Ngũ hành và âm dương phải cùng có hoặc cùng thiếu** — bất biến của `StarDefinition`,
+  và nó đã chặn đúng một lần: em định điền hành mà bỏ trống âm dương để lấy màu mà
+  không phải chịu trách nhiệm cho khẳng định thứ hai. Hai nửa đến từ cùng một câu
+  trong sách; nêu lại được nửa này mà không nêu được nửa kia nghĩa là chưa biết.
+- **Thủy và mực trung tính từng gần như trùng nhau** (#1a2531 vs #221c16, chênh 1.09
+  lần độ sáng), nên hành Thủy coi như không nói gì. Nay #1d4e80 — vẫn tối, tách bằng sắc.
 - **Đừng chỉnh mật độ bằng mắt.** Lá số trông thưa vì phần thừa của mỗi cung **dồn
   thành một khoảng duy nhất ở đáy** (91–178px), chứ không phải vì chữ nhỏ. Tăng cỡ chữ
   một mình gần như không đổi gì; thứ sửa được là cho `header` một `margin-bottom: auto`
