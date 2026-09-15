@@ -149,3 +149,19 @@ export function centerAnchor(branchIndex: number): { x: number; y: number } {
     y: (clampToPanel((row - 0.5) * 25) - 25) * 2,
   }
 }
+
+/**
+ * Hồ sơ hiển thị lưu tinh — **chỉ quyết định hiện gì**, không quyết định tính gì.
+ *
+ * Engine an nhiều lưu tinh hơn số một lá số in truyền thống ghi ra. Đó không phải
+ * lỗi: dữ liệu thừa thì cắt được, dữ liệu thiếu thì không.
+ *
+ * Danh sách sao nào thuộc bản in truyền thống **nằm ở engine**, và mỗi lưu tinh mang
+ * sẵn cờ ``traditional_display``. Renderer chỉ đọc cờ ấy — nó không được phép biết mã
+ * sao nào, và có một bài test quét mã nguồn renderer để giữ đúng điều đó.
+ */
+export type AnnualDisplayProfile = 'TRADITIONAL_REFERENCE_V1' | 'FULL_ANNUAL'
+
+export function showsAnnualStar(traditionalDisplay: boolean, profile: AnnualDisplayProfile): boolean {
+  return profile === 'FULL_ANNUAL' || traditionalDisplay
+}

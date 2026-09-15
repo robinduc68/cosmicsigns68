@@ -275,6 +275,52 @@ nhỏ và nhẹ hơn một nhịp, dấu âm/dương nhỏ hơn và tách ra m�
 
 ---
 
+## 9g. Trật tự nhóm trong một cung
+
+```
+TIÊU ĐỀ
+KHỐI CHÍNH TINH      ← liền nhau, không gì chen vào
+KHỐI TỨ HÓA
+LƯỚI PHỤ TINH        ← hai cột
+LƯỚI LƯU TINH        ← hai cột, khối riêng
+FOOTER
+```
+
+**Bất biến quan trọng nhất của lớp trình bày: không dòng Tứ Hóa nào được nằm giữa
+hai chính tinh.** Trước đây mỗi dòng hóa dựng *bên trong* ngôi sao mang nó, nên ở một
+cung có hai chính tinh mà sao thứ nhất mang hóa, dòng hóa rơi vào giữa và khối vỡ
+thành hai cụm rời. Nay Tứ Hóa gom thành một khối sau **toàn bộ** chính tinh; dòng hóa
+vẫn mang màu ngũ hành của sao mang nó và nói tên sao ấy trong tooltip.
+
+Có test canh **thứ tự DOM thật**, không canh số đếm.
+
+### Đã thử grid và hỏng
+
+Bản thử dùng `display: grid` với bốn hàng `auto / auto / 1fr / auto`. Khối chính tinh
+và khối Tứ Hóa cùng ở hàng 2, nên lưới **tự sinh một cột ngầm thứ hai** và đặt chúng
+cạnh nhau. Cột 1 hẹp lại cho *mọi* hàng: tên cung xuống dòng, chữ tràn vào footer.
+
+Flex một cột với `margin-top: auto` ở footer làm đúng việc ấy — canh trên, footer dính
+đáy — và không có cách nào sinh ra cột thứ hai.
+
+---
+
+## 9h. Hồ sơ hiển thị lưu tinh
+
+Engine an **18** lưu tinh; bản in đối chiếu ghi ra **9**. Dữ liệu thừa thì cắt được ở
+tầng hiển thị, dữ liệu thiếu thì không — nên engine vẫn tính đủ.
+
+`TRADITIONAL_REFERENCE_V1` (mặc định) hiện 9 sao của bản in; `FULL_ANNUAL` hiện tất cả.
+Hồ sơ **chỉ lọc nhãn**: `annual.stars` không hề bị đụng, nên đổi hồ sơ không thể làm
+một ngôi sao dịch chỗ.
+
+Danh sách sao nào thuộc bản in nằm ở **engine** (`TRADITIONAL_DISPLAY_STAR_IDS`), và
+mỗi lưu tinh mang sẵn cờ `traditional_display`. Renderer chỉ đọc cờ — nó không được
+phép rẽ nhánh theo mã sao, và `no-star-name-styling.spec.ts` quét mã nguồn renderer để
+giữ đúng điều đó. Bản thử đầu đặt danh sách ở renderer và bài test ấy đỏ ngay.
+
+---
+
 ## 10. Hạn chế đã biết
 
 - **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có

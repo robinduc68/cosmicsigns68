@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PalaceViewModel } from '~/types/chart-view-model'
-import { ELEMENT_COLOR_MAP } from '~/utils/tuvi-chart'
+import { ELEMENT_COLOR_MAP, elementClass } from '~/utils/tuvi-chart'
 import TuViStar from './TuViStar.vue'
 
 const props = withDefaults(
@@ -178,11 +178,44 @@ onMounted(async () => {
     </ul>
     <p v-else-if="palace.isEmptyMainStar" class="tuvi-palace__empty">Vô chính diệu</p>
 
-    <ul v-if="palace.minorStars.length" class="tuvi-palace__minors">
-      <li v-for="star in palace.minorStars" :key="star.code">
-        <TuViStar :star="star" />
+    <!--
+      Tứ Hóa: **một khối, sau toàn bộ chính tinh**.
+
+      Trước đây mỗi dòng hóa nằm trong chính ngôi sao mang nó. Ở một cung có hai chính
+      tinh mà sao thứ nhất mang hóa, dòng hóa chen vào GIỮA hai chính tinh — khối chính
+      tinh vỡ, và mắt đọc thành hai cụm rời. Dòng hóa mang màu ngũ hành của sao mang nó
+      và nói tên sao ấy trong tooltip, nên tách ra không mất thông tin nào.
+    -->
+    <ul v-if="palace.transformationLines.length" class="tuvi-palace__hoa">
+      <li
+        v-for="(hoa, index) in palace.transformationLines"
+        :key="`${hoa.code}-${index}`"
+        class="tuvi-hoa-line"
+        :class="[elementClass(hoa.carrierElement), { 'is-annual-hoa': hoa.isAnnual }]"
+        :data-transformation="hoa.code"
+        :title="`${hoa.fullLabel} — của ${hoa.carrierName}`"
+      >
+        {{ hoa.fullLabel
+        }}<abbr v-if="hoa.strengthAbbr" class="tuvi-star__strength" :title="hoa.strengthLabel ?? undefined"
+          >({{ hoa.strengthAbbr }})</abbr
+        >
       </li>
     </ul>
+
+    <div class="tuvi-palace__stars">
+      <ul v-if="palace.minorStars.length" class="tuvi-palace__minors">
+        <li v-for="star in palace.minorStars" :key="star.code">
+          <TuViStar :star="star" />
+        </li>
+      </ul>
+
+      <!-- Lưu tinh: khối riêng, sau phụ tinh bản mệnh. Hai lớp dữ liệu, hai khối. -->
+      <ul v-if="palace.annualStars.length" class="tuvi-palace__minors tuvi-palace__annual">
+        <li v-for="star in palace.annualStars" :key="star.code">
+          <TuViStar :star="star" />
+        </li>
+      </ul>
+    </div>
 
     <!--
       Footer: mỗi ô là **một giá trị engine thật sự cấp**. Ô nào không có dữ liệu thì

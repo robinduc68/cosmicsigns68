@@ -43,6 +43,12 @@ export interface StarViewModel {
   isMajor: boolean
   isTransformation: boolean
   isAnnual: boolean
+  /**
+   * Lá số in đối chiếu có ghi ngôi sao này ra hay không — **cờ do engine cấp**.
+   * Renderer lọc theo cờ này, không theo mã sao: có một bài test quét mã nguồn
+   * renderer để giữ đúng điều đó. Sao bản mệnh luôn `true`.
+   */
+  traditionalDisplay: boolean
   /** Địa chi the engine placed this star on. `null` on schema v1 payloads. */
   palaceBranch: string | null
   /** Engine-supplied ordering; falls back to a local table for schema v1. */
@@ -59,6 +65,15 @@ export interface StarViewModel {
    * so a natal Hóa Lộc is never mistaken for this year's.
    */
   annualTransformations: StarTransformationViewModel[]
+}
+
+export interface PalaceTransformationViewModel extends StarTransformationViewModel {
+  /** Ngôi sao mang hóa này — cho tooltip, vì dòng hóa đứng tách khỏi nó. */
+  carrierName: string
+  /** Ngũ hành của ngôi sao mang hóa: dòng hóa nhận cùng màu, không có màu riêng. */
+  carrierElement: ElementCode | null
+  /** Hóa của năm xem hay của bản mệnh. */
+  isAnnual: boolean
 }
 
 export interface StarTransformationViewModel {
@@ -92,7 +107,20 @@ export interface PalaceViewModel {
   hasTriet: boolean
   isEmptyMainStar: boolean
   majorStars: StarViewModel[]
+  /**
+   * Phụ tinh **bản mệnh**. Lưu tinh tách ra ``annualStars`` — một lá số in để chúng
+   * thành hai khối, và trộn chung thì hai lớp dữ liệu đọc như một.
+   */
   minorStars: StarViewModel[]
+  /** Lưu tinh của năm xem, đã lọc theo hồ sơ hiển thị. */
+  annualStars: StarViewModel[]
+  /**
+   * Toàn bộ Tứ Hóa trong cung, gom thành **một khối** dựng ngay sau chính tinh.
+   *
+   * Gom ở đây chứ không để trong từng ngôi sao, vì để trong sao thì hóa của chính
+   * tinh thứ nhất chen vào **giữa** hai chính tinh và phá vỡ khối chính tinh.
+   */
+  transformationLines: PalaceTransformationViewModel[]
   /** Position of this palace name in the classical sequence from Mệnh (0-11). */
   palaceIndex: number | null
   /** Đại vận / lưu niên / Tràng Sinh. Every field is `null` today. */

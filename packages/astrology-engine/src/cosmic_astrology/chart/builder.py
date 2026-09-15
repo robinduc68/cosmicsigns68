@@ -106,7 +106,10 @@ _logger = logging.getLogger(__name__)
 #
 # 0.4.3: mỗi ngôi sao nay mang thêm ``transformation_strengths`` — độ sáng của từng
 # Tứ Hóa nó đang giữ. Thêm trường, không dịch sao nào.
-ENGINE_VERSION = "0.4.3-frame"
+#
+# 0.4.4: mỗi lưu tinh mang thêm ``traditional_display`` — siêu dữ liệu TRÌNH BÀY, nói
+# bản in đối chiếu có ghi nó ra hay không. Không phép an sao nào đọc cờ này.
+ENGINE_VERSION = "0.4.4-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:

@@ -99,6 +99,18 @@
 
 /* ---------------------------------------------------------------- palace */
 
+/*
+ * Cột dọc, **canh trên**, footer dính đáy.
+ *
+ * Bản trước chia đôi chỗ thừa giữa tiêu đề và footer, nên khối sao trôi xuống giữa ô.
+ * Một lá số in thì canh trên: sao bắt đầu ngay dưới nạp âm, chỗ thừa dồn xuống đáy.
+ *
+ * Đã thử ``display: grid`` với bốn hàng auto/auto/1fr/auto và **hỏng**: khối chính
+ * tinh và khối Tứ Hóa cùng ở hàng 2, nên lưới tự sinh một cột ngầm thứ hai và đặt
+ * chúng cạnh nhau. Cột 1 hẹp lại cho **mọi** hàng — tên cung xuống dòng, chữ tràn
+ * vào footer. Flex với một ``margin-top: auto`` ở footer làm đúng việc ấy mà không
+ * có cách nào sinh ra cột thứ hai.
+ */
 .tuvi-palace {
   position: relative;
   display: flex;
@@ -108,7 +120,6 @@
   /* Nothing may spill across a border; the mapper warns in development when a
      palace is estimated to exceed its capacity, so clipping is never silent. */
   overflow: hidden;
-  /* Top and bottom padding leave room for Tuần/Triệt labels straddling a border. */
   padding: 16px 13px 11px;
   line-height: 1.26;
   background: var(--chart-cell);
@@ -126,18 +137,11 @@
   align-items: baseline;
 }
 
-/*
- * Chỗ thừa của một cung được **chia đôi**, không dồn xuống đáy.
- *
- * Trước đây chỉ footer có ``margin-top: auto``, nên toàn bộ chỗ thừa gom thành một
- * khoảng 100–190px nằm giữa ngôi sao cuối và footer — đo được trên cả 12 cung, và đó
- * chính là thứ làm lá số trông thưa dù chữ đã lớn.
- *
- * Hai ``auto`` đối nhau thì flexbox chia đều phần thừa cho cả hai: khối sao nằm giữa
- * tiêu đề và footer thay vì treo lơ lửng ở trên. Không cần thêm thẻ bọc nào.
- */
-.tuvi-palace > header {
-  margin-bottom: auto;
+.tuvi-palace__hoa {
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
 }
 
 /*
@@ -216,14 +220,16 @@
 }
 
 .tuvi-palace__majors {
-  margin: 9px 0 0;
+  /* 8px là khoảng từ đáy nạp âm tới chính tinh đầu tiên — sát mép trên như bản in. */
+  margin: 8px 0 0;
   padding: 0;
   list-style: none;
   text-align: center;
 }
 
+/* Khối chính tinh phải đọc như MỘT khối: không khoảng cách giữa các dòng. */
 .tuvi-palace__majors > li + li {
-  margin-top: 1px;
+  margin-top: 0;
 }
 
 /*
@@ -233,16 +239,16 @@
  */
 .tuvi-palace__majors > li {
   font-size: var(--chart-major-star-size);
-  line-height: 1.2;
+  line-height: 1.12;
 }
 
 .tuvi-palace__minors > li {
   font-size: var(--chart-minor-star-size);
-  line-height: 1.24;
+  line-height: 1.14;
 }
 
 .tuvi-palace__empty {
-  margin: 14px 0 0;
+  margin: 8px 0 0;
   font-size: var(--chart-minor-star-size);
   font-style: italic;
   text-align: center;
@@ -252,9 +258,9 @@
 .tuvi-palace__minors {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 12px;
-  row-gap: 1px;
-  margin: 8px 0 0;
+  column-gap: 10px;
+  row-gap: 2px;
+  margin: 7px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -266,6 +272,10 @@
  * thì thêm một ô nữa là xong — không phải dựng lại bố cục. Ô nào không có dữ liệu thì
  * **không được dựng ra**, chứ không phải dựng ra rồi để trống.
  */
+.tuvi-palace__stars {
+  min-height: 0;
+}
+
 .tuvi-palace__footer {
   display: grid;
   grid-auto-flow: column;
@@ -818,7 +828,7 @@
    Hóa Lộc KHÔNG xanh, Hóa Kỵ KHÔNG đỏ: màu trên lá số này chỉ có một nghĩa. */
 .tuvi-hoa-line {
   display: block;
-  padding-left: 8px;
+  padding-left: 0;
   /* Nhỏ hơn chính tinh một bậc rõ ràng, nhưng vẫn là chữ thường có chân — nó là một
      dòng của lá số, không phải một nhãn dán lên ngôi sao. */
   font-family: var(--chart-serif);
@@ -826,7 +836,7 @@
   font-style: italic;
   font-weight: 500;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1.14;
   text-transform: none;
 }
 

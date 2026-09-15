@@ -87,6 +87,27 @@ class AnnualPalace:
         }
 
 
+#: Lưu tinh mà lá số in đối chiếu ghi ra. **Siêu dữ liệu trình bày, không phải luật**
+#: — không có phép an sao nào đọc tập này, và mọi lưu tinh vẫn được tính như nhau.
+#:
+#: Đặt ở engine chứ không ở renderer là có lý do: renderer tuyệt đối không được rẽ
+#: nhánh theo mã sao, và có một bài test quét mã nguồn renderer để giữ điều đó. Danh
+#: sách này thuộc về nơi biết lá số đối chiếu ghi gì.
+TRADITIONAL_DISPLAY_STAR_IDS: frozenset[str] = frozenset(
+    {
+        "LUU_LOC_TON",
+        "LUU_THAI_TUE",
+        "LUU_KINH_DUONG",
+        "LUU_DA_LA",
+        "LUU_THIEN_MA",
+        "LUU_TANG_MON",
+        "LUU_BACH_HO",
+        "LUU_THIEN_KHOC",
+        "LUU_THIEN_HU",
+    }
+)
+
+
 @dataclass(frozen=True, slots=True)
 class AnnualStar:
     """Một lưu tinh.
@@ -103,6 +124,20 @@ class AnnualStar:
     palace_branch: str
 
     @property
+    def traditional_display(self) -> bool:
+        """Lá số in đối chiếu có ghi lưu tinh này ra hay không.
+
+        **Chỉ là siêu dữ liệu trình bày.** Nó không tham gia vào bất kỳ phép an sao
+        nào; mọi lưu tinh vẫn được tính và vẫn nằm trong ``AnnualChart.stars`` bất kể
+        cờ này. Renderer đọc nó để chọn *hiện gì*, và vì thế renderer không cần biết
+        mã sao nào — đó là chỗ danh sách này phải nằm.
+
+        Engine an nhiều lưu tinh hơn số bản in ghi ra. Dữ liệu thừa thì cắt được ở
+        tầng hiển thị; dữ liệu thiếu thì không.
+        """
+        return self.id in TRADITIONAL_DISPLAY_STAR_IDS
+
+    @property
     def element(self) -> str | None:
         definition = definition_for(self.base_star_id) if self.base_star_id else None
         return definition.element.value if definition and definition.element else None
@@ -117,6 +152,7 @@ class AnnualStar:
             "id": self.id,
             "name": self.name,
             "base_star_id": self.base_star_id,
+            "traditional_display": self.traditional_display,
             "category": StarCategory.ANNUAL.value,
             "element": self.element,
             "polarity": self.polarity,
@@ -277,9 +313,7 @@ def build_annual_chart(
     placed.append(("LUU_KINH_DUONG", "L.Kình Dương", "KINH_DUONG", kinh))
     placed.append(("LUU_DA_LA", "L.Đà La", "DA_LA", placement.place_da_la(loc_ton)))
     placed.append(("LUU_VAN_XUONG", "L.Văn Xương", "VAN_XUONG", place_luu_van_xuong(stem)))
-    placed.append(
-        ("LUU_VAN_KHUC", "L.Văn Khúc", "VAN_KHUC", place_luu_van_khuc(stem))
-    )
+    placed.append(("LUU_VAN_KHUC", "L.Văn Khúc", "VAN_KHUC", place_luu_van_khuc(stem)))
 
     branch_table = {
         "LUU_THIEN_MA": placement.place_thien_ma(branch),

@@ -21,6 +21,7 @@ import type {
   ConnectionType,
   ConnectionViewModel,
   PalaceViewModel,
+  PalaceTransformationViewModel,
   StarCategory,
   StarTransformationViewModel,
   StarViewModel,
@@ -51,8 +52,10 @@ import {
   TRANSFORMATION_LABELS,
   centerAnchor,
   estimatePalaceHeight,
+  showsAnnualStar,
   gridPosition,
 } from '~/utils/tuvi-chart'
+import type { AnnualDisplayProfile } from '~/utils/tuvi-chart'
 
 /**
  * Chart DTO → view model.
@@ -183,6 +186,7 @@ function mapAnnualStar(star: AnnualStar): StarViewModel {
     isMajor: false,
     isTransformation: false,
     isAnnual: true,
+    traditionalDisplay: field(star, 'traditional_display') === true,
     palaceBranch: star.palace_branch,
     displayPriority: star.display_priority,
     verificationStatus: 'PROVISIONAL',
@@ -246,6 +250,9 @@ function mapStar(
     transformations,
     annualTransformations: annualByStarId?.get(id) ?? [],
     isAnnual: category === 'ANNUAL',
+    // Sao bản mệnh không thuộc phạm vi hồ sơ hiển thị lưu niên; cờ này chỉ nói về
+    // lưu tinh, và sao bản mệnh luôn hiện.
+    traditionalDisplay: true,
   }
 }
 
@@ -327,6 +334,7 @@ function mapPalace(
   palace: ChartPalace,
   starsPlaced: boolean,
   annual: AnnualIndex | null,
+  annualProfile: AnnualDisplayProfile,
 ): PalaceViewModel {
   const { row, col } = gridPosition(palace.branch_index)
   const byStar = annual?.transformationsByStarId
@@ -336,9 +344,39 @@ function mapPalace(
     ...palace.minor_stars.map((s) => mapStar(s, 'OTHER', byStar)),
     // Schema v2 only; grouped with the phụ tinh for layout, category preserved.
     ...(palace.annual_stars ?? []).map((s) => mapStar(s, 'ANNUAL', byStar)),
-    // Lưu tinh của năm xem. Chúng là instance RIÊNG — không sao bản mệnh nào bị
-    // sửa, nên bỏ năm xem đi là lá số trở về đúng như cũ.
-    ...(annual?.starsByBranch.get(palace.branch_index) ?? []),
+  ])
+  // Lưu tinh của năm xem, **khối riêng**. Chúng là instance RIÊNG — không sao bản
+  // mệnh nào bị sửa, nên bỏ năm xem đi là lá số trở về đúng như cũ.
+  //
+  // Hồ sơ hiển thị chỉ lọc **nhãn**: ``annual.starsByBranch`` vẫn giữ nguyên mọi sao
+  // engine đã an, nên đổi hồ sơ không thể làm một ngôi sao dịch chỗ.
+  const annualStars = byDisplayPriority(
+    (annual?.starsByBranch.get(palace.branch_index) ?? []).filter((star) =>
+      showsAnnualStar(star.traditionalDisplay, annualProfile),
+    ),
+  )
+  // Tứ Hóa gom thành MỘT khối, dựng sau toàn bộ chính tinh.
+  //
+  // Trước đây mỗi dòng hóa nằm trong chính ngôi sao mang nó, nên ở một cung có hai
+  // chính tinh mà sao thứ nhất mang hóa, dòng hóa chen vào **giữa** hai chính tinh và
+  // phá vỡ khối. Đó là chỗ duy nhất trong lá số mà thứ tự dựng mang nghĩa sai.
+  const transformationLines: PalaceTransformationViewModel[] = [
+    ...majorStars,
+    ...minorStars,
+    ...annualStars,
+  ].flatMap((star) => [
+    ...star.transformations.map((t) => ({
+      ...t,
+      carrierName: star.name,
+      carrierElement: star.element,
+      isAnnual: false,
+    })),
+    ...star.annualTransformations.map((t) => ({
+      ...t,
+      carrierName: star.name,
+      carrierElement: star.element,
+      isAnnual: true,
+    })),
   ])
   // A FRAME-stage chart places no stars, yet the engine still flags every palace
   // as empty. "Vô chính diệu" is a statement about the chart, so it is only shown
@@ -382,6 +420,8 @@ function mapPalace(
     isEmptyMainStar,
     majorStars,
     minorStars,
+    annualStars,
+    transformationLines,
     palaceIndex: optionalNumber(palace, 'palace_index'),
     cycles,
     majorCycleAge,
@@ -403,14 +443,11 @@ function mapPalace(
     estimatedHeight: estimatePalaceHeight({
       majors: majorStars.length,
       emptyLine: isEmptyMainStar && majorStars.length === 0,
-      minors: minorStars.length,
+      minors: minorStars.length + annualStars.length,
       footer: Boolean(lifeStage || majorCycleRef || annualRef),
-      // Mỗi dòng Tứ Hóa chiếm chỗ riêng dưới ngôi sao mang nó. Bỏ sót chúng khỏi
-      // phép ước lượng là cách cảnh báo tràn báo thiếu đúng ở cung đông nhất.
-      hoaLines: [...majorStars, ...minorStars].reduce(
-        (total, star) => total + star.transformations.length + star.annualTransformations.length,
-        0,
-      ),
+      // Mỗi dòng Tứ Hóa chiếm một hàng riêng. Bỏ sót chúng khỏi phép ước lượng là
+      // cách cảnh báo tràn báo thiếu đúng ở cung đông nhất.
+      hoaLines: transformationLines.length,
     }),
   }
 }
@@ -599,11 +636,18 @@ function centerFields(
 export function mapChartDtoToViewModel(
   chart: ChartPayload,
   annualChart: AnnualChart | null = null,
+  /**
+   * Hồ sơ hiển thị lưu tinh. **Chỉ lọc nhãn** — không đụng tới dữ liệu engine, nên
+   * đổi hồ sơ không thể làm một ngôi sao dịch chỗ.
+   */
+  annualProfile: AnnualDisplayProfile = 'TRADITIONAL_REFERENCE_V1',
 ): ChartViewModel {
   const warnings: string[] = []
   const starsPlaced = chart.palaces.some((palace) => palace.major_stars.length > 0)
   const annual = indexAnnual(annualChart)
-  const palaces = chart.palaces.map((palace) => mapPalace(palace, starsPlaced, annual))
+  const palaces = chart.palaces.map((palace) =>
+    mapPalace(palace, starsPlaced, annual, annualProfile),
+  )
   const byBranch = new Map(palaces.map((p) => [p.branchIndex, p]))
   reportMissingElements(palaces)
 

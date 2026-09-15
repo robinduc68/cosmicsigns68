@@ -113,57 +113,13 @@ describe('TuViStar', () => {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
     polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
     strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
-    isAnnual: false, palaceBranch: null, displayPriority: 0,
+    isAnnual: false, traditionalDisplay: true, palaceBranch: null, displayPriority: 0,
     verificationStatus: 'PROVISIONAL', provenance: null, transformations: [], annualTransformations: [],
   }
 
   it('uses neutral ink when the engine declared no element', async () => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: base, major: true } })
     expect(starOf(wrapper).classes()).toContain('is-element-none')
-  })
-
-  it('renders Tứ Hóa on its own line, not glued to the star name', async () => {
-    const wrapper = await mountSuspended(TuViStar, {
-      props: {
-        star: {
-          ...base,
-          name: 'Tham Lang',
-          element: 'MOC',
-          transformations: [
-            { code: 'HOA_QUYEN', label: 'Quyền', fullLabel: 'Hóa Quyền', strengthAbbr: null, strengthLabel: null },
-          ],
-        },
-        major: true,
-      },
-    })
-    // Tên sao phải đứng một mình — đây chính là cái sai cũ: "Tham Lang[Quyền]".
-    expect(starOf(wrapper).text()).toBe('Tham Lang')
-
-    const hoa = wrapper.findAll('.tuvi-hoa-line')
-    expect(hoa).toHaveLength(1)
-    expect(hoa[0]!.text()).toBe('Hóa Quyền')
-    // Màu của dòng hóa là ngũ hành CỦA NGÔI SAO, không phải màu riêng của hóa.
-    expect(hoa[0]!.classes()).toContain('is-element-moc')
-  })
-
-  it('does not count a Hóa line as a star', async () => {
-    const wrapper = await mountSuspended(TuViStar, {
-      props: {
-        star: {
-          ...base,
-          transformations: [
-            { code: 'HOA_LOC', label: 'Lộc', fullLabel: 'Hóa Lộc', strengthAbbr: null, strengthLabel: null },
-          ],
-          annualTransformations: [
-            { code: 'HOA_KY', label: 'L.Kỵ', fullLabel: 'Lưu Hóa Kỵ', strengthAbbr: null, strengthLabel: null },
-          ],
-        },
-      },
-    })
-    // Hóa là một TRẠNG THÁI của ngôi sao đã an. Nếu dòng hóa mang class .tuvi-star
-    // thì mọi phép đếm sao — kể cả bộ đếm soi cung — sẽ đếm dư.
-    expect(wrapper.findAll('.tuvi-star')).toHaveLength(1)
-    expect(wrapper.findAll('.tuvi-hoa-line')).toHaveLength(2)
   })
 
   it('shows a strength abbreviation with its full name when one exists', async () => {
@@ -174,6 +130,50 @@ describe('TuViStar', () => {
     expect(abbr.text()).toBe('(V)')
     expect(abbr.attributes('title')).toBe('Vượng')
     expect(starOf(wrapper).classes()).toContain('is-element-hoa')
+  })
+})
+
+describe('khối chính tinh không bao giờ bị Tứ Hóa chen vào', () => {
+  /**
+   * Bài quan trọng nhất của lớp trình bày.
+   *
+   * Trước đây mỗi dòng Tứ Hóa dựng **bên trong** ngôi sao mang nó. Ở một cung có hai
+   * chính tinh mà sao thứ nhất mang hóa, dòng hóa rơi vào GIỮA hai chính tinh — khối
+   * vỡ, và mắt đọc thành hai cụm rời. Đây là chỗ duy nhất trong lá số mà thứ tự dựng
+   * mang nghĩa sai, nên nó được canh bằng thứ tự DOM thật chứ không bằng số đếm.
+   */
+  it('dựng mọi chính tinh liền nhau, rồi mới tới khối hóa', async () => {
+    const chart = structuredClone(scenario('cross-check-2001').chart)
+    const wrapper = await mountSuspended(TuViChartCanvas, {
+      props: { model: mapChartDtoToViewModel(chart) },
+    })
+
+    let checked = 0
+    for (const palace of wrapper.findAll('.tuvi-palace')) {
+      const rows = palace.findAll('.tuvi-star--major, .tuvi-hoa-line')
+      if (rows.length < 2) continue
+      const kinds = rows.map((row) => (row.classes().includes('tuvi-hoa-line') ? 'hoa' : 'major'))
+      // Mọi 'major' phải đứng trước mọi 'hoa': không có 'major' nào sau một 'hoa'.
+      const firstHoa = kinds.indexOf('hoa')
+      if (firstHoa === -1) continue
+      expect(kinds.slice(firstHoa).every((k) => k === 'hoa')).toBe(true)
+      checked += 1
+    }
+    expect(checked, 'fixture phải có ít nhất một cung vừa có chính tinh vừa có hóa').toBeGreaterThan(0)
+  })
+
+  it('không đếm dòng hóa như một ngôi sao', async () => {
+    const chart = structuredClone(scenario('cross-check-2001').chart)
+    const model = mapChartDtoToViewModel(chart)
+    const wrapper = await mountSuspended(TuViChartCanvas, { props: { model } })
+    const expected = model.palaces.reduce(
+      (total, p) => total + p.majorStars.length + p.minorStars.length + p.annualStars.length,
+      0,
+    )
+    // Hóa là TRẠNG THÁI của một ngôi sao đã an. Nếu dòng hóa mang class .tuvi-star thì
+    // mọi phép đếm sao — kể cả bộ đếm soi cung — sẽ đếm dư.
+    expect(wrapper.findAll('.tuvi-star')).toHaveLength(expected)
+    expect(wrapper.findAll('.tuvi-hoa-line').length).toBeGreaterThan(0)
   })
 })
 
@@ -218,7 +218,7 @@ describe('ngũ hành colouring of stars', () => {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
     polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
     strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
-    isAnnual: false, palaceBranch: null, displayPriority: 0,
+    isAnnual: false, traditionalDisplay: true, palaceBranch: null, displayPriority: 0,
     verificationStatus: 'PROVISIONAL', provenance: null, transformations: [], annualTransformations: [],
   }
 
