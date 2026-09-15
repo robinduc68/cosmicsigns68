@@ -96,11 +96,15 @@ onMounted(async () => {
           {{ palace.name
           }}<span v-if="palace.isThan" class="tuvi-palace__than">&lt;Thân&gt;</span>
         </h3>
+        <!-- Một trị, như lá số in. Khoảng đầy đủ nằm ở tooltip: ô này đã chật, và
+             "93 – 102" đẩy tên cung xuống dòng trên màn hẹp. -->
         <span
           class="tuvi-palace__age"
           :title="palace.majorCycleAge ? `Đại vận ${palace.majorCycleAge} tuổi` : undefined"
         >
-          <template v-if="palace.majorCycleAge !== null">{{ palace.majorCycleAge }}</template>
+          <template v-if="palace.majorCycleAgeStart !== null">{{
+            palace.majorCycleAgeStart
+          }}</template>
         </span>
       </div>
       <div class="tuvi-palace__sub">

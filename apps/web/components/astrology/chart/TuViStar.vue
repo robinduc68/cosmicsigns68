@@ -54,24 +54,32 @@ const title = computed(() =>
     }}<template v-if="star.strengthAbbr">
       <abbr class="tuvi-star__strength" :title="strengthTitle">({{ star.strengthAbbr }})</abbr>
     </template
-    ><!-- Tứ Hóa: dấu vuông, cố ý khác ngoặc tròn của độ sáng. Nó KHÔNG đổi màu sao —
-         màu thuộc về ngũ hành, hóa là một thông tin khác.
-    --><span
-      v-for="hoa in star.transformations"
-      :key="hoa.code"
-      class="tuvi-star__hoa"
-      :data-transformation="hoa.code"
-      :title="hoa.fullLabel"
-      >[{{ hoa.label }}]</span
-    ><!-- Hóa của NĂM XEM. Cùng dấu vuông, nhãn đã mang tiền tố "L." nên phân biệt
-         được với hóa bản mệnh mà không cần thêm màu hay badge nào.
-    --><span
-      v-for="hoa in star.annualTransformations"
-      :key="`annual-${hoa.code}`"
-      class="tuvi-star__hoa is-annual-hoa"
-      :data-transformation="hoa.code"
-      :title="hoa.fullLabel"
-      >[{{ hoa.label }}]</span
-    >
-  </span>
+    ></span
+  >
+  <!-- Tứ Hóa **xuống dòng riêng**, đúng cách một lá số in trình bày: dòng sao rồi
+       dòng hóa. Trước đây nó là nhãn vuông dính đuôi tên sao, đọc như một phần của
+       tên. Dùng class riêng chứ không phải ``tuvi-star``: hóa là một *trạng thái*
+       của ngôi sao đã an, nên nó không được cộng vào bất kỳ phép đếm sao nào.
+  -->
+  <span
+    v-for="hoa in star.transformations"
+    :key="hoa.code"
+    class="tuvi-hoa-line"
+    :class="elementSelector"
+    :data-transformation="hoa.code"
+    :title="`${hoa.fullLabel} — của ${star.name}`"
+    >{{ hoa.fullLabel }}</span
+  >
+  <!-- Hóa của NĂM XEM. Nhãn đã mang tiền tố "L." nên phân biệt được với hóa bản
+       mệnh mà không cần thêm màu hay badge nào.
+  -->
+  <span
+    v-for="hoa in star.annualTransformations"
+    :key="`annual-${hoa.code}`"
+    class="tuvi-hoa-line is-annual-hoa"
+    :class="elementSelector"
+    :data-transformation="hoa.code"
+    :title="`${hoa.fullLabel} của năm xem — trên ${star.name}`"
+    >{{ hoa.fullLabel }}</span
+  >
 </template>

@@ -2,16 +2,16 @@
   "schema_version": 2,
   "identity": {
     "chart_id": null,
-    "engine_version": "0.3.1-frame",
+    "engine_version": "0.4.0-frame",
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09",
     "production_ready": false,
     "generated_at": "2026-09-11T00:00:00+00:00",
-    "rule_fingerprint": "e67bb86b14d4e52d"
+    "rule_fingerprint": "3c86f45911f4290e"
   },
   "traditional": {
-    "chu_menh": null,
-    "chu_than": null,
+    "chu_menh": "Vũ Khúc",
+    "chu_than": "Thiên Cơ",
     "lai_nhan_cung": null,
     "can_luong": null,
     "nam_xem": null,
@@ -19,7 +19,7 @@
   },
   "engine": {
     "stage": "PREVIEW",
-    "version": "0.3.1-frame",
+    "version": "0.4.0-frame",
     "is_authoritative": false,
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09"
@@ -1253,6 +1253,121 @@
           "is_reviewed": false
         },
         "note": "Đại vận 1 khởi ở cung Mệnh tại tuổi = số Cục, mỗi cung 10 năm. Con số thì các sách thống nhất; Q11 hỏi 'tuổi' là tuổi ta hay tuổi tròn — không đổi con số nào ở đây, nhưng chặn việc quy tuổi ra năm dương lịch, nên lưu niên vẫn chưa mở."
+      },
+      {
+        "rule": "chu_menh_chu_than",
+        "policy": "YEAR_BRANCH_TABLE_MIRRORED",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Chủ Mệnh và Chủ Thân tra theo chi năm sinh. KHÔNG phải sao an vào cung — đây là hai nhãn ở khối giữa, nên chúng nằm ở 'traditional' chứ không nằm trong danh sách sao. Cả hai bảng đối xứng gương qua trục Tý–Ngọ."
+      },
+      {
+        "rule": "luu_ha",
+        "policy": "YEAR_STEM_TABLE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Bảng tra 10 ô theo can năm. Lý do chặn cũ — 'bảng có chỗ bất quy tắc' — không đứng vững: chỗ gãy ở hai ô Nhâm/Quý là đặc điểm của bảng, và một bảng tra 10 ô không buộc phải đều."
+      },
+      {
+        "rule": "thien_tru",
+        "policy": "YEAR_STEM_TABLE",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Bảng tra 10 ô theo can năm. Không có cấu trúc nội tại nào để tự kiểm, nên đây là sao cần đối chiếu ấn bản sớm nhất trong nhóm này."
+      },
+      {
+        "rule": "thien_y",
+        "policy": "START_SUU_FORWARD_BY_MONTH",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "Khởi Sửu tháng Giêng, đếm thuận. Hai cách phát biểu độc lập ('đồng cung Thiên Riêu' và 'khởi Sửu đếm thuận') ra cùng một chỗ — đó là thứ gỡ được lý do chặn cũ. Hệ quả: Thiên Y luôn đồng cung Thiên Diêu."
+      },
+      {
+        "rule": "giai_than",
+        "policy": "MONTH_PAIR_FROM_THAN",
+        "implemented": true,
+        "verification": "PROVISIONAL",
+        "status": "PROVISIONAL",
+        "blocked_by": [
+          "Q2",
+          "Q3"
+        ],
+        "source": {
+          "title": null,
+          "edition": null,
+          "year": null,
+          "page": null,
+          "verified_by": null,
+          "verified_at": null,
+          "note": "Nam phái, theo cách đọc thông dụng. CHƯA chọn ấn bản cụ thể (Q2) và chưa có người thẩm định ký duyệt (Q3), nên đây không phải trích dẫn.",
+          "has_citation": false,
+          "is_reviewed": false
+        },
+        "note": "DISPUTED: có hai luật ứng viên (theo cặp tháng âm / theo tam hợp chi năm) và dự án CHƯA có quyết định nào để chọn. Đang dùng luật theo cặp tháng âm để lá số không thiếu hẳn sao; lựa chọn nằm lộ thiên ở SELECTED_GIAI_THAN_VARIANT, đổi được bằng một dòng."
       }
     ]
   },
@@ -1619,6 +1734,33 @@
             "note": "Cố định: Thiên La tại Thìn, Địa Võng tại Tuất. Không phụ thuộc ngày sinh."
           },
           "provisional": true
+        },
+        {
+          "id": "THIEN_TRU",
+          "name": "Thiên Trù",
+          "category": "BLESSING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 10,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_tru/YEAR_STEM_TABLE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng tra 10 ô theo can năm. Không có cấu trúc nội tại nào để tự kiểm, nên đây là sao cần đối chiếu ấn bản sớm nhất trong nhóm này."
+          },
+          "provisional": true
         }
       ],
       "transformations": [],
@@ -1841,6 +1983,33 @@
               "Q3"
             ],
             "note": "Cố định: Thiên La tại Thìn, Địa Võng tại Tuất. Không phụ thuộc ngày sinh."
+          },
+          "provisional": true
+        },
+        {
+          "id": "THIEN_TRU",
+          "name": "Thiên Trù",
+          "category": "BLESSING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Tuất",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 10,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_tru/YEAR_STEM_TABLE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng tra 10 ô theo can năm. Không có cấu trúc nội tại nào để tự kiểm, nên đây là sao cần đối chiếu ấn bản sớm nhất trong nhóm này."
           },
           "provisional": true
         }
@@ -3359,6 +3528,33 @@
           "provisional": true
         },
         {
+          "id": "THIEN_Y",
+          "name": "Thiên Y",
+          "category": "BLESSING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 10,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_y/START_SUU_FORWARD_BY_MONTH",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Khởi Sửu tháng Giêng, đếm thuận. Hai cách phát biểu độc lập ('đồng cung Thiên Riêu' và 'khởi Sửu đếm thuận') ra cùng một chỗ — đó là thứ gỡ được lý do chặn cũ. Hệ quả: Thiên Y luôn đồng cung Thiên Diêu."
+          },
+          "provisional": true
+        },
+        {
           "id": "KIEP_SAT",
           "name": "Kiếp Sát",
           "category": "MALEFIC",
@@ -3638,6 +3834,33 @@
           "provisional": true
         },
         {
+          "id": "THIEN_Y",
+          "name": "Thiên Y",
+          "category": "BLESSING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Dần",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 10,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "thien_y/START_SUU_FORWARD_BY_MONTH",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Khởi Sửu tháng Giêng, đếm thuận. Hai cách phát biểu độc lập ('đồng cung Thiên Riêu' và 'khởi Sửu đếm thuận') ra cùng một chỗ — đó là thứ gỡ được lý do chặn cũ. Hệ quả: Thiên Y luôn đồng cung Thiên Diêu."
+          },
+          "provisional": true
+        },
+        {
           "id": "KIEP_SAT",
           "name": "Kiếp Sát",
           "category": "MALEFIC",
@@ -3841,6 +4064,33 @@
           "provisional": true
         },
         {
+          "id": "LUU_HA",
+          "name": "Lưu Hà",
+          "category": "MALEFIC",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "luu_ha/YEAR_STEM_TABLE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng tra 10 ô theo can năm. Lý do chặn cũ — 'bảng có chỗ bất quy tắc' — không đứng vững: chỗ gãy ở hai ô Nhâm/Quý là đặc điểm của bảng, và một bảng tra 10 ô không buộc phải đều."
+          },
+          "provisional": true
+        },
+        {
           "id": "THIEN_THUONG",
           "name": "Thiên Thương",
           "category": "MALEFIC",
@@ -4035,6 +4285,33 @@
               "Q3"
             ],
             "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
+        },
+        {
+          "id": "LUU_HA",
+          "name": "Lưu Hà",
+          "category": "MALEFIC",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Mão",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 3,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "luu_ha/YEAR_STEM_TABLE",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "Bảng tra 10 ô theo can năm. Lý do chặn cũ — 'bảng có chỗ bất quy tắc' — không đứng vững: chỗ gãy ở hai ô Nhâm/Quý là đặc điểm của bảng, và một bảng tra 10 ô không buộc phải đều."
           },
           "provisional": true
         },
@@ -5896,6 +6173,33 @@
           "provisional": true
         },
         {
+          "id": "GIAI_THAN",
+          "name": "Giải Thần",
+          "category": "BLESSING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 10,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "giai_than/MONTH_PAIR_FROM_THAN",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "DISPUTED: có hai luật ứng viên (theo cặp tháng âm / theo tam hợp chi năm) và dự án CHƯA có quyết định nào để chọn. Đang dùng luật theo cặp tháng âm để lá số không thiếu hẳn sao; lựa chọn nằm lộ thiên ở SELECTED_GIAI_THAN_VARIANT, đổi được bằng một dòng."
+          },
+          "provisional": true
+        },
+        {
           "id": "CO_THAN",
           "name": "Cô Thần",
           "category": "ISOLATION",
@@ -6061,6 +6365,33 @@
               "Q3"
             ],
             "note": "Vòng Bác Sĩ khởi tại Lộc Tồn; dương nam / âm nữ đi thuận, cùng luật chiều với đại vận. Nhóm này CHỈ an Hỷ Thần; các sao còn lại thuộc nhóm sau."
+          },
+          "provisional": true
+        },
+        {
+          "id": "GIAI_THAN",
+          "name": "Giải Thần",
+          "category": "BLESSING",
+          "element": null,
+          "polarity": null,
+          "strength": null,
+          "strength_verification": null,
+          "palace_branch": "Thân",
+          "is_major": false,
+          "is_annual": false,
+          "is_transformation": false,
+          "has_transformation": false,
+          "transformations": [],
+          "display_priority": 10,
+          "verification_status": "PROVISIONAL",
+          "provenance": {
+            "rule": "giai_than/MONTH_PAIR_FROM_THAN",
+            "verification": "PROVISIONAL",
+            "blocked_by": [
+              "Q2",
+              "Q3"
+            ],
+            "note": "DISPUTED: có hai luật ứng viên (theo cặp tháng âm / theo tam hợp chi năm) và dự án CHƯA có quyết định nào để chọn. Đang dùng luật theo cặp tháng âm để lá số không thiếu hẳn sao; lựa chọn nằm lộ thiên ở SELECTED_GIAI_THAN_VARIANT, đổi được bằng một dòng."
           },
           "provisional": true
         },

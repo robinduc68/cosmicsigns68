@@ -180,3 +180,30 @@ export function formatAgeRange(
   if (typeof start !== 'number') return null
   return typeof end === 'number' ? `${start} – ${end}` : String(start)
 }
+
+/**
+ * "Âm Dương thuận lý" / "Âm Dương nghịch lý".
+ *
+ * Engine đã tính sẵn ``is_thuan_ly`` (âm dương năm sinh khớp với giới tính hay
+ * không). Chỗ này **chỉ đặt chữ** cho giá trị ấy — không tính lại, vì phép so ấy
+ * thuộc về engine chứ không thuộc về renderer.
+ */
+export function formatAmDuongLy(isThuanLy: boolean | null | undefined): string | null {
+  if (typeof isThuanLy !== 'boolean') return null
+  return isThuanLy ? 'Âm Dương thuận lý' : 'Âm Dương nghịch lý'
+}
+
+/**
+ * "Thân Mệnh đồng cung" / "Thân cư <cung>".
+ *
+ * Thân cư Mệnh là một thế đáng gọi tên riêng trên lá số in, nên nó không bị gộp
+ * chung với mười một trường hợp còn lại.
+ */
+export function formatThanMenh(
+  residesIn: string | null | undefined,
+  residesInLabel: string | null | undefined,
+): string | null {
+  if (!residesIn) return null
+  if (residesIn === 'MENH') return 'Thân Mệnh đồng cung'
+  return residesInLabel ? `Thân cư ${residesInLabel}` : null
+}

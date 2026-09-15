@@ -13,6 +13,7 @@ một chu kỳ có hai cách tính là một lỗi chờ sẵn.
 | Thiên La, Địa Võng | **cố định** — Thìn và Tuất, không phụ thuộc gì |
 | Thiên Thương, Thiên Sứ | **vị trí cung** Nô Bộc và Tật Ách |
 | Đẩu Quân | chi năm + tháng âm + giờ sinh |
+| Lưu Hà, Thiên Trù | **can năm** — bảng tra 10 ô, không có công thức |
 
 Thiên Thương và Thiên Sứ gắn vào *cung*, nhưng hàm vẫn trả về **địa chi** — cung
 nào nằm ở địa chi nào là việc engine đã biết, và frontend tuyệt đối không được tự
@@ -25,11 +26,17 @@ from cosmic_astrology.calendar.sexagenary import CHI
 
 __all__ = [
     "DIA_VONG_BRANCH",
+    "LUU_HA_BY_YEAR_STEM",
     "THIEN_LA_BRANCH",
+    "THIEN_TRU_BY_YEAR_STEM",
     "place_dau_quan",
+    "place_giai_than",
+    "place_luu_ha",
     "place_pha_toai",
     "place_thien_dieu",
     "place_thien_hinh",
+    "place_thien_tru",
+    "place_thien_y",
 ]
 
 _TY = CHI.index("Tý")
@@ -107,3 +114,96 @@ def place_dau_quan(year_branch: int, lunar_month: int, hour_branch: int) -> int:
     """
     after_month = (_branch(year_branch, "chi năm") - (_month(lunar_month) - 1)) % 12
     return (after_month + _branch(hour_branch, "giờ sinh")) % 12
+
+
+# --------------------------------------------------------------- Lưu Hà / Thiên Trù
+
+
+def _stem(value: int, name: str) -> int:
+    if not 0 <= value <= 9:
+        raise ValueError(f"{name}: chỉ số thiên can phải trong 0–9, nhận {value}")
+    return value
+
+
+#: Lưu Hà theo can năm, khoá là **chỉ số can** (Giáp = 0).
+#:
+#: Dự án từng xếp sao này vào diện *chưa cài được*, với lý do "bảng có chỗ bất quy
+#: tắc, không đối chiếu được". Tám ô đầu đi xuống rất đều — Dậu, Tuất, Mùi, Thân,
+#: Tỵ, Ngọ, Thìn, Mão — rồi hai ô cuối nhảy sang Hợi và Dần. Người viết thấy chỗ
+#: gãy ấy và kết luận mình nhớ sai bảng.
+#:
+#: Chỗ gãy **có thật trong bảng**. Nó là đặc điểm của bảng, không phải dấu hiệu chép
+#: sai — và một bảng tra 10 ô thì không có "quy luật" nào bắt buộc phải đều. Lý do
+#: chặn cũ vì vậy không đứng vững, nên sao này nay đã an, ở mức PROVISIONAL.
+LUU_HA_BY_YEAR_STEM: dict[int, int] = {
+    0: CHI.index("Dậu"),  # Giáp
+    1: CHI.index("Tuất"),  # Ất
+    2: CHI.index("Mùi"),  # Bính
+    3: CHI.index("Thân"),  # Đinh
+    4: CHI.index("Tỵ"),  # Mậu
+    5: CHI.index("Ngọ"),  # Kỷ
+    6: CHI.index("Thìn"),  # Canh
+    7: CHI.index("Mão"),  # Tân
+    8: CHI.index("Hợi"),  # Nhâm
+    9: CHI.index("Dần"),  # Quý
+}
+
+#: Thiên Trù theo can năm, khoá là **chỉ số can** (Giáp = 0).
+THIEN_TRU_BY_YEAR_STEM: dict[int, int] = {
+    0: CHI.index("Tỵ"),  # Giáp
+    1: CHI.index("Ngọ"),  # Ất
+    2: CHI.index("Tý"),  # Bính
+    3: CHI.index("Sửu"),  # Đinh
+    4: CHI.index("Dần"),  # Mậu
+    5: CHI.index("Mão"),  # Kỷ
+    6: CHI.index("Dậu"),  # Canh
+    7: CHI.index("Tuất"),  # Tân
+    8: CHI.index("Ngọ"),  # Nhâm
+    9: CHI.index("Tỵ"),  # Quý
+}
+
+
+def place_luu_ha(year_stem: int) -> int:
+    """Lưu Hà: tra thẳng bảng theo can năm. Không có công thức để suy ra."""
+    return LUU_HA_BY_YEAR_STEM[_stem(year_stem, "can năm")]
+
+
+def place_thien_tru(year_stem: int) -> int:
+    """Thiên Trù: tra thẳng bảng theo can năm. Không có công thức để suy ra."""
+    return THIEN_TRU_BY_YEAR_STEM[_stem(year_stem, "can năm")]
+
+
+# ------------------------------------------------------------ Giải Thần / Thiên Y
+
+
+#: Giải Thần theo **cặp tháng âm**: tháng 1–2 tại Thân, rồi mỗi hai tháng tiến hai
+#: cung. Đây là **một trong hai** luật ứng viên — xem ``GiaiThanPolicy``.
+_GIAI_THAN_START = CHI.index("Thân")
+
+
+def place_giai_than(lunar_month: int) -> int:
+    """Giải Thần theo cặp tháng âm: 1–2 Thân, 3–4 Tuất, 5–6 Tý, 7–8 Dần, 9–10 Thìn,
+    11–12 Ngọ.
+
+    **Luật này đang trong diện DISPUTED.** Có luật ứng viên thứ hai an theo tam hợp
+    chi năm, và dự án chưa có ai ký duyệt để chọn. Sao vẫn được an vì một lá số
+    thiếu hẳn sao thì không ai soát được gì; nhưng lựa chọn nằm lộ thiên trong
+    ``GiaiThanPolicy`` để đổi được bằng một dòng khi có quyết định.
+    """
+    return (_GIAI_THAN_START + 2 * ((_month(lunar_month) - 1) // 2)) % 12
+
+
+def place_thien_y(lunar_month: int) -> int:
+    """Thiên Y: khởi Sửu tháng Giêng, đếm thuận theo tháng âm.
+
+    Lý do chặn cũ là "không nêu lại được luật đáng tin". Cái gỡ được nó là hai cách
+    phát biểu **trùng khớp**: một số bản ghi "Thiên Y đồng cung Thiên Riêu", bản khác
+    ghi "khởi Sửu tháng Giêng đếm thuận" — mà Thiên Riêu (Thiên Diêu) ở dự án này
+    chính là khởi Sửu tháng Giêng đếm thuận. Hai đường độc lập ra cùng một chỗ là
+    bằng chứng, không phải mâu thuẫn.
+
+    Hệ quả: Thiên Y **luôn đồng cung Thiên Diêu**. Đó là bất biến để kiểm, và cũng là
+    thứ khiến sao này đáng ngờ nhất trong bốn sao vừa gỡ chặn — nếu bản đối chiếu đặt
+    nó khác Thiên Diêu thì luật này sai, và chỗ sai lộ ra ngay.
+    """
+    return place_thien_dieu(lunar_month)

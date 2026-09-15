@@ -98,6 +98,11 @@ class RuleId(StrEnum):
     TRANG_SINH_DIRECTION = "trang_sinh_direction"
     MAJOR_CYCLE_DIRECTION = "major_cycle_direction"
     MAJOR_CYCLE_START_AGE = "major_cycle_start_age"
+    CHU_MENH_CHU_THAN = "chu_menh_chu_than"
+    LUU_HA = "luu_ha"
+    THIEN_TRU = "thien_tru"
+    THIEN_Y = "thien_y"
+    GIAI_THAN = "giai_than"
 
 
 class VerificationStatus(StrEnum):
@@ -546,3 +551,59 @@ class MajorCycleStartAgePolicy(StrEnum):
 
     CUC_NUMBER = "CUC_NUMBER"
     UNRESOLVED = UNRESOLVED
+
+
+class ChuMenhChuThanPolicy(StrEnum):
+    """Chủ Mệnh / Chủ Thân — hai bảng tra theo **chi năm sinh**.
+
+    Không phải sao an vào cung: đây là hai *nhãn* ghi ở khối giữa lá số, nói sao nào
+    cai quản Mệnh và sao nào cai quản Thân. Vì thế chúng nằm ở ``traditional`` chứ
+    không nằm trong danh sách sao — thêm chúng vào ``stars`` sẽ làm mọi phép đếm sai.
+    """
+
+    #: Hai bảng **đối xứng gương qua trục Tý–Ngọ**. Tính đối xứng ấy không phải trang
+    #: trí: nó là chốt kiểm — một ô gõ sai sẽ phá đối xứng và test bắt được ngay.
+    YEAR_BRANCH_TABLE_MIRRORED = "YEAR_BRANCH_TABLE_MIRRORED"
+
+
+class LuuHaPolicy(StrEnum):
+    """Lưu Hà — bảng tra theo **can năm**, 10 ô.
+
+    Bảng này từng bị dự án xếp vào diện *chưa cài được* vì hai ô cuối (Nhâm, Quý)
+    phá mất quy luật giảm dần của tám ô đầu, và người viết cho rằng mình nhớ sai.
+    Chỗ bất quy tắc ấy **có thật trong bảng** — nó là đặc điểm của bảng, không phải
+    dấu hiệu chép sai.
+    """
+
+    YEAR_STEM_TABLE = "YEAR_STEM_TABLE"
+
+
+class ThienTruPolicy(StrEnum):
+    """Thiên Trù — bảng tra theo **can năm**, 10 ô."""
+
+    YEAR_STEM_TABLE = "YEAR_STEM_TABLE"
+
+
+class ThienYPolicy(StrEnum):
+    """Thiên Y — theo tháng âm."""
+
+    #: Khởi Sửu tháng Giêng, đếm thuận. Hệ quả: **luôn đồng cung Thiên Diêu**.
+    START_SUU_FORWARD_BY_MONTH = "START_SUU_FORWARD_BY_MONTH"
+
+
+class GiaiThanPolicy(StrEnum):
+    """Giải Thần — **hai luật ứng viên, dự án chưa có quyết định**.
+
+    Giữ cả hai ở đây để lựa chọn nằm lộ thiên. Đổi ``SELECTED_GIAI_THAN_VARIANT`` là
+    đổi được cả engine, không phải đi sửa công thức rải rác.
+    """
+
+    #: Theo cặp tháng âm: 1–2 Thân, rồi mỗi hai tháng tiến hai cung.
+    MONTH_PAIR_FROM_THAN = "MONTH_PAIR_FROM_THAN"
+    #: Theo tam hợp chi năm. **Chưa cài** — còn ở đây để không ai quên nó tồn tại.
+    YEAR_BRANCH_TRINE = "YEAR_BRANCH_TRINE"
+
+
+#: Biến thể Giải Thần đang dùng. Đây là một **lựa chọn chưa được thẩm định**, không
+#: phải một kết luận: xem docs/astrology-conventions.md mục 32.
+SELECTED_GIAI_THAN_VARIANT = GiaiThanPolicy.MONTH_PAIR_FROM_THAN

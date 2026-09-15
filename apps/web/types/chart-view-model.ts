@@ -95,6 +95,11 @@ export interface PalaceViewModel {
   cycles: ChartPalaceCycles | null
   /** Đại vận age span, e.g. `"6 – 15"`. `null` until đại vận is implemented. */
   majorCycleAge: string | null
+  /**
+   * Tuổi **khởi** đại vận — con số duy nhất một lá số in ghi ở góc cung.
+   * ``majorCycleAge`` là cùng dữ liệu ấy ở dạng khoảng, dùng cho tooltip.
+   */
+  majorCycleAgeStart: number | null
   /** `"LN.HUYNH"` — annual palace on this branch. `null` with no viewing year. */
   annualPalaceRef: string | null
   monthNumber: number | null

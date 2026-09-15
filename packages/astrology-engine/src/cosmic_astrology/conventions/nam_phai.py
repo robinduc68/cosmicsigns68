@@ -17,11 +17,13 @@ from __future__ import annotations
 from cosmic_astrology.conventions.policies import (
     AnQuangThienQuyPolicy,
     BacSiCyclePolicy,
+    ChuMenhChuThanPolicy,
     CoThanQuaTuPolicy,
     DaoHoaPolicy,
     DauQuanPolicy,
     DiaKhongDiaKiepPolicy,
     FourTransformationsPolicy,
+    GiaiThanPolicy,
     HoaCaiPolicy,
     HoaTinhLinhTinhPolicy,
     HongLoanThienHyPolicy,
@@ -29,6 +31,7 @@ from cosmic_astrology.conventions.policies import (
     KinhDuongDaLaPolicy,
     LocTonPolicy,
     LongTriPhuongCacPolicy,
+    LuuHaPolicy,
     LuuVanXuongVanKhucPolicy,
     PhaToaiPolicy,
     QuocAnDuongPhuPolicy,
@@ -49,6 +52,8 @@ from cosmic_astrology.conventions.policies import (
     ThienQuanThienPhucPolicy,
     ThienTaiThienThoPolicy,
     ThienThuongThienSuPolicy,
+    ThienTruPolicy,
+    ThienYPolicy,
     VanXuongVanKhucPolicy,
     VerificationStatus,
 )
@@ -259,6 +264,43 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
         RuleId.DAU_QUAN,
         DauQuanPolicy.THAI_TUE_MONTH_REVERSE_HOUR_FORWARD.value,
         "Từ Thái Tuế đếm nghịch tới tháng sinh, rồi từ cung đó đếm thuận tới giờ sinh.",
+    ),
+    RuleId.CHU_MENH_CHU_THAN: _nam_phai_rule(
+        RuleId.CHU_MENH_CHU_THAN,
+        ChuMenhChuThanPolicy.YEAR_BRANCH_TABLE_MIRRORED.value,
+        "Chủ Mệnh và Chủ Thân tra theo chi năm sinh. KHÔNG phải sao an vào cung — "
+        "đây là hai nhãn ở khối giữa, nên chúng nằm ở 'traditional' chứ không nằm "
+        "trong danh sách sao. Cả hai bảng đối xứng gương qua trục Tý–Ngọ.",
+    ),
+    RuleId.LUU_HA: _nam_phai_rule(
+        RuleId.LUU_HA,
+        LuuHaPolicy.YEAR_STEM_TABLE.value,
+        "Bảng tra 10 ô theo can năm. Lý do chặn cũ — 'bảng có chỗ bất quy tắc' — "
+        "không đứng vững: chỗ gãy ở hai ô Nhâm/Quý là đặc điểm của bảng, và một "
+        "bảng tra 10 ô không buộc phải đều.",
+    ),
+    RuleId.THIEN_TRU: _nam_phai_rule(
+        RuleId.THIEN_TRU,
+        ThienTruPolicy.YEAR_STEM_TABLE.value,
+        "Bảng tra 10 ô theo can năm. Không có cấu trúc nội tại nào để tự kiểm, nên "
+        "đây là sao cần đối chiếu ấn bản sớm nhất trong nhóm này.",
+    ),
+    RuleId.THIEN_Y: _nam_phai_rule(
+        RuleId.THIEN_Y,
+        ThienYPolicy.START_SUU_FORWARD_BY_MONTH.value,
+        "Khởi Sửu tháng Giêng, đếm thuận. Hai cách phát biểu độc lập ('đồng cung "
+        "Thiên Riêu' và 'khởi Sửu đếm thuận') ra cùng một chỗ — đó là thứ gỡ được "
+        "lý do chặn cũ. Hệ quả: Thiên Y luôn đồng cung Thiên Diêu.",
+    ),
+    RuleId.GIAI_THAN: _nam_phai_rule(
+        RuleId.GIAI_THAN,
+        GiaiThanPolicy.MONTH_PAIR_FROM_THAN.value,
+        (
+            "DISPUTED: có hai luật ứng viên (theo cặp tháng âm / theo tam hợp chi "
+            "năm) và dự án CHƯA có quyết định nào để chọn. Đang dùng luật theo cặp "
+            "tháng âm để lá số không thiếu hẳn sao; lựa chọn nằm lộ thiên ở "
+            "SELECTED_GIAI_THAN_VARIANT, đổi được bằng một dòng."
+        ),
     ),
     RuleId.LUU_VAN_XUONG_VAN_KHUC: _nam_phai_rule(
         RuleId.LUU_VAN_XUONG_VAN_KHUC,

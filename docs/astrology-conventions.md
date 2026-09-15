@@ -550,6 +550,13 @@ hiện coi **hai cung như nhau** (`has_triet: bool`).
 
 **Cơ chế đã cài. Bảng vẫn RỖNG. Hai việc khác nhau.**
 
+> **Cập nhật 2026-09-15.** Đã soát lại theo yêu cầu đối chiếu: hậu tố hiển thị đúng
+> dạng `(M) (V) (Đ) (B) (H)` mà bản đối chiếu dùng, và đường ống engine → API →
+> ViewModel → DOM có test phủ. Thứ thiếu **duy nhất** là 168 ô dữ liệu. Không điền
+> bằng trí nhớ: đây là bảng các trường phái ghi khác nhau đáng kể, và điền sai thì
+> mọi lá số sai mà không ai thấy. Một lá số đối chiếu duy nhất cũng chỉ xác nhận được
+> 14 ô — chưa đủ để dựng bảng, nhưng **đủ để kiểm** một bảng đã chép.
+>
 > **Cập nhật 2026-09-14.** Toàn bộ đường ống đã dựng xong: tra cứu `star_id + địa chi`,
 > gắn `star.strength`, hiển thị dạng `THÁI ÂM (M)`, chú giải M/V/Đ/B/H. **Nhưng
 > 168 ô vẫn trống**, nên mọi độ sáng là `null` và lá số render tên sao trơn.
@@ -911,9 +918,9 @@ cách nhau 4 cung.
 
 | Sao | Lý do | Cần gì để mở |
 | --- | --- | --- |
-| **Giải Thần** | 🔴 **DISPUTED** — có hai luật ứng viên (theo tam hợp chi năm / theo tháng âm) và dự án chưa có quyết định nào để chọn | Người thẩm định chọn một |
-| **Thiên Trù** | Bảng theo can năm không nêu lại được với độ tin cậy đủ, và **không có cấu trúc nội tại nào để đối chiếu** (khác Quốc Ấn / Đường Phù) | Bảng từ ấn bản |
-| **Thiên Y** | Luật theo tháng âm không nêu lại được chắc chắn | Luật từ ấn bản |
+| **Giải Thần** | 🟡 vẫn **DISPUTED** về luật, nhưng đã an bằng luật theo cặp tháng âm — xem mục 32 | Người thẩm định chọn một |
+| **Thiên Trù** | ✅ đã an ở mức PROVISIONAL — mục 32. Vẫn **không có cấu trúc nội tại nào để tự kiểm**, nên đây là sao cần đối chiếu ấn bản sớm nhất | Bảng từ ấn bản |
+| **Thiên Y** | ✅ đã an ở mức PROVISIONAL — hai cách phát biểu độc lập trùng khớp, xem mục 32 | Luật từ ấn bản |
 
 Hai lý do này **khác nhau** và đừng gộp: Giải Thần là *biết hai đường, không được
 chọn bừa*; Thiên Trù và Thiên Y là *không nêu lại được đường nào*.
@@ -1130,7 +1137,7 @@ Khi phát hiện hai nguồn mâu thuẫn, **ghi vào đây** thay vì âm thầ
 | 13 | §27 Phụ tinh 2 | Thiên Đức/Nguyệt Đức một số bản an theo tháng âm | 🟡 chọn cách đọc thông dụng, ghi rõ trong note của luật |
 | 13b | §27 Ân Quang/Thiên Quý | Dự án từng ghi "bước lùi 1 cung là chỗ khác nhau". **Ghi sai chỗ.** Bản cài cho cả hai sao đếm thuận — một phép đối xứng hoá tự suy — và đặt Thiên Quý lệch 6 cung so với bản đối chiếu | ✅ đã sửa 0.3.1: Thiên Quý đếm **nghịch**. Xem mục 31 |
 | 14 | §28 Sát tinh 1 | Chiều đếm Hỏa Tinh / Linh Tinh: theo âm dương nam nữ hay luôn thuận | 🟡 chọn theo âm dương nam nữ, ghi cách đọc đối lập trong note |
-| 15 | §29 Phụ tinh 3 | Lưu Hà: bảng theo can năm có chỗ bất quy tắc, không đối chiếu được | 🔴 chưa cài — cần bảng từ ấn bản |
+| 15 | §29 Phụ tinh 3 | Lưu Hà: bảng theo can năm có chỗ bất quy tắc | ✅ đã cài 0.4.0 — lý do chặn cũ hiểu sai: bất quy tắc là **đặc điểm của bảng**, không phải dấu hiệu chép sai. Xem mục 32 |
 | 16 | §30 Lưu niên | Tuổi xem là tuổi ta hay tuổi tròn (Q11) | 🟡 engine đưa CẢ HAI, `age_convention` = null cho tới khi chốt |
 
 ---
@@ -1210,3 +1217,91 @@ Không đụng vào phép tính Tuần/Triệt. Đây là lỗi hiển thị thu
 
 12 cung, 14 chính tinh, Mệnh, Thân, Cục, vị trí Tuần/Triệt trong engine — tất cả khớp
 bản đối chiếu từ trước. Không sửa thứ đang đúng.
+
+---
+
+## 32. Gỡ chặn bốn sao, và hai nhãn Chủ Mệnh / Chủ Thân 🟡 PENDING — **Nam phái**
+
+Bốn sao này từng nằm trong diện *cố ý để trống*. Bản đối chiếu ở mục 31 cho thấy
+chúng có mặt trên lá số in, nên để trống không còn là lựa chọn. Bốn lý do chặn **khác
+nhau**, và chỉ ba trong bốn gỡ được.
+
+### 32.1 Lưu Hà — lý do chặn cũ **hiểu sai**
+
+Bảng tra 10 ô theo can năm:
+
+| Can | Giáp | Ất | Bính | Đinh | Mậu | Kỷ | Canh | Tân | Nhâm | Quý |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Lưu Hà | Dậu | Tuất | Mùi | Thân | Tỵ | Ngọ | Thìn | Mão | **Hợi** | **Dần** |
+
+Lý do chặn cũ: *"bảng có chỗ bất quy tắc, không đối chiếu được"*. Tám ô đầu đi xuống
+đều, rồi hai ô cuối nhảy sang Hợi và Dần — người viết thấy chỗ gãy và kết luận mình
+nhớ sai.
+
+Chỗ gãy **có thật trong bảng**. Một bảng tra 10 ô không buộc phải đều, và "bất quy
+tắc" không phải bằng chứng chép sai. Lý do chặn không đứng vững.
+
+Bất biến để kiểm: **mười can cho mười vị trí khác nhau** — không ô nào lặp.
+
+### 32.2 Thiên Trù — cài được, nhưng đây là sao đáng ngờ nhất
+
+| Can | Giáp | Ất | Bính | Đinh | Mậu | Kỷ | Canh | Tân | Nhâm | Quý |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Thiên Trù | Tỵ | Ngọ | Tý | Sửu | Dần | Mão | Dậu | Tuất | Ngọ | Tỵ |
+
+Khác Lưu Hà, bảng này **không có cấu trúc nội tại nào để tự kiểm** — không đối xứng,
+có ô lặp (Tỵ và Ngọ mỗi cái hai lần). Nghĩa là không test nào bắt được lỗi chép ở
+đây. Đây là sao cần đối chiếu ấn bản **sớm nhất** trong cả nhóm.
+
+### 32.3 Thiên Y — hai cách phát biểu trùng khớp
+
+Lý do chặn cũ: *"luật theo tháng âm không nêu lại được chắc chắn"*.
+
+Cái gỡ được nó: hai cách phát biểu độc lập ra **cùng một chỗ**.
+
+- Bản A: *"Thiên Y đồng cung Thiên Riêu"*
+- Bản B: *"khởi Sửu tháng Giêng, đếm thuận theo tháng âm"*
+
+Thiên Riêu (Thiên Diêu) ở dự án này **chính là** khởi Sửu tháng Giêng đếm thuận. Hai
+đường độc lập gặp nhau là bằng chứng, không phải mâu thuẫn — cùng kiểu lập luận đã
+dùng cho Thai Phụ / Phong Cáo ở mục 27.
+
+Hệ quả và cũng là bất biến: **Thiên Y luôn đồng cung Thiên Diêu**. Nếu bản đối chiếu
+đặt nó khác Thiên Diêu thì luật này sai, và chỗ sai lộ ra ngay.
+
+### 32.4 Giải Thần — vẫn DISPUTED, nhưng đã an
+
+Đây là sao **duy nhất** trong bốn sao mà lý do chặn cũ vẫn đứng vững: có hai luật ứng
+viên, và dự án chưa có ai ký duyệt để chọn.
+
+- Đang dùng: **theo cặp tháng âm** — tháng 1–2 Thân, 3–4 Tuất, 5–6 Tý, 7–8 Dần,
+  9–10 Thìn, 11–12 Ngọ.
+- Chưa cài: theo **tam hợp chi năm**.
+
+Sao vẫn được an, vì một lá số thiếu hẳn sao thì không ai soát được gì. Nhưng lựa chọn
+nằm **lộ thiên** ở `SELECTED_GIAI_THAN_VARIANT`, đổi được bằng một dòng khi có quyết
+định — cùng cách đã làm với ba biến thể Tứ Hóa hàng Canh ở mục 15.
+
+**Đừng đọc trạng thái PROVISIONAL của sao này giống ba sao trên.** Ba sao kia là *đã
+nêu được luật, chưa có người thẩm định*. Giải Thần là *biết có hai đường, đang đi một
+đường chưa ai chọn*.
+
+### 32.5 Chủ Mệnh / Chủ Thân
+
+**Không phải sao an vào cung.** Đây là hai *nhãn* ở khối giữa lá số, tra thẳng từ chi
+năm sinh. Chúng đi vào `traditional` chứ không vào `palace.stars`: thêm chúng vào
+danh sách sao sẽ làm mọi phép đếm sai và khiến lá số hiện hai lần cùng một ngôi sao.
+
+| Chi năm | Tý | Sửu | Dần | Mão | Thìn | Tỵ | Ngọ | Mùi | Thân | Dậu | Tuất | Hợi |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Chủ Mệnh | Tham Lang | Cự Môn | Lộc Tồn | Văn Khúc | Liêm Trinh | Vũ Khúc | Phá Quân | Vũ Khúc | Liêm Trinh | Văn Khúc | Lộc Tồn | Cự Môn |
+| Chủ Thân | Linh Tinh | Thiên Tướng | Thiên Lương | Thiên Đồng | Văn Xương | Thiên Cơ | Hỏa Tinh | Thiên Tướng | Thiên Lương | Thiên Đồng | Văn Xương | Thiên Cơ |
+
+Hai bảng có **hai kiểu đối xứng khác nhau**, và đó không phải nhầm lẫn:
+
+- **Chủ Mệnh** soi gương qua trục Tý–Ngọ: Sửu↔Hợi, Dần↔Tuất, Thìn↔Thân.
+- **Chủ Thân** soi theo **cung xung chiếu** (i ↔ i+6): Sửu↔Mùi, Dần↔Thân, Mão↔Dậu,
+  Thìn↔Tuất, Tỵ↔Hợi. Ngoại lệ duy nhất là cặp Tý/Ngọ — Linh Tinh và Hỏa Tinh.
+
+Đối xứng là chốt kiểm duy nhất hai bảng này có, nên nó được viết thành test chứ không
+để trong ghi chú.

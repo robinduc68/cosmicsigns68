@@ -200,11 +200,33 @@ Xem `docs/chart-render-loss-report.md` để biết vì sao nó tồn tại.
 
 ---
 
+## 9c. Tứ Hóa xuống dòng riêng
+
+Một lá số in để hóa trên **dòng của nó**, ngay dưới ngôi sao mang hóa:
+
+```
+Tham Lang
+  Hóa Quyền
+```
+
+Trước đây nó là nhãn vuông dính đuôi tên sao — `THAM LANG[Quyền]` — và đọc như một
+phần của tên. Dòng hóa dùng class `.tuvi-hoa-line`, **không** phải `.tuvi-star`: hóa
+là một *trạng thái* của ngôi sao đã an, nên nó không được cộng vào bất kỳ phép đếm
+sao nào, kể cả bộ đếm soi cung ở mục 9b. Có test chặn riêng điều này.
+
+Màu của dòng hóa là **ngũ hành của ngôi sao mang hóa**. Hóa Lộc không xanh, Hóa Kỵ
+không đỏ — màu trên lá số này chỉ có một nghĩa.
+
+---
+
 ## 10. Hạn chế đã biết
 
-- Engine chưa gửi chủ mệnh / chủ thân — renderer có sẵn chỗ nhưng **không hiển thị gì**
-  cho tới khi có. Phụ tinh, miếu vượng, tứ hóa, đại vận, tràng sinh, lưu niên và ngũ
-  hành của sao thì đã có.
+- **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có
+  test, nhưng bảng 14 × 12 chưa có ấn bản nào để chép, nên mọi sao hiện **không có**
+  hậu tố. Đây là thiếu *dữ liệu*, không phải thiếu *chức năng*.
+- Engine chưa gửi cân lượng và lai nhân cung — renderer có sẵn chỗ nhưng **không hiển
+  thị gì** cho tới khi có. Chủ Mệnh, Chủ Thân, phụ tinh, tứ hóa, đại vận, tràng sinh,
+  lưu niên và ngũ hành của sao thì đã có.
 - Chưa có screenshot regression tự động: Playwright chưa được cài. Việc soát ảnh hiện làm
   bằng Chrome headless qua CDP.
 - Ở chế độ "Toàn lá số" trên cảm ứng, vuốt trên vùng lá số không cuộn được trang (panzoom

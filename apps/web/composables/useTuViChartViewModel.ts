@@ -37,7 +37,9 @@ import {
   formatMenhCucRelation,
   formatPillar,
   formatSolarDate,
+  formatAmDuongLy,
   formatThanCu,
+  formatThanMenh,
 } from '~/utils/tuvi-format'
 import {
   PALACE_METRICS,
@@ -335,6 +337,10 @@ function mapPalace(
   // Ô phải của footer: cung lưu niên trên địa chi này. `cycles.annual_target` là
   // một khái niệm khác (đang xem lưu niên nào) và vẫn chưa cài.
   const annualRef = annual?.palaceRefByBranch.get(palace.branch_index) ?? null
+  // Hai dạng của cùng một con số, không phải hai con số. Lá số in ghi **một** trị
+  // ở góc cung — tuổi khởi đại vận; khoảng đầy đủ đi vào tooltip thay vì chiếm chỗ
+  // trên một ô đã chật. Cả hai đều đọc thẳng từ engine, không tính lại gì.
+  const majorCycleAgeStart = optionalNumber(cycles ?? {}, 'major_cycle_age_start')
   const majorCycleAge = formatAgeRange(
     cycles?.major_cycle_age_start ?? null,
     cycles?.major_cycle_age_end ?? null,
@@ -362,6 +368,7 @@ function mapPalace(
     palaceIndex: optionalNumber(palace, 'palace_index'),
     cycles,
     majorCycleAge,
+    majorCycleAgeStart,
     annualPalaceRef: annual?.palaceRefByBranch.get(palace.branch_index) ?? null,
     monthNumber: optionalNumber(palace, 'month_number'),
     lifeStage,
@@ -556,6 +563,13 @@ function centerFields(
     // chỗ dành cho giá trị engine chưa tính).
     pending('Năm xem', annual ? `${annual.viewing_year} — ${annual.year_pillar}` : null),
     pending('Tuổi', formatViewingAge(annual)),
+    // Ba dòng tóm tắt kiểu lá số in. Cả ba **đọc lại từ giá trị engine đã tính**,
+    // không dòng nào so sánh lại gì: âm dương thuận/nghịch là ``is_thuan_ly``,
+    // Mệnh–Cục là ``cuc.relation``, Thân–Mệnh là ``than.resides_in``. Tính lại ở
+    // đây là mở đường cho frontend và engine bất đồng ý kiến về cùng một lá số.
+    f('Tóm tắt', formatAmDuongLy(chart.yin_yang.is_thuan_ly)),
+    f('', chart.cuc.relation_label ?? null),
+    f('', formatThanMenh(optionalString(chart.than, 'resides_in'), chart.than.resides_in_label)),
   ].map((entry) => (entry.value?.trim() ? entry : { ...entry, value: null }))
 }
 

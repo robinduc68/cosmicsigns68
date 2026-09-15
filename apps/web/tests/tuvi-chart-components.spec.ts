@@ -99,6 +99,15 @@ describe('TuViReadingMode', () => {
   })
 })
 
+/**
+ * ``TuViStar`` dựng **nhiều node gốc**: dòng sao, rồi một dòng cho mỗi Tứ Hóa. Vì
+ * thế ``wrapper.classes()`` không còn nói về ngôi sao — nó nói về một fragment và
+ * trả về rỗng. Trỏ thẳng vào phần tử sao, vừa đúng vừa rõ ý hơn.
+ */
+function starOf<T extends { find: (selector: string) => unknown }>(wrapper: T) {
+  return wrapper.find('.tuvi-star') as ReturnType<T['find']>
+}
+
 describe('TuViStar', () => {
   const base: StarViewModel = {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
@@ -110,7 +119,45 @@ describe('TuViStar', () => {
 
   it('uses neutral ink when the engine declared no element', async () => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: base, major: true } })
-    expect(wrapper.classes()).toContain('is-element-none')
+    expect(starOf(wrapper).classes()).toContain('is-element-none')
+  })
+
+  it('renders Tứ Hóa on its own line, not glued to the star name', async () => {
+    const wrapper = await mountSuspended(TuViStar, {
+      props: {
+        star: {
+          ...base,
+          name: 'Tham Lang',
+          element: 'MOC',
+          transformations: [{ code: 'HOA_QUYEN', label: 'Quyền', fullLabel: 'Hóa Quyền' }],
+        },
+        major: true,
+      },
+    })
+    // Tên sao phải đứng một mình — đây chính là cái sai cũ: "Tham Lang[Quyền]".
+    expect(starOf(wrapper).text()).toBe('Tham Lang')
+
+    const hoa = wrapper.findAll('.tuvi-hoa-line')
+    expect(hoa).toHaveLength(1)
+    expect(hoa[0]!.text()).toBe('Hóa Quyền')
+    // Màu của dòng hóa là ngũ hành CỦA NGÔI SAO, không phải màu riêng của hóa.
+    expect(hoa[0]!.classes()).toContain('is-element-moc')
+  })
+
+  it('does not count a Hóa line as a star', async () => {
+    const wrapper = await mountSuspended(TuViStar, {
+      props: {
+        star: {
+          ...base,
+          transformations: [{ code: 'HOA_LOC', label: 'Lộc', fullLabel: 'Hóa Lộc' }],
+          annualTransformations: [{ code: 'HOA_KY', label: 'L.Kỵ', fullLabel: 'Lưu Hóa Kỵ' }],
+        },
+      },
+    })
+    // Hóa là một TRẠNG THÁI của ngôi sao đã an. Nếu dòng hóa mang class .tuvi-star
+    // thì mọi phép đếm sao — kể cả bộ đếm soi cung — sẽ đếm dư.
+    expect(wrapper.findAll('.tuvi-star')).toHaveLength(1)
+    expect(wrapper.findAll('.tuvi-hoa-line')).toHaveLength(2)
   })
 
   it('shows a strength abbreviation with its full name when one exists', async () => {
@@ -120,7 +167,7 @@ describe('TuViStar', () => {
     const abbr = wrapper.get('abbr')
     expect(abbr.text()).toBe('(V)')
     expect(abbr.attributes('title')).toBe('Vượng')
-    expect(wrapper.classes()).toContain('is-element-hoa')
+    expect(starOf(wrapper).classes()).toContain('is-element-hoa')
   })
 })
 
@@ -179,31 +226,31 @@ describe('ngũ hành colouring of stars', () => {
 
   it.each(CASES)('maps a $element star to its semantic class', async ({ element, cssClass }) => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: { ...base, element } } })
-    expect(wrapper.classes()).toContain(cssClass)
+    expect(starOf(wrapper).classes()).toContain(cssClass)
     // The element also survives as data, so export and tests never depend on colour alone.
-    expect(wrapper.attributes('data-element')).toBe(element)
+    expect(starOf(wrapper).attributes('data-element')).toBe(element)
   })
 
   it('falls back to the neutral class, not to a guessed element', async () => {
     const wrapper = await mountSuspended(TuViStar, { props: { star: base } })
-    expect(wrapper.classes()).toContain('is-element-none')
-    expect(wrapper.attributes('data-element')).toBe('NONE')
-    for (const { cssClass } of CASES) expect(wrapper.classes()).not.toContain(cssClass)
+    expect(starOf(wrapper).classes()).toContain('is-element-none')
+    expect(starOf(wrapper).attributes('data-element')).toBe('NONE')
+    for (const { cssClass } of CASES) expect(starOf(wrapper).classes()).not.toContain(cssClass)
   })
 
   it('classes the whole label, not just the strength letter', async () => {
     const star = { ...base, element: 'HOA' as const, strength: 'HAM' as const, strengthAbbr: 'H' }
     const wrapper = await mountSuspended(TuViStar, { props: { star, major: true } })
     // A Hỏa star that is Hãm still reads as Hỏa: strength never overrides the element.
-    expect(wrapper.classes()).toContain('is-element-hoa')
+    expect(starOf(wrapper).classes()).toContain('is-element-hoa')
     expect(wrapper.get('abbr').classes()).not.toContain('is-element-hoa')
   })
 
   it('keeps the element class on an annual star and differentiates by typography', async () => {
     const star = { ...base, element: 'MOC' as const, category: 'ANNUAL' as const, isAnnual: true }
     const wrapper = await mountSuspended(TuViStar, { props: { star } })
-    expect(wrapper.classes()).toContain('is-element-moc')
-    expect(wrapper.classes()).toContain('is-annual')
+    expect(starOf(wrapper).classes()).toContain('is-element-moc')
+    expect(starOf(wrapper).classes()).toContain('is-annual')
   })
 
   it('renders the polarity prefix without letting it pick the colour', async () => {
@@ -216,7 +263,7 @@ describe('ngũ hành colouring of stars', () => {
     expect(yang.text()).toBe('+Sao thử')
     expect(yin.text()).toBe('−Sao thử')
     // Same element, opposite polarity, identical colour class.
-    expect(yang.classes()).toEqual(yin.classes())
+    expect(starOf(yang).classes()).toEqual(starOf(yin).classes())
   })
 
   it('separates typography from colour across categories', async () => {
@@ -226,11 +273,11 @@ describe('ngũ hành colouring of stars', () => {
     const minor = await mountSuspended(TuViStar, {
       props: { star: { ...base, element: 'KIM' }, major: false },
     })
-    expect(major.classes()).toContain('tuvi-star--major')
-    expect(minor.classes()).toContain('tuvi-star--minor')
+    expect(starOf(major).classes()).toContain('tuvi-star--major')
+    expect(starOf(minor).classes()).toContain('tuvi-star--minor')
     // Typography differs, colour does not.
-    expect(major.classes()).toContain('is-element-kim')
-    expect(minor.classes()).toContain('is-element-kim')
+    expect(starOf(major).classes()).toContain('is-element-kim')
+    expect(starOf(minor).classes()).toContain('is-element-kim')
   })
 
   it('exposes the element to screen readers so colour is not the only carrier', async () => {
@@ -240,8 +287,8 @@ describe('ngũ hành colouring of stars', () => {
       ariaLabel: 'Thái Âm, hành Thủy, Miếu',
     }
     const wrapper = await mountSuspended(TuViStar, { props: { star } })
-    expect(wrapper.attributes('aria-label')).toBe('Thái Âm, hành Thủy, Miếu')
-    expect(wrapper.attributes('title')).toBe('Thái Âm, hành Thủy, Miếu')
+    expect(starOf(wrapper).attributes('aria-label')).toBe('Thái Âm, hành Thủy, Miếu')
+    expect(starOf(wrapper).attributes('title')).toBe('Thái Âm, hành Thủy, Miếu')
   })
 })
 

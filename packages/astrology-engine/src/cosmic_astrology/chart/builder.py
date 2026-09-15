@@ -35,6 +35,7 @@ from cosmic_astrology.chart.model import (
     PalaceCycles,
     StarCategory,
     StarProvenance,
+    TraditionalMetadata,
     VoidMark,
     rule_fingerprint,
 )
@@ -67,6 +68,7 @@ from cosmic_astrology.stars import placement_group2 as group2
 from cosmic_astrology.stars import placement_group3 as group3
 from cosmic_astrology.stars import placement_malefic as malefic
 from cosmic_astrology.stars.catalog import STAR_CATALOG, definition_for
+from cosmic_astrology.stars.rulers import rulers_for_year_branch
 from cosmic_astrology.timezone import resolve_timezone
 from cosmic_astrology.trace import TraceLog
 
@@ -88,7 +90,11 @@ _logger = logging.getLogger(__name__)
 # 0.3.1: Thiên Quý now counts backward from Văn Khúc instead of forward. Only that
 # one star moves; the star set is unchanged, so this is exactly the kind of change
 # the fingerprint alone would miss if the rule policy had not also been renamed.
-ENGINE_VERSION = "0.3.1-frame"
+#
+# 0.4.0: gỡ chặn bốn sao (Giải Thần, Thiên Trù, Thiên Y, Lưu Hà) và thêm hai nhãn
+# Chủ Mệnh / Chủ Thân. Tập sao đi từ 88 lên 92, nên lần này vân tay tự đổi — nhưng
+# phiên bản vẫn phải nâng, vì nó nói *chủ ý*, còn vân tay chỉ nói *thực tế*.
+ENGINE_VERSION = "0.4.0-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:
@@ -413,6 +419,7 @@ def build_chart(
         )
         _place_group_3_stars(
             by_branch,
+            year_stem=pillars.year.can_index,
             year_branch=pillars.year.chi_index,
             lunar_month=lunar.month,
             hour_branch=hour_chi,
@@ -448,6 +455,14 @@ def build_chart(
     is_male = birth.gender is Gender.MALE
     yin_yang_label = ("Dương" if is_yang_year else "Âm") + (" Nam" if is_male else " Nữ")
 
+    # Chủ Mệnh / Chủ Thân là hai **nhãn**, không phải sao an vào cung. Chúng đi vào
+    # ``traditional`` chứ không vào ``palace.stars``: thêm chúng vào danh sách sao sẽ
+    # làm mọi phép đếm sai và khiến lá số hiện hai lần cùng một ngôi sao.
+    if profile.binding(RuleId.CHU_MENH_CHU_THAN).is_unresolved:
+        chu_menh, chu_than = None, None
+    else:
+        chu_menh, chu_than = rulers_for_year_branch(pillars.year.chi_index)
+
     return Chart(
         engine_stage=stage,
         engine_version=ENGINE_VERSION,
@@ -482,6 +497,7 @@ def build_chart(
             "year_pillar": pillars.year.name,
         },
         pillars=pillars.to_dict(),
+        traditional=TraditionalMetadata(chu_menh=chu_menh, chu_than=chu_than),
         yin_yang={
             "year_is_yang": is_yang_year,
             "gender_is_male": is_male,
@@ -851,6 +867,7 @@ def _place_star_cycles(
 def _place_group_3_stars(
     by_branch: dict[int, Palace],
     *,
+    year_stem: int,
     year_branch: int,
     lunar_month: int,
     hour_branch: int,
@@ -868,6 +885,7 @@ def _place_group_3_stars(
 
     year_inputs: dict[str, object] = {"chi_nam": CHI[year_branch]}
     month_inputs: dict[str, object] = {"thang_am": lunar_month}
+    stem_inputs: dict[str, object] = {"can_nam": CAN[year_stem]}
     placed: list[tuple[str, RuleId, int, dict[str, object]]] = [
         ("PHA_TOAI", RuleId.PHA_TOAI, group3.place_pha_toai(year_branch), year_inputs),
         (
@@ -893,6 +911,30 @@ def _place_group_3_stars(
             RuleId.THIEN_LA_DIA_VONG,
             group3.DIA_VONG_BRANCH,
             {"co_dinh": "Tuất"},
+        ),
+        (
+            "LUU_HA",
+            RuleId.LUU_HA,
+            group3.place_luu_ha(year_stem),
+            stem_inputs,
+        ),
+        (
+            "THIEN_TRU",
+            RuleId.THIEN_TRU,
+            group3.place_thien_tru(year_stem),
+            stem_inputs,
+        ),
+        (
+            "THIEN_Y",
+            RuleId.THIEN_Y,
+            group3.place_thien_y(lunar_month),
+            month_inputs,
+        ),
+        (
+            "GIAI_THAN",
+            RuleId.GIAI_THAN,
+            group3.place_giai_than(lunar_month),
+            month_inputs,
         ),
         (
             "DAU_QUAN",

@@ -70,7 +70,7 @@ def test_every_star_the_engine_can_place_exists_in_the_catalog() -> None:
     placed = {s["id"] for s in _placed_stars()}
     uncatalogued = [sid for sid in placed if definition_for(sid) is None]
     assert uncatalogued == [], f"thiếu mục trong catalog: {uncatalogued}"
-    assert len(placed) == 88
+    assert len(placed) == 92
 
 
 def test_the_catalog_holds_all_fourteen_major_stars() -> None:
@@ -336,8 +336,8 @@ def test_definition_for_returns_none_for_an_uncatalogued_star() -> None:
 
 def test_the_chart_dto_carries_catalogued_metadata() -> None:
     stars = _placed_stars()
-    # 14 chính tinh + 13 phụ tinh nhóm 1 + 24 phụ tinh nhóm 2 (Nam phái).
-    assert len(stars) == 88
+    # 14 chính tinh + các nhóm phụ tinh + 4 sao gỡ chặn ở mục 32 (Nam phái).
+    assert len(stars) == 92
     for star in stars:
         definition = definition_for(star["id"])
         assert definition is not None

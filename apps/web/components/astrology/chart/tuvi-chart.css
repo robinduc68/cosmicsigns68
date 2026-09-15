@@ -292,23 +292,6 @@
   font-weight: inherit;
 }
 
-/* Tứ Hóa. Nhỏ hơn tên sao và KHÔNG đặt màu: nó kế thừa màu ngũ hành của chính ngôi
-   sao đó, vì hóa là trạng thái của sao chứ không phải một thuộc tính màu riêng. */
-.tuvi-star__hoa {
-  margin-left: 2px;
-  font-size: 0.82em;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-/* Hóa của năm xem: nghiêng nhẹ để tách khỏi hóa bản mệnh. KHÔNG đổi màu — màu
-   vẫn là ngũ hành của chính ngôi sao. */
-.tuvi-star__hoa.is-annual-hoa {
-  font-style: italic;
-  font-weight: 500;
-}
-
 .tuvi-star__strength {
   /* A hair of space, the way a printed chart sets it. A margin rather than a text
      space so the nowrap rules used during PNG export are unaffected. */
@@ -681,4 +664,23 @@
   background: color-mix(in srgb, #b91c1c 20%, var(--surface));
   color: #b91c1c;
   font-weight: 600;
+}
+
+/* --------------------------------------------------------------- Tứ Hóa xuống dòng
+
+   Một lá số in để hóa trên dòng của nó, ngay dưới ngôi sao mang hóa. Trước đây đây là
+   nhãn vuông dính đuôi tên sao và đọc như một phần của tên.
+
+   Màu vẫn là **ngũ hành của ngôi sao mang hóa** — dòng hóa nhận cùng class ngũ hành.
+   Hóa Lộc KHÔNG xanh, Hóa Kỵ KHÔNG đỏ: màu trên lá số này chỉ có một nghĩa. */
+.tuvi-hoa-line {
+  display: block;
+  padding-left: 10px;
+  font-size: 0.92em;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.tuvi-hoa-line.is-annual-hoa {
+  opacity: 0.85;
 }

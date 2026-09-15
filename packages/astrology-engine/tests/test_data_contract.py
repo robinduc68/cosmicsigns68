@@ -186,7 +186,14 @@ def test_unimplemented_astrology_values_are_null_not_placeholders(
         "nam_xem",
         "tuoi_xem",
     }
-    assert all(value is None for value in traditional.values())
+    # Chủ Mệnh / Chủ Thân nay đã cài (mục 32), nên chúng KHÔNG còn null. Bốn trường
+    # còn lại vẫn chưa cài, và đó mới là thứ bài này canh: chưa cài thì null, không
+    # phải "N/A" hay một giá trị giả.
+    assert traditional["chu_menh"] and traditional["chu_than"]
+    assert all(
+        traditional[field] is None
+        for field in ("lai_nhan_cung", "can_luong", "nam_xem", "tuoi_xem")
+    )
 
     for palace in payload["palaces"]:
         assert palace["month_number"] is None
@@ -240,7 +247,7 @@ def test_null_survives_json_serialisation(payload: dict[str, Any]) -> None:
     """``None`` phải qua JSON thành ``null``, không thành chuỗi "None"."""
     raw = json.dumps(payload, ensure_ascii=False)
     assert '"strength": null' in raw
-    assert '"chu_menh": null' in raw
+    assert '"lai_nhan_cung": null' in raw
     assert '"None"' not in raw
 
 
