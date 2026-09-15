@@ -321,6 +321,30 @@ giữ đúng điều đó. Bản thử đầu đặt danh sách ở renderer và
 
 ---
 
+## 9i. Nhịp dọc: đo bác một giả định
+
+Yêu cầu là "rút khoảng tiêu đề → chính tinh khoảng 6–10px". Đo ra: khoảng ấy **đã là
+6px** ở cả 12 cung — đúng cận dưới của mục tiêu, không còn gì để rút mà sao không chạm
+vào dòng nạp âm.
+
+Chỗ trống thật nằm **dưới** nội dung (60–208px), và đó là thiết kế canh trên có chủ ý.
+
+Nên thay vì rút khoảng 6px ấy, cả khối tiêu đề được đẩy lên: đệm trên của cung
+16 → 12px, lề trên khối chính tinh 8 → 6px. Khoảng tiêu đề → chính tinh còn **3px**,
+và toàn bộ nội dung bắt đầu cao hơn ~6px — đúng hiệu quả mà yêu cầu nhắm tới.
+
+### Cỡ phụ tinh: đã thử 19.5px và lùi lại
+
+Yêu cầu là "tăng cỡ phụ tinh **nếu an toàn**". Ở 19.5px, nhãn dài nhất —
+`+Kình Dương(Đ)`, tên hai chữ có cả dấu âm dương lẫn hậu tố độ sáng — **xuống dòng**
+và phá vỡ thẳng hàng hai cột. Không an toàn, nên giữ 19px.
+
+Chỗ dễ đọc hơn đến từ **khoảng cách**, không từ cỡ chữ: `line-height` 1.14 → 1.08,
+`row-gap` 2 → 1px, và cột rộng thêm bằng cách giảm đệm ngang 13 → 11px và khe cột
+10 → 6px. Sau đó **không nhãn nào xuống dòng**.
+
+---
+
 ## 10. Hạn chế đã biết
 
 - **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có

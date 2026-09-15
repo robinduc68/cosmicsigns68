@@ -44,6 +44,10 @@
    */
   --chart-palace-title-size: 23px;
   --chart-major-star-size: 27px;
+  /* 19px, không phải 19.5. Đã thử 19.5 và nhãn dài nhất — phụ tinh hai chữ có cả dấu
+     âm dương lẫn hậu tố độ sáng — xuống dòng, phá vỡ thẳng hàng hai cột. Yêu cầu là
+     "tăng cỡ NẾU AN TOÀN"; ở đây không an toàn, nên chỗ dễ đọc hơn đến từ dòng chặt
+     hơn và cột rộng hơn. */
   --chart-minor-star-size: 19px;
   /* Tứ Hóa có cỡ **tuyệt đối**, không phải cỡ tương đối theo sao mang nó. Lý do đo
      được: khi nó là ``0.76em``, Hóa Lộc treo dưới một chính tinh ra 20.5px còn Hóa Kỵ
@@ -120,7 +124,7 @@
   /* Nothing may spill across a border; the mapper warns in development when a
      palace is estimated to exceed its capacity, so clipping is never silent. */
   overflow: hidden;
-  padding: 16px 13px 11px;
+  padding: 12px 11px 10px;
   line-height: 1.26;
   background: var(--chart-cell);
 }
@@ -221,7 +225,7 @@
 
 .tuvi-palace__majors {
   /* 8px là khoảng từ đáy nạp âm tới chính tinh đầu tiên — sát mép trên như bản in. */
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   padding: 0;
   list-style: none;
   text-align: center;
@@ -239,12 +243,14 @@
  */
 .tuvi-palace__majors > li {
   font-size: var(--chart-major-star-size);
-  line-height: 1.12;
+  line-height: 1.08;
 }
 
 .tuvi-palace__minors > li {
   font-size: var(--chart-minor-star-size);
-  line-height: 1.14;
+  /* To hơn nửa bậc nhưng dòng chặt hơn: chữ dễ đọc hơn mà hàng KHÔNG cao thêm.
+     Ưu tiên sửa khoảng cách trước, chỉ đụng cỡ chữ khi khoảng cách đã hết chỗ. */
+  line-height: 1.08;
 }
 
 .tuvi-palace__empty {
@@ -258,9 +264,9 @@
 .tuvi-palace__minors {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 10px;
-  row-gap: 2px;
-  margin: 7px 0 0;
+  column-gap: 6px;
+  row-gap: 1px;
+  margin: 5px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -285,7 +291,8 @@
   padding-top: 5px;
   border-top: 1px solid var(--chart-border-soft);
   font-size: var(--chart-meta-size);
-  color: var(--chart-muted);
+  font-weight: 500;
+  color: var(--chart-text);
 }
 
 .tuvi-palace__footer > :last-child {
@@ -295,7 +302,7 @@
 /* ------------------------------------------------------------------ star */
 
 .tuvi-star {
-  line-height: 1.24;
+  line-height: 1.18;
   overflow-wrap: anywhere;
 }
 
@@ -416,16 +423,18 @@
   max-width: 560px;
 }
 
+/* Thương hiệu là dòng phụ, không phải tiêu đề. Nhỏ hơn, nhẹ hơn, mực dịu — trật tự
+   thị giác phải là "Lá Số Tử Vi" trước, "Cosmic Signs" sau. */
 .tuvi-center__brand {
   margin: 0;
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.38em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
   /* Chữ hoa có letter-spacing luôn lệch phải một nhịp; kéo lại để nó cân thật. */
   text-indent: 0.38em;
   text-align: center;
   text-transform: uppercase;
-  color: var(--chart-accent);
+  color: var(--chart-subtle);
 }
 
 .tuvi-center__title {
@@ -465,10 +474,12 @@
 .tuvi-center__fields dt {
   align-self: baseline;
   font-size: 0.82em;
+  /* Nhãn đậm hơn bản trước (subtle → muted): ở 0.82em và giãn chữ, mực nhạt đọc rất
+     mệt trên nền giấy. Giá trị vẫn mạnh hơn nhãn nhờ chữ có chân và weight 600. */
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--chart-subtle);
+  color: var(--chart-muted);
 }
 
 .tuvi-center__fields dd {
