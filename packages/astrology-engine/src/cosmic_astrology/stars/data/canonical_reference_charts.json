@@ -1,0 +1,64 @@
+{
+  "_README": [
+    "BẰNG CHỨNG ĐỌC TỪ LÁ SỐ ĐỐI CHIẾU — không phải luật, không phải bảng.",
+    "",
+    "File này chỉ ghi những ô ĐỌC ĐƯỢC TRỰC TIẾP từ một lá số chuẩn có thật. Nó",
+    "KHÔNG suy ra ô nào khác, và không được dùng để suy.",
+    "",
+    "Vì sao tách riêng khỏi bảng luật: một quan sát và một luật là hai loại thứ",
+    "khác nhau. Trộn chúng vào cùng một file là cách 'chúng tôi thấy ô này' biến",
+    "thành 'chúng tôi biết cả bảng' mà không ai để ý.",
+    "",
+    "CẤM SUY RỘNG:",
+    "  - 14 độ sáng dưới đây chỉ nói về 14 cặp (sao, địa chi) CÓ MẶT trong lá số này.",
+    "  - Bảng đầy đủ có 14 x 12 = 168 ô. Biết 14 ô không cho biết 154 ô còn lại.",
+    "  - KHÔNG giả định đối xứng. Bảng miếu vượng không đối xứng theo bất kỳ trục nào",
+    "    mà ta suy được từ đây.",
+    "",
+    "DÙNG ĐỂ LÀM GÌ: khi nào có người chép được bảng 168 ô từ một ấn bản, hàm",
+    "``validate_strength_table`` bắt bảng ấy phải khớp 14 ô này. Bảng nào trượt thì",
+    "bị từ chối trước khi kịp lên lá số của khách."
+  ],
+  "references": [
+    {
+      "id": "NAM_PHAI_1999_10_13_NGO_NAM",
+      "label": "13/10/1999 · 12:30 giờ Ngọ · nam · âm 05/09 Kỷ Mão",
+      "birth": {
+        "solar_day": 13,
+        "solar_month": 10,
+        "solar_year": 1999,
+        "hour": 12,
+        "minute": 30,
+        "gender": "MALE",
+        "lunar_day": 5,
+        "lunar_month": 9,
+        "year_pillar": "Kỷ Mão"
+      },
+      "note": "Lá số chuẩn duy nhất dự án có. Chưa có ấn bản nào được nêu tên, nên đây là bằng chứng, không phải nguồn đã thẩm định.",
+      "star_placements": {
+        "GIAI_THAN": "Mùi",
+        "THIEN_TRU": "Thân",
+        "THIEN_Y": "Dậu",
+        "LUU_HA": "Ngọ",
+        "THIEN_QUY": "Mùi",
+        "AN_QUANG": "Mùi"
+      },
+      "major_star_strength": [
+        { "star_id": "TU_VI", "branch": "Dần", "strength": "MIEU" },
+        { "star_id": "THIEN_CO", "branch": "Sửu", "strength": "DAC" },
+        { "star_id": "THAI_DUONG", "branch": "Hợi", "strength": "HAM" },
+        { "star_id": "VU_KHUC", "branch": "Tuất", "strength": "MIEU" },
+        { "star_id": "THIEN_DONG", "branch": "Dậu", "strength": "HAM" },
+        { "star_id": "LIEM_TRINH", "branch": "Ngọ", "strength": "VUONG" },
+        { "star_id": "THIEN_PHU", "branch": "Dần", "strength": "MIEU" },
+        { "star_id": "THAI_AM", "branch": "Mão", "strength": "HAM" },
+        { "star_id": "THAM_LANG", "branch": "Thìn", "strength": "VUONG" },
+        { "star_id": "CU_MON", "branch": "Tỵ", "strength": "HAM" },
+        { "star_id": "THIEN_TUONG", "branch": "Ngọ", "strength": "VUONG" },
+        { "star_id": "THIEN_LUONG", "branch": "Mùi", "strength": "DAC" },
+        { "star_id": "THAT_SAT", "branch": "Thân", "strength": "MIEU" },
+        { "star_id": "PHA_QUAN", "branch": "Tý", "strength": "MIEU" }
+      ]
+    }
+  ]
+}

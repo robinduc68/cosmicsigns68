@@ -2,12 +2,12 @@
   "schema_version": 2,
   "identity": {
     "chart_id": null,
-    "engine_version": "0.4.0-frame",
+    "engine_version": "0.4.1-frame",
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09",
     "production_ready": false,
     "generated_at": "2026-09-11T00:00:00+00:00",
-    "rule_fingerprint": "39284ddedd15a63d"
+    "rule_fingerprint": "cc600c0e540d3dce"
   },
   "traditional": {
     "chu_menh": "Vũ Khúc",
@@ -19,7 +19,7 @@
   },
   "engine": {
     "stage": "FRAME",
-    "version": "0.4.0-frame",
+    "version": "0.4.1-frame",
     "is_authoritative": false,
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09"
@@ -1302,7 +1302,7 @@
       },
       {
         "rule": "thien_tru",
-        "policy": "YEAR_STEM_TABLE",
+        "policy": "YEAR_STEM_TABLE_SOURCE_UNRESOLVED",
         "implemented": true,
         "verification": "PROVISIONAL",
         "status": "PROVISIONAL",
@@ -1321,7 +1321,7 @@
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "Bảng tra 10 ô theo can năm. Không có cấu trúc nội tại nào để tự kiểm, nên đây là sao cần đối chiếu ấn bản sớm nhất trong nhóm này."
+        "note": "Bảng tra 10 ô theo can năm. CHỈ 1/10 HÀNG CÓ BẰNG CHỨNG (hàng Kỷ, đọc từ lá số đối chiếu); chín hàng còn lại nêu lại từ trí nhớ — và trí nhớ ấy đã bị bắt sai đúng ở hàng Kỷ. Bảng không có cấu trúc nội tại nào để tự kiểm, nên không test nào bắt được lỗi chép ở chín hàng kia. Cần ấn bản sớm nhất trong cả engine. Xem THIEN_TRU_UNVERIFIED_STEMS và docs mục 32."
       },
       {
         "rule": "thien_y",
@@ -1348,7 +1348,7 @@
       },
       {
         "rule": "giai_than",
-        "policy": "MONTH_PAIR_FROM_THAN",
+        "policy": "YEAR_BRANCH_TRINE",
         "implemented": true,
         "verification": "PROVISIONAL",
         "status": "PROVISIONAL",
@@ -1367,7 +1367,7 @@
           "has_citation": false,
           "is_reviewed": false
         },
-        "note": "DISPUTED: có hai luật ứng viên (theo cặp tháng âm / theo tam hợp chi năm) và dự án CHƯA có quyết định nào để chọn. Đang dùng luật theo cặp tháng âm để lá số không thiếu hẳn sao; lựa chọn nằm lộ thiên ở SELECTED_GIAI_THAN_VARIANT, đổi được bằng một dòng."
+        "note": "Cung mộ của tam hợp chi năm. Chọn vì lá số đối chiếu 13/10/1999 BÁC BỎ biến thể theo cặp tháng âm (nó cho Thìn, bản đối chiếu ghi Mùi) — chứ không phải vì ai đã thẩm định biến thể này. LƯU Ý: luật này trùng hệt luật Hoa Cái, nên hai sao luôn đồng cung; đó là chỗ người thẩm định cần soi. Xem docs mục 32."
       }
     ]
   },

@@ -12,6 +12,7 @@ from __future__ import annotations
 import pytest
 
 from cosmic_astrology.calendar.sexagenary import CAN, CHI
+from cosmic_astrology.stars import placement_group2 as group2
 from cosmic_astrology.stars import placement_group3 as group3
 from cosmic_astrology.stars.rulers import (
     CHU_MENH_BY_YEAR_BRANCH,
@@ -106,28 +107,61 @@ def test_thien_y_luon_dong_cung_thien_dieu(month: int) -> None:
     assert group3.place_thien_y(month) == group3.place_thien_dieu(month)
 
 
-def test_giai_than_di_hai_cung_moi_hai_thang() -> None:
-    """Giải Thần đứng yên trong từng cặp tháng, rồi nhảy hai cung.
+def test_giai_than_theo_cung_mo_tam_hop_chi_nam() -> None:
+    """Biến thể đang chọn, sau khi lá số đối chiếu bác bỏ biến thể theo tháng.
 
-    Luật này **đang DISPUTED** — còn một luật ứng viên theo tam hợp chi năm. Bài này
-    chỉ canh hình dạng của luật đang chọn, không khẳng định nó đúng.
+    Bốn tam hợp cho bốn cung mộ, nên mười hai chi chỉ ra **bốn** vị trí.
     """
-    positions = [group3.place_giai_than(m) for m in range(1, 13)]
-    assert positions == [
-        CHI.index(b)
-        for b in [
-            "Thân",
-            "Thân",
-            "Tuất",
-            "Tuất",
-            "Tý",
-            "Tý",
-            "Dần",
-            "Dần",
-            "Thìn",
-            "Thìn",
-            "Ngọ",
-            "Ngọ",
-        ]
-    ]
-    assert len(set(positions)) == 6
+    positions = [group3.place_giai_than(b) for b in range(12)]
+    assert len(set(positions)) == 4
+    assert positions[CHI.index("Mão")] == CHI.index("Mùi")
+
+
+def test_giai_than_luon_dong_cung_hoa_cai() -> None:
+    """Hệ quả của luật đã chọn — và chỗ người thẩm định cần soi.
+
+    Hai sao khác nhau mà không bao giờ rời nhau là điều đáng ngờ: hoặc đó là tính
+    chất thật của cặp này, hoặc một trong hai luật đã chép nhầm sang cái kia. Lá số
+    đối chiếu đặt cả hai ở Mùi nên nó **không** phân biệt được hai khả năng ấy.
+    Viết ra đây để điều đó không trôi đi trong im lặng.
+    """
+    for branch in range(12):
+        assert group3.place_giai_than(branch) == group2.place_hoa_cai(branch)
+
+
+def test_bang_thien_tru_noi_ro_chin_hang_chua_co_bang_chung() -> None:
+    """Bảng Thiên Trù mang xuất xứ từng hàng, không một nhãn chung cho cả bảng.
+
+    Lá số đối chiếu đã bắt được **một** hàng sai. Điều đó chứng minh trí nhớ không
+    đáng tin ở bảng này, nhưng không cho biết chín hàng kia sai chỗ nào — nên hai
+    loại ô phải phân biệt được bằng máy, không phải bằng một dòng ghi chú.
+    """
+    assert len(group3.THIEN_TRU_BY_YEAR_STEM) == 10
+    assert len(group3.THIEN_TRU_UNVERIFIED_STEMS) == 9
+    assert group3.place_thien_tru(CAN.index("Kỷ")) == CHI.index("Thân")
+
+
+def test_bang_do_sang_sai_bi_bac_bo_boi_la_so_doi_chieu() -> None:
+    """Cái chốt: một bảng miếu vượng chép sai phải trượt trước khi lên lá số khách.
+
+    Dựng một bảng đủ 12 ô cho Tử Vi nhưng đặt sai đúng ô mà lá số đối chiếu biết
+    (Tử Vi tại Dần = Miếu). Bảng rỗng thì không bị bác bỏ — chưa điền thì chưa mâu
+    thuẫn với gì — nhưng bảng đã điền mà lệch thì phải lộ ra.
+    """
+    from dataclasses import replace
+
+    from cosmic_astrology.chart.types import StarStrength
+    from cosmic_astrology.stars.reference import validate_strength_table
+    from cosmic_astrology.stars.strength import NAM_PHAI_STAR_STRENGTH_V1
+
+    assert validate_strength_table(NAM_PHAI_STAR_STRENGTH_V1) == ()
+
+    wrong = replace(
+        NAM_PHAI_STAR_STRENGTH_V1,
+        entries={"TU_VI": {branch: StarStrength.HAM for branch in CHI}},
+    )
+    mismatches = validate_strength_table(wrong)
+    assert len(mismatches) == 1
+    assert mismatches[0].star_id == "TU_VI"
+    assert mismatches[0].branch == "Dần"
+    assert mismatches[0].expected is StarStrength.MIEU

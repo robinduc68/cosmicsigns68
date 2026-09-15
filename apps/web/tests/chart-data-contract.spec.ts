@@ -76,9 +76,11 @@ describe('mapper preserves engine values', () => {
     expect(vm.schemaVersion).toBe(2)
     expect(vm.identity?.chart_id).toBeNull()
     expect(vm.identity?.production_ready).toBe(false)
+    // Chủ Mệnh / Chủ Thân nay engine có tính; bốn trường kia thì chưa, và đó mới là
+    // thứ bài này canh — chưa tính thì null, không phải một giá trị giữ chỗ.
     expect(vm.traditional).toEqual({
-      chu_menh: null,
-      chu_than: null,
+      chu_menh: 'Vũ Khúc',
+      chu_than: 'Thiên Cơ',
       lai_nhan_cung: null,
       can_luong: null,
       nam_xem: null,

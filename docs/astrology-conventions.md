@@ -1243,15 +1243,28 @@ tắc" không phải bằng chứng chép sai. Lý do chặn không đứng vữ
 
 Bất biến để kiểm: **mười can cho mười vị trí khác nhau** — không ô nào lặp.
 
-### 32.2 Thiên Trù — cài được, nhưng đây là sao đáng ngờ nhất
+### 32.2 Thiên Trù — bảng **chưa có nguồn**, chín trên mười hàng chưa có bằng chứng
 
-| Can | Giáp | Ất | Bính | Đinh | Mậu | Kỷ | Canh | Tân | Nhâm | Quý |
+| Can | Giáp | Ất | Bính | Đinh | Mậu | **Kỷ** | Canh | Tân | Nhâm | Quý |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Thiên Trù | Tỵ | Ngọ | Tý | Sửu | Dần | Mão | Dậu | Tuất | Ngọ | Tỵ |
+| Thiên Trù | Tỵ | Ngọ | Tý | Sửu | Dần | **Thân** | Dậu | Tuất | Ngọ | Tỵ |
+| Xuất xứ | nhớ | nhớ | nhớ | nhớ | nhớ | **đối chiếu** | nhớ | nhớ | nhớ | nhớ |
 
-Khác Lưu Hà, bảng này **không có cấu trúc nội tại nào để tự kiểm** — không đối xứng,
-có ô lặp (Tỵ và Ngọ mỗi cái hai lần). Nghĩa là không test nào bắt được lỗi chép ở
-đây. Đây là sao cần đối chiếu ấn bản **sớm nhất** trong cả nhóm.
+Bản đầu ghi hàng Kỷ là **Mão**. Lá số đối chiếu ghi **Thân**. Một hàng sai đã chứng
+minh trí nhớ không đáng tin ở bảng này — nhưng nó **không** cho biết chín hàng kia
+sai chỗ nào, và một lá số chỉ chạm được vào đúng một hàng.
+
+Vì thế bảng mang **xuất xứ theo từng ô** thay vì một nhãn PROVISIONAL cho cả bảng:
+gộp lại sẽ che mất đúng sự khác biệt giữa một ô *có bằng chứng* và chín ô *chỉ có
+trí nhớ đã bị bắt lỗi*. Policy cũng đổi tên thành
+`YEAR_STEM_TABLE_SOURCE_UNRESOLVED` để không ai đọc nhầm nó thành "đã chép từ ấn bản".
+
+Bảng này **không có cấu trúc nội tại nào để tự kiểm** (không đối xứng, có ô lặp), nên
+không test nào bắt được lỗi chép ở chín hàng còn lại. Đây là chỗ cần một ấn bản sớm
+nhất trong cả engine — `THIEN_TRU_UNVERIFIED_STEMS` liệt kê chính xác chín can đó.
+
+**Không hardcode 1999 → Thân.** Hàng Kỷ đổi cho *mọi* lá số sinh năm Kỷ; đó là một
+thay đổi luật, không phải một ngoại lệ cho fixture.
 
 ### 32.3 Thiên Y — hai cách phát biểu trùng khớp
 
@@ -1269,22 +1282,26 @@ dùng cho Thai Phụ / Phong Cáo ở mục 27.
 Hệ quả và cũng là bất biến: **Thiên Y luôn đồng cung Thiên Diêu**. Nếu bản đối chiếu
 đặt nó khác Thiên Diêu thì luật này sai, và chỗ sai lộ ra ngay.
 
-### 32.4 Giải Thần — vẫn DISPUTED, nhưng đã an
+### 32.4 Giải Thần — lá số đối chiếu **bác bỏ** một trong hai biến thể
 
-Đây là sao **duy nhất** trong bốn sao mà lý do chặn cũ vẫn đứng vững: có hai luật ứng
-viên, và dự án chưa có ai ký duyệt để chọn.
+| | Biến thể | Năm Mão cho ra | |
+|---|---|---|---|
+| A | Theo cặp tháng âm (1–2 Thân, mỗi hai tháng tiến hai cung) | **Thìn** | ❌ bị bác bỏ |
+| B | **Cung mộ của tam hợp chi năm** | **Mùi** | ✅ khớp bản đối chiếu |
 
-- Đang dùng: **theo cặp tháng âm** — tháng 1–2 Thân, 3–4 Tuất, 5–6 Tý, 7–8 Dần,
-  9–10 Thìn, 11–12 Ngọ.
-- Chưa cài: theo **tam hợp chi năm**.
+Đang dùng **B** (`YEAR_BRANCH_TRINE`). Cả hai biến thể vẫn nằm trong
+`GiaiThanPolicy`, và biến thể A vẫn còn hàm riêng — một điểm dữ liệu **bác bỏ** được
+một luật nhưng không xoá nó khỏi lịch sử.
 
-Sao vẫn được an, vì một lá số thiếu hẳn sao thì không ai soát được gì. Nhưng lựa chọn
-nằm **lộ thiên** ở `SELECTED_GIAI_THAN_VARIANT`, đổi được bằng một dòng khi có quyết
-định — cùng cách đã làm với ba biến thể Tứ Hóa hàng Canh ở mục 15.
+Trạng thái vẫn **PROVISIONAL**, và lý do đáng nói: một lá số loại được một luật,
+nhưng không chứng minh được luật còn lại. Chọn B vì A sai, không phải vì B đã được
+thẩm định.
 
-**Đừng đọc trạng thái PROVISIONAL của sao này giống ba sao trên.** Ba sao kia là *đã
-nêu được luật, chưa có người thẩm định*. Giải Thần là *biết có hai đường, đang đi một
-đường chưa ai chọn*.
+**Chỗ người thẩm định cần soi:** luật B trùng hệt luật Hoa Cái, nên Giải Thần **luôn
+đồng cung Hoa Cái**. Hai sao khác nhau mà không bao giờ rời nhau là điều đáng ngờ —
+hoặc đó là tính chất thật của cặp này, hoặc một trong hai luật đã chép nhầm sang cái
+kia. Lá số đối chiếu đặt cả hai ở Mùi nên nó **không** phân biệt được hai khả năng
+ấy. Có test viết ra hệ quả này để nó không trôi đi trong im lặng.
 
 ### 32.5 Chủ Mệnh / Chủ Thân
 
@@ -1305,3 +1322,48 @@ Hai bảng có **hai kiểu đối xứng khác nhau**, và đó không phải n
 
 Đối xứng là chốt kiểm duy nhất hai bảng này có, nên nó được viết thành test chứ không
 để trong ghi chú.
+
+---
+
+## 33. Bằng chứng đọc từ lá số đối chiếu 🟡 PENDING
+
+`cosmic_astrology/stars/data/canonical_reference_charts.json` ghi những ô **đọc trực
+tiếp** từ lá số chuẩn. Nó không phải luật, không phải bảng, và không được dùng để suy.
+
+Vì sao tách khỏi file luật: một *quan sát* và một *luật* là hai loại thứ khác nhau.
+Trộn chúng vào cùng một chỗ là cách "chúng tôi thấy ô này" lặng lẽ biến thành "chúng
+tôi biết cả bảng".
+
+### 33.1 Mười bốn độ sáng chính tinh
+
+Đọc từ lá số 13/10/1999 giờ Ngọ, nam:
+
+| Sao | Địa chi | Độ sáng | | Sao | Địa chi | Độ sáng |
+|---|---|---|---|---|---|---|
+| Tử Vi | Dần | MIEU | | Tham Lang | Thìn | VUONG |
+| Thiên Cơ | Sửu | DAC | | Cự Môn | Tỵ | HAM |
+| Thái Dương | Hợi | HAM | | Thiên Tướng | Ngọ | VUONG |
+| Vũ Khúc | Tuất | MIEU | | Thiên Lương | Mùi | DAC |
+| Thiên Đồng | Dậu | HAM | | Thất Sát | Thân | MIEU |
+| Liêm Trinh | Ngọ | VUONG | | Phá Quân | Tý | MIEU |
+| Thiên Phủ | Dần | MIEU | | Thái Âm | Mão | HAM |
+
+**CẤM SUY RỘNG.** Bảng đầy đủ có 14 × 12 = **168** ô. Mười bốn ô trên chỉ nói về
+mười bốn **cặp (sao, địa chi)** có mặt trong lá số này. Biết 14 ô không cho biết 154
+ô còn lại, và **không được giả định đối xứng** theo bất kỳ trục nào.
+
+Khoá trong code là **cặp** `(mã sao, địa chi)`, cố ý không phải mã sao — đánh khoá
+bằng mã sao sẽ ngầm nói "sao này độ sáng thế" ở mọi địa chi, đúng cái suy rộng bị cấm.
+
+### 33.2 Cái chốt
+
+`validate_strength_table(table)` đối chiếu một bảng miếu vượng với mọi ô đã quan sát
+được, và trả về danh sách ô lệch. Khi nào có người chép được bảng 168 ô từ một ấn bản,
+bảng ấy phải qua được cái chốt này trước.
+
+Hai điều cần đọc đúng:
+
+- Rỗng **không** nghĩa là bảng đúng, chỉ nghĩa là **chưa bị bác bỏ**. Mười bốn ô khớp
+  không nói gì về 154 ô còn lại.
+- Bảng **chưa điền** cũng trả về rỗng. Chưa điền thì chưa mâu thuẫn với gì cả, và bắt
+  nó trượt sẽ biến cái chốt thành thứ phải tắt đi trong lúc chờ dữ liệu.

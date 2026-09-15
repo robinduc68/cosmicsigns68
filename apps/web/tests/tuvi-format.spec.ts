@@ -152,8 +152,6 @@ describe('centre mapping', () => {
     const pending = vm().center.fields.filter((f) => f.pending)
     expect(pending.map((f) => f.label)).toEqual([
       'Cân lượng',
-      'Chủ Mệnh',
-      'Chủ Thân',
       'Lai nhân cung',
       'Năm xem',
       'Tuổi',
@@ -168,7 +166,7 @@ describe('null omission in the renderer', () => {
       props: { center: vm().center, connections: [] },
     })
     const text = wrapper.text()
-    for (const label of ['Cân lượng', 'Chủ Mệnh', 'Chủ Thân', 'Lai nhân cung', 'Năm xem']) {
+    for (const label of ['Cân lượng', 'Lai nhân cung', 'Năm xem']) {
       expect(text).not.toContain(label)
     }
     expect(wrapper.findAll('[data-pending]')).toHaveLength(0)
@@ -192,8 +190,8 @@ describe('null omission in the renderer', () => {
     const wrapper = await mountSuspended(TuViCenter, {
       props: { center: vm().center, connections: [], showPendingFields: true },
     })
-    expect(wrapper.findAll('[data-pending]')).toHaveLength(6)
-    expect(wrapper.text()).toContain('Chủ Mệnh')
+    expect(wrapper.findAll('[data-pending]')).toHaveLength(4)
+    expect(wrapper.text()).toContain('Cân lượng')
     // It names the gap; it does not fill it.
     expect(wrapper.text()).toContain('chưa có dữ liệu')
   })

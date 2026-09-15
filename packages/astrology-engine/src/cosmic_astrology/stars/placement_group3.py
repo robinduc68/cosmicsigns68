@@ -23,14 +23,17 @@ suy ra điều đó.
 from __future__ import annotations
 
 from cosmic_astrology.calendar.sexagenary import CHI
+from cosmic_astrology.stars import placement_group2 as group2
 
 __all__ = [
     "DIA_VONG_BRANCH",
     "LUU_HA_BY_YEAR_STEM",
     "THIEN_LA_BRANCH",
     "THIEN_TRU_BY_YEAR_STEM",
+    "THIEN_TRU_UNVERIFIED_STEMS",
     "place_dau_quan",
     "place_giai_than",
+    "place_giai_than_by_month_pair",
     "place_luu_ha",
     "place_pha_toai",
     "place_thien_dieu",
@@ -148,19 +151,37 @@ LUU_HA_BY_YEAR_STEM: dict[int, int] = {
     9: CHI.index("Dần"),  # Quý
 }
 
-#: Thiên Trù theo can năm, khoá là **chỉ số can** (Giáp = 0).
-THIEN_TRU_BY_YEAR_STEM: dict[int, int] = {
-    0: CHI.index("Tỵ"),  # Giáp
-    1: CHI.index("Ngọ"),  # Ất
-    2: CHI.index("Tý"),  # Bính
-    3: CHI.index("Sửu"),  # Đinh
-    4: CHI.index("Dần"),  # Mậu
-    5: CHI.index("Mão"),  # Kỷ
-    6: CHI.index("Dậu"),  # Canh
-    7: CHI.index("Tuất"),  # Tân
-    8: CHI.index("Ngọ"),  # Nhâm
-    9: CHI.index("Tỵ"),  # Quý
+#: Thiên Trù theo can năm, khoá là **chỉ số can** (Giáp = 0). Mỗi ô kèm **xuất xứ**:
+#:
+#:   ``OBSERVED``  — đọc trực tiếp từ lá số đối chiếu. Một ô, một lá số.
+#:   ``RECALLED``  — người viết code nêu lại từ trí nhớ. **Chưa đối chiếu được.**
+#:
+#: Vì sao phải ghi xuất xứ từng ô thay vì gắn một nhãn PROVISIONAL cho cả bảng: lá số
+#: đối chiếu cho thấy hàng Kỷ của bảng nêu-lại là **sai** (nó ghi Mão, lá số ghi
+#: Thân). Một hàng sai đã chứng minh trí nhớ không đáng tin ở bảng này, nhưng không
+#: cho biết chín hàng kia sai chỗ nào. Gộp tất cả vào một nhãn sẽ che mất đúng sự
+#: khác biệt ấy — giữa một ô *có bằng chứng* và chín ô *chỉ có trí nhớ đã bị bắt lỗi*.
+#:
+#: Bảng này cũng **không có cấu trúc nội tại nào để tự kiểm** (không đối xứng, có ô
+#: lặp), nên không test nào bắt được lỗi chép ở chín hàng còn lại. Đây là chỗ cần một
+#: ấn bản sớm nhất trong cả engine.
+THIEN_TRU_BY_YEAR_STEM: dict[int, tuple[int, str]] = {
+    0: (CHI.index("Tỵ"), "RECALLED"),  # Giáp
+    1: (CHI.index("Ngọ"), "RECALLED"),  # Ất
+    2: (CHI.index("Tý"), "RECALLED"),  # Bính
+    3: (CHI.index("Sửu"), "RECALLED"),  # Đinh
+    4: (CHI.index("Dần"), "RECALLED"),  # Mậu
+    5: (CHI.index("Thân"), "OBSERVED"),  # Kỷ — lá số đối chiếu 13/10/1999
+    6: (CHI.index("Dậu"), "RECALLED"),  # Canh
+    7: (CHI.index("Tuất"), "RECALLED"),  # Tân
+    8: (CHI.index("Ngọ"), "RECALLED"),  # Nhâm
+    9: (CHI.index("Tỵ"), "RECALLED"),  # Quý
 }
+
+#: Những can mà bảng Thiên Trù **chưa có bằng chứng nào** chống lưng.
+THIEN_TRU_UNVERIFIED_STEMS: tuple[int, ...] = tuple(
+    stem for stem, (_, origin) in THIEN_TRU_BY_YEAR_STEM.items() if origin != "OBSERVED"
+)
 
 
 def place_luu_ha(year_stem: int) -> int:
@@ -169,28 +190,49 @@ def place_luu_ha(year_stem: int) -> int:
 
 
 def place_thien_tru(year_stem: int) -> int:
-    """Thiên Trù: tra thẳng bảng theo can năm. Không có công thức để suy ra."""
-    return THIEN_TRU_BY_YEAR_STEM[_stem(year_stem, "can năm")]
+    """Thiên Trù: tra thẳng bảng theo can năm. Không có công thức để suy ra.
+
+    **Chín trên mười hàng của bảng này chưa có bằng chứng nào chống lưng** — xem
+    ``THIEN_TRU_BY_YEAR_STEM``. Hàm vẫn trả về một vị trí, vì một lá số thiếu hẳn sao
+    thì không ai soát được gì; nhưng đừng đọc kết quả này ngang hàng với những sao có
+    luật suy ra được.
+    """
+    branch, _origin = THIEN_TRU_BY_YEAR_STEM[_stem(year_stem, "can năm")]
+    return branch
 
 
 # ------------------------------------------------------------ Giải Thần / Thiên Y
 
 
-#: Giải Thần theo **cặp tháng âm**: tháng 1–2 tại Thân, rồi mỗi hai tháng tiến hai
-#: cung. Đây là **một trong hai** luật ứng viên — xem ``GiaiThanPolicy``.
+#: Giải Thần theo **cặp tháng âm** — biến thể *không* được chọn. Xem ``place_giai_than``.
 _GIAI_THAN_START = CHI.index("Thân")
 
 
-def place_giai_than(lunar_month: int) -> int:
-    """Giải Thần theo cặp tháng âm: 1–2 Thân, 3–4 Tuất, 5–6 Tý, 7–8 Dần, 9–10 Thìn,
-    11–12 Ngọ.
+def place_giai_than_by_month_pair(lunar_month: int) -> int:
+    """Biến thể A: 1–2 Thân, 3–4 Tuất, 5–6 Tý, 7–8 Dần, 9–10 Thìn, 11–12 Ngọ.
 
-    **Luật này đang trong diện DISPUTED.** Có luật ứng viên thứ hai an theo tam hợp
-    chi năm, và dự án chưa có ai ký duyệt để chọn. Sao vẫn được an vì một lá số
-    thiếu hẳn sao thì không ai soát được gì; nhưng lựa chọn nằm lộ thiên trong
-    ``GiaiThanPolicy`` để đổi được bằng một dòng khi có quyết định.
+    **Không phải biến thể đang dùng.** Giữ lại vì nó là một trong hai đường ứng viên
+    có thật, và vì bản đối chiếu chỉ loại được nó ở *một* lá số — một điểm dữ liệu
+    bác bỏ được một luật, nhưng không xoá nó khỏi lịch sử.
     """
     return (_GIAI_THAN_START + 2 * ((_month(lunar_month) - 1) // 2)) % 12
+
+
+def place_giai_than(year_branch: int) -> int:
+    """Giải Thần: **cung mộ của tam hợp chi năm**.
+
+    Dự án từng đi biến thể theo cặp tháng âm. Bản đối chiếu (13/10/1999 giờ Ngọ, nam)
+    đặt Giải Thần ở **Mùi**; biến thể tháng cho **Thìn**, biến thể tam hợp cho **Mùi**.
+    Một điểm dữ liệu không chứng minh được luật, nhưng nó **bác bỏ** được một luật, và
+    đó là thứ đã xảy ra ở đây.
+
+    **Cảnh báo cho người thẩm định:** luật này trùng hệt luật Hoa Cái, nên Giải Thần
+    **luôn đồng cung Hoa Cái**. Hai sao khác nhau mà không bao giờ rời nhau là điều
+    đáng soi — hoặc đó là tính chất thật của cặp sao này, hoặc một trong hai luật
+    chép nhầm sang cái kia. Bản đối chiếu đặt cả hai ở Mùi nên nó không phân biệt
+    được hai khả năng ấy.
+    """
+    return group2.place_hoa_cai(_branch(year_branch, "chi năm"))
 
 
 def place_thien_y(lunar_month: int) -> int:

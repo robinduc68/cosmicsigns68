@@ -579,9 +579,16 @@ class LuuHaPolicy(StrEnum):
 
 
 class ThienTruPolicy(StrEnum):
-    """Thiên Trù — bảng tra theo **can năm**, 10 ô."""
+    """Thiên Trù — bảng tra theo **can năm**, 10 ô.
 
-    YEAR_STEM_TABLE = "YEAR_STEM_TABLE"
+    **Nguồn của bảng chưa xác định.** Một hàng (Kỷ) đọc được từ lá số đối chiếu; chín
+    hàng còn lại nêu lại từ trí nhớ, và trí nhớ ấy đã bị bắt sai đúng ở hàng có bằng
+    chứng. Xem ``THIEN_TRU_UNVERIFIED_STEMS``.
+    """
+
+    #: Bảng ghép: một hàng có bằng chứng, chín hàng chưa. Tên policy nói thẳng điều đó
+    #: để không ai đọc nhầm nó thành "đã chép từ một ấn bản".
+    YEAR_STEM_TABLE_SOURCE_UNRESOLVED = "YEAR_STEM_TABLE_SOURCE_UNRESOLVED"
 
 
 class ThienYPolicy(StrEnum):
@@ -592,18 +599,22 @@ class ThienYPolicy(StrEnum):
 
 
 class GiaiThanPolicy(StrEnum):
-    """Giải Thần — **hai luật ứng viên, dự án chưa có quyết định**.
+    """Giải Thần — hai luật ứng viên. Bản đối chiếu đã **bác bỏ** một trong hai.
 
     Giữ cả hai ở đây để lựa chọn nằm lộ thiên. Đổi ``SELECTED_GIAI_THAN_VARIANT`` là
     đổi được cả engine, không phải đi sửa công thức rải rác.
     """
 
-    #: Theo cặp tháng âm: 1–2 Thân, rồi mỗi hai tháng tiến hai cung.
+    #: Theo cặp tháng âm: 1–2 Thân, rồi mỗi hai tháng tiến hai cung. **Đã bị bác bỏ**
+    #: bởi lá số đối chiếu: nó cho Thìn, bản đối chiếu ghi Mùi.
     MONTH_PAIR_FROM_THAN = "MONTH_PAIR_FROM_THAN"
-    #: Theo tam hợp chi năm. **Chưa cài** — còn ở đây để không ai quên nó tồn tại.
+    #: Theo **cung mộ của tam hợp chi năm**. Khớp lá số đối chiếu.
     YEAR_BRANCH_TRINE = "YEAR_BRANCH_TRINE"
 
 
-#: Biến thể Giải Thần đang dùng. Đây là một **lựa chọn chưa được thẩm định**, không
-#: phải một kết luận: xem docs/astrology-conventions.md mục 32.
-SELECTED_GIAI_THAN_VARIANT = GiaiThanPolicy.MONTH_PAIR_FROM_THAN
+#: Biến thể Giải Thần đang dùng.
+#:
+#: Chọn vì lá số đối chiếu **loại được** biến thể kia, không phải vì ai đã thẩm định
+#: biến thể này. Một điểm dữ liệu bác bỏ được một luật nhưng không chứng minh được
+#: luật còn lại, nên trạng thái vẫn là PROVISIONAL — xem docs mục 32.
+SELECTED_GIAI_THAN_VARIANT = GiaiThanPolicy.YEAR_BRANCH_TRINE

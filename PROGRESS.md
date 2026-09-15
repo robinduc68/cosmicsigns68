@@ -26,7 +26,7 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 5 — Renderer lá số | ✅ xong |
 | Phase 6 — An sao | 🟡 **88 sao** bản mệnh + **18 lưu tinh** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 | Đường ống hiển thị | ✅ đã soi: engine → API → ViewModel → DOM **không mất sao nào** (`docs/chart-render-loss-report.md`) |
-| Đối chiếu lá số chuẩn | 🟡 lá số 13/10/1999 giờ Ngọ: sửa Thiên Quý + gộp nhãn Tuần-Triệt (mục 31); gỡ chặn 4 sao + Chủ Mệnh/Chủ Thân (mục 32) |
+| Đối chiếu lá số chuẩn | ✅ lá số 13/10/1999 giờ Ngọ: **không còn lệch vị trí nào đã biết** (mục 31–33) |
 
 Hồ sơ quy ước đang dùng: **`COSMIC_SIGNS_NAM_PHAI_V1`** — đã nêu trường phái (Nam phái)
 nhưng **chưa chốt ấn bản**, nên mọi luật an sao vẫn `PROVISIONAL`.
@@ -286,14 +286,18 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
 - **4 sao trước đây chưa cài nay đã an** (mục 32), nhưng **không cùng mức tin cậy**:
   Lưu Hà và Thiên Y gỡ được lý do chặn cũ; **Thiên Trù** cài được nhưng bảng của nó
   *không có cấu trúc nội tại nào để tự kiểm*, nên không test nào bắt được lỗi chép —
-  đây là sao cần đối chiếu ấn bản sớm nhất. **Giải Thần vẫn DISPUTED**: đang đi một
-  trong hai đường mà chưa ai chọn, xem `SELECTED_GIAI_THAN_VARIANT`.
+  đây là sao cần đối chiếu ấn bản sớm nhất — **9/10 hàng của bảng chưa có bằng chứng
+  nào**, xem `THIEN_TRU_UNVERIFIED_STEMS`. **Giải Thần** nay đi biến thể tam hợp chi
+  năm vì lá số đối chiếu **bác bỏ** biến thể kia; hệ quả là nó **luôn đồng cung Hoa
+  Cái** — chỗ người thẩm định cần soi.
 - Ngũ hành để trống: Tham Lang, Cự Môn, Hữu Bật, Đào Hoa — các trường phái ghi khác
   nhau, vẽ bằng mực trung tính, không đoán. `make astrology-star-metadata-report`.
 - **Bảng miếu vượng vẫn RỖNG** — 168 ô, không công thức nào suy ra được, phải chép từ
   một ấn bản. Toàn bộ đường ống hiển thị `(M)(V)(Đ)(B)(H)` đã xong và có test; thứ
   thiếu duy nhất là dữ liệu. Điền vào
-  `cosmic_astrology/stars/data/nam_phai_star_strength_v1.json`.
+  `cosmic_astrology/stars/data/nam_phai_star_strength_v1.json`. **14 ô đã có bằng
+  chứng** từ lá số đối chiếu, và `validate_strength_table()` sẽ bác bỏ bảng nào chép
+  lệch 14 ô ấy — nhưng 154 ô còn lại vẫn không ai biết, và **không được suy ra**.
 - **Hai phân kỳ trường phái đang chọn theo cách đọc đa số**, cả hai cách đều ghi trong
   policy: Thổ cục khởi Tràng Sinh ở Thân hay Dần; chiều vòng Tràng Sinh theo âm dương
   nam nữ hay theo âm dương Cục. Xem `docs/astrology-conventions.md` mục 24.

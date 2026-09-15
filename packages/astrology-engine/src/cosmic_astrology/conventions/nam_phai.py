@@ -281,9 +281,12 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
     ),
     RuleId.THIEN_TRU: _nam_phai_rule(
         RuleId.THIEN_TRU,
-        ThienTruPolicy.YEAR_STEM_TABLE.value,
-        "Bảng tra 10 ô theo can năm. Không có cấu trúc nội tại nào để tự kiểm, nên "
-        "đây là sao cần đối chiếu ấn bản sớm nhất trong nhóm này.",
+        ThienTruPolicy.YEAR_STEM_TABLE_SOURCE_UNRESOLVED.value,
+        "Bảng tra 10 ô theo can năm. CHỈ 1/10 HÀNG CÓ BẰNG CHỨNG (hàng Kỷ, đọc từ "
+        "lá số đối chiếu); chín hàng còn lại nêu lại từ trí nhớ — và trí nhớ ấy đã "
+        "bị bắt sai đúng ở hàng Kỷ. Bảng không có cấu trúc nội tại nào để tự kiểm, "
+        "nên không test nào bắt được lỗi chép ở chín hàng kia. Cần ấn bản sớm nhất "
+        "trong cả engine. Xem THIEN_TRU_UNVERIFIED_STEMS và docs mục 32.",
     ),
     RuleId.THIEN_Y: _nam_phai_rule(
         RuleId.THIEN_Y,
@@ -294,12 +297,13 @@ _SUPPORTING_GROUP_1: dict[RuleId, RuleBinding] = {
     ),
     RuleId.GIAI_THAN: _nam_phai_rule(
         RuleId.GIAI_THAN,
-        GiaiThanPolicy.MONTH_PAIR_FROM_THAN.value,
+        GiaiThanPolicy.YEAR_BRANCH_TRINE.value,
         (
-            "DISPUTED: có hai luật ứng viên (theo cặp tháng âm / theo tam hợp chi "
-            "năm) và dự án CHƯA có quyết định nào để chọn. Đang dùng luật theo cặp "
-            "tháng âm để lá số không thiếu hẳn sao; lựa chọn nằm lộ thiên ở "
-            "SELECTED_GIAI_THAN_VARIANT, đổi được bằng một dòng."
+            "Cung mộ của tam hợp chi năm. Chọn vì lá số đối chiếu 13/10/1999 BÁC BỎ "
+            "biến thể theo cặp tháng âm (nó cho Thìn, bản đối chiếu ghi Mùi) — chứ "
+            "không phải vì ai đã thẩm định biến thể này. LƯU Ý: luật này trùng hệt "
+            "luật Hoa Cái, nên hai sao luôn đồng cung; đó là chỗ người thẩm định cần "
+            "soi. Xem docs mục 32."
         ),
     ),
     RuleId.LUU_VAN_XUONG_VAN_KHUC: _nam_phai_rule(

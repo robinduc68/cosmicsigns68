@@ -94,7 +94,10 @@ _logger = logging.getLogger(__name__)
 # 0.4.0: gỡ chặn bốn sao (Giải Thần, Thiên Trù, Thiên Y, Lưu Hà) và thêm hai nhãn
 # Chủ Mệnh / Chủ Thân. Tập sao đi từ 88 lên 92, nên lần này vân tay tự đổi — nhưng
 # phiên bản vẫn phải nâng, vì nó nói *chủ ý*, còn vân tay chỉ nói *thực tế*.
-ENGINE_VERSION = "0.4.0-frame"
+#
+# 0.4.1: Giải Thần đổi sang biến thể tam hợp chi năm, và hàng Kỷ của bảng Thiên Trù
+# đổi theo lá số đối chiếu. Hai sao dịch chỗ, không sao nào khác đụng tới.
+ENGINE_VERSION = "0.4.1-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:
@@ -933,8 +936,8 @@ def _place_group_3_stars(
         (
             "GIAI_THAN",
             RuleId.GIAI_THAN,
-            group3.place_giai_than(lunar_month),
-            month_inputs,
+            group3.place_giai_than(year_branch),
+            year_inputs,
         ),
         (
             "DAU_QUAN",
