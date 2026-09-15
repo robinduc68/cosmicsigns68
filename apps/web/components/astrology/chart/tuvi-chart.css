@@ -45,6 +45,11 @@
   --chart-palace-title-size: 23px;
   --chart-major-star-size: 27px;
   --chart-minor-star-size: 19px;
+  /* Tứ Hóa có cỡ **tuyệt đối**, không phải cỡ tương đối theo sao mang nó. Lý do đo
+     được: khi nó là ``0.76em``, Hóa Lộc treo dưới một chính tinh ra 20.5px còn Hóa Kỵ
+     treo dưới một phụ tinh chỉ ra 14.4px — cùng một loại thông tin, chênh nhau 42%,
+     và cái nhỏ hơn gần như biến mất. Hóa là Hóa, bất kể ngôi sao nào mang nó. */
+  --chart-hoa-size: 18px;
   --chart-meta-size: 14.5px;
   --chart-center-title-size: 41px;
   --chart-center-field-size: 16.5px;
@@ -324,10 +329,15 @@
   font-weight: 500;
 }
 
-/* Âm/dương sits tight against the name and inherits the element colour, so the
-   whole label reads as one coloured unit. */
+/*
+ * Dấu âm/dương giữ nguyên màu ngũ hành của ngôi sao, nhưng **nhỏ hơn và tách ra một
+ * nhịp**: dán sát vào tên như trước thì "−Tên Sao" đọc như một cái tên có tiền tố, và
+ * trong một cung đang có sẵn vài lưu tinh mang tiền tố "L." thì mắt gộp nó vào nhóm ấy.
+ * Đó là chỗ một sao bản mệnh bị đọc nhầm thành lưu tinh.
+ */
 .tuvi-star__polarity {
-  margin-right: 0.5px;
+  margin-right: 1.5px;
+  font-size: 0.84em;
   font-weight: inherit;
 }
 
@@ -343,8 +353,17 @@
   font-weight: 600;
 }
 
+/*
+ * Lưu tinh: chữ nghiêng, **nhẹ hơn và nhỏ hơn một nhịp**.
+ *
+ * Trước đây chỉ có chữ nghiêng, và ở cỡ 19px giữa một cột phụ tinh thì nghiêng không
+ * đủ để phân biệt — một sao bản mệnh và bản lưu niên của chính nó nằm hai cung khác
+ * nhau mà vẫn bị đọc lẫn. Màu **không** đổi: ngũ hành vẫn là thứ duy nhất quyết định màu.
+ */
 .tuvi-star.is-annual {
+  font-size: 0.94em;
   font-style: italic;
+  font-weight: 400;
 }
 
 /* --------------------------------------------------------------- centre */
@@ -628,6 +647,7 @@
   --chart-palace-title-size: 19px;
   --chart-major-star-size: 20px;
   --chart-minor-star-size: 15.5px;
+  --chart-hoa-size: 14.5px;
   --chart-meta-size: 13px;
 }
 
@@ -802,7 +822,7 @@
   /* Nhỏ hơn chính tinh một bậc rõ ràng, nhưng vẫn là chữ thường có chân — nó là một
      dòng của lá số, không phải một nhãn dán lên ngôi sao. */
   font-family: var(--chart-serif);
-  font-size: 0.76em;
+  font-size: var(--chart-hoa-size);
   font-style: italic;
   font-weight: 500;
   letter-spacing: 0;

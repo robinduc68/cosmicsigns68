@@ -255,6 +255,26 @@ dung, nên dùng lại thang ấy chỉ làm chữ quá khổ. **Dữ liệu kh�
 
 ---
 
+## 9f. Hai chỗ dữ liệu **có mà không đọc được**
+
+Đợt soát cuối không tìm ra dữ liệu nào bị mất — 92 sao bản mệnh, 18 lưu tinh, 8 dòng
+Tứ Hóa đều có trong DOM. Nó tìm ra hai chỗ **trình bày** khiến dữ liệu đúng bị đọc sai.
+
+**Tứ Hóa từng hiện ở hai cỡ khác nhau.** Dòng hóa dùng cỡ tương đối `0.76em`, nên nó
+thừa hưởng cỡ của ngôi sao mang nó: treo dưới một chính tinh thì ra **20.5px**, treo
+dưới một phụ tinh thì chỉ **14.4px**. Cùng một loại thông tin, chênh 42%, và cái nhỏ
+hơn gần như biến mất — đủ để người đọc kết luận rằng nó không được tính. Nay dòng hóa
+có cỡ **tuyệt đối** (`--chart-hoa-size`): Hóa là Hóa, bất kể ngôi sao nào mang nó.
+
+**Lưu tinh chỉ khác sao bản mệnh ở chữ nghiêng.** Ở cỡ 19px giữa một cột phụ tinh,
+nghiêng không đủ. Cộng thêm dấu âm/dương dán sát tên, một sao bản mệnh mang dấu `−`
+đọc như một cái tên có tiền tố và bị gộp vào nhóm lưu tinh `L.` bên cạnh. Nay lưu tinh
+nhỏ và nhẹ hơn một nhịp, dấu âm/dương nhỏ hơn và tách ra một nhịp.
+
+**Màu không đổi ở cả hai chỗ** — ngũ hành vẫn là thứ duy nhất quyết định màu.
+
+---
+
 ## 10. Hạn chế đã biết
 
 - **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có
