@@ -23,6 +23,7 @@ from cosmic_astrology.stars.strength import StarStrengthTable
 
 __all__ = [
     "CANONICAL_REFERENCES",
+    "OBSERVED_STRENGTH_CELLS",
     "ReferenceChart",
     "StrengthMismatch",
     "validate_strength_table",
@@ -40,10 +41,14 @@ class ReferenceChart:
     note: str
     #: ``{mã sao: địa chi}`` — vị trí đọc trực tiếp từ lá số in.
     star_placements: Mapping[str, str]
-    #: ``{(mã sao, địa chi): độ sáng}``. Khoá là **cặp**, không phải riêng mã sao:
-    #: một ô của bảng là một cặp, và đánh khoá bằng mã sao sẽ ngầm nói "sao này độ
-    #: sáng thế" ở mọi địa chi — đúng cái suy rộng bị cấm.
+    #: ``{(mã sao, địa chi): độ sáng}`` cho **14 chính tinh**. Khoá là **cặp**, không
+    #: phải riêng mã sao: một ô của bảng là một cặp, và đánh khoá bằng mã sao sẽ ngầm
+    #: nói "sao này độ sáng thế" ở mọi địa chi — đúng cái suy rộng bị cấm.
     strength_cells: Mapping[tuple[str, str], StarStrength]
+    #: Như trên, nhưng cho sao **ngoài** 14 chính tinh. Để riêng vì bảng 14 × 12 là
+    #: một khái niệm có biên rõ ràng, và trộn phụ tinh vào sẽ làm mọi phép đếm phủ
+    #: sóng của bảng ấy vô nghĩa.
+    non_major_strength_cells: Mapping[tuple[str, str], StarStrength]
 
 
 @dataclass(frozen=True, slots=True)
@@ -63,31 +68,40 @@ class StrengthMismatch:
         )
 
 
+def _parse_cells(raw: object, chart_id: str, field: str) -> Mapping[tuple[str, str], StarStrength]:
+    valid_branches = set(CHI)
+    valid_states = {s.value for s in StarStrength}
+    cells: dict[tuple[str, str], StarStrength] = {}
+    for cell in raw if isinstance(raw, list) else []:
+        branch, state = cell["branch"], cell["strength"]
+        if branch not in valid_branches:
+            raise ValueError(f"{chart_id}/{field}: '{branch}' không phải địa chi")
+        if state not in valid_states:
+            raise ValueError(f"{chart_id}/{field}: '{state}' không phải độ sáng hợp lệ")
+        key = (cell["star_id"], branch)
+        if key in cells:
+            raise ValueError(f"{chart_id}/{field}: ghi hai lần ô {key}")
+        cells[key] = StarStrength(state)
+    return MappingProxyType(cells)
+
+
 def _load() -> tuple[ReferenceChart, ...]:
     raw = json.loads(_PATH.read_text(encoding="utf-8"))
     charts: list[ReferenceChart] = []
-    valid_branches = set(CHI)
-    valid_states = {s.value for s in StarStrength}
 
     for entry in raw["references"]:
-        cells: dict[tuple[str, str], StarStrength] = {}
-        for cell in entry.get("major_star_strength", []):
-            branch, state = cell["branch"], cell["strength"]
-            if branch not in valid_branches:
-                raise ValueError(f"{entry['id']}: '{branch}' không phải địa chi")
-            if state not in valid_states:
-                raise ValueError(f"{entry['id']}: '{state}' không phải độ sáng hợp lệ")
-            key = (cell["star_id"], branch)
-            if key in cells:
-                raise ValueError(f"{entry['id']}: ghi hai lần ô {key}")
-            cells[key] = StarStrength(state)
         charts.append(
             ReferenceChart(
                 id=entry["id"],
                 label=entry["label"],
                 note=entry.get("note", ""),
                 star_placements=MappingProxyType(dict(entry.get("star_placements", {}))),
-                strength_cells=MappingProxyType(cells),
+                strength_cells=_parse_cells(
+                    entry.get("major_star_strength"), entry["id"], "major_star_strength"
+                ),
+                non_major_strength_cells=_parse_cells(
+                    entry.get("non_major_star_strength"), entry["id"], "non_major_star_strength"
+                ),
             )
         )
     return tuple(charts)
@@ -121,3 +135,33 @@ def validate_strength_table(
             if actual is not expected:
                 mismatches.append(StrengthMismatch(star_id, branch, expected, actual))
     return tuple(mismatches)
+
+
+def _collect_observed() -> Mapping[tuple[str, str], StarStrength]:
+    """Mọi ô ``(sao, địa chi)`` đọc được, gộp từ tất cả lá số đối chiếu.
+
+    Gộp được vì **một ô độ sáng không phụ thuộc lá số**: "Tử Vi tại Dần là Miếu" đúng
+    ở mọi lá số có Tử Vi ở Dần. Đó là lý do những ô này dùng được như dữ liệu thật
+    chứ không chỉ như bài kiểm — chúng là *một phần bảng đã quan sát được*, không phải
+    một suy đoán.
+
+    Hai lá số đối chiếu ghi khác nhau ở cùng một ô là mâu thuẫn thật, và nó nổ ở đây
+    thay vì im lặng để một trong hai giá trị thắng.
+    """
+    merged: dict[tuple[str, str], StarStrength] = {}
+    for reference in CANONICAL_REFERENCES:
+        for cells in (reference.strength_cells, reference.non_major_strength_cells):
+            for key, value in cells.items():
+                existing = merged.get(key)
+                if existing is not None and existing is not value:
+                    raise ValueError(
+                        f"Hai lá số đối chiếu ghi khác nhau ở ô {key}: "
+                        f"{existing.value} và {value.value}"
+                    )
+                merged[key] = value
+    return MappingProxyType(merged)
+
+
+#: Những ô bảng độ sáng **đã quan sát được**. Không phải bảng — bảng đầy đủ có 168 ô
+#: cho riêng 14 chính tinh, và đây chỉ là những ô có người đọc ra từ một lá số in.
+OBSERVED_STRENGTH_CELLS: Mapping[tuple[str, str], StarStrength] = _collect_observed()

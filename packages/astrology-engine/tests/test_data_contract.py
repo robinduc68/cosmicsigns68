@@ -251,12 +251,28 @@ def test_null_survives_json_serialisation(payload: dict[str, Any]) -> None:
     assert '"None"' not in raw
 
 
-def test_strength_is_absent_and_says_so_honestly(payload: dict[str, Any]) -> None:
-    """Bảng miếu/vượng chưa cài, nên mọi độ sáng phải trống — cả hai nửa."""
+def test_strength_only_where_there_is_evidence(payload: dict[str, Any]) -> None:
+    """Độ sáng chỉ xuất hiện ở ô **đã đọc được từ lá số đối chiếu**, không chỗ nào khác.
+
+    Bài cũ khẳng định "mọi độ sáng phải trống". Khẳng định ấy đúng khi bảng rỗng và
+    không có nguồn nào khác — nay có 23 ô đọc được từ lá số đối chiếu, nên nó vừa sai
+    vừa **xanh một cách vô nghĩa**: lá số mẫu ở đây tình cờ không có sao nào rơi vào
+    ô nào trong 23 ô ấy. Một bài kiểm xanh vì không chạm tới thứ nó canh thì tệ hơn
+    một bài kiểm đỏ.
+
+    Bất biến thật: engine không được **bịa** độ sáng ở ô không có bằng chứng.
+    """
+    from cosmic_astrology.stars.reference import OBSERVED_STRENGTH_CELLS
+
     for palace in payload["palaces"]:
         for star in palace["stars"]:
-            assert star["strength"] is None
-            assert star["strength_verification"] is None
+            observed = OBSERVED_STRENGTH_CELLS.get((star["id"], palace["branch"]))
+            if observed is None:
+                assert star["strength"] is None, star["id"]
+                assert star["strength_verification"] is None, star["id"]
+            else:
+                assert star["strength"] == observed.value, star["id"]
+                assert star["strength_verification"] is not None, star["id"]
 
 
 def test_a_strength_without_its_verification_is_rejected() -> None:

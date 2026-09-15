@@ -44,20 +44,169 @@
         "AN_QUANG": "Mùi"
       },
       "major_star_strength": [
-        { "star_id": "TU_VI", "branch": "Dần", "strength": "MIEU" },
-        { "star_id": "THIEN_CO", "branch": "Sửu", "strength": "DAC" },
-        { "star_id": "THAI_DUONG", "branch": "Hợi", "strength": "HAM" },
-        { "star_id": "VU_KHUC", "branch": "Tuất", "strength": "MIEU" },
-        { "star_id": "THIEN_DONG", "branch": "Dậu", "strength": "HAM" },
-        { "star_id": "LIEM_TRINH", "branch": "Ngọ", "strength": "VUONG" },
-        { "star_id": "THIEN_PHU", "branch": "Dần", "strength": "MIEU" },
-        { "star_id": "THAI_AM", "branch": "Mão", "strength": "HAM" },
-        { "star_id": "THAM_LANG", "branch": "Thìn", "strength": "VUONG" },
-        { "star_id": "CU_MON", "branch": "Tỵ", "strength": "HAM" },
-        { "star_id": "THIEN_TUONG", "branch": "Ngọ", "strength": "VUONG" },
-        { "star_id": "THIEN_LUONG", "branch": "Mùi", "strength": "DAC" },
-        { "star_id": "THAT_SAT", "branch": "Thân", "strength": "MIEU" },
-        { "star_id": "PHA_QUAN", "branch": "Tý", "strength": "MIEU" }
+        {
+          "star_id": "TU_VI",
+          "branch": "Dần",
+          "strength": "MIEU"
+        },
+        {
+          "star_id": "THIEN_CO",
+          "branch": "Sửu",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "THAI_DUONG",
+          "branch": "Hợi",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "VU_KHUC",
+          "branch": "Tuất",
+          "strength": "MIEU"
+        },
+        {
+          "star_id": "THIEN_DONG",
+          "branch": "Dậu",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "LIEM_TRINH",
+          "branch": "Ngọ",
+          "strength": "VUONG"
+        },
+        {
+          "star_id": "THIEN_PHU",
+          "branch": "Dần",
+          "strength": "MIEU"
+        },
+        {
+          "star_id": "THAI_AM",
+          "branch": "Mão",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "THAM_LANG",
+          "branch": "Thìn",
+          "strength": "VUONG"
+        },
+        {
+          "star_id": "CU_MON",
+          "branch": "Tỵ",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "THIEN_TUONG",
+          "branch": "Ngọ",
+          "strength": "VUONG"
+        },
+        {
+          "star_id": "THIEN_LUONG",
+          "branch": "Mùi",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "THAT_SAT",
+          "branch": "Thân",
+          "strength": "MIEU"
+        },
+        {
+          "star_id": "PHA_QUAN",
+          "branch": "Tý",
+          "strength": "MIEU"
+        }
+      ],
+      "_README_non_major": [
+        "Độ sáng của sao NGOÀI 14 chính tinh, đọc từ cùng lá số đối chiếu.",
+        "ĐÁNG NGỜ: cả chín sao dưới đây đều ghi DAC, ở bốn địa chi khác nhau. Có thể đó",
+        "là giá trị thật, cũng có thể bản in chỉ gán (Đ) chung cho phụ tinh thay vì tra",
+        "từng ô. Ghi lại vì đọc được, và ghi cả nghi ngờ này vì nó đổi cách dùng dữ liệu."
+      ],
+      "non_major_star_strength": [
+        {
+          "star_id": "VAN_XUONG",
+          "branch": "Thìn",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "VAN_KHUC",
+          "branch": "Tuất",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "LINH_TINH",
+          "branch": "Thìn",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "HOA_TINH",
+          "branch": "Mão",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "TIEU_HAO",
+          "branch": "Mão",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "DAI_HAO",
+          "branch": "Dậu",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "THIEN_KHOC",
+          "branch": "Mão",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "THIEN_HU",
+          "branch": "Dậu",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "THIEN_DIEU",
+          "branch": "Dậu",
+          "strength": "DAC"
+        }
+      ],
+      "_README_transformation": [
+        "Độ sáng của TỨ HÓA — một bảng KHÁC bảng độ sáng của sao, và cố ý để riêng.",
+        "Hóa là trạng thái của ngôi sao mang nó, nên ô ở đây là (hóa, địa chi của sao",
+        "mang hóa). Trộn chúng vào cùng danh sách với độ sáng sao sẽ làm bảng 14x12 bị",
+        "nhiễm những khoá không thuộc về nó."
+      ],
+      "transformation_strength": [
+        {
+          "transformation": "HOA_QUYEN",
+          "carrier_star_id": "THAM_LANG",
+          "branch": "Thìn",
+          "strength": "BINH"
+        },
+        {
+          "transformation": "HOA_KHOA",
+          "carrier_star_id": "THIEN_LUONG",
+          "branch": "Mùi",
+          "strength": "VUONG"
+        },
+        {
+          "transformation": "HOA_LOC",
+          "carrier_star_id": "VU_KHUC",
+          "branch": "Tuất",
+          "strength": "VUONG"
+        },
+        {
+          "transformation": "HOA_KY",
+          "carrier_star_id": "VAN_KHUC",
+          "branch": "Tuất",
+          "strength": "DAC"
+        }
+      ],
+      "unmatched_observations": [
+        {
+          "label": "LN.Văn Tinh",
+          "branch": "Dậu",
+          "palace": "NO_BOC",
+          "note": "Bản đối chiếu ghi một lưu tinh tên 'Văn Tinh' tại Dậu. Engine không có sao nào tên ấy, và hai lưu tinh văn của engine nằm chỗ khác (L.Văn Xương tại Thân, L.Văn Khúc tại Ngọ). HAI CÁCH ĐỌC: (a) đây là một sao engine chưa cài, luật chưa biết; (b) 'Văn Tinh' chính là Lưu Văn Xương và offset của engine sai — engine dùng Lộc Tồn + 3, còn Lộc Tồn + 4 sẽ ra Dậu. Một điểm dữ liệu KHÔNG phân biệt được hai khả năng, nên chưa sửa gì."
+        }
       ]
     }
   ]

@@ -296,8 +296,12 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   một ấn bản. Toàn bộ đường ống hiển thị `(M)(V)(Đ)(B)(H)` đã xong và có test; thứ
   thiếu duy nhất là dữ liệu. Điền vào
   `cosmic_astrology/stars/data/nam_phai_star_strength_v1.json`. **14 ô đã có bằng
-  chứng** từ lá số đối chiếu, và `validate_strength_table()` sẽ bác bỏ bảng nào chép
-  lệch 14 ô ấy — nhưng 154 ô còn lại vẫn không ai biết, và **không được suy ra**.
+  chứng** từ lá số đối chiếu (23 ô kể cả phụ tinh), engine **đọc thẳng 23 ô ấy** nên
+  lá số hiện được độ sáng ở đúng chỗ đó, và `validate_strength_table()` bác bỏ bảng
+  nào chép lệch — nhưng 154 ô còn lại vẫn không ai biết, và **không được suy ra**.
+- **Cảnh báo lá số cũ từng kể chuyện sai**: banner "engine cũ" hardcode lời giải thích
+  về lỗi 0.1.0 và hiện nó cho *mọi* lá số cũ. Nay chỉ hiện với lá số 0.1.x. Một cảnh
+  báo sai chỗ hại hơn không cảnh báo.
 - **Hai phân kỳ trường phái đang chọn theo cách đọc đa số**, cả hai cách đều ghi trong
   policy: Thổ cục khởi Tràng Sinh ở Thân hay Dần; chiều vòng Tràng Sinh theo âm dương
   nam nữ hay theo âm dương Cục. Xem `docs/astrology-conventions.md` mục 24.

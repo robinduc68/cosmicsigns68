@@ -56,6 +56,7 @@ from cosmic_astrology.conventions.policies import (
     MajorCycleStartAgePolicy,
     RuleId,
     TimezonePolicy,
+    VerificationStatus,
 )
 from cosmic_astrology.conventions.profile import (
     ConventionProfile,
@@ -63,7 +64,7 @@ from cosmic_astrology.conventions.profile import (
     validate_convention_profile,
 )
 from cosmic_astrology.cycles import major_cycle, trang_sinh
-from cosmic_astrology.stars import four_transformations, placement, strength
+from cosmic_astrology.stars import four_transformations, placement, reference, strength
 from cosmic_astrology.stars import placement_group2 as group2
 from cosmic_astrology.stars import placement_group3 as group3
 from cosmic_astrology.stars import placement_malefic as malefic
@@ -97,7 +98,10 @@ _logger = logging.getLogger(__name__)
 #
 # 0.4.1: Giải Thần đổi sang biến thể tam hợp chi năm, và hàng Kỷ của bảng Thiên Trù
 # đổi theo lá số đối chiếu. Hai sao dịch chỗ, không sao nào khác đụng tới.
-ENGINE_VERSION = "0.4.1-frame"
+#
+# 0.4.2: độ sáng nay đọc từ 23 ô đã quan sát được trên lá số đối chiếu, chỗ nào bảng
+# trường phái chưa có. Không sao nào dịch chỗ — chỉ thêm metadata.
+ENGINE_VERSION = "0.4.2-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:
@@ -1044,25 +1048,30 @@ def _apply_star_strength(by_branch: dict[int, Palace], *, profile: ConventionPro
     Metadata only — no star moves. Strength is a property of *where a star already
     is*, so this runs last and reads positions rather than deciding them.
 
-    The table ships empty, so today every lookup returns ``None`` and every star
-    keeps ``strength=None``. That is the designed state: a wrong strength table
-    still looks plausible to a non-expert, which is exactly why it is left blank
-    until a reviewer copies one from a chosen edition.
+    **Hai nguồn, theo thứ tự.** Bảng của trường phái đi trước; chỗ nào bảng chưa có
+    thì đọc **ô đã quan sát được từ lá số đối chiếu**. Nguồn thứ hai dùng được vì một
+    ô độ sáng không phụ thuộc lá số: "Tử Vi tại Dần là Miếu" đúng ở mọi lá số có Tử Vi
+    ở Dần. Đây là *một phần bảng đã đọc ra*, không phải suy đoán.
+
+    Bảng của trường phái hiện vẫn rỗng, và đó vẫn là trạng thái đúng: một bảng sai
+    trông vẫn hợp lý với người không chuyên. Khác biệt là nay có 23 ô có bằng chứng,
+    nên lá số hiện được độ sáng ở đúng những ô ấy thay vì không hiện gì.
     """
     binding = profile.binding(RuleId.STAR_STRENGTH)
     if binding.is_unresolved:
         return
     table = strength.NAM_PHAI_STAR_STRENGTH_V1
-    if table.is_empty:
-        return
 
     for palace in by_branch.values():
         for index, star in enumerate(palace.stars):
             value = table.strength_for(star.id, palace.branch)
+            source = binding.verification
+            if value is None:
+                value = reference.OBSERVED_STRENGTH_CELLS.get((star.id, palace.branch))
+                # Ô đọc từ lá số in: có bằng chứng, nhưng chưa ai thẩm định lá số ấy.
+                source = VerificationStatus.PROVISIONAL
             if value is not None:
-                palace.stars[index] = replace(
-                    star, strength=value, strength_verification=binding.verification
-                )
+                palace.stars[index] = replace(star, strength=value, strength_verification=source)
 
 
 def _attach_cycles(

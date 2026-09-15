@@ -550,6 +550,12 @@ hiện coi **hai cung như nhau** (`has_triet: bool`).
 
 **Cơ chế đã cài. Bảng vẫn RỖNG. Hai việc khác nhau.**
 
+> **Cập nhật 2026-09-15 (lần 2).** Engine nay **đọc 23 ô đã quan sát được** khi bảng
+> trường phái chưa có ô đó, nên lá số đối chiếu hiện đủ `(M)(V)(Đ)(B)(H)` ở đúng 23
+> chỗ ấy. Đây **không phải** bảng: một ô độ sáng không phụ thuộc lá số, nên ô đã đọc
+> ra dùng được như dữ liệu thật — nhưng 168 ô của riêng 14 chính tinh thì vẫn còn
+> thiếu 154.
+>
 > **Cập nhật 2026-09-15.** Đã soát lại theo yêu cầu đối chiếu: hậu tố hiển thị đúng
 > dạng `(M) (V) (Đ) (B) (H)` mà bản đối chiếu dùng, và đường ống engine → API →
 > ViewModel → DOM có test phủ. Thứ thiếu **duy nhất** là 168 ô dữ liệu. Không điền
@@ -1354,6 +1360,53 @@ mười bốn **cặp (sao, địa chi)** có mặt trong lá số này. Biết 
 
 Khoá trong code là **cặp** `(mã sao, địa chi)`, cố ý không phải mã sao — đánh khoá
 bằng mã sao sẽ ngầm nói "sao này độ sáng thế" ở mọi địa chi, đúng cái suy rộng bị cấm.
+
+### 33.1b Độ sáng sao ngoài chính tinh
+
+| Sao | Địa chi | Độ sáng | | Sao | Địa chi | Độ sáng |
+|---|---|---|---|---|---|---|
+| Văn Xương | Thìn | DAC | | Đại Hao | Dậu | DAC |
+| Văn Khúc | Tuất | DAC | | Thiên Khốc | Mão | DAC |
+| Linh Tinh | Thìn | DAC | | Thiên Hư | Dậu | DAC |
+| Hỏa Tinh | Mão | DAC | | Thiên Diêu | Dậu | DAC |
+| Tiểu Hao | Mão | DAC | | | | |
+
+**Đáng ngờ, ghi ra để không ai bỏ qua:** cả chín sao đều là `DAC`, ở bốn địa chi khác
+nhau. Có thể đó là giá trị thật; cũng có thể bản in chỉ gán `(Đ)` chung cho phụ tinh
+thay vì tra từng ô. Hai khả năng ấy dẫn tới hai cách dùng dữ liệu rất khác nhau, nên
+nghi ngờ này đi kèm dữ liệu chứ không nằm trong đầu ai.
+
+Để riêng khỏi 14 chính tinh: bảng 14 × 12 là một khái niệm có biên rõ ràng, và trộn
+phụ tinh vào sẽ làm mọi phép đếm phủ sóng của bảng ấy vô nghĩa.
+
+### 33.1c Độ sáng Tứ Hóa
+
+| Hóa | Trên sao | Địa chi | Độ sáng |
+|---|---|---|---|
+| Hóa Quyền | Tham Lang | Thìn | BINH |
+| Hóa Khoa | Thiên Lương | Mùi | VUONG |
+| Hóa Lộc | Vũ Khúc | Tuất | VUONG |
+| Hóa Kỵ | Văn Khúc | Tuất | DAC |
+
+Một **bảng khác**, cố ý để riêng: hóa là trạng thái của ngôi sao mang nó, nên ô ở đây
+là *(hóa, địa chi của sao mang hóa)*. Trộn vào cùng danh sách với độ sáng sao sẽ làm
+bảng 14 × 12 bị nhiễm những khoá không thuộc về nó. **Chưa nối vào renderer** — cần
+quyết định trước: dòng hóa hiện độ sáng của hóa, hay của sao mang nó.
+
+### 33.1d Quan sát chưa khớp: `LN.Văn Tinh`
+
+Bản đối chiếu ghi một lưu tinh tên **Văn Tinh** tại **Dậu / Nô Bộc**. Engine không có
+sao nào tên ấy, và hai lưu tinh văn của engine nằm chỗ khác: L.Văn Xương tại Thân,
+L.Văn Khúc tại Ngọ.
+
+Hai cách đọc, và **một điểm dữ liệu không phân biệt được**:
+
+- (a) Đây là một sao engine chưa cài, luật chưa biết.
+- (b) "Văn Tinh" chính là Lưu Văn Xương, và offset của engine lệch một cung — engine
+  dùng `Lộc Tồn + 3`; `Lộc Tồn + 4` sẽ ra Dậu.
+
+Chưa sửa gì. Đổi offset để khớp một lá số là cách biến một trùng hợp thành một luật.
+Quan sát nằm trong `unmatched_observations` của file bằng chứng.
 
 ### 33.2 Cái chốt
 

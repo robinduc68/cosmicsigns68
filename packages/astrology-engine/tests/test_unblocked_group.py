@@ -165,3 +165,38 @@ def test_bang_do_sang_sai_bi_bac_bo_boi_la_so_doi_chieu() -> None:
     assert mismatches[0].star_id == "TU_VI"
     assert mismatches[0].branch == "Dần"
     assert mismatches[0].expected is StarStrength.MIEU
+
+
+def test_la_so_doi_chieu_hien_dung_do_sang_da_quan_sat() -> None:
+    """Lá số đối chiếu phải nhận đủ độ sáng của những ô đã đọc ra từ chính nó.
+
+    Bài ở ``test_data_contract`` canh chiều ngược lại — không bịa ở ô không có bằng
+    chứng — nhưng lá số mẫu ở đó không chạm vào ô nào trong 23 ô này, nên nhánh "có
+    bằng chứng" không được chạy ở đâu cả. Chạy nó ở đây.
+    """
+    from cosmic_astrology import BirthInput, build_chart
+    from cosmic_astrology.chart.types import CalendarType, EngineStage, Gender
+    from cosmic_astrology.stars.reference import OBSERVED_STRENGTH_CELLS
+
+    chart = build_chart(
+        BirthInput(
+            name="Đối chiếu",
+            gender=Gender.MALE,
+            calendar_type=CalendarType.SOLAR,
+            day=13,
+            month=10,
+            year=1999,
+            hour=12,
+            minute=30,
+            timezone_id="Asia/Ho_Chi_Minh",
+        ),
+        stage=EngineStage.PREVIEW,
+    )
+    seen = {
+        (star.id, palace.branch): star.strength
+        for palace in chart.palaces
+        for star in palace.stars
+        if star.strength is not None
+    }
+    assert len(seen) == len(OBSERVED_STRENGTH_CELLS)
+    assert seen == dict(OBSERVED_STRENGTH_CELLS)

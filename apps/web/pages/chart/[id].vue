@@ -36,6 +36,17 @@ if (error.value) {
 const payload = computed(() => chart.value?.chart)
 
 /**
+ * Lá số này có lập bằng engine 0.1.x không.
+ *
+ * Chỉ dòng giải thích về lỗi tên 12 cung mới cần biết điều này — lỗi ấy chỉ có ở
+ * 0.1.x. Trước đây dòng ấy hiện cho **mọi** lá số cũ, nên một lá số 0.4.0 bị kể một
+ * câu chuyện về lỗi mà nó không mắc.
+ */
+const storedEngineIsOldest = computed(() =>
+  (payload.value?.identity?.engine_version ?? '').startsWith('0.1.'),
+)
+
+/**
  * Năm xem. `null` nghĩa là chỉ hiển thị lá số gốc.
  *
  * Đổi năm chỉ nạp lại **khối lưu niên** — lá số gốc không được tải lại, không được
@@ -171,11 +182,18 @@ async function remove() {
       <p class="text-small font-medium text-[var(--text)]">
         Lá số này lập bằng phiên bản engine cũ
       </p>
+      <p class="mt-1.5 text-caption text-[var(--text-muted)]">{{ chart.recalculation.reason }}</p>
+      <!-- Chi tiết này CHỈ đúng với lá số lập bằng engine 0.1.x. Trước đây nó hiện cho
+           mọi lá số cũ, nên một lá số 0.4.0 bị kể một câu chuyện về lỗi mà nó không
+           mắc. Một cảnh báo sai chỗ còn hại hơn không cảnh báo. -->
+      <p v-if="storedEngineIsOldest" class="mt-1.5 text-caption text-[var(--text-muted)]">
+        Cụ thể, engine 0.1.0 gắn <strong>tên 12 cung</strong> theo chiều ngược, nên các cặp
+        như Phu Thê ↔ Phúc Đức, Tài Bạch ↔ Quan Lộc bị đổi chỗ cho nhau (Mệnh và Thiên Di
+        vẫn đúng). Vị trí sao theo địa chi thì không sai.
+      </p>
       <p class="mt-1.5 text-caption text-[var(--text-muted)]">
-        {{ chart.recalculation.reason }} Cụ thể, engine 0.1.0 gắn <strong>tên 12 cung</strong>
-        theo chiều ngược, nên các cặp như Phu Thê ↔ Phúc Đức, Tài Bạch ↔ Quan Lộc bị đổi
-        chỗ cho nhau (Mệnh và Thiên Di vẫn đúng). Vị trí sao theo địa chi thì không sai.
-        Mình không tự sửa lá số đã lưu — bạn lập lại để có bản đúng nhé.
+        Mình không tự sửa lá số đã lưu — bản bạn đang xem vẫn đúng như lúc lập. Lập lại để
+        có bản theo engine hiện hành.
       </p>
       <CsButton to="/lap-la-so" size="sm" class="mt-4">Lập lại lá số</CsButton>
     </CsCard>
@@ -183,10 +201,12 @@ async function remove() {
     <CsCard v-if="payload.engine.stage !== 'FULL'" class="mt-6">
       <p class="text-small font-medium text-[var(--text)]">Lá số này chưa đầy đủ</p>
       <p class="mt-1.5 text-caption text-[var(--text-muted)]">
-        Khung lá số — 12 cung, Mệnh, Thân, Cục, Tuần, Triệt — đã tính xong và ổn định. Vị trí 14
-        chính tinh (đánh dấu <span class="text-[var(--text-subtle)]">*</span>) chưa được kiểm định
-        bằng bộ ca chuẩn, còn phụ tinh, tứ hoá, đại vận và lưu niên thì chưa làm. Mình hiển thị
-        đúng những gì engine tính được, không suy đoán thêm.
+        Khung lá số — 12 cung, Mệnh, Thân, Cục, Tuần, Triệt — đã tính xong và ổn định. Phụ tinh,
+        Tứ Hóa, đại vận, Tràng Sinh và lưu niên đều đã có, nhưng <strong>chưa được kiểm định
+        bằng bộ ca chuẩn</strong>: chúng đối chiếu đúng với một lá số mẫu, và một lá số thì
+        chưa đủ để kết luận. Độ sáng miếu/vượng chỉ hiện ở những ô đọc được từ lá số mẫu ấy;
+        chỗ nào chưa có thì bỏ trống. Mình hiển thị đúng những gì engine tính được, không
+        suy đoán thêm.
       </p>
     </CsCard>
 
