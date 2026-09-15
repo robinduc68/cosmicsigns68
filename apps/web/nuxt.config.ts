@@ -24,8 +24,9 @@ export default defineNuxtConfig({
       // 700 is for major stars on the Tử Vi chart, where hierarchy has to survive print.
       { name: 'Be Vietnam Pro', provider: 'google', weights: [400, 500, 600, 700] },
       { name: 'Manrope', provider: 'google', weights: [500, 600, 700] },
-      // Editorial accent for the chart title only; full Vietnamese coverage.
-      { name: 'Noto Serif', provider: 'google', weights: [600, 700] },
+      // Lá số Tử Vi được set bằng serif: tên cung, chính tinh và khối giữa. Một lá
+      // số in truyền thống là chữ có chân, và hệ chữ này phủ đủ dấu tiếng Việt.
+      { name: 'Noto Serif', provider: 'google', weights: [400, 500, 600, 700] },
     ],
   },
 

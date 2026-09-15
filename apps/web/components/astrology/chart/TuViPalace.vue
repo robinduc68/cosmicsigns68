@@ -17,12 +17,48 @@ const props = withDefaults(
   { inlineVoids: () => [], inspect: false },
 )
 
-const hasFooter = computed(
-  () => !!(props.palace.majorCycleRef || props.palace.lifeStage || props.palace.annualRef),
-)
-
 /** The đại vận number behind the "ĐV n" label, for the tooltip wording. */
 const cycleNumber = computed(() => props.palace.cycles?.major_cycle_index ?? null)
+
+/**
+ * Ô footer — chỉ những giá trị engine thật sự cấp.
+ *
+ * Mỗi ô mang ``title`` riêng vì "ĐV 1" và "Dưỡng" đọc lên một mình thì vô nghĩa.
+ */
+const footerCells = computed(() => {
+  const cells: { key: string; text: string; title: string }[] = []
+  if (props.palace.majorCycleRef) {
+    cells.push({
+      key: 'dv',
+      text: props.palace.majorCycleRef,
+      title: `Đại vận thứ ${cycleNumber.value}${
+        props.palace.majorCycleAge ? ` — ${props.palace.majorCycleAge} tuổi` : ''
+      }`,
+    })
+  }
+  if (props.palace.lifeStage) {
+    cells.push({
+      key: 'ts',
+      text: props.palace.lifeStage,
+      title: `Vòng Tràng Sinh: ${props.palace.lifeStage}`,
+    })
+  }
+  if (props.palace.monthNumber !== null) {
+    cells.push({
+      key: 'thang',
+      text: `Tháng ${props.palace.monthNumber}`,
+      title: `Nguyệt lệnh: tháng ${props.palace.monthNumber}`,
+    })
+  }
+  if (props.palace.annualRef) {
+    cells.push({
+      key: 'ln',
+      text: props.palace.annualRef,
+      title: `Lưu niên: ${props.palace.annualRef}`,
+    })
+  }
+  return cells
+})
 
 const root = ref<HTMLElement | null>(null)
 const overflowing = ref(false)
@@ -115,7 +151,6 @@ onMounted(async () => {
         >
           {{ palace.napAm }}
         </span>
-        <span v-if="palace.monthNumber !== null">Th.{{ palace.monthNumber }}</span>
       </div>
       <div v-if="inlineVoids.length" class="tuvi-palace__voids">
         <span v-for="label in inlineVoids" :key="label" class="tuvi-void" role="note">
@@ -149,19 +184,16 @@ onMounted(async () => {
       </li>
     </ul>
 
-    <!-- Three fixed grid slots so the middle label stays centred; an empty slot is a
-         spacer, not a missing value. Each carries its own title because "ĐV 1" and
-         "Dưỡng" are meaningless read out on their own. -->
-    <footer v-if="hasFooter" class="tuvi-palace__footer">
-      <span :title="palace.majorCycleRef ? `Đại vận thứ ${cycleNumber}` : undefined">{{
-        palace.majorCycleRef ?? ''
-      }}</span>
-      <span :title="palace.lifeStage ? `Vòng Tràng Sinh: ${palace.lifeStage}` : undefined">{{
-        palace.lifeStage ?? ''
-      }}</span>
-      <span :title="palace.annualRef ? `Lưu niên: ${palace.annualRef}` : undefined">{{
-        palace.annualRef ?? ''
-      }}</span>
+    <!--
+      Footer: mỗi ô là **một giá trị engine thật sự cấp**. Ô nào không có dữ liệu thì
+      không được dựng ra — một ô trống đọc như dữ liệu bị mất, còn chỗ dành sẵn thì
+      đẩy hai ô kia lệch khỏi trục.
+
+      ``Tháng n`` đã có chỗ ở đây. Engine chưa cấp ``month_number`` nên nó không hiện;
+      khi nào cấp thì dòng này tự có, không phải dựng lại bố cục.
+    -->
+    <footer v-if="footerCells.length" class="tuvi-palace__footer">
+      <span v-for="cell in footerCells" :key="cell.key" :title="cell.title">{{ cell.text }}</span>
     </footer>
   </section>
 </template>

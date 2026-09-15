@@ -219,6 +219,42 @@ không đỏ — màu trên lá số này chỉ có một nghĩa.
 
 ---
 
+## 9d. Mật độ: đo rồi mới chỉnh
+
+Lá số từng trông thưa, và lý do đo được chứ không phải cảm tính:
+
+| | Trước | Sau |
+|---|---|---|
+| Chiều cao một cung | 396px | 402px |
+| Nội dung dùng | 157–244px | 176–275px |
+| Tỉ lệ lấp | **44–68%** | **47–73%** |
+| Khoảng trống chết | **91–178px** | **42–92px** |
+
+Hai thay đổi, theo thứ tự quan trọng:
+
+1. **Chỗ thừa được chia đôi.** Trước đây chỉ footer có `margin-top: auto`, nên toàn bộ
+   phần thừa gom thành một khoảng trống nằm giữa ngôi sao cuối và footer — trên cả 12
+   cung. Nay `header` có `margin-bottom: auto` đối lại, flexbox chia đều, và khối sao
+   nằm giữa thay vì treo lơ lửng ở trên. Không thêm thẻ bọc nào.
+2. **Thang chữ lớn hơn một bậc** — chính tinh 21→27px, phụ tinh 15→19px. Cung đông
+   nhất đo được là 12 sao (6 hàng phụ tinh); thang này chừa chỗ tới 8 hàng.
+
+Legend cũng gọn từ 132px xuống 106px, và mỗi pixel trả về là một pixel lưới.
+
+---
+
+## 9e. Chữ có chân
+
+Tên cung, chính tinh, dòng Tứ Hóa và khối giữa dùng **Noto Serif**; phụ tinh và
+metadata giữ **Be Vietnam Pro**. Hai tầng có chủ ý: chữ có chân cho thứ cần ra dáng
+bản in, chữ không chân cho thứ xếp hai cột và cần đọc nhanh ở cỡ nhỏ.
+
+Chế độ đọc trên màn hẹp có **thang chữ riêng** (chính tinh 20px, phụ tinh 15.5px).
+Thang lớn kia được chọn để lấp một ô cao 402px; thẻ trên điện thoại cao theo nội
+dung, nên dùng lại thang ấy chỉ làm chữ quá khổ. **Dữ liệu không đổi giữa hai chế độ.**
+
+---
+
 ## 10. Hạn chế đã biết
 
 - **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có

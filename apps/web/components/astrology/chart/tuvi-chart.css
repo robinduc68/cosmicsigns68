@@ -31,12 +31,27 @@
   --chart-line-trine: rgb(88 70 138 / 0.34);
   --chart-line-opposite: rgb(166 34 25 / 0.32);
 
-  --chart-palace-title-size: 19px;
-  --chart-major-star-size: 21px;
-  --chart-minor-star-size: 15px;
-  --chart-meta-size: 13.5px;
-  --chart-center-title-size: 44px;
-  --chart-center-field-size: 17px;
+  /*
+   * Thang cỡ chữ của lá số, tính bằng **pixel canvas** (1400 × 1750).
+   *
+   * Những trị này lớn hơn bản trước một bậc, và đó là kết quả của phép đo chứ không
+   * phải khẩu vị: mỗi cung cao 396px, dùng được 358px, mà nội dung chỉ chiếm 157–244px
+   * — tức 44–68%. Phần trống ấy nằm dồn thành một khoảng 91–178px giữa sao cuối và
+   * footer, và đó chính là thứ làm lá số trông thưa.
+   *
+   * Cung đông nhất đo được là 12 sao (1 chính tinh + 11 phụ tinh → 6 hàng). Thang này
+   * chừa chỗ tới 8 hàng phụ tinh, nên còn dư cho cả lưu tinh của năm xem.
+   */
+  --chart-palace-title-size: 23px;
+  --chart-major-star-size: 27px;
+  --chart-minor-star-size: 19px;
+  --chart-meta-size: 14.5px;
+  --chart-center-title-size: 41px;
+  --chart-center-field-size: 16.5px;
+
+  /* Chữ có chân cho tên cung, chính tinh và khối giữa — một lá số in là chữ có chân.
+     Phụ tinh giữ chữ không chân: ở cỡ 17.5px và xếp hai cột, nó dễ đọc hơn. */
+  --chart-serif: 'Noto Serif', Georgia, 'Times New Roman', serif;
 
   color: var(--chart-text);
   color-scheme: light;
@@ -89,8 +104,8 @@
      palace is estimated to exceed its capacity, so clipping is never silent. */
   overflow: hidden;
   /* Top and bottom padding leave room for Tuần/Triệt labels straddling a border. */
-  padding: 22px 14px 16px;
-  line-height: 1.3;
+  padding: 16px 13px 11px;
+  line-height: 1.26;
   background: var(--chart-cell);
 }
 
@@ -104,6 +119,20 @@
   grid-template-columns: minmax(3.2em, auto) 1fr minmax(2em, auto);
   column-gap: 8px;
   align-items: baseline;
+}
+
+/*
+ * Chỗ thừa của một cung được **chia đôi**, không dồn xuống đáy.
+ *
+ * Trước đây chỉ footer có ``margin-top: auto``, nên toàn bộ chỗ thừa gom thành một
+ * khoảng 100–190px nằm giữa ngôi sao cuối và footer — đo được trên cả 12 cung, và đó
+ * chính là thứ làm lá số trông thưa dù chữ đã lớn.
+ *
+ * Hai ``auto`` đối nhau thì flexbox chia đều phần thừa cho cả hai: khối sao nằm giữa
+ * tiêu đề và footer thay vì treo lơ lửng ở trên. Không cần thêm thẻ bọc nào.
+ */
+.tuvi-palace > header {
+  margin-bottom: auto;
 }
 
 /*
@@ -135,9 +164,10 @@
 }
 
 .tuvi-palace__name {
+  font-family: var(--chart-serif);
   font-size: var(--chart-palace-title-size);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.16;
   letter-spacing: 0.05em;
   text-align: center;
   text-transform: uppercase;
@@ -157,9 +187,9 @@
 
 .tuvi-palace__sub {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 8px;
-  margin-top: 3px;
+  margin-top: 1px;
   font-size: var(--chart-meta-size);
   color: var(--chart-subtle);
 }
@@ -181,14 +211,14 @@
 }
 
 .tuvi-palace__majors {
-  margin: 12px 0 0;
+  margin: 9px 0 0;
   padding: 0;
   list-style: none;
   text-align: center;
 }
 
 .tuvi-palace__majors > li + li {
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 /*
@@ -198,12 +228,12 @@
  */
 .tuvi-palace__majors > li {
   font-size: var(--chart-major-star-size);
-  line-height: 1.32;
+  line-height: 1.2;
 }
 
 .tuvi-palace__minors > li {
   font-size: var(--chart-minor-star-size);
-  line-height: 1.32;
+  line-height: 1.24;
 }
 
 .tuvi-palace__empty {
@@ -217,19 +247,27 @@
 .tuvi-palace__minors {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 10px;
+  column-gap: 12px;
   row-gap: 1px;
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   padding: 0;
   list-style: none;
 }
 
+/*
+ * Footer: mỗi ô là một giá trị engine cấp, xếp theo cột tự động.
+ *
+ * ``grid-auto-flow: column`` thay cho ba cột cứng, để khi engine có ``month_number``
+ * thì thêm một ô nữa là xong — không phải dựng lại bố cục. Ô nào không có dữ liệu thì
+ * **không được dựng ra**, chứ không phải dựng ra rồi để trống.
+ */
 .tuvi-palace__footer {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 6px;
   margin-top: auto;
-  padding-top: 6px;
+  padding-top: 5px;
   border-top: 1px solid var(--chart-border-soft);
   font-size: var(--chart-meta-size);
   color: var(--chart-muted);
@@ -242,7 +280,7 @@
 /* ------------------------------------------------------------------ star */
 
 .tuvi-star {
-  line-height: 1.32;
+  line-height: 1.24;
   overflow-wrap: anywhere;
 }
 
@@ -274,9 +312,10 @@
 }
 
 .tuvi-star--major {
+  font-family: var(--chart-serif);
   font-size: var(--chart-major-star-size);
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   text-transform: uppercase;
 }
 
@@ -334,78 +373,127 @@
   display: grid;
   place-items: center;
   color: var(--chart-ink);
-  opacity: 0.055;
+  /* Đủ thấy là một con dấu, không đủ để tranh chữ. */
+  opacity: 0.045;
   pointer-events: none;
 }
 
 .tuvi-center__content {
   position: relative;
   z-index: 1;
-  width: 84%;
+  /* Hẹp lại để cột giá trị không kéo dài ra: khi cột rộng quá, phần phụ của một
+     trường (ví dụ "cư Mệnh") trôi sang tận lề phải và đọc như một mẩu rời. */
+  width: 76%;
+  max-width: 560px;
 }
 
 .tuvi-center__brand {
   margin: 0;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.38em;
+  /* Chữ hoa có letter-spacing luôn lệch phải một nhịp; kéo lại để nó cân thật. */
+  text-indent: 0.38em;
   text-align: center;
   text-transform: uppercase;
   color: var(--chart-accent);
 }
 
 .tuvi-center__title {
-  margin: 8px 0 26px;
-  font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  margin: 3px 0 14px;
+  font-family: var(--chart-serif);
   font-size: var(--chart-center-title-size);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: 0.01em;
   text-align: center;
   color: var(--chart-ink);
 }
 
 .tuvi-center__rule {
-  width: 64px;
-  height: 2px;
-  margin: -14px auto 22px;
+  width: 78px;
+  height: 1.5px;
+  margin: -9px auto 13px;
   background: var(--chart-accent);
 }
 
+/*
+ * Khối thông tin kiểu bản in: cột nhãn hẹp, cột giá trị rộng, không thẻ, không bo góc.
+ *
+ * Trước đây nhãn và giá trị chỉ khác nhau ở độ đậm, nên hai cột đọc như một khối chữ
+ * xám. Nay nhãn là chữ nhỏ giãn, giá trị là chữ có chân — mắt phân biệt được cột nào
+ * là cột nào mà không cần đường kẻ nào.
+ */
 .tuvi-center__fields {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  column-gap: 20px;
-  row-gap: 8px;
+  column-gap: 16px;
+  row-gap: 2px;
   margin: 0;
   font-size: var(--chart-center-field-size);
 }
 
 .tuvi-center__fields dt {
+  align-self: baseline;
+  font-size: 0.82em;
   font-weight: 500;
-  color: var(--chart-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chart-subtle);
 }
 
 .tuvi-center__fields dd {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  align-items: baseline;
+  /* Phần phụ đi ngay sau giá trị. Trước đây nó bị đẩy sang lề phải bởi
+     ``space-between``, nên "Thìn" và "cư Mệnh" nằm hai đầu một dòng rộng. */
+  justify-content: flex-start;
+  gap: 8px;
   margin: 0;
+  font-family: var(--chart-serif);
   font-weight: 600;
   color: var(--chart-ink);
+}
+
+/* Dòng tóm tắt: một mệnh đề về lá số, không phải một cặp nhãn–giá trị. Chiếm cả hai
+   cột và tách khỏi bảng bằng một đường tóc, đúng cách một bản in ngắt đoạn. */
+/* Chọn qua cả hai class: luật ``.tuvi-center__fields dd`` phía trên đặc hiệu hơn một
+   class đơn, nên ``display: block`` viết trơ ở đây sẽ thua và ba dòng tóm tắt vẫn là
+   flex item — lúc ấy ``text-align`` vô tác dụng và chúng dính lề trái. */
+.tuvi-center__fields .tuvi-center__summary {
+  grid-column: 1 / -1;
+  /* ``display: block`` là bắt buộc, không phải thừa: luật chung cho ``dd`` đặt
+     ``display: flex``, và trong một flex container thì ``text-align`` không có tác
+     dụng — ba dòng tóm tắt sẽ dính lề trái thay vì căn giữa. */
+  display: block;
+  margin: 0;
+  font-family: var(--chart-serif);
+  font-size: 0.96em;
+  font-weight: 500;
+  font-style: italic;
+  text-align: center;
+  color: var(--chart-muted);
+}
+
+.tuvi-center__fields .tuvi-center__summary:first-of-type {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--chart-border-soft);
 }
 
 /* Development only — names a gap rather than filling it. Never reaches a customer
    chart, which omits the line instead. */
 .tuvi-center__pending {
+  font-family: 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
   color: var(--chart-subtle);
   font-style: italic;
 }
 
 .tuvi-center__secondary {
   font-weight: 500;
+  font-size: 0.9em;
   color: var(--chart-muted);
-  text-align: right;
 }
 
 /* --------------------------------------------------------------- Tuần / Triệt */
@@ -429,10 +517,11 @@
 
 .tuvi-legend {
   display: flex;
-  flex: 0 0 132px;
+  /* 132 → 106: mỗi pixel trả về đây là một pixel lưới 12 cung được thêm. */
+  flex: 0 0 106px;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   padding: 0 2px;
   font-size: 14px;
   color: var(--chart-muted);
@@ -443,14 +532,14 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 6px 28px;
+  gap: 4px 24px;
 }
 
 .tuvi-legend__group {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 16px;
+  gap: 3px 14px;
 }
 
 .tuvi-legend__abbr {
@@ -528,9 +617,30 @@
   list-style: none;
 }
 
+/*
+ * Chế độ đọc trên màn hẹp dùng **thang chữ riêng**, nhỏ hơn thang của tấm 1400px.
+ *
+ * Thang lớn kia được chọn để lấp một ô cao 402px; một thẻ cung trên điện thoại thì
+ * cao theo nội dung, nên dùng lại thang ấy chỉ làm chữ to quá khổ và thẻ dài lê thê.
+ * Dữ liệu không đổi một chút nào giữa hai chế độ — chỉ cỡ chữ đổi.
+ */
+.tuvi-reading {
+  --chart-palace-title-size: 19px;
+  --chart-major-star-size: 20px;
+  --chart-minor-star-size: 15.5px;
+  --chart-meta-size: 13px;
+}
+
 .tuvi-reading__card .tuvi-palace {
   min-height: 0;
+  padding: 14px 14px 12px;
   overflow: visible;
+}
+
+/* Không có chiều cao cố định thì không có chỗ thừa để chia — hai auto ở đây chỉ làm
+   tiêu đề và footer dính vào nhau một cách khó đoán. */
+.tuvi-reading .tuvi-palace > header {
+  margin-bottom: 0;
 }
 
 /* Reading mode is never exported, so the no-wrap rule above does not apply —
@@ -621,6 +731,10 @@
     height: auto !important;
     overflow: visible !important;
     background: #fff !important;
+    /* Không có dòng này thì trình duyệt bỏ nền giấy và màu ngũ hành khi in — lá số
+       ra trắng đen, và màu trên lá số này MANG NGHĨA chứ không phải trang trí. */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   /* Scoped with :has() — this stylesheet stays loaded after client-side navigation,
@@ -641,6 +755,15 @@
   #tuvi-offscreen-host .tuvi-chart {
     transform: scale(0.5237);
     transform-origin: top left;
+  }
+
+  /* Một tấm lá số không được ngắt giữa trang, và đường kẻ 12 cung là phần nội dung
+     chứ không phải đường trang trí — cả hai đều phải sống sót qua máy in. */
+  #tuvi-offscreen-host,
+  #tuvi-offscreen-host * {
+    break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
 
@@ -675,10 +798,16 @@
    Hóa Lộc KHÔNG xanh, Hóa Kỵ KHÔNG đỏ: màu trên lá số này chỉ có một nghĩa. */
 .tuvi-hoa-line {
   display: block;
-  padding-left: 10px;
-  font-size: 0.92em;
+  padding-left: 8px;
+  /* Nhỏ hơn chính tinh một bậc rõ ràng, nhưng vẫn là chữ thường có chân — nó là một
+     dòng của lá số, không phải một nhãn dán lên ngôi sao. */
+  font-family: var(--chart-serif);
+  font-size: 0.76em;
   font-style: italic;
-  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
 }
 
 .tuvi-hoa-line.is-annual-hoa {

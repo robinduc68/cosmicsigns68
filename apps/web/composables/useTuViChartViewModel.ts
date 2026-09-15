@@ -388,6 +388,12 @@ function mapPalace(
       emptyLine: isEmptyMainStar && majorStars.length === 0,
       minors: minorStars.length,
       footer: Boolean(lifeStage || majorCycleRef || annualRef),
+      // Mỗi dòng Tứ Hóa chiếm chỗ riêng dưới ngôi sao mang nó. Bỏ sót chúng khỏi
+      // phép ước lượng là cách cảnh báo tràn báo thiếu đúng ở cung đông nhất.
+      hoaLines: [...majorStars, ...minorStars].reduce(
+        (total, star) => total + star.transformations.length + star.annualTransformations.length,
+        0,
+      ),
     }),
   }
 }
@@ -567,7 +573,7 @@ function centerFields(
     // không dòng nào so sánh lại gì: âm dương thuận/nghịch là ``is_thuan_ly``,
     // Mệnh–Cục là ``cuc.relation``, Thân–Mệnh là ``than.resides_in``. Tính lại ở
     // đây là mở đường cho frontend và engine bất đồng ý kiến về cùng một lá số.
-    f('Tóm tắt', formatAmDuongLy(chart.yin_yang.is_thuan_ly)),
+    f('', formatAmDuongLy(chart.yin_yang.is_thuan_ly)),
     f('', chart.cuc.relation_label ?? null),
     f('', formatThanMenh(optionalString(chart.than, 'resides_in'), chart.than.resides_in_label)),
   ].map((entry) => (entry.value?.trim() ? entry : { ...entry, value: null }))

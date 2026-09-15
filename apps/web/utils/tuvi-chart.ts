@@ -99,12 +99,13 @@ export const STAR_CATEGORY_PRIORITY: Record<StarCategory, number> = {
  * development, so drift here can produce a false alarm but never a silent clip.
  */
 export const PALACE_METRICS = {
-  /** 395 px row − 22 px top − 16 px bottom padding. */
-  contentHeight: 357,
-  header: 46,
-  blockGap: 12,
-  majorRow: 30,
-  minorRow: 21,
+  /** Hàng lưới ~403 px − 16 px đệm trên − 11 px đệm dưới. */
+  contentHeight: 376,
+  header: 48,
+  blockGap: 9,
+  majorRow: 31,
+  hoaRow: 24,
+  minorRow: 23,
   emptyLine: 34,
   footer: 30,
 } as const
@@ -114,11 +115,14 @@ export function estimatePalaceHeight(content: {
   emptyLine: boolean
   minors: number
   footer: boolean
+  /** Số dòng Tứ Hóa — mỗi dòng chiếm chỗ riêng dưới ngôi sao mang nó. */
+  hoaLines?: number
 }): number {
   const m = PALACE_METRICS
   let height = m.header
   if (content.majors > 0) height += m.blockGap + content.majors * m.majorRow
   else if (content.emptyLine) height += m.emptyLine
+  height += (content.hoaLines ?? 0) * m.hoaRow
   if (content.minors > 0) height += m.blockGap + Math.ceil(content.minors / 2) * m.minorRow
   if (content.footer) height += m.footer
   return height
