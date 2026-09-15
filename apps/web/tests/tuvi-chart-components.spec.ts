@@ -129,7 +129,9 @@ describe('TuViStar', () => {
           ...base,
           name: 'Tham Lang',
           element: 'MOC',
-          transformations: [{ code: 'HOA_QUYEN', label: 'Quyền', fullLabel: 'Hóa Quyền' }],
+          transformations: [
+            { code: 'HOA_QUYEN', label: 'Quyền', fullLabel: 'Hóa Quyền', strengthAbbr: null, strengthLabel: null },
+          ],
         },
         major: true,
       },
@@ -149,8 +151,12 @@ describe('TuViStar', () => {
       props: {
         star: {
           ...base,
-          transformations: [{ code: 'HOA_LOC', label: 'Lộc', fullLabel: 'Hóa Lộc' }],
-          annualTransformations: [{ code: 'HOA_KY', label: 'L.Kỵ', fullLabel: 'Lưu Hóa Kỵ' }],
+          transformations: [
+            { code: 'HOA_LOC', label: 'Lộc', fullLabel: 'Hóa Lộc', strengthAbbr: null, strengthLabel: null },
+          ],
+          annualTransformations: [
+            { code: 'HOA_KY', label: 'L.Kỵ', fullLabel: 'Lưu Hóa Kỵ', strengthAbbr: null, strengthLabel: null },
+          ],
         },
       },
     })

@@ -50,6 +50,8 @@ from cosmic_astrology.chart.types import (
     Palace,
     PalaceName,
     Star,
+    StarStrength,
+    Transformation,
 )
 from cosmic_astrology.conventions.nam_phai import COSMIC_SIGNS_NAM_PHAI_V1
 from cosmic_astrology.conventions.policies import (
@@ -101,7 +103,10 @@ _logger = logging.getLogger(__name__)
 #
 # 0.4.2: độ sáng nay đọc từ 23 ô đã quan sát được trên lá số đối chiếu, chỗ nào bảng
 # trường phái chưa có. Không sao nào dịch chỗ — chỉ thêm metadata.
-ENGINE_VERSION = "0.4.2-frame"
+#
+# 0.4.3: mỗi ngôi sao nay mang thêm ``transformation_strengths`` — độ sáng của từng
+# Tứ Hóa nó đang giữ. Thêm trường, không dịch sao nào.
+ENGINE_VERSION = "0.4.3-frame"
 
 
 def current_rule_fingerprint(profile: ConventionProfile = COSMIC_SIGNS_NAM_PHAI_V1) -> str:
@@ -1070,8 +1075,27 @@ def _apply_star_strength(by_branch: dict[int, Palace], *, profile: ConventionPro
                 value = reference.OBSERVED_STRENGTH_CELLS.get((star.id, palace.branch))
                 # Ô đọc từ lá số in: có bằng chứng, nhưng chưa ai thẩm định lá số ấy.
                 source = VerificationStatus.PROVISIONAL
-            if value is not None:
-                palace.stars[index] = replace(star, strength=value, strength_verification=source)
+            # Độ sáng của Tứ Hóa: **một bảng khác**, khoá hẹp hơn — gồm cả ngôi sao
+            # mang hóa. Ta đo được "hóa này, trên sao này, tại chi này"; suy rộng sang
+            # một ngôi sao khác là khẳng định thứ chưa ai đo.
+            hoa_strengths: tuple[tuple[Transformation, StarStrength], ...] = tuple(
+                (t, observed)
+                for t in star.transformations
+                if (
+                    observed := reference.OBSERVED_TRANSFORMATION_STRENGTH.get(
+                        (t.value, star.id, palace.branch)
+                    )
+                )
+                is not None
+            )
+            if value is None and not hoa_strengths:
+                continue
+            palace.stars[index] = replace(
+                star,
+                strength=value if value is not None else star.strength,
+                strength_verification=(source if value is not None else star.strength_verification),
+                transformation_strengths=hoa_strengths,
+            )
 
 
 def _attach_cycles(

@@ -140,13 +140,26 @@ const TRANSFORMATION_CODES: ReadonlySet<string> = new Set(Object.keys(TRANSFORMA
 function transformationsOf(star: ChartStar): StarTransformationViewModel[] {
   const raw = field(star, 'transformations')
   if (!Array.isArray(raw)) return []
+  // Độ sáng của từng hóa đến từ một bảng riêng của engine, khoá theo hóa. Chỗ nào
+  // engine không có ô, hóa hiện không hậu tố — renderer không suy ra giá trị nào.
+  const strengths = field(star, 'transformation_strengths')
+  const byCode = typeof strengths === 'object' && strengths !== null ? strengths : {}
   return raw
     .filter((code): code is Transformation => typeof code === 'string' && TRANSFORMATION_CODES.has(code))
-    .map((code) => ({
-      code,
-      label: TRANSFORMATION_LABELS[code],
-      fullLabel: TRANSFORMATION_FULL_LABELS[code],
-    }))
+    .map((code) => {
+      const value = (byCode as Record<string, unknown>)[code]
+      const strength =
+        typeof value === 'string' && value in STRENGTH_ABBREVIATIONS
+          ? (value as keyof typeof STRENGTH_ABBREVIATIONS)
+          : null
+      return {
+        code,
+        label: TRANSFORMATION_LABELS[code],
+        fullLabel: TRANSFORMATION_FULL_LABELS[code],
+        strengthAbbr: strength ? STRENGTH_ABBREVIATIONS[strength] : null,
+        strengthLabel: strength ? STRENGTH_LABELS[strength] : null,
+      }
+    })
 }
 
 /** Một lưu tinh, đưa về đúng model sao chung — renderer không cần biết nó khác. */
@@ -294,6 +307,10 @@ function indexAnnual(annual: AnnualChart | null): AnnualIndex | null {
       code,
       label: `L.${TRANSFORMATION_LABELS[code]}`,
       fullLabel: `Lưu ${TRANSFORMATION_FULL_LABELS[code]}`,
+      // Chưa có ô bằng chứng nào cho độ sáng của hóa lưu niên. Mượn giá trị của hóa
+      // bản mệnh cùng tên sẽ là bịa: đó là hai trạng thái khác nhau trên hai lớp khác nhau.
+      strengthAbbr: null,
+      strengthLabel: null,
     })
     transformationsByStarId.set(entry.star_id, list)
   }

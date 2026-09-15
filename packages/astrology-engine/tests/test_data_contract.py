@@ -42,6 +42,7 @@ STAR_KEYS = {
     "is_transformation",
     "has_transformation",
     "transformations",
+    "transformation_strengths",
     "display_priority",
     "verification_status",
     "provenance",

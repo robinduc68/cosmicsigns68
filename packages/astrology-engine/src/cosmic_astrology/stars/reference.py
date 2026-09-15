@@ -24,6 +24,7 @@ from cosmic_astrology.stars.strength import StarStrengthTable
 __all__ = [
     "CANONICAL_REFERENCES",
     "OBSERVED_STRENGTH_CELLS",
+    "OBSERVED_TRANSFORMATION_STRENGTH",
     "ReferenceChart",
     "StrengthMismatch",
     "validate_strength_table",
@@ -49,6 +50,12 @@ class ReferenceChart:
     #: một khái niệm có biên rõ ràng, và trộn phụ tinh vào sẽ làm mọi phép đếm phủ
     #: sóng của bảng ấy vô nghĩa.
     non_major_strength_cells: Mapping[tuple[str, str], StarStrength]
+    #: ``{(hóa, mã sao mang hóa, địa chi): độ sáng}``.
+    #:
+    #: Khoá gồm **cả ngôi sao mang hóa**, cố ý hẹp. Ta quan sát được "Hóa Lộc trên Vũ
+    #: Khúc tại Tuất là Vượng"; ta **không** biết Hóa Lộc tại Tuất trên một ngôi sao
+    #: khác thì thế nào. Bỏ mã sao khỏi khoá là lặng lẽ khẳng định điều chưa ai đo.
+    transformation_cells: Mapping[tuple[str, str, str], StarStrength]
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +92,27 @@ def _parse_cells(raw: object, chart_id: str, field: str) -> Mapping[tuple[str, s
     return MappingProxyType(cells)
 
 
+def _parse_transformation_cells(
+    raw: object, chart_id: str
+) -> Mapping[tuple[str, str, str], StarStrength]:
+    valid_branches = set(CHI)
+    valid_states = {s.value for s in StarStrength}
+    cells: dict[tuple[str, str, str], StarStrength] = {}
+    for cell in raw if isinstance(raw, list) else []:
+        branch, state = cell["branch"], cell["strength"]
+        if branch not in valid_branches:
+            raise ValueError(f"{chart_id}/transformation_strength: '{branch}' không phải địa chi")
+        if state not in valid_states:
+            raise ValueError(
+                f"{chart_id}/transformation_strength: '{state}' không phải độ sáng hợp lệ"
+            )
+        key = (cell["transformation"], cell["carrier_star_id"], branch)
+        if key in cells:
+            raise ValueError(f"{chart_id}/transformation_strength: ghi hai lần ô {key}")
+        cells[key] = StarStrength(state)
+    return MappingProxyType(cells)
+
+
 def _load() -> tuple[ReferenceChart, ...]:
     raw = json.loads(_PATH.read_text(encoding="utf-8"))
     charts: list[ReferenceChart] = []
@@ -101,6 +129,9 @@ def _load() -> tuple[ReferenceChart, ...]:
                 ),
                 non_major_strength_cells=_parse_cells(
                     entry.get("non_major_star_strength"), entry["id"], "non_major_star_strength"
+                ),
+                transformation_cells=_parse_transformation_cells(
+                    entry.get("transformation_strength"), entry["id"]
                 ),
             )
         )
@@ -165,3 +196,27 @@ def _collect_observed() -> Mapping[tuple[str, str], StarStrength]:
 #: Những ô bảng độ sáng **đã quan sát được**. Không phải bảng — bảng đầy đủ có 168 ô
 #: cho riêng 14 chính tinh, và đây chỉ là những ô có người đọc ra từ một lá số in.
 OBSERVED_STRENGTH_CELLS: Mapping[tuple[str, str], StarStrength] = _collect_observed()
+
+
+def _collect_transformations() -> Mapping[tuple[str, str, str], StarStrength]:
+    merged: dict[tuple[str, str, str], StarStrength] = {}
+    for reference in CANONICAL_REFERENCES:
+        for key, value in reference.transformation_cells.items():
+            existing = merged.get(key)
+            if existing is not None and existing is not value:
+                raise ValueError(
+                    f"Hai lá số đối chiếu ghi khác nhau ở ô hóa {key}: "
+                    f"{existing.value} và {value.value}"
+                )
+            merged[key] = value
+    return MappingProxyType(merged)
+
+
+#: Độ sáng của Tứ Hóa, khoá ``(hóa, mã sao mang hóa, địa chi)``.
+#:
+#: Một bảng **khác** bảng độ sáng của sao, và cố ý để riêng: hóa là trạng thái của
+#: ngôi sao mang nó, nên trộn vào bảng 14 × 12 sẽ làm mọi phép đếm phủ sóng của bảng
+#: ấy vô nghĩa.
+OBSERVED_TRANSFORMATION_STRENGTH: Mapping[tuple[str, str, str], StarStrength] = (
+    _collect_transformations()
+)

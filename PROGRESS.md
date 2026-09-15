@@ -26,6 +26,7 @@ và engine đã có vòng Tràng Sinh + đại vận.
 | Phase 5 — Renderer lá số | ✅ xong |
 | Phase 6 — An sao | 🟡 **88 sao** bản mệnh + **18 lưu tinh** + Tứ Hóa; miếu vượng đã nối nhưng **bảng còn rỗng** |
 | Đường ống hiển thị | ✅ đã soi: engine → API → ViewModel → DOM **không mất sao nào** (`docs/chart-render-loss-report.md`) |
+| Số tháng ở footer | 🔴 engine không cấp `month_number`; luật suy ra nó là một quy ước chưa chốt — không đoán |
 | Trình bày lá số | ✅ đợt trau chuốt cuối: mật độ, chữ có chân, khối giữa, footer, in/xuất ảnh (`chart-renderer.md` mục 9d–9e) |
 | Đối chiếu lá số chuẩn | ✅ lá số 13/10/1999 giờ Ngọ: **không còn lệch vị trí nào đã biết** (mục 31–33) |
 
@@ -300,6 +301,10 @@ curl -s -X POST localhost:8100/api/v1/charts -H 'Content-Type: application/json'
   chứng** từ lá số đối chiếu (23 ô kể cả phụ tinh), engine **đọc thẳng 23 ô ấy** nên
   lá số hiện được độ sáng ở đúng chỗ đó, và `validate_strength_table()` bác bỏ bảng
   nào chép lệch — nhưng 154 ô còn lại vẫn không ai biết, và **không được suy ra**.
+- **Năm xem từng mặc định là "không xem lưu niên"**, nên cả lớp lưu niên vô hình cho
+  tới khi có người chủ động chọn năm — và một lá số đầy đủ lưu tinh trông giống hệt
+  một lá số chưa cài lưu niên. Đây là lý do "thiếu lưu tinh" bị báo ba phiên liền.
+  Nay mặc định là năm hiện tại.
 - **Đừng chỉnh mật độ bằng mắt.** Lá số trông thưa vì phần thừa của mỗi cung **dồn
   thành một khoảng duy nhất ở đáy** (91–178px), chứ không phải vì chữ nhỏ. Tăng cỡ chữ
   một mình gần như không đổi gì; thứ sửa được là cho `header` một `margin-bottom: auto`

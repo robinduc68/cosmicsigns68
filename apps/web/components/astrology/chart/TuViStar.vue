@@ -68,7 +68,10 @@ const title = computed(() =>
     :class="elementSelector"
     :data-transformation="hoa.code"
     :title="`${hoa.fullLabel} — của ${star.name}`"
-    >{{ hoa.fullLabel }}</span
+    >{{ hoa.fullLabel
+    }}<abbr v-if="hoa.strengthAbbr" class="tuvi-star__strength" :title="hoa.strengthLabel ?? undefined"
+      >({{ hoa.strengthAbbr }})</abbr
+    ></span
   >
   <!-- Hóa của NĂM XEM. Nhãn đã mang tiền tố "L." nên phân biệt được với hóa bản
        mệnh mà không cần thêm màu hay badge nào.

@@ -1371,10 +1371,14 @@ bằng mã sao sẽ ngầm nói "sao này độ sáng thế" ở mọi địa ch
 | Hỏa Tinh | Mão | DAC | | Thiên Diêu | Dậu | DAC |
 | Tiểu Hao | Mão | DAC | | | | |
 
-**Đáng ngờ, ghi ra để không ai bỏ qua:** cả chín sao đều là `DAC`, ở bốn địa chi khác
-nhau. Có thể đó là giá trị thật; cũng có thể bản in chỉ gán `(Đ)` chung cho phụ tinh
-thay vì tra từng ô. Hai khả năng ấy dẫn tới hai cách dùng dữ liệu rất khác nhau, nên
-nghi ngờ này đi kèm dữ liệu chứ không nằm trong đầu ai.
+Đợt sau đọc thêm 7 ô — Kình Dương (Mùi, `DAC`), Đà La (Tỵ, `HAM`), Địa Không (Tỵ,
+`DAC`), Địa Kiếp (Tỵ, `DAC`), Thiên Hình (Tỵ, `HAM`), Bạch Hổ (Hợi, `HAM`), Tang Môn
+(Tỵ, `HAM`). Tổng **16 ô phụ tinh**.
+
+**Nghi ngờ cũ đã bị bác bỏ.** Đợt đầu ghi 9 ô và cả 9 đều `DAC`, kèm giả thuyết rằng
+bản in có thể gán `(Đ)` chung cho phụ tinh thay vì tra từng ô. Đợt sau có 4 ô `HAM`,
+nên bản đối chiếu **có phân biệt thật** — chín ô đọc được trước chỉ tình cờ rơi vào
+cùng một giá trị. Giữ lại cả kết luận cũ lẫn chỗ nó bị bác bỏ.
 
 Để riêng khỏi 14 chính tinh: bảng 14 × 12 là một khái niệm có biên rõ ràng, và trộn
 phụ tinh vào sẽ làm mọi phép đếm phủ sóng của bảng ấy vô nghĩa.
@@ -1389,9 +1393,17 @@ phụ tinh vào sẽ làm mọi phép đếm phủ sóng của bảng ấy vô n
 | Hóa Kỵ | Văn Khúc | Tuất | DAC |
 
 Một **bảng khác**, cố ý để riêng: hóa là trạng thái của ngôi sao mang nó, nên ô ở đây
-là *(hóa, địa chi của sao mang hóa)*. Trộn vào cùng danh sách với độ sáng sao sẽ làm
-bảng 14 × 12 bị nhiễm những khoá không thuộc về nó. **Chưa nối vào renderer** — cần
-quyết định trước: dòng hóa hiện độ sáng của hóa, hay của sao mang nó.
+là *(hóa, **mã sao mang hóa**, địa chi)*. Trộn vào cùng danh sách với độ sáng sao sẽ
+làm bảng 14 × 12 bị nhiễm những khoá không thuộc về nó.
+
+Khoá gồm cả ngôi sao mang hóa, và đó là chỗ hẹp có chủ ý: ta quan sát được *"Hóa Lộc
+trên Vũ Khúc tại Tuất là Vượng"*; ta **không** biết Hóa Lộc tại Tuất trên một ngôi sao
+khác thì thế nào. Bỏ mã sao khỏi khoá là lặng lẽ khẳng định điều chưa ai đo.
+
+**Đã nối vào renderer** (engine 0.4.3): dòng hóa hiện hậu tố của **chính hóa ấy** —
+`Hóa Quyền(B)`, `Hóa Khoa(V)`, `Hóa Lộc(V)`, `Hóa Kỵ(Đ)`. Hóa **lưu niên** không có ô
+bằng chứng nào nên không hiện hậu tố: mượn giá trị của hóa bản mệnh cùng tên là bịa —
+đó là hai trạng thái khác nhau trên hai lớp khác nhau.
 
 ### 33.1d Quan sát chưa khớp: `LN.Văn Tinh`
 

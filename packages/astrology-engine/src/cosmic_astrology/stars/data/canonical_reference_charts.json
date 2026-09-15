@@ -117,9 +117,15 @@
       ],
       "_README_non_major": [
         "Độ sáng của sao NGOÀI 14 chính tinh, đọc từ cùng lá số đối chiếu.",
-        "ĐÁNG NGỜ: cả chín sao dưới đây đều ghi DAC, ở bốn địa chi khác nhau. Có thể đó",
-        "là giá trị thật, cũng có thể bản in chỉ gán (Đ) chung cho phụ tinh thay vì tra",
-        "từng ô. Ghi lại vì đọc được, và ghi cả nghi ngờ này vì nó đổi cách dùng dữ liệu."
+        "",
+        "Đợt đầu ghi 9 ô và cả 9 đều DAC, ở bốn địa chi khác nhau — chỗ đó từng bị ghi là",
+        "đáng ngờ, với giả thuyết bản in gán (Đ) chung cho phụ tinh thay vì tra từng ô.",
+        "",
+        "Đợt sau thêm 7 ô, trong đó có 4 ô HAM. Nghi ngờ ấy vì thế KHÔNG còn đứng vững:",
+        "bản đối chiếu có phân biệt thật, chỉ là chín ô đọc được trước đều rơi vào cùng",
+        "một giá trị. Ghi lại cả kết luận cũ lẫn chỗ nó bị bác bỏ.",
+        "",
+        "Vẫn CẤM SUY RỘNG: mỗi dòng nói về đúng một cặp (sao, địa chi)."
       ],
       "non_major_star_strength": [
         {
@@ -166,6 +172,41 @@
           "star_id": "THIEN_DIEU",
           "branch": "Dậu",
           "strength": "DAC"
+        },
+        {
+          "star_id": "KINH_DUONG",
+          "branch": "Mùi",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "DA_LA",
+          "branch": "Tỵ",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "DIA_KHONG",
+          "branch": "Tỵ",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "DIA_KIEP",
+          "branch": "Tỵ",
+          "strength": "DAC"
+        },
+        {
+          "star_id": "THIEN_HINH",
+          "branch": "Tỵ",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "BACH_HO",
+          "branch": "Hợi",
+          "strength": "HAM"
+        },
+        {
+          "star_id": "TANG_MON",
+          "branch": "Tỵ",
+          "strength": "HAM"
         }
       ],
       "_README_transformation": [

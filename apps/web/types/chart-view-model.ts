@@ -67,6 +67,10 @@ export interface StarTransformationViewModel {
   label: string
   /** `"Hóa Lộc"` — what a screen reader and the tooltip say. */
   fullLabel: string
+  /** `"V"` — độ sáng của **chính hóa này**, khi có ô bằng chứng. `null` thì không hiện. */
+  strengthAbbr: string | null
+  /** `"Vượng"` — tên đầy đủ, cho tooltip. */
+  strengthLabel: string | null
 }
 
 export interface PalaceViewModel {

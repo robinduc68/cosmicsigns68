@@ -51,16 +51,21 @@ const storedEngineIsOldest = computed(() =>
  *
  * Đổi năm chỉ nạp lại **khối lưu niên** — lá số gốc không được tải lại, không được
  * tính lại, và vì thế không thể xê dịch.
+ *
+ * **Mặc định là năm hiện tại**, không phải "không xem". Mặc định cũ khiến cả lớp lưu
+ * niên vô hình cho tới khi có người chủ động chọn năm — và một lá số đầy đủ lưu tinh
+ * trông giống hệt một lá số chưa cài lưu niên. "Không xem lưu niên" vẫn còn, nhưng là
+ * một lựa chọn, không còn là điểm khởi đầu.
  */
-const viewingYear = ref<number | null>(null)
+const viewingYear = ref<number | null>(new Date().getFullYear())
 const yearOptions = computed(() => {
   const thisYear = new Date().getFullYear()
   return [
-    { value: '', label: 'Không xem lưu niên' },
     ...Array.from({ length: 5 }, (_, i) => thisYear - 1 + i).map((y) => ({
       value: String(y),
       label: String(y),
     })),
+    { value: '', label: 'Không xem lưu niên' },
   ]
 })
 const yearChoice = computed({

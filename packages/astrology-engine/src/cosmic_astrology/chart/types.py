@@ -190,6 +190,12 @@ class Star:
     #: model must survive a future where đại vận and lưu niên each add their own
     #: hóa to the same star; today the engine only attaches the birth-year one.
     transformations: tuple[Transformation, ...] = ()
+    #: Độ sáng của từng hóa mà ngôi sao này mang, dạng ``((hóa, độ sáng), …)``.
+    #:
+    #: Tách khỏi ``strength`` vì đây là **một bảng khác**: ``strength`` nói về ngôi
+    #: sao, còn ô này nói về trạng thái hóa của nó. Dùng tuple thay vì dict để kiểu
+    #: này vẫn bất biến như phần còn lại của ``Star``.
+    transformation_strengths: tuple[tuple[Transformation, StarStrength], ...] = ()
 
     def __post_init__(self) -> None:
         if (self.strength is None) != (self.strength_verification is None):
@@ -258,6 +264,9 @@ class Star:
             "is_transformation": self.is_transformation,
             "has_transformation": self.has_transformation,
             "transformations": [t.value for t in self.transformations],
+            "transformation_strengths": {
+                t.value: strength.value for t, strength in self.transformation_strengths
+            },
             "display_priority": display_priority_for(self.category),
             "verification_status": self.verification_status.value,
             "provenance": self.provenance.to_dict() if self.provenance else None,

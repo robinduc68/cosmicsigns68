@@ -2,7 +2,7 @@
   "schema_version": 2,
   "identity": {
     "chart_id": null,
-    "engine_version": "0.4.2-frame",
+    "engine_version": "0.4.3-frame",
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09",
     "production_ready": false,
@@ -19,7 +19,7 @@
   },
   "engine": {
     "stage": "PREVIEW",
-    "version": "0.4.2-frame",
+    "version": "0.4.3-frame",
     "is_authoritative": false,
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09"
@@ -1530,6 +1530,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1560,6 +1561,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1587,6 +1589,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1614,6 +1617,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1641,6 +1645,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1675,6 +1680,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1703,6 +1709,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1730,6 +1737,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1757,6 +1765,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1784,6 +1793,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1850,6 +1860,7 @@
           "transformations": [
             "HOA_LOC"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1880,6 +1891,7 @@
           "transformations": [
             "HOA_KY"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1910,6 +1922,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1937,6 +1950,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1964,6 +1978,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -1991,6 +2006,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2018,6 +2034,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2045,6 +2062,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2072,6 +2090,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2099,6 +2118,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 8,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2126,6 +2146,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 4,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2162,6 +2183,7 @@
           "transformations": [
             "HOA_LOC"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2192,6 +2214,7 @@
           "transformations": [
             "HOA_KY"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2220,6 +2243,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2247,6 +2271,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2274,6 +2299,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2301,6 +2327,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2328,6 +2355,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2355,6 +2383,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2382,6 +2411,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2409,6 +2439,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 8,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2436,6 +2467,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 4,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2502,6 +2534,7 @@
           "transformations": [
             "HOA_KHOA"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2530,6 +2563,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2560,6 +2594,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 14,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2587,6 +2622,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2614,6 +2650,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2641,6 +2678,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 4,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2677,6 +2715,7 @@
           "transformations": [
             "HOA_KHOA"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2705,6 +2744,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2733,6 +2773,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 14,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2760,6 +2801,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2787,6 +2829,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2814,6 +2857,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 4,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2878,6 +2922,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2908,6 +2953,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2935,6 +2981,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2962,6 +3009,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -2989,6 +3037,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3016,6 +3065,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3043,6 +3093,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3070,6 +3121,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3104,6 +3156,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3132,6 +3185,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3159,6 +3213,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3186,6 +3241,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3213,6 +3269,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3240,6 +3297,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3267,6 +3325,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3294,6 +3353,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3358,6 +3418,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3388,6 +3449,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3415,6 +3477,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3442,6 +3505,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3469,6 +3533,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3496,6 +3561,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3530,6 +3596,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3558,6 +3625,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3585,6 +3653,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3612,6 +3681,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3639,6 +3709,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3666,6 +3737,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3732,6 +3804,7 @@
           "transformations": [
             "HOA_QUYEN"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3762,6 +3835,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3789,6 +3863,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3816,6 +3891,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3843,6 +3919,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3870,6 +3947,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3897,6 +3975,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 5,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3924,6 +4003,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3951,6 +4031,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -3978,6 +4059,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4014,6 +4096,7 @@
           "transformations": [
             "HOA_QUYEN"
           ],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4042,6 +4125,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4069,6 +4153,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4096,6 +4181,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4123,6 +4209,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4150,6 +4237,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4177,6 +4265,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 5,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4204,6 +4293,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4231,6 +4321,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4258,6 +4349,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4322,6 +4414,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4350,6 +4443,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4380,6 +4474,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4407,6 +4502,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4434,6 +4530,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4461,6 +4558,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4488,6 +4586,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4515,6 +4614,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4542,6 +4642,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4569,6 +4670,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 4,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4603,6 +4705,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4631,6 +4734,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4659,6 +4763,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4686,6 +4791,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4713,6 +4819,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4740,6 +4847,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4767,6 +4875,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4794,6 +4903,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4821,6 +4931,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4848,6 +4959,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 4,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4913,6 +5025,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4940,6 +5053,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4967,6 +5081,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -4994,6 +5109,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5021,6 +5137,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5048,6 +5165,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5075,6 +5193,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5102,6 +5221,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5136,6 +5256,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 11,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5163,6 +5284,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5190,6 +5312,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 13,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5217,6 +5340,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5244,6 +5368,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5271,6 +5396,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5298,6 +5424,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5325,6 +5452,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5390,6 +5518,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5417,6 +5546,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5444,6 +5574,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5471,6 +5602,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5498,6 +5630,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5532,6 +5665,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5559,6 +5693,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5586,6 +5721,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 6,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5613,6 +5749,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5640,6 +5777,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5704,6 +5842,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5734,6 +5873,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5761,6 +5901,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5788,6 +5929,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5815,6 +5957,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5842,6 +5985,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5869,6 +6013,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5896,6 +6041,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5923,6 +6069,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5950,6 +6097,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 8,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -5984,6 +6132,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6012,6 +6161,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6039,6 +6189,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6066,6 +6217,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6093,6 +6245,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 9,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6120,6 +6273,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6147,6 +6301,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6174,6 +6329,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6201,6 +6357,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6228,6 +6385,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 8,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6292,6 +6450,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6320,6 +6479,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6350,6 +6510,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6377,6 +6538,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6404,6 +6566,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6431,6 +6594,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6458,6 +6622,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6485,6 +6650,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6519,6 +6685,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6547,6 +6714,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6575,6 +6743,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6602,6 +6771,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 10,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6629,6 +6799,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 12,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6656,6 +6827,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6683,6 +6855,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 15,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6710,6 +6883,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6774,6 +6948,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6804,6 +6979,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6831,6 +7007,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6858,6 +7035,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 5,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6885,6 +7063,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6919,6 +7098,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 0,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6947,6 +7127,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 2,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -6974,6 +7155,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 7,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -7001,6 +7183,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 5,
           "verification_status": "PROVISIONAL",
           "provenance": {
@@ -7028,6 +7211,7 @@
           "is_transformation": false,
           "has_transformation": false,
           "transformations": [],
+          "transformation_strengths": {},
           "display_priority": 3,
           "verification_status": "PROVISIONAL",
           "provenance": {
