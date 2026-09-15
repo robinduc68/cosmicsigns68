@@ -2,7 +2,7 @@
   "schema_version": 2,
   "identity": {
     "chart_id": null,
-    "engine_version": "0.4.5-frame",
+    "engine_version": "0.4.6-frame",
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09",
     "production_ready": false,
@@ -19,7 +19,7 @@
   },
   "engine": {
     "stage": "FRAME",
-    "version": "0.4.5-frame",
+    "version": "0.4.6-frame",
     "is_authoritative": false,
     "convention_profile": "COSMIC_SIGNS_NAM_PHAI_V1",
     "convention_version": "2026.09"

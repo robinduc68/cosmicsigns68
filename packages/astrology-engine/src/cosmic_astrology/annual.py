@@ -27,6 +27,7 @@ from cosmic_astrology.stars import placement, placement_malefic
 from cosmic_astrology.stars import placement_group2 as group2
 from cosmic_astrology.stars.catalog import definition_for
 from cosmic_astrology.stars.four_transformations import transformations_for_stem
+from cosmic_astrology.stars.presentation import column_for
 
 __all__ = [
     "ANNUAL_PALACE_SHORT_LABELS",
@@ -153,6 +154,9 @@ class AnnualStar:
             "name": self.name,
             "base_star_id": self.base_star_id,
             "traditional_display": self.traditional_display,
+            # Lưu tinh dùng lại cột của sao gốc: "L.Kình Dương" là Kình Dương của năm
+            # xem, và nó không đổi phe vì đổi lớp.
+            "traditional_column": column_for(self.id, self.base_star_id).value,
             "category": StarCategory.ANNUAL.value,
             "element": self.element,
             "polarity": self.polarity,

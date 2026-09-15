@@ -49,6 +49,8 @@ export interface StarViewModel {
    * renderer để giữ đúng điều đó. Sao bản mệnh luôn `true`.
    */
   traditionalDisplay: boolean
+  /** `LEFT` | `RIGHT` | `AUTO` — cột của bản in, do engine cấp. Chỉ là bố cục. */
+  traditionalColumn: 'LEFT' | 'RIGHT' | 'AUTO' 
   /** Địa chi the engine placed this star on. `null` on schema v1 payloads. */
   palaceBranch: string | null
   /** Engine-supplied ordering; falls back to a local table for schema v1. */
@@ -114,6 +116,15 @@ export interface PalaceViewModel {
   minorStars: StarViewModel[]
   /** Lưu tinh của năm xem, đã lọc theo hồ sơ hiển thị. */
   annualStars: StarViewModel[]
+  /**
+   * Hai cột của bản in truyền thống: cát/trợ bên trái, sát/bại bên phải.
+   *
+   * Gộp cả phụ tinh bản mệnh lẫn lưu tinh — bản in không tách chúng thành hai khối
+   * riêng, nó tách theo **phe**. Cột do engine quyết (`traditional_column`); renderer
+   * không bao giờ tự suy từ tên sao, từ loại, hay từ màu.
+   */
+  leftColumn: StarViewModel[]
+  rightColumn: StarViewModel[]
   /**
    * Toàn bộ Tứ Hóa trong cung, gom thành **một khối** dựng ngay sau chính tinh.
    *

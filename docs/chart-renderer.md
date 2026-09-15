@@ -360,6 +360,50 @@ Sao chưa có hành giữ mực trung tính, và nó **đã là mực đậm nh�
 
 ---
 
+## 9k. Hai cột truyền thống: cát bên trái, sát bên phải
+
+Một lá số in **không** xếp phụ tinh tràn hàng qua hai cột. Nó tách **cát tinh / trợ
+tinh** về bên trái và **sát tinh / bại tinh** về bên phải, để người đọc nhìn một cái
+là thấy thế cân bằng của cung. Lưới tràn hàng xếp sao theo thứ tự dữ liệu, nên cát và
+sát nằm lẫn lộn — mất đúng thứ bản in dựng ra để thấy.
+
+Nay mỗi cột là **một danh sách riêng**, không phải một lưới `auto-flow`.
+
+### Dữ liệu đến từ đâu
+
+`cosmic_astrology/stars/presentation.py` — tách khỏi `catalog.py` có chủ ý: catalog
+giữ **siêu dữ liệu chiêm tinh** (ngũ hành, âm dương, độ sáng), còn cột trái/phải là
+**toạ độ trình bày**. Trộn hai thứ là cách một quyết định bố cục lặng lẽ trở thành một
+khẳng định về lá số.
+
+Nó nằm ở engine chứ không ở renderer vì renderer không được rẽ nhánh theo mã sao, và
+`no-star-name-styling.spec.ts` quét mã nguồn renderer để giữ điều đó.
+
+Phân loại: **42 LEFT · 34 RIGHT · 2 AUTO** (Hoa Cái, Đẩu Quân). Chính tinh không thuộc
+phép chia này — chúng ở khối giữa cung.
+
+### Lưu tinh
+
+Dùng lại cột của **sao gốc**: `L.Kình Dương` là Kình Dương của năm xem, và nó không
+đổi phe vì đổi lớp. Không có bảng luật riêng cho lưu tinh.
+
+### Sao AUTO
+
+Bản in không cho thấy chúng thuộc bên nào. Chúng đi vào cột **đang ngắn hơn**, hoà thì
+sang trái. Luật này xác định: nó chỉ phụ thuộc số sao đã phân loại, vốn cố định với
+một lá số — không có chuyện hai lần dựng ra hai kết quả.
+
+**Cố ý không cân lại các sao đã phân loại.** Một sát tinh không bao giờ được chuyển
+sang trái chỉ vì cột phải dài hơn: nhóm đúng phe quan trọng hơn hai cột bằng nhau.
+
+### Màu không liên quan
+
+Cát/hung và ngũ hành là **hai khái niệm khác nhau**, gặp nhau ở đúng một chỗ: cùng một
+ngôi sao mang cả hai. Một sát tinh hành Mộc vẫn vẽ màu xanh lá. Cột phải không đỏ, cột
+trái không xanh.
+
+---
+
 ## 10. Hạn chế đã biết
 
 - **Miếu vượng: đường ống xong, bảng rỗng.** Hậu tố `(M)(V)(Đ)(B)(H)` đã dựng và có

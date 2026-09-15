@@ -113,7 +113,7 @@ describe('TuViStar', () => {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
     polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
     strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
-    isAnnual: false, traditionalDisplay: true, palaceBranch: null, displayPriority: 0,
+    isAnnual: false, traditionalDisplay: true, traditionalColumn: 'AUTO' as const, palaceBranch: null, displayPriority: 0,
     verificationStatus: 'PROVISIONAL', provenance: null, transformations: [], annualTransformations: [],
   }
 
@@ -177,6 +177,42 @@ describe('khối chính tinh không bao giờ bị Tứ Hóa chen vào', () => {
   })
 })
 
+describe('hai cột truyền thống: cát bên trái, sát bên phải', () => {
+  /**
+   * Cột phải **không được** rỗng trên một lá số thật, và hai cột không được trộn.
+   *
+   * Bài này canh *bất biến của luật chia*, không canh một cặp giá trị: mọi sao trong
+   * cột trái phải mang cột LEFT hoặc AUTO, mọi sao cột phải phải mang RIGHT hoặc AUTO.
+   * Một sao RIGHT lọt sang trái là đúng cái lỗi mà đợt này sửa.
+   */
+  it('không trộn sao đã phân loại giữa hai cột', async () => {
+    const model = mapChartDtoToViewModel(structuredClone(scenario('cross-check-2001').chart))
+    let left = 0
+    let right = 0
+    for (const palace of model.palaces) {
+      for (const star of palace.leftColumn) {
+        expect(star.traditionalColumn, star.name).not.toBe('RIGHT')
+        if (star.traditionalColumn === 'LEFT') left += 1
+      }
+      for (const star of palace.rightColumn) {
+        expect(star.traditionalColumn, star.name).not.toBe('LEFT')
+        if (star.traditionalColumn === 'RIGHT') right += 1
+      }
+    }
+    expect(left).toBeGreaterThan(0)
+    expect(right).toBeGreaterThan(0)
+  })
+
+  it('không đánh rơi hay nhân bản sao nào khi chia cột', async () => {
+    const model = mapChartDtoToViewModel(structuredClone(scenario('cross-check-2001').chart))
+    for (const palace of model.palaces) {
+      const split = [...palace.leftColumn, ...palace.rightColumn].map((s) => s.code).sort()
+      const source = [...palace.minorStars, ...palace.annualStars].map((s) => s.code).sort()
+      expect(split, palace.name).toEqual(source)
+    }
+  })
+})
+
 describe('12-palace orientation on the grid (golden case Mệnh = Tuất)', () => {
   /**
    * Guards two things at once: the engine's Earthly Branch → palace assignment, and
@@ -218,7 +254,7 @@ describe('ngũ hành colouring of stars', () => {
     code: 'TEST', name: 'Sao thử', category: 'MAJOR', element: null, elementLabel: null,
     polarityPrefix: null, ariaLabel: 'Sao thử', strength: null, strengthAbbr: null,
     strengthVerification: null, provisional: false, isMajor: true, isTransformation: false,
-    isAnnual: false, traditionalDisplay: true, palaceBranch: null, displayPriority: 0,
+    isAnnual: false, traditionalDisplay: true, traditionalColumn: 'AUTO' as const, palaceBranch: null, displayPriority: 0,
     verificationStatus: 'PROVISIONAL', provenance: null, transformations: [], annualTransformations: [],
   }
 

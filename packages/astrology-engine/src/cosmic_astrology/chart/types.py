@@ -26,6 +26,7 @@ from cosmic_astrology.chart.model import (
 )
 from cosmic_astrology.conventions.policies import VerificationStatus
 from cosmic_astrology.stars.catalog import Polarity
+from cosmic_astrology.stars.presentation import column_for
 
 __all__ = [
     "BirthInput",
@@ -267,6 +268,9 @@ class Star:
             "transformation_strengths": {
                 t.value: strength.value for t, strength in self.transformation_strengths
             },
+            # Cột trái/phải của bản in. **Siêu dữ liệu trình bày** — không phép an sao
+            # nào đọc nó, và nó không liên quan gì tới màu (màu là ngũ hành).
+            "traditional_column": column_for(self.id).value,
             "display_priority": display_priority_for(self.category),
             "verification_status": self.verification_status.value,
             "provenance": self.provenance.to_dict() if self.provenance else None,

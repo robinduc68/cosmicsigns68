@@ -202,16 +202,24 @@ onMounted(async () => {
       </li>
     </ul>
 
-    <div class="tuvi-palace__stars">
-      <ul v-if="palace.minorStars.length" class="tuvi-palace__minors">
-        <li v-for="star in palace.minorStars" :key="star.code">
+    <!--
+      Hai cột của bản in truyền thống: cát/trợ bên trái, sát/bại bên phải.
+
+      Mỗi cột là một danh sách RIÊNG, không phải một lưới hai cột chảy tràn hàng. Lưới
+      tràn hàng xếp sao theo thứ tự dữ liệu, nên cát và sát nằm lẫn lộn — người đọc mất
+      đúng cái mà bản in dựng ra để thấy: thế cân bằng của cung.
+
+      Cột do engine quyết (``traditional_column``). Renderer không suy từ tên sao, từ
+      loại, và tuyệt đối không từ màu — màu là ngũ hành, cát/hung là chuyện khác.
+    -->
+    <div v-if="palace.leftColumn.length || palace.rightColumn.length" class="tuvi-palace__stars">
+      <ul class="tuvi-palace__column" data-column="left">
+        <li v-for="star in palace.leftColumn" :key="star.code">
           <TuViStar :star="star" />
         </li>
       </ul>
-
-      <!-- Lưu tinh: khối riêng, sau phụ tinh bản mệnh. Hai lớp dữ liệu, hai khối. -->
-      <ul v-if="palace.annualStars.length" class="tuvi-palace__minors tuvi-palace__annual">
-        <li v-for="star in palace.annualStars" :key="star.code">
+      <ul class="tuvi-palace__column" data-column="right">
+        <li v-for="star in palace.rightColumn" :key="star.code">
           <TuViStar :star="star" />
         </li>
       </ul>

@@ -139,6 +139,15 @@ function polarityOf(star: ChartStar): YinYangPolarity | null {
 
 const TRANSFORMATION_CODES: ReadonlySet<string> = new Set(Object.keys(TRANSFORMATION_LABELS))
 
+/**
+ * Cột của bản in, **đọc từ engine**. Không có giá trị thì `AUTO` — renderer tuyệt đối
+ * không tự suy cột từ tên sao, từ loại, hay từ màu.
+ */
+function columnOf(star: object): 'LEFT' | 'RIGHT' | 'AUTO' {
+  const raw = field(star, 'traditional_column')
+  return raw === 'LEFT' || raw === 'RIGHT' ? raw : 'AUTO'
+}
+
 /** Tứ Hóa as the engine sent it. Anything unrecognised is dropped, never guessed. */
 function transformationsOf(star: ChartStar): StarTransformationViewModel[] {
   const raw = field(star, 'transformations')
@@ -187,6 +196,7 @@ function mapAnnualStar(star: AnnualStar): StarViewModel {
     isTransformation: false,
     isAnnual: true,
     traditionalDisplay: field(star, 'traditional_display') === true,
+    traditionalColumn: columnOf(star),
     palaceBranch: star.palace_branch,
     displayPriority: star.display_priority,
     verificationStatus: 'PROVISIONAL',
@@ -253,6 +263,7 @@ function mapStar(
     // Sao bản mệnh không thuộc phạm vi hồ sơ hiển thị lưu niên; cờ này chỉ nói về
     // lưu tinh, và sao bản mệnh luôn hiện.
     traditionalDisplay: true,
+    traditionalColumn: columnOf(star),
   }
 }
 
@@ -401,6 +412,20 @@ function mapPalace(
     cycles?.major_cycle_age_end ?? null,
   )
 
+  // Hai cột của bản in. Gộp phụ tinh bản mệnh và lưu tinh rồi tách theo **phe**, vì
+  // bản in tách theo phe chứ không tách theo lớp dữ liệu.
+  //
+  // Sao AUTO — bản in không cho thấy nó thuộc bên nào — đi vào cột đang NGẮN HƠN, hoà
+  // thì sang trái. Luật này xác định: nó chỉ phụ thuộc số sao đã phân loại, vốn cố
+  // định với một lá số. Cố ý KHÔNG cân lại các sao đã phân loại: nhóm theo phe quan
+  // trọng hơn hai cột bằng nhau.
+  const columned = [...minorStars, ...annualStars]
+  const leftColumn = columned.filter((s) => s.traditionalColumn === 'LEFT')
+  const rightColumn = columned.filter((s) => s.traditionalColumn === 'RIGHT')
+  for (const star of columned.filter((s) => s.traditionalColumn === 'AUTO')) {
+    ;(rightColumn.length < leftColumn.length ? rightColumn : leftColumn).push(star)
+  }
+
   return {
     id: palace.name,
     name: palace.label,
@@ -421,6 +446,8 @@ function mapPalace(
     majorStars,
     minorStars,
     annualStars,
+    leftColumn,
+    rightColumn,
     transformationLines,
     palaceIndex: optionalNumber(palace, 'palace_index'),
     cycles,

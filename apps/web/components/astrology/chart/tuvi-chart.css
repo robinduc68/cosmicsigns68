@@ -250,12 +250,6 @@
   line-height: 1.08;
 }
 
-.tuvi-palace__minors > li {
-  font-size: var(--chart-minor-star-size);
-  /* To hơn nửa bậc nhưng dòng chặt hơn: chữ dễ đọc hơn mà hàng KHÔNG cao thêm.
-     Ưu tiên sửa khoảng cách trước, chỉ đụng cỡ chữ khi khoảng cách đã hết chỗ. */
-  line-height: 1.08;
-}
 
 .tuvi-palace__empty {
   margin: 8px 0 0;
@@ -265,25 +259,33 @@
   color: var(--chart-subtle);
 }
 
-.tuvi-palace__minors {
+/*
+ * Hai cột độc lập, KHÔNG phải một lưới hai cột chảy tràn hàng.
+ *
+ * Lưới tràn hàng xếp sao theo thứ tự dữ liệu, nên cát tinh và sát tinh nằm lẫn lộn.
+ * Hai danh sách riêng bảo đảm nhóm theo phe: cột nào dài hơn thì để nó dài hơn — nhóm
+ * đúng phe quan trọng hơn hai cột bằng nhau.
+ */
+.tuvi-palace__stars {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 6px;
-  row-gap: 1px;
   margin: 5px 0 0;
+}
+
+.tuvi-palace__column {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/*
- * Footer: mỗi ô là một giá trị engine cấp, xếp theo cột tự động.
- *
- * ``grid-auto-flow: column`` thay cho ba cột cứng, để khi engine có ``month_number``
- * thì thêm một ô nữa là xong — không phải dựng lại bố cục. Ô nào không có dữ liệu thì
- * **không được dựng ra**, chứ không phải dựng ra rồi để trống.
- */
-.tuvi-palace__stars {
-  min-height: 0;
+.tuvi-palace__column > li {
+  font-size: var(--chart-minor-star-size);
+  line-height: 1.08;
+}
+
+.tuvi-palace__column > li + li {
+  margin-top: 1px;
 }
 
 .tuvi-palace__footer {
